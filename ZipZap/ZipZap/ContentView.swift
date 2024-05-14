@@ -6,60 +6,60 @@
 //
 
 import SwiftUI
-import Combine
+import os
 import zzarchive
 
 struct ContentView: View {
     @State var showFileChooser = false
     @State var windowTitle = "ZipZap"
-    @State private var sortOrder = [KeyPathComparator(\ArchiveEntry.pathname)]
+    @State private var sortOrder = [KeyPathComparator(\ArchiveEntry.path)]
     @State private var selectedEntries = Set<ArchiveEntry.ID>()
-    @State private var dateFormatter = DateFormatter()
     @ObservedObject var archive = Archive()
 
     @SceneStorage("ArchiveEntryTableConfig")
     private var columnCustomization: TableColumnCustomization<ArchiveEntry>
 
-    init() {
-        self.dateFormatter.dateStyle = .long
-        self.dateFormatter.timeStyle = .long
-    }
+    private static let logger = Logger(
+        subsystem: Bundle.main.bundleIdentifier!,
+        category: String(describing: ContentView.self)
+    )
 
     var body: some View {
         VStack {
             // TODO:
-            //  * Sorting is sync, try to make it async
             //  * Can't sort by date columns, presumably because they're not keypath. Can we have them be keypath and still sort properly?
             //  * Figure out how to hide some columns by default
+            //  * Parse pathname to make a hierarchy and switch this to what we have in TestView
             Table(archive.entries, selection: $selectedEntries, sortOrder: $sortOrder, columnCustomization: $columnCustomization) {
-                TableColumn("Name", value: \.pathname)
+                TableColumn("Type") { entry in
+                    Image(systemName: entry.type.rawValue)
+                }
+                    .customizationID("type")
+                TableColumn("Name", value: \.path)
                     .customizationID("pathname")
                 TableColumn("Size", value: \.sizeString)
                     .customizationID("sizeString")
-                TableColumn("Date Modified") { entry in
-                    Text(dateFormatter.string(from: entry.mtime))
-                }
+                TableColumn("Date Modified", value: \.mtime.userFormatted)
                     .customizationID("mtime")
-                TableColumn("Date Changed") { entry in
-                    Text(dateFormatter.string(from: entry.ctime))
-                }
+                TableColumn("Date Changed", value: \.ctime.userFormatted)
                     .customizationID("ctime")
-                TableColumn("Date Accessed") { entry in
-                    Text(dateFormatter.string(from: entry.atime))
-                }
+                TableColumn("Date Accessed", value: \.atime.userFormatted)
                     .customizationID("atime")
-                TableColumn("Date Created") { entry in
-                    Text(dateFormatter.string(from: entry.btime))
-                }
+                TableColumn("Date Created", value: \.btime.userFormatted)
                     .customizationID("btime")
             }
             .onChange(of: sortOrder) { _, sortOrder in
-                archive.entries.sort(using: sortOrder)
+                archive.sort(using: sortOrder)
+            }
+            HStack {
+                Spacer()
+                Text("\(archive.entries.count) items")
+                Spacer()
             }
         }
-        .toolbar {
-            ToolbarItem {
-                Button("Open...") {
+        .toolbar(id: "Main") {
+            ToolbarItem(id: "Open") {
+                Button {
                     let panel = NSOpenPanel()
                     panel.allowsMultipleSelection = false
                     panel.canChooseDirectories = false
@@ -69,7 +69,19 @@ struct ContentView: View {
                             self.archive.setURL(url)
                         }
                     }
+                } label: {
+                    Label("Open...", systemImage: "folder")
+                        .padding()
                 }
+            }
+            ToolbarItem(id: "Extract"){
+                Button {
+
+                } label: {
+                    Label("Extract", systemImage: "folder.badge.minus")
+                        .padding()
+                }
+                .disabled(selectedEntries.isEmpty)
             }
         }
         .navigationTitle(windowTitle)

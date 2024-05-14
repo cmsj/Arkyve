@@ -368,6 +368,7 @@ archive_entry_devminor(struct archive_entry *entry)
 __LA_MODE_T
 archive_entry_filetype(struct archive_entry *entry)
 {
+    S_ISREG(entry->acl.mode);
 	return (AE_IFMT & entry->acl.mode);
 }
 

@@ -47,7 +47,7 @@ struct ContentView: View {
             // TODO:
             //  * Figure out how to hide some columns by default
             //  * Drag and drop on the TableRows
-            //  * Name sorting is currently broken, which might be a good thing with the hierarchical view?
+            //  * Sorting is broken, it's still sorting archive.entries. Instead we should sort the contents of every directory in the tree
             Table(of: ArchiveEntry.self, selection: $selectedEntries, sortOrder: $sortOrder, columnCustomization: $columnCustomization) {
                 TableColumn("Name") { entry in
                     HStack {

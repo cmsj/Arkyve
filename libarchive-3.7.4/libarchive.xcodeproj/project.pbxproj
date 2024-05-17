@@ -6765,6 +6765,7 @@
 					/usr/local/opt/zstd/include,
 					/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/libxml2,
 					"/Users/cmsj/hacking/ZipZap/libarchive-3.7.4/libarchive/.",
+					/opt/homebrew/include,
 					"$(inherited)",
 				);
 				INSTALL_PATH = "";
@@ -7090,6 +7091,7 @@
 					/usr/local/opt/zstd/include,
 					/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/libxml2,
 					"/Users/cmsj/hacking/ZipZap/libarchive-3.7.4/libarchive/.",
+					/opt/homebrew/include,
 					"$(inherited)",
 				);
 				INSTALL_PATH = "";
@@ -8855,6 +8857,7 @@
 					/usr/local/opt/zstd/include,
 					/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/libxml2,
 					"/Users/cmsj/hacking/ZipZap/libarchive-3.7.4/libarchive/.",
+					/opt/homebrew/include,
 					"$(inherited)",
 				);
 				INSTALL_PATH = "";
@@ -9654,6 +9657,7 @@
 					/usr/local/opt/zstd/include,
 					/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/libxml2,
 					"/Users/cmsj/hacking/ZipZap/libarchive-3.7.4/libarchive/.",
+					/opt/homebrew/include,
 					"$(inherited)",
 				);
 				INSTALL_PATH = "";

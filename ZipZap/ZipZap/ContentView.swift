@@ -9,12 +9,30 @@ import SwiftUI
 import os
 import zzarchive
 
+struct NestedTree: TableRowContent {
+  let children : [ ArchiveEntry ]
+
+  var tableRowBody: some TableRowContent<ArchiveEntry> {
+    ForEach(children) { child in
+      if let children = child.children {
+        @Bindable var child = child
+        DisclosureTableRow(child, isExpanded: $child.isExpanded) {
+          NestedTree(children: children)
+        }
+      }
+      else {
+        TableRow(child)
+      }
+    }
+  }
+}
+
 struct ContentView: View {
     @State var showFileChooser = false
     @State var windowTitle = "ZipZap"
     @State private var sortOrder = [KeyPathComparator(\ArchiveEntry.path)]
     @State private var selectedEntries = Set<ArchiveEntry.ID>()
-    @ObservedObject var archive = Archive()
+    @State var archive = Archive()
 
     @SceneStorage("ArchiveEntryTableConfig")
     private var columnCustomization: TableColumnCustomization<ArchiveEntry>
@@ -28,15 +46,16 @@ struct ContentView: View {
         VStack {
             // TODO:
             //  * Figure out how to hide some columns by default
-            //  * Parse pathname to make a hierarchy and switch this to what we have in TestView
             //  * Drag and drop on the TableRows
+            //  * Name sorting is currently broken, which might be a good thing with the hierarchical view?
             Table(of: ArchiveEntry.self, selection: $selectedEntries, sortOrder: $sortOrder, columnCustomization: $columnCustomization) {
-                TableColumn("Type") { entry in
-                    Image(systemName: entry.type.rawValue)
+                TableColumn("Name") { entry in
+                    HStack {
+                        Image(systemName: entry.type.rawValue)
+                        Text(entry.name)
+                    }
                 }
-                    .customizationID("type")
-                TableColumn("Name", value: \.path)
-                    .customizationID("pathname")
+                    .customizationID("name")
                 TableColumn("Size", value: \.sizeString)
                     .customizationID("sizeString")
                     .alignment(.trailing)
@@ -49,9 +68,7 @@ struct ContentView: View {
                 TableColumn("Date Created", value: \.btime.userFormatted)
                     .customizationID("btime")
             } rows: {
-                ForEach(archive.entries) { entry in
-                    TableRow(entry)
-                }
+                NestedTree(children: archive.root.children ?? [])
             }
             .id(UUID()) // Hack to make the table more performant on large archives. https://stackoverflow.com/questions/59604764/performance-issue-with-swiftui-list
             .onChange(of: sortOrder) { _, sortOrder in
@@ -62,6 +79,7 @@ struct ContentView: View {
                 Text("\(archive.entries.count) items")
                 Spacer()
             }
+            .padding([.top, .bottom])
         }
         .toolbar(id: "Main") {
             ToolbarItem(id: "Open") {

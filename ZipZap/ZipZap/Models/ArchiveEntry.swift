@@ -19,6 +19,7 @@ enum ArchiveEntryType: String {
     case chardev = "chart.bar.doc.horizontal"
     case blockdev = "batteryblock"
     case fifo = "pipe.and.drop"
+    case root = "virtual root"
 
     init(rawValue: mode_t) {
         let compare = S_IFMT & rawValue
@@ -56,20 +57,33 @@ extension Date {
     }
 }
 
+extension Array where Element == String {
+    func subtractPath(_ path: [String]) -> [String]? {
+        guard self.count >= path.count else {
+            print("Array::subtractPath called with a path that is longer (\(path.count)) than I am (\(self.count).")
+            return nil
+        }
+
+        guard self.prefix(path.count).elementsEqual(path) else {
+            print("Array::subtractPath does not start with the path provided.")
+            return nil
+        }
+
+        return Array(self.suffix(from: path.count))
+    }
+}
+
+extension ArchiveEntry: Equatable {
+    static func == (lhs: ArchiveEntry, rhs: ArchiveEntry) -> Bool {
+        lhs.path == rhs.path
+    }
+}
+
 extension ArchiveEntry: Comparable {
     static func < (lhs: ArchiveEntry, rhs: ArchiveEntry) -> Bool {
         lhs.path < rhs.path
     }
 }
-
-//extension ArchiveEntry: Transferable {
-//    static var transferRepresentation: some TransferRepresentation {
-//        DataRepresentation(exportedContentType: .item) { foo in
-//            print(foo)
-//            return Data(repeating: 9, count: 10)
-//        }
-//    }
-//}
 
 extension ArchiveEntry {
     subscript(_ name: String) -> ArchiveEntry? {
@@ -81,7 +95,14 @@ extension ArchiveEntry {
     }
 }
 
-struct ArchiveEntry: Identifiable, Hashable {
+extension ArchiveEntry: Hashable {
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(path)
+    }
+}
+
+@Observable
+class ArchiveEntry: Identifiable {
     var id = UUID()
     private var entry: OpaquePointer?
     private static let logger = Logger(
@@ -94,6 +115,8 @@ struct ArchiveEntry: Identifiable, Hashable {
     // We'll have to synthesize directories for those, and track which ones they are
     var isSynthesized = false
 
+    var isExpanded = false
+
     // Properties we will store for later use
     var path: String
     var name: String
@@ -101,6 +124,14 @@ struct ArchiveEntry: Identifiable, Hashable {
     var size: Int64
     var sizeString: String {
         get { size != -1 ? String(size) : "--" }
+    }
+    var finalDirName: String? {
+        get {
+            if type == .directory {
+                return name
+            }
+            return pathComponents.dropLast().last
+        }
     }
     var atime: Date = Date(timeIntervalSince1970: 0)
     var ctime: Date = Date(timeIntervalSince1970: 0)
@@ -119,8 +150,9 @@ struct ArchiveEntry: Identifiable, Hashable {
             Self.logger.trace("Creating ArchiveEntry for \(pathString)")
 
             // Parse pathname to store our hierarchy
-            pathComponents = pathString.split(separator: "/").map(String.init)
-            name = pathComponents.last ?? "Unknown"
+            let pathBits = pathString.split(separator: "/").map(String.init)
+            name = pathBits.last ?? "Unknown"
+            pathComponents = pathBits
         } else {
             self.path = "Unknown"
             self.name = "Unknown"
@@ -162,7 +194,77 @@ struct ArchiveEntry: Identifiable, Hashable {
         self.size = -1
 
         // Parse pathname to store our hierarchy
-        pathComponents = path.split(separator: "/").map(String.init)
-        name = pathComponents.last ?? "Unknown"
+        let pathBits = path.split(separator: "/").map(String.init)
+        name = pathBits.last ?? "Unknown"
+        pathComponents = pathBits
+    }
+
+    init?(isRoot: Bool) {
+        guard isRoot == true else {
+            Self.logger.error("Root ArchiveEntry initialiser called without true")
+            return nil
+        }
+        self.isSynthesized = true
+        self.entry = nil
+        self.type = .root
+        self.children = []
+        self.path = "."
+        self.size = -1
+
+        pathComponents = ["."]
+        name = "root"
+    }
+
+    func addChildren(_ entries: [ArchiveEntry]) {
+        guard self.children != nil else {
+            Self.logger.error("addChildren called on an ArchiveEntry which can not possess children")
+            return
+        }
+        entries.forEach { self.children?.append($0) }
+    }
+
+    func addChildrenHierarchically(_ entries: [ArchiveEntry]) {
+        entries.forEach { self.addChildHierarchically($0) }
+    }
+
+    func addChildHierarchically(_ entry: ArchiveEntry) {
+        guard [.directory, .root].contains(self.type) else {
+            Self.logger.error("addChildHierarchically called on something other than directory/root")
+            return
+        }
+        guard self.children != nil else {
+            Self.logger.error("addCH found an uninitialised children array")
+            return
+        }
+
+        // We're the root, so find which of our children's trees this entry belongs to and dispatch it to them to handle
+        if type == .root {
+            if let dispatchIndex = children?.firstIndex(where: { $0.type == .directory && $0.name == entry.pathComponents.first }) {
+                children?[dispatchIndex].addChildHierarchically(entry)
+            } else {
+                let synthPath = entry.pathComponents.first!
+                Self.logger.trace("Creating synthetic root directory \(synthPath)")
+                self.children?.append(ArchiveEntry(path: synthPath))
+                children?[children!.count - 1].addChildHierarchically(entry)
+            }
+            return
+        }
+
+        // This entry belongs directly to us, so subsume it into our children
+        if pathComponents == entry.pathComponents.dropLast() {
+            children?.append(entry)
+            return
+        }
+
+        // This entry should belong to one of our children, figure out which to dispatch it to
+        let relativePath = entry.pathComponents.subtractPath(pathComponents)
+        if let dispatchIndex = children?.firstIndex(where: { $0.type == .directory && $0.name == relativePath?.first }) {
+            children?[dispatchIndex].addChildHierarchically(entry)
+        } else {
+            let synthPath = (self.pathComponents + [relativePath!.first!]).joined(separator: "/")
+            Self.logger.trace("Creating synthetic subdirectory \(synthPath)")
+            self.children?.append(ArchiveEntry(path: synthPath))
+            children?[children!.count - 1].addChildHierarchically(entry)
+        }
     }
 }

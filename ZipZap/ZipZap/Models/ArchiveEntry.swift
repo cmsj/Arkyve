@@ -137,6 +137,7 @@ class ArchiveEntry: Identifiable {
     var ctime: Date = Date(timeIntervalSince1970: 0)
     var mtime: Date = Date(timeIntervalSince1970: 0)
     var btime: Date = Date(timeIntervalSince1970: 0)
+    var perms: String = "--"
 
     var type: ArchiveEntryType = .unknown
 
@@ -179,6 +180,10 @@ class ArchiveEntry: Identifiable {
         }
         if archive_entry_birthtime_is_set(entry) != 0 {
             self.btime = Date(timeIntervalSince1970: TimeInterval(archive_entry_birthtime(entry)))
+        }
+
+        if let modeCstring = archive_entry_strmode(entry) {
+            self.perms = String(cString: modeCstring)
         }
 
         self.type = ArchiveEntryType(rawValue: archive_entry_filetype(entry))

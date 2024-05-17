@@ -45,8 +45,8 @@ struct ContentView: View {
     var body: some View {
         VStack {
             // TODO:
-            //  * Figure out how to hide some columns by default
             //  * Drag and drop on the TableRows
+            //  * Column default width
             //  * Sorting is broken, it's still sorting archive.entries. Instead we should sort the contents of every directory in the tree
             Table(of: ArchiveEntry.self, selection: $selectedEntries, sortOrder: $sortOrder, columnCustomization: $columnCustomization) {
                 TableColumn("Name") { entry in
@@ -61,12 +61,17 @@ struct ContentView: View {
                     .alignment(.trailing)
                 TableColumn("Date Modified", value: \.mtime.userFormatted)
                     .customizationID("mtime")
+                TableColumn("Permissions", value: \.perms)
+                    .customizationID("perms")
                 TableColumn("Date Changed", value: \.ctime.userFormatted)
                     .customizationID("ctime")
+                    .defaultVisibility(.hidden)
                 TableColumn("Date Accessed", value: \.atime.userFormatted)
                     .customizationID("atime")
+                    .defaultVisibility(.hidden)
                 TableColumn("Date Created", value: \.btime.userFormatted)
                     .customizationID("btime")
+                    .defaultVisibility(.hidden)
             } rows: {
                 NestedTree(children: archive.root.children ?? [])
             }

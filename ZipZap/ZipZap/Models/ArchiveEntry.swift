@@ -145,7 +145,10 @@ class ArchiveEntry: Identifiable {
         self.entry = entry
 
         if let pathCstring = archive_entry_pathname(entry) {
-            let pathString = String(cString: pathCstring)
+            var pathString = String(cString: pathCstring)
+            if pathString.last == "/" {
+                pathString = String(pathString.dropLast())
+            }
             self.path = pathString
             Self.logger.trace("Creating ArchiveEntry for \(pathString)")
 

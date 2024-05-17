@@ -43,6 +43,55 @@ import zzarchive
 //    }
 //}
 
+// Taken from: https://stackoverflow.com/questions/26678362/how-do-i-insert-an-element-at-the-correct-position-into-a-sorted-array-in-swift/55395494#55395494
+extension RandomAccessCollection where Element : Comparable {
+    func insertionIndex(of value: Element) -> Index {
+        var slice : SubSequence = self[...]
+
+        while !slice.isEmpty {
+            let middle = slice.index(slice.startIndex, offsetBy: slice.count / 2)
+            if value < slice[middle] {
+                slice = slice[..<middle]
+            } else {
+                slice = slice[index(after: middle)...]
+            }
+        }
+        return slice.startIndex
+    }
+}
+
+extension String {
+    func countOccurrences(of char: Character) -> Int {
+        self.ranges(of: String(char)).count
+    }
+}
+
+extension Archive {
+    // Sort our entries and return a new value, munging keypaths appropriately for the various fields of ArchiveEntry which need to be passed to Table as Strings, but don't sort well as Strings (ie dates)
+    func sort(using: [KeyPathComparator<ArchiveEntry>]) {
+        guard let sortDetails = using.first else { return }
+        var newSort: KeyPathComparator<ArchiveEntry>
+
+        switch (sortDetails.keyPath) {
+        case \ArchiveEntry.mtime.userFormatted:
+            newSort = KeyPathComparator(\ArchiveEntry.mtime, order: sortDetails.order)
+        case \ArchiveEntry.ctime.userFormatted:
+            newSort = KeyPathComparator(\ArchiveEntry.ctime, order: sortDetails.order)
+        case \ArchiveEntry.atime.userFormatted:
+            newSort = KeyPathComparator(\ArchiveEntry.atime, order: sortDetails.order)
+        case \ArchiveEntry.btime.userFormatted:
+            newSort = KeyPathComparator(\ArchiveEntry.btime, order: sortDetails.order)
+        default:
+            newSort = sortDetails
+        }
+
+        Self.logger.trace("Changing sort order to \(String(describing: newSort.keyPath))::\(String(describing: newSort.order))")
+        DispatchQueue.main.async {
+            self.entries.sort(using: [newSort])
+        }
+    }
+}
+
 class Archive: ObservableObject {
     private static let logger = Logger(
         subsystem: Bundle.main.bundleIdentifier!,
@@ -108,10 +157,56 @@ class Archive: ObservableObject {
             while (archive_read_next_header(self.archive, &entry) == ARCHIVE_OK) {
                 if let newEntry = ArchiveEntry(entry) {
                     DispatchQueue.main.async {
-                        self.entries.append(newEntry)
+                        self.entries.insert(newEntry, at: self.entries.insertionIndex(of: newEntry))
                     }
                 }
                 archive_read_data_skip(self.archive)
+            }
+
+            DispatchQueue.main.async {
+                DispatchQueue.global(qos:.userInitiated).async {
+                    // At this point, Archive.entries is a flat list, but archives can be hiearchical, so we need to collapse the list down to a tree
+                    var entryTree: [ArchiveEntry] = []
+
+//                    var depth = 0
+//                    while true {
+//                        Self.logger.trace("Tree conversion iteration, depth: \(depth)")
+//                        if depth > self.entries.count {
+//                            // We've gone deeper than there are entries, which means we have definitely exhausted our work
+//                            Self.logger.trace("Exceeded maximum depth, ending tree conversion")
+//                            break
+//                        }
+//
+//                        let matches = self.entries.filter { $0.path.countOccurrences(of: "/") == depth }
+//                        if depth == 0 {
+//                            // Easy case, everything with zero path separators is a root level element, so just merge them into entryTree
+//                            Self.logger.trace("Merging \(matches.count) root elements")
+//                            entryTree = entryTree + matches
+//                        } else {
+//                            for match in matches {
+//                                Self.logger.trace("Evaluating tree location for \(match.path)")
+//                                // Find a directory in entryTree that matches our path
+//                                var topIndex = entryTree.firstIndex(where: { $0.name == match.pathComponents.first })
+//                                if topIndex == nil {
+//                                    Self.logger.trace("No node for \(match.path), creating synthetic")
+//                                    // We are looking for something that has no parent directory, so we need to create it
+//                                    let entry = ArchiveEntry(path: match.pathComponents.dropLast().joined(separator: "/"))
+//                                    topIndex = entryTree.insertionIndex(of: entry)
+//                                    entryTree.insert(entry, at: topIndex!)
+//                                }
+//                                guard let topIndex = topIndex else { return } // This seems ugly
+//
+//                                var keypath = \ArchiveEntry[match.pathComponents.first!]?
+//                                for component in match.pathComponents.dropFirst() {
+//                                    Self.logger.trace("Adding \(component) to KeyPath")
+//                                    keypath = keypath.appending(path: \ArchiveEntry[component]?)
+//                                }
+//                                print("\(match.path) created keypath: \(keypath)")
+//                            }
+//                        }
+//                        depth += 1
+//                    }
+                }
             }
         }
     }
@@ -130,29 +225,5 @@ class Archive: ObservableObject {
         self.URL = url
         self.name = URL.lastPathComponent
         self.open()
-    }
-
-    // Sort our entries and return a new value, munging keypaths appropriately for the various fields of ArchiveEntry which need to be passed to Table as Strings, but don't sort well as Strings (ie dates)
-    func sort(using: [KeyPathComparator<ArchiveEntry>]) {
-        guard let sortDetails = using.first else { return }
-        var newSort: KeyPathComparator<ArchiveEntry>
-
-        switch (sortDetails.keyPath) {
-        case \ArchiveEntry.mtime.userFormatted:
-            newSort = KeyPathComparator(\ArchiveEntry.mtime, order: sortDetails.order)
-        case \ArchiveEntry.ctime.userFormatted:
-            newSort = KeyPathComparator(\ArchiveEntry.ctime, order: sortDetails.order)
-        case \ArchiveEntry.atime.userFormatted:
-            newSort = KeyPathComparator(\ArchiveEntry.atime, order: sortDetails.order)
-        case \ArchiveEntry.btime.userFormatted:
-            newSort = KeyPathComparator(\ArchiveEntry.btime, order: sortDetails.order)
-        default:
-            newSort = sortDetails
-        }
-
-        Self.logger.trace("Changing sort order to \(String(describing: newSort.keyPath))::\(String(describing: newSort.order))")
-        DispatchQueue.main.async {
-            self.entries.sort(using: [newSort])
-        }
     }
 }

@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import SwiftUI
 import os
 import zzarchive
 
@@ -45,12 +46,38 @@ enum ArchiveEntryType: String {
 extension Date {
     var userFormatted: String {
         get {
+            if self == Date(timeIntervalSince1970: 0) { return "--" }
             let formatter = DateFormatter()
             // FIXME: Somehow hook up the styles to some user settings
             formatter.dateStyle = .long
             formatter.timeStyle = .long
             return formatter.string(from: self)
         }
+    }
+}
+
+extension ArchiveEntry: Comparable {
+    static func < (lhs: ArchiveEntry, rhs: ArchiveEntry) -> Bool {
+        lhs.path < rhs.path
+    }
+}
+
+//extension ArchiveEntry: Transferable {
+//    static var transferRepresentation: some TransferRepresentation {
+//        DataRepresentation(exportedContentType: .item) { foo in
+//            print(foo)
+//            return Data(repeating: 9, count: 10)
+//        }
+//    }
+//}
+
+extension ArchiveEntry {
+    subscript(_ name: String) -> ArchiveEntry? {
+        return self.children?.first(where: { $0.name == name })
+    }
+
+    func firstIndexOf(_ name: String) -> Int? {
+        return self.children?.firstIndex(where: { $0.name == name })
     }
 }
 

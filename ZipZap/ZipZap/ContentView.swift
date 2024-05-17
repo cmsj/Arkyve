@@ -27,10 +27,10 @@ struct ContentView: View {
     var body: some View {
         VStack {
             // TODO:
-            //  * Can't sort by date columns, presumably because they're not keypath. Can we have them be keypath and still sort properly?
             //  * Figure out how to hide some columns by default
             //  * Parse pathname to make a hierarchy and switch this to what we have in TestView
-            Table(archive.entries, selection: $selectedEntries, sortOrder: $sortOrder, columnCustomization: $columnCustomization) {
+            //  * Drag and drop on the TableRows
+            Table(of: ArchiveEntry.self, selection: $selectedEntries, sortOrder: $sortOrder, columnCustomization: $columnCustomization) {
                 TableColumn("Type") { entry in
                     Image(systemName: entry.type.rawValue)
                 }
@@ -39,6 +39,7 @@ struct ContentView: View {
                     .customizationID("pathname")
                 TableColumn("Size", value: \.sizeString)
                     .customizationID("sizeString")
+                    .alignment(.trailing)
                 TableColumn("Date Modified", value: \.mtime.userFormatted)
                     .customizationID("mtime")
                 TableColumn("Date Changed", value: \.ctime.userFormatted)
@@ -47,7 +48,12 @@ struct ContentView: View {
                     .customizationID("atime")
                 TableColumn("Date Created", value: \.btime.userFormatted)
                     .customizationID("btime")
+            } rows: {
+                ForEach(archive.entries) { entry in
+                    TableRow(entry)
+                }
             }
+            .id(UUID()) // Hack to make the table more performant on large archives. https://stackoverflow.com/questions/59604764/performance-issue-with-swiftui-list
             .onChange(of: sortOrder) { _, sortOrder in
                 archive.sort(using: sortOrder)
             }

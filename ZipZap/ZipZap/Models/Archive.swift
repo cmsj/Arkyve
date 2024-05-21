@@ -82,6 +82,7 @@ class Archive {
         subsystem: Bundle.main.bundleIdentifier!,
         category: String(describing: Archive.self)
     )
+    private let queue = DispatchQueue(label: UUID().uuidString, qos: .userInitiated)
 
     var URL: URL
     var name: String
@@ -112,7 +113,7 @@ class Archive {
         }
 
         // Process the archive on a background thread
-        DispatchQueue.global(qos: .userInitiated).async {
+        queue.async {
             var entry: OpaquePointer?
             Self.logger.trace("Opening: \(filepath)")
 
@@ -145,15 +146,13 @@ class Archive {
             Self.logger.trace("Walking: \(filepath)")
             while (archive_read_next_header(self.archive, &entry) == ARCHIVE_OK) {
                 if let newEntry = ArchiveEntry(entry) {
-//                    DispatchQueue.main.async {
-                        self.entries.insert(newEntry, at: self.entries.insertionIndex(of: newEntry))
-//                    }
+                    self.entries.insert(newEntry, at: self.entries.insertionIndex(of: newEntry))
                 }
                 archive_read_data_skip(self.archive)
             }
 
-            DispatchQueue.main.async {
-                DispatchQueue.global(qos:.userInitiated).async {
+//            DispatchQueue.main.async {
+//                self.queue.async {
                     // At this point, Archive.entries is a flat list, but archives can be hiearchical, so we need to collapse the list down to a tree
 
                     // Find archive entries that aren't in a directory, merge them directly into the tree, keeping the rest for later
@@ -172,13 +171,14 @@ class Archive {
                         print("Adding remaining files...")
                         self.root.addChildrenHierarchically(remainingFiles)
                     }
-                }
-            }
+//                }
+//            }
         }
     }
 
     private func close() {
         Self.logger.trace("Archive::close() on \(self.name)")
+        // FIXME: We're closing self.archive on the main thread, with no regard for whether or not operations are still happening in the background
         archive_read_free(self.archive)
         self.archive = nil
         self.URL = Foundation.URL(fileURLWithPath: "")

@@ -19,9 +19,11 @@ struct NestedTree: TableRowContent {
         DisclosureTableRow(child, isExpanded: $child.isExpanded) {
           NestedTree(children: children)
         }
+        .itemProvider { child.itemProvider }
       }
       else {
         TableRow(child)
+              .itemProvider { child.itemProvider }
       }
     }
   }
@@ -95,7 +97,8 @@ struct ContentView: View {
                     if panel.runModal() == .OK {
                         if let url = panel.url {
                             windowTitle = url.lastPathComponent
-                            self.archive.setURL(url)
+                            self.archive = Archive(name: windowTitle, URL: url)
+                            self.archive.open()
                         }
                     }
                 } label: {

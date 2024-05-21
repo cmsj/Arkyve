@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import UniformTypeIdentifiers
 import SwiftUI
 import os
 import zzarchive
@@ -101,8 +102,51 @@ extension ArchiveEntry: Hashable {
     }
 }
 
+extension ArchiveEntry {
+    var itemProvider: NSItemProvider {
+        let provider = NSItemProvider()
+
+        provider.registerDataRepresentation(for: .fileURL, visibility: .all) { completion in
+            let progress = Progress(totalUnitCount: 100)
+            guard let archive = self.archive else {
+                Self.logger.error("Unable to find Archive for ArchiveEntry::\(self.name)")
+                completion(nil, NSError(domain: "DragAndDrop", code: -1, userInfo: [NSLocalizedDescriptionKey: "Unable to find Archive for ArchiveEntry::\(self.name)"]))
+                return progress
+            }
+
+            do {
+                // Generate a temporary URL to write to
+                let url = FileManager.default.temporaryDirectory.appendingPathComponent(self.name)
+                try Data().write(to: url) // create temporary, emptyfile
+
+                archive.queue.async {
+                    Self.logger.trace("Writing data to \(url)")
+                    do {
+                        try archive.writeEntry(self, to: url)
+                        Self.logger.trace("Reporting success")
+                        progress.completedUnitCount = 100
+                        completion(url.dataRepresentation, nil)
+                    } catch {
+                        Self.logger.trace("Writing failed for \(url)")
+                        completion(nil, NSError(domain: "DragAndDrop", code: -1, userInfo: [NSLocalizedDescriptionKey: "Unable to write to \(url)"]))
+                    }
+                }
+            } catch {
+                Self.logger.trace("item provider exception caught: \(error)")
+                completion(nil, error)
+            }
+
+            Self.logger.trace("Returning progress")
+            return progress
+        }
+        Self.logger.trace("Item provider registered")
+        return provider
+    }
+}
+
 @Observable
 class ArchiveEntry: Identifiable {
+    weak var archive: Archive?
     var id = UUID()
     private var entry: OpaquePointer?
     private static let logger = Logger(
@@ -141,9 +185,10 @@ class ArchiveEntry: Identifiable {
 
     var type: ArchiveEntryType = .unknown
 
-    init?(_ entry: OpaquePointer?) {
+    init?(_ entry: OpaquePointer?, forArchive: Archive) {
         guard entry != nil else { return nil }
         self.entry = entry
+        self.archive = forArchive
 
         if let pathCstring = archive_entry_pathname(entry) {
             var pathString = String(cString: pathCstring)

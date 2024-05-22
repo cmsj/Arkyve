@@ -108,10 +108,6 @@ class Archive {
         Self.logger.trace("Initialised for \(self.URL)")
     }
 
-    convenience init() {
-        self.init(name: "", URL: Foundation.URL(fileURLWithPath: ""))
-    }
-
     deinit {
         self.close()
     }
@@ -208,11 +204,6 @@ class Archive {
         } catch {
             Self.logger.error("Unable to remove cache directory at: \(self.cacheURL)")
         }
-        self.URL = Foundation.URL(fileURLWithPath: "")
-        self.path = ""
-        self.name = ""
-        self.entries = []
-        self.root = ArchiveEntry(isRoot: true)!
     }
 
     // NOTE: This method does not use any async - it's expected to be called from places that know how to async

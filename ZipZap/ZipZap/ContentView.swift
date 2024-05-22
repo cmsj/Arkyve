@@ -34,7 +34,7 @@ struct ContentView: View {
     @State var windowTitle = "ZipZap"
     @State private var sortOrder = [KeyPathComparator(\ArchiveEntry.path)]
     @State private var selectedEntries = Set<ArchiveEntry.ID>()
-    @State var archive = Archive()
+    @State var archive: Archive? = nil
 
     @SceneStorage("ArchiveEntryTableConfig")
     private var columnCustomization: TableColumnCustomization<ArchiveEntry>
@@ -75,15 +75,15 @@ struct ContentView: View {
                     .customizationID("btime")
                     .defaultVisibility(.hidden)
             } rows: {
-                NestedTree(children: archive.root.children ?? [])
+                NestedTree(children: archive?.root.children ?? [])
             }
             .id(UUID()) // Hack to make the table more performant on large archives. https://stackoverflow.com/questions/59604764/performance-issue-with-swiftui-list
             .onChange(of: sortOrder) { _, sortOrder in
-                archive.sort(using: sortOrder)
+                archive?.sort(using: sortOrder)
             }
             HStack {
                 Spacer()
-                Text("\(archive.entries.count) items")
+                Text("\(archive?.entries.count ?? 0) items")
                 Spacer()
             }
             .padding([.top, .bottom])
@@ -98,7 +98,7 @@ struct ContentView: View {
                         if let url = panel.url {
                             windowTitle = url.lastPathComponent
                             self.archive = Archive(name: windowTitle, URL: url)
-                            self.archive.open()
+                            self.archive?.open()
                         }
                     }
                 } label: {

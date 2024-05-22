@@ -9,10 +9,16 @@ import Foundation
 import os
 import zzarchive
 
+// FIXME: Expand and make more errors take string arguments
 enum ArchiveError: Error {
-    case TestError
     case ArchiveReadError
     case ArchiveEntryNotFound
+    case ArchiveOpenError(String)
+}
+
+enum ArchiveEntriesAction {
+    case Continue
+    case Break
 }
 
 // Taken from: https://stackoverflow.com/questions/26678362/how-do-i-insert-an-element-at-the-correct-position-into-a-sorted-array-in-swift/55395494#55395494
@@ -81,6 +87,78 @@ extension Archive {
     }
 }
 
+extension Archive {
+    func libarchive_open() throws {
+        if self.fd >= 0 {
+            lseek(self.fd, 0, SEEK_SET)
+        }
+
+        // Prepare libarchive's data structure
+        archive = archive_read_new()
+        if archive == nil {
+            throw ArchiveError.ArchiveOpenError("Unable to allocate archive memory")
+        }
+        archive_read_support_filter_all(archive)
+        archive_read_support_format_all(archive)
+
+        Self.logger.trace("Opening: \(self.path)")
+        self.fd = Darwin.open(self.path, O_RDONLY)
+        if self.fd < 0 {
+            libarchive_close()
+            throw ArchiveError.ArchiveOpenError("Unable to open \(self.path): \(errno)")
+        }
+
+        let ptr = archive_read_open_fd(archive, self.fd, 10240)
+        if ptr != ARCHIVE_OK {
+            let errStr = String(cString: archive_error_string(archive))
+            libarchive_close()
+            throw ArchiveError.ArchiveOpenError("Unable to open archive (\(ptr)): \(errStr)")
+        }
+    }
+
+    func libarchive_close() {
+        guard self.archive != nil else { return }
+        archive_read_free(archive)
+        archive = nil
+    }
+
+    func libarchive_entries(_ closure: (OpaquePointer?) throws -> ArchiveEntriesAction) throws {
+        guard self.archive != nil else {
+            // FIXME: decide if we want to throw here
+            Self.logger.error("libarchive_entries() called on a nil archive")
+            return
+        }
+
+        var entry: OpaquePointer?
+        Self.logger.trace("Walking archive headers...")
+        while (archive_read_next_header(self.archive, &entry) == ARCHIVE_OK) {
+            if try closure(entry) == .Break {
+                break
+            }
+        }
+    }
+
+    func libarchive_entry_path(_ entry: OpaquePointer?) -> String? {
+        var string: String? = nil
+
+        if let cString = archive_entry_pathname(entry) {
+            string = String(cString: cString)
+        }
+
+        return string
+    }
+
+    func libarchive_entry_data(_ entry: OpaquePointer?) -> Data {
+        let size = Int(archive_entry_size(entry))
+        var rawData = UnsafeMutablePointer<UInt8>.allocate(capacity: size)
+
+        Self.logger.trace("Reading entry data (\(size) bytes)")
+        archive_read_data(self.archive, rawData, size)
+
+        return Data(bytes: rawData, count: size)
+    }
+}
+
 // FIXME: Dispatch stuff here is likely unnecessarily wrong.
 @Observable
 class Archive {
@@ -97,6 +175,7 @@ class Archive {
     var root: ArchiveEntry = ArchiveEntry(isRoot: true)!
     var error: String? = nil
     private var fd: Int32 = -1
+    private var archive: OpaquePointer? = nil
     var cacheURL: URL
 
     init(name: String, URL: URL) {
@@ -113,8 +192,6 @@ class Archive {
     }
 
     func open() {
-        var archive: OpaquePointer? = nil
-
         do {
             try FileManager.default.createDirectory(at: self.cacheURL, withIntermediateDirectories: true)
         } catch {
@@ -125,55 +202,28 @@ class Archive {
 
         // Process the archive on a background thread
         queue.async {
-            var entry: OpaquePointer?
-            Self.logger.trace("Opening: \(self.path)")
+            // Initialise libarchive data structure and open our archive
+            do {
+                try self.libarchive_open()
 
-            // Prepare libarchive's data structure
-            archive = archive_read_new()
-            if archive == nil {
-                Self.logger.error("Unable to allocate archive memory")
-                return
-            }
-            archive_read_support_filter_all(archive)
-            archive_read_support_format_all(archive)
-
-            Self.logger.trace("Reading: \(self.path)")
-            self.fd = Darwin.open(self.path, O_RDONLY)
-            if self.fd < 0 {
+                try self.libarchive_entries { entryPtr in
+                    if let entry = ArchiveEntry(entryPtr, forArchive: self) {
+                        self.entries.insert(entry, at: self.entries.insertionIndex(of: entry))
+                    }
+                    archive_read_data_skip(self.archive)
+                    return .Continue
+                }
+            } catch ArchiveError.ArchiveOpenError(let errorMsg) {
                 DispatchQueue.main.async {
-                    let errorStr = "Unable to open \(self.path): \(errno)"
-                    self.error = errorStr
-                    Self.logger.error("Unable to open \(self.path): \(errno)")
+                    Self.logger.error("\(errorMsg)")
+                    self.error = errorMsg
                 }
-                archive_read_free(archive)
-                return
-            }
-
-            let ptr = archive_read_open_fd(archive, self.fd, 10240)
-            if ptr != ARCHIVE_OK {
-                let cError = archive_error_string(archive)
-
-                // We have to dispatch back to the main thread to update something that will update the UI
-                DispatchQueue.main.async {
-                    guard cError != nil else { return }
-                    let errorStr = String(cString: cError!)
-                    self.error = errorStr
-                    Self.logger.error("Unable to open \(self.path): \(errorStr)")
-                }
-                archive_read_free(archive)
-                return
-            }
-
-            Self.logger.trace("Walking: \(self.path)")
-            while (archive_read_next_header(archive, &entry) == ARCHIVE_OK) {
-                if let newEntry = ArchiveEntry(entry, forArchive: self) {
-                    self.entries.insert(newEntry, at: self.entries.insertionIndex(of: newEntry))
-                }
-                archive_read_data_skip(archive)
+            } catch {
+                Self.logger.error("Unknown exception")
             }
 
             // We're done with libarchive now
-            archive_read_free(archive)
+            self.libarchive_close()
 
             // At this point, Archive.entries is a flat list, but archives can be hiearchical, so we need to collapse the list down to a tree
 
@@ -206,79 +256,28 @@ class Archive {
         }
     }
 
-    // NOTE: This method does not use any async - it's expected to be called from places that know how to async
+    // NOTE: This method does not use any async, but it is self-contained, you can call it from async places
     // FIXME: This only works with files right now. Extend it to properly handle directories/etc
     func writeEntry(_ entry: ArchiveEntry, to: URL) throws {
-        var archive: OpaquePointer? = nil
         let handle = try FileHandle(forWritingTo: to)
-        var archiveEntry: OpaquePointer?
 
-        // Get data from libarchive
-        lseek(self.fd, 0, SEEK_SET)
+        // Initialise libarchive data structure and open our archive
+        try libarchive_open()
 
-        // Prepare libarchive's data structure
-        archive = archive_read_new()
-        if archive == nil {
-            Self.logger.error("Unable to allocate archive memory")
-            return
-        }
-        archive_read_support_filter_all(archive)
-        archive_read_support_format_all(archive)
-
-        Self.logger.trace("Reading: \(self.path)")
-        self.fd = Darwin.open(self.path, O_RDONLY)
-        if self.fd < 0 {
-            DispatchQueue.main.async {
-                let errorStr = "Unable to open \(self.path): \(errno)"
-                self.error = errorStr
-                Self.logger.error("Unable to open \(self.path): \(errno)")
-            }
-            archive_read_free(archive)
-            return
-        }
-
-        Self.logger.trace("writeEntry: Re-opening archive")
-        let ptr = archive_read_open_fd(archive, self.fd, 10240)
-        if ptr != ARCHIVE_OK {
-            let errStr = String(cString: archive_error_string(archive))
-            Self.logger.trace("writeEntry: Unable to open archive (\(ptr)): \(errStr)")
-            throw ArchiveError.ArchiveReadError
-        }
-
-        var asize: Int?
-        var adata: UnsafeMutablePointer<UInt8>?
-
-        Self.logger.trace("writeEntry: Reading archive headers...")
-        while (archive_read_next_header(archive, &archiveEntry) == ARCHIVE_OK) {
-            if let pathCstring = archive_entry_pathname(archiveEntry) {
-
-                let path = String(cString: pathCstring)
+        try libarchive_entries { entryPtr in
+            if let path = libarchive_entry_path(entryPtr) {
                 if path == entry.path {
-                    asize = Int(archive_entry_size(archiveEntry));
-                    guard let asize = asize else {
-                        Self.logger.error("writeEntry: Unable to get size for \(path)")
-                        continue
-                    }
-                    adata = UnsafeMutablePointer<UInt8>.allocate(capacity: asize)
-                    Self.logger.trace("writeEntry: Reading archive entry...")
-                    archive_read_data(archive, adata, asize);
-                    break;
+                    let entryData = libarchive_entry_data(entryPtr)
+                    try handle.write(contentsOf: entryData)
+                    Self.logger.trace("writeEntry: Written to \(to)")
+                    return .Break
                 }
-            } else {
-                Self.logger.error("writeEntry: Unable to get pathname for entry")
             }
+            Self.logger.error("writeEntry: Unable to write \(entry.path)")
+            return .Continue
         }
 
         // We're done with libarchive at this point
-        archive_read_free(archive)
-
-        guard let asize = asize, let adata = adata else {
-            throw ArchiveError.ArchiveEntryNotFound
-        }
-
-        Self.logger.trace("writeEntry: Writing entry to \(to)")
-        let fileData = Data(bytes: adata, count: asize)
-        try handle.write(contentsOf: fileData)
-        Self.logger.trace("writeEntry: Written to \(to)")
+        libarchive_close()
     }
 }

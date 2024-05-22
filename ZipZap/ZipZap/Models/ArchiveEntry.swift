@@ -190,8 +190,7 @@ class ArchiveEntry: Identifiable {
         self.entry = entry
         self.archive = forArchive
 
-        if let pathCstring = archive_entry_pathname(entry) {
-            var pathString = String(cString: pathCstring)
+        if var pathString = forArchive.libarchive_entry_path(entry) {
             if pathString.last == "/" {
                 pathString = String(pathString.dropLast())
             }

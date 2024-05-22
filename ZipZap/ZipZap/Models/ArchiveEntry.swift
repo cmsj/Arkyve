@@ -116,7 +116,7 @@ extension ArchiveEntry {
 
             do {
                 // Generate a temporary URL to write to
-                let url = FileManager.default.temporaryDirectory.appendingPathComponent(self.name)
+                let url = archive.cacheURL.appendingPathComponent(self.name)
                 try Data().write(to: url) // create temporary, emptyfile
 
                 archive.queue.async {

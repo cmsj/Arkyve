@@ -97,11 +97,14 @@ class Archive {
     var root: ArchiveEntry = ArchiveEntry(isRoot: true)!
     var error: String? = nil
     private var fd: Int32 = -1
+    var cacheURL: URL
 
     init(name: String, URL: URL) {
         self.URL = URL
-        self.name = URL.lastPathComponent
+        let name = URL.lastPathComponent
+        self.name = name
         self.path = URL.path().removingPercentEncoding ?? "Unknown"
+        self.cacheURL = FileManager.default.temporaryDirectory.appendingPathComponent(name)
         Self.logger.trace("Initialised for \(self.URL)")
     }
 
@@ -115,6 +118,14 @@ class Archive {
 
     func open() {
         var archive: OpaquePointer? = nil
+
+        do {
+            try FileManager.default.createDirectory(at: self.cacheURL, withIntermediateDirectories: true)
+        } catch {
+            Self.logger.error("Unable to create cache directory: \(self.cacheURL)")
+            self.error = "Unable to create cache directory"
+            return
+        }
 
         // Process the archive on a background thread
         queue.async {
@@ -192,6 +203,11 @@ class Archive {
     private func close() {
         Self.logger.trace("Archive::close() on \(self.name)")
         Darwin.close(self.fd)
+        do {
+            try FileManager.default.removeItem(at: self.cacheURL)
+        } catch {
+            Self.logger.error("Unable to remove cache directory at: \(self.cacheURL)")
+        }
         self.URL = Foundation.URL(fileURLWithPath: "")
         self.path = ""
         self.name = ""

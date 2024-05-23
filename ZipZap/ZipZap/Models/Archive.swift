@@ -155,7 +155,6 @@ extension Archive {
     }
 }
 
-// FIXME: Dispatch stuff here is likely unnecessarily wrong.
 @Observable
 class Archive {
     private static let logger = Logger(

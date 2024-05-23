@@ -80,12 +80,22 @@ struct ContentView: View {
             .onChange(of: sortOrder) { _, sortOrder in
                 archive?.sort(using: sortOrder)
             }
-            HStack {
-                Spacer()
-                Text("\(archive?.entries.count ?? 0) items")
-                Spacer()
+
+            // Status bar
+            ZStack {
+                HStack {
+                    Spacer()
+                    Text(archive?.error ?? "")
+                    Spacer()
+                }
+                HStack {
+                    Spacer()
+                    Text("\(archive?.entries.count ?? 0) items")
+                        .opacity(archive == nil || archive?.error != nil ? 0 : 1)
+                        .padding([.trailing])
+                }
+                .padding([.top, .bottom])
             }
-            .padding([.top, .bottom])
         }
         .toolbar(id: "Main") {
             ToolbarItem(id: "Open") {

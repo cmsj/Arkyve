@@ -9,11 +9,9 @@ import Foundation
 import os
 import zzarchive
 
-// FIXME: Expand and make more errors take string arguments
 enum ArchiveError: Error {
-    case ArchiveReadError
-    case ArchiveEntryNotFound
     case ArchiveOpenError(String)
+    case ArchiveEntriesError(String)
 }
 
 enum ArchiveEntriesAction {
@@ -124,9 +122,7 @@ extension Archive {
 
     func libarchive_entries(_ closure: (OpaquePointer?) throws -> ArchiveEntriesAction) throws {
         guard self.archive != nil else {
-            // FIXME: decide if we want to throw here
-            Self.logger.error("libarchive_entries() called on a nil archive")
-            return
+            throw ArchiveError.ArchiveEntriesError("libarchive_entries() called on a nil archive")
         }
 
         var entry: OpaquePointer?
@@ -213,7 +209,7 @@ class Archive {
                     archive_read_data_skip(self.archive)
                     return .Continue
                 }
-            } catch ArchiveError.ArchiveOpenError(let errorMsg) {
+            } catch ArchiveError.ArchiveOpenError(let errorMsg), ArchiveError.ArchiveEntriesError(let errorMsg) {
                 DispatchQueue.main.async {
                     Self.logger.error("\(errorMsg)")
                     self.error = errorMsg
@@ -273,7 +269,6 @@ class Archive {
                     return .Break
                 }
             }
-            Self.logger.error("writeEntry: Unable to write \(entry.path)")
             return .Continue
         }
 

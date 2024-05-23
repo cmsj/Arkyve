@@ -77,7 +77,6 @@ struct ContentView: View {
             } rows: {
                 NestedTree(children: archive?.root.children ?? [])
             }
-            .id(UUID()) // Hack to make the table more performant on large archives. https://stackoverflow.com/questions/59604764/performance-issue-with-swiftui-list
             .onChange(of: sortOrder) { _, sortOrder in
                 archive?.sort(using: sortOrder)
             }

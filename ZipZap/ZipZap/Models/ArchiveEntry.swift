@@ -116,6 +116,8 @@ extension ArchiveEntry {
 
             do {
                 // Generate a temporary URL to write to
+                // FIXME: We don't need to do the Data().write() here
+                // FIXME: url is flat, where we should really replicate the hierarchy of the archive. self.pathComponents.dropLast should give us a cacheURL that can be created as a directory and then appended with self.name
                 let url = archive.cacheURL.appendingPathComponent(self.name)
                 try Data().write(to: url) // create temporary, emptyfile
 

@@ -8,8 +8,17 @@
 import SwiftUI
 import zzarchive
 
+class AppDelegate: NSObject, NSApplicationDelegate {
+
+    func applicationWillTerminate(_ aNotification: Notification) {
+        // FIXME: Clean up cache directory here
+    }
+}
+
 @main
 struct ZipZapApp: App {
+    @NSApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
+
     var body: some Scene {
         WindowGroup {
             ContentView()

@@ -10,23 +10,23 @@ import os
 import zzarchive
 
 struct NestedTree: TableRowContent {
-  let children : [ ArchiveEntry ]
+    let children : [ ArchiveEntry ]
 
-  var tableRowBody: some TableRowContent<ArchiveEntry> {
-    ForEach(children) { child in
-      if let children = child.children {
-        @Bindable var child = child
-        DisclosureTableRow(child, isExpanded: $child.isExpanded) {
-          NestedTree(children: children)
+    var tableRowBody: some TableRowContent<ArchiveEntry> {
+        ForEach(children) { child in
+            if let children = child.children {
+                @Bindable var child = child
+                DisclosureTableRow(child, isExpanded: $child.isExpanded) {
+                    NestedTree(children: children)
+                }
+                .itemProvider { child.itemProvider }
+            }
+            else {
+                TableRow(child)
+                    .itemProvider { child.itemProvider }
+            }
         }
-        .itemProvider { child.itemProvider }
-      }
-      else {
-        TableRow(child)
-              .itemProvider { child.itemProvider }
-      }
     }
-  }
 }
 
 struct ContentView: View {
@@ -47,7 +47,6 @@ struct ContentView: View {
     var body: some View {
         VStack {
             // TODO:
-            //  * Drag and drop on the TableRows
             //  * Column default width
             //  * Sorting is broken, it's still sorting archive.entries. Instead we should sort the contents of every directory in the tree
             Table(of: ArchiveEntry.self, selection: $selectedEntries, sortOrder: $sortOrder, columnCustomization: $columnCustomization) {
@@ -57,7 +56,7 @@ struct ContentView: View {
                         Text(entry.name)
                     }
                 }
-                    .customizationID("name")
+                .customizationID("name")
                 TableColumn("Size", value: \.sizeString)
                     .customizationID("sizeString")
                     .alignment(.trailing)
@@ -98,6 +97,14 @@ struct ContentView: View {
             }
         }
         .toolbar(id: "Main") {
+            ToolbarItem(id: "New") {
+                Button {
+                    print("new")
+                } label: {
+                    Label("New", systemImage: "folder.badge.plus")
+                        .padding()
+                }
+            }
             ToolbarItem(id: "Open") {
                 Button {
                     let panel = NSOpenPanel()

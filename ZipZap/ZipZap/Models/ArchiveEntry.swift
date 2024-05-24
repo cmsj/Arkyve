@@ -23,8 +23,7 @@ enum ArchiveEntryType: String {
     case root = "virtual root"
 
     init(rawValue: mode_t) {
-        let compare = S_IFMT & rawValue
-        switch (compare) {
+        switch (S_IFMT & rawValue) {
         case S_IFREG:
             self = .file
         case S_IFDIR:
@@ -50,7 +49,7 @@ extension Date {
         get {
             if self == Date(timeIntervalSince1970: 0) { return "--" }
             let formatter = DateFormatter()
-            // FIXME: Somehow hook up the styles to some user settings
+            // TODO: Somehow hook up the styles to some user settings
             formatter.dateStyle = .long
             formatter.timeStyle = .long
             return formatter.string(from: self)
@@ -86,6 +85,7 @@ extension ArchiveEntry: Comparable {
     }
 }
 
+// Array behaviour for inspecting first level children
 extension ArchiveEntry {
     subscript(_ name: String) -> ArchiveEntry? {
         return self.children?.first(where: { $0.name == name })
@@ -231,6 +231,8 @@ class ArchiveEntry: Identifiable {
         if let modeCstring = archive_entry_strmode(entry) {
             self.perms = String(cString: modeCstring)
         }
+
+        // TODO: Get UID/GID here too
 
         self.type = ArchiveEntryType(rawValue: archive_entry_filetype(entry))
         if self.type == .directory {

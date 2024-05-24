@@ -12,6 +12,7 @@ import zzarchive
 enum ArchiveError: Error {
     case ArchiveOpenError(String)
     case ArchiveEntriesError(String)
+    case ArchiveExtractError(String)
 }
 
 enum ArchiveEntriesAction {
@@ -146,7 +147,7 @@ extension Archive {
 
     func libarchive_entry_data(_ entry: OpaquePointer?) -> Data {
         let size = Int(archive_entry_size(entry))
-        var rawData = UnsafeMutablePointer<UInt8>.allocate(capacity: size)
+        let rawData = UnsafeMutablePointer<UInt8>.allocate(capacity: size)
 
         Self.logger.trace("Reading entry data (\(size) bytes)")
         archive_read_data(self.archive, rawData, size)
@@ -167,7 +168,7 @@ class Archive {
     var path: String
     var name: String
     var entries: [ArchiveEntry] = []
-    var root: ArchiveEntry = ArchiveEntry(isRoot: true)!
+    var root: ArchiveEntry!
     var error: String? = nil
     private var fd: Int32 = -1
     private var archive: OpaquePointer? = nil
@@ -179,6 +180,7 @@ class Archive {
         self.name = name
         self.path = URL.path().removingPercentEncoding ?? "Unknown"
         self.cacheURL = FileManager.default.temporaryDirectory.appendingPathComponent(name)
+        self.root = ArchiveEntry(isRoot: true, forArchive: self)
         Self.logger.trace("Initialised for \(self.URL)")
     }
 
@@ -251,21 +253,59 @@ class Archive {
         }
     }
 
-    // NOTE: This method does not use any async, but it is self-contained, you can call it from async places
-    // FIXME: This only works with files right now. Extend it to properly handle directories/etc
-    func writeEntry(_ entry: ArchiveEntry, to: URL) throws {
-        let handle = try FileHandle(forWritingTo: to)
+    // NOTE: These write methods do not use any async, but are self-contained and can be called from a background thread
+    func extractEntry(_ entry: ArchiveEntry, toFolder: URL) throws -> URL {
+        let writtenURLS = try extractEntries([entry], toFolder: toFolder)
+        
+        guard writtenURLS.count == 1 else { throw ArchiveError.ArchiveExtractError("Inconsistent number of files written") }
+        return writtenURLS.first!
+    }
+
+    // NOTE: This method doesn't throw because it's called from SwiftUI and it's better to handle the errors here
+    func extractEntries(_ entries: Set<ArchiveEntry.ID>, toFolder: URL) -> [URL] {
+        let foundEntries = self.entries.filter { entries.contains($0.id) }
+        do {
+            return try extractEntries(foundEntries, toFolder: toFolder)
+        } catch {
+            self.error = "Unable to extract selected items"
+            return []
+        }
+    }
+
+    // FIXME: This needs to do something smart to handle synthetic entries
+    func extractEntries(_ entries: [ArchiveEntry], toFolder: URL) throws -> [URL] {
+        var writtenURLS: [URL] = []
+        var entries = entries
 
         // Initialise libarchive data structure and open our archive
         try libarchive_open()
 
         try libarchive_entries { entryPtr in
+            // We can tell this closure's iterator to exit if we've processed all the entries
+            guard entries.count > 0 else { return .Break }
+
             if let path = libarchive_entry_path(entryPtr) {
-                if path == entry.path {
-                    let entryData = libarchive_entry_data(entryPtr)
-                    try handle.write(contentsOf: entryData)
-                    Self.logger.trace("writeEntry: Written to \(to)")
-                    return .Break
+                if let (index, entry) = entries.entryForPath(path) {
+                    // Whether it works or fails, remove this entry so we can detect early completion
+                    entries.remove(at: index)
+
+                    switch entry.type {
+                    case .file:
+                        // FIXME: This only works for files, we need to expand this to directories
+                        let entryURL = toFolder.appendingPathComponent(entry.name)
+                        Self.logger.trace("extractEntries: Constructed write URL: \(entryURL)")
+
+                        // Ensure file exists
+                        try Data().write(to: entryURL)
+
+                        let handle = try FileHandle(forWritingTo: entryURL)
+                        let entryData = libarchive_entry_data(entryPtr)
+                        try handle.write(contentsOf: entryData)
+                        writtenURLS.append(entryURL)
+                        Self.logger.trace("extractEntries: Written to \(entryURL)")
+                    default:
+                        Self.logger.error("Trying to extract unsupported type: \(entry.type.rawValue)")
+                    }
                 }
             }
             return .Continue
@@ -273,5 +313,7 @@ class Archive {
 
         // We're done with libarchive at this point
         libarchive_close()
+
+        return writtenURLS
     }
 }

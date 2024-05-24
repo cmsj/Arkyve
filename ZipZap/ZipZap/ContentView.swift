@@ -36,6 +36,7 @@ struct ContentView: View {
     @State private var selectedEntries = Set<ArchiveEntry.ID>()
     @State var archive: Archive? = nil
 
+    @AppStorage("default-new-folder") var newFolderURL: URL = FileManager.default.urls(for: .downloadsDirectory, in: .userDomainMask).first!
     @SceneStorage("ArchiveEntryTableConfig")
     private var columnCustomization: TableColumnCustomization<ArchiveEntry>
 
@@ -99,7 +100,7 @@ struct ContentView: View {
         .toolbar(id: "Main") {
             ToolbarItem(id: "New") {
                 Button {
-                    print("new")
+                    self.archive = Archive(name: "Untitled.zip", URL: newFolderURL.appendingPathComponent("Untitled.zip"))
                 } label: {
                     Label("New", systemImage: "folder.badge.plus")
                         .padding()
@@ -122,9 +123,26 @@ struct ContentView: View {
                         .padding()
                 }
             }
-            ToolbarItem(id: "Extract"){
+            ToolbarItem(id: "Add"){
                 Button {
 
+                } label: {
+                    Label("Add", systemImage: "plus")
+                        .padding()
+                }
+                .disabled(archive == nil)
+            }
+            ToolbarItem(id: "Extract"){
+                Button {
+                    let panel = NSOpenPanel()
+                    panel.allowsMultipleSelection = false
+                    panel.canChooseDirectories = true
+                    panel.canChooseFiles = false
+                    if panel.runModal() == .OK {
+                        if let url = panel.url {
+                            _ = archive?.extractEntries(selectedEntries, toFolder: url)
+                        }
+                    }
                 } label: {
                     Label("Extract", systemImage: "folder.badge.minus")
                         .padding()

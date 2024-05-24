@@ -73,6 +73,15 @@ extension Array where Element == String {
     }
 }
 
+extension Array where Element == ArchiveEntry {
+    func entryForPath(_ path: String) -> (Int, ArchiveEntry)? {
+        if let index = self.firstIndex(where: { path == $0.path }) {
+            return (index, self[index])
+        }
+        return nil
+    }
+}
+
 extension ArchiveEntry: Equatable {
     static func == (lhs: ArchiveEntry, rhs: ArchiveEntry) -> Bool {
         lhs.path == rhs.path
@@ -115,27 +124,19 @@ extension ArchiveEntry {
             }
 
             do {
-                // Generate a temporary URL to write to
-                // FIXME: We don't need to do the Data().write() here
-                // FIXME: url is flat, where we should really replicate the hierarchy of the archive. self.pathComponents.dropLast should give us a cacheURL that can be created as a directory and then appended with self.name
-                let url = archive.cacheURL.appendingPathComponent(self.name)
-                try Data().write(to: url) // create temporary, emptyfile
-
                 archive.queue.async {
-                    Self.logger.trace("Writing data to \(url)")
+                    let cacheURL = archive.cacheURL
+                    Self.logger.trace("Writing data to \(cacheURL)")
                     do {
-                        try archive.writeEntry(self, to: url)
+                        let entryURL = try archive.extractEntry(self, toFolder: cacheURL)
                         Self.logger.trace("Reporting success")
                         progress.completedUnitCount = 100
-                        completion(url.dataRepresentation, nil)
+                        completion(entryURL.dataRepresentation, nil)
                     } catch {
-                        Self.logger.trace("Writing failed for \(url)")
-                        completion(nil, NSError(domain: "DragAndDrop", code: -1, userInfo: [NSLocalizedDescriptionKey: "Unable to write to \(url)"]))
+                        Self.logger.trace("Writing failed for \(self.path)")
+                        completion(nil, NSError(domain: "DragAndDrop", code: -1, userInfo: [NSLocalizedDescriptionKey: "Unable to write in \(cacheURL)"]))
                     }
                 }
-            } catch {
-                Self.logger.trace("item provider exception caught: \(error)")
-                completion(nil, error)
             }
 
             Self.logger.trace("Returning progress")
@@ -241,7 +242,8 @@ class ArchiveEntry: Identifiable {
         }
     }
 
-    init(path: String) {
+    init(path: String, forArchive: Archive) {
+        self.archive = forArchive
         self.isSynthesized = true
         self.entry = nil
         self.type = .directory
@@ -255,11 +257,12 @@ class ArchiveEntry: Identifiable {
         pathComponents = pathBits
     }
 
-    init?(isRoot: Bool) {
+    init?(isRoot: Bool, forArchive: Archive) {
         guard isRoot == true else {
             Self.logger.error("Root ArchiveEntry initialiser called without true")
             return nil
         }
+        self.archive = forArchive
         self.isSynthesized = true
         self.entry = nil
         self.type = .root
@@ -300,7 +303,7 @@ class ArchiveEntry: Identifiable {
             } else {
                 let synthPath = entry.pathComponents.first!
                 Self.logger.trace("Creating synthetic root directory \(synthPath)")
-                self.children?.append(ArchiveEntry(path: synthPath))
+                self.children?.append(ArchiveEntry(path: synthPath, forArchive: self.archive!))
                 children?[children!.count - 1].addChildHierarchically(entry)
             }
             return
@@ -319,7 +322,7 @@ class ArchiveEntry: Identifiable {
         } else {
             let synthPath = (self.pathComponents + [relativePath!.first!]).joined(separator: "/")
             Self.logger.trace("Creating synthetic subdirectory \(synthPath)")
-            self.children?.append(ArchiveEntry(path: synthPath))
+            self.children?.append(ArchiveEntry(path: synthPath, forArchive: self.archive!))
             children?[children!.count - 1].addChildHierarchically(entry)
         }
     }

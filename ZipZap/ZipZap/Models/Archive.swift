@@ -142,6 +142,11 @@ extension Archive {
             string = String(cString: cString)
         }
 
+        // Lots of archives include trailing slashes on their path names, which is annoying and unnecessary.
+        if string != nil && string?.last == "/" {
+            string = String(string!.dropLast())
+        }
+
         return string
     }
 
@@ -277,6 +282,23 @@ class Archive {
         var writtenURLS: [URL] = []
         var entries = entries
 
+        // Before we touch libarchive, deal with any synthetic directories first
+        for (index, entry) in entries.enumerated().reversed() {
+            if entry.isSynthesized {
+                Self.logger.trace("Handling synthesised entry: \(entry.path)")
+
+                // Whether we succeed or fail here, we don't need this again later
+                entries.remove(at: index)
+                
+                let folderURL = toFolder.appending(path: entry.pathComponents.joined(separator: "/"), directoryHint: .isDirectory)
+                try FileManager.default.createDirectory(at: folderURL, withIntermediateDirectories: true)
+                writtenURLS.append(folderURL)
+            }
+        }
+        if entries.count == 0 {
+            return writtenURLS
+        }
+
         // Initialise libarchive data structure and open our archive
         try libarchive_open()
 
@@ -306,7 +328,11 @@ class Archive {
                     default:
                         Self.logger.error("Trying to extract unsupported type: \(entry.type.rawValue)")
                     }
+                } else {
+                    Self.logger.trace("Unable to find entryForPath: \(path)")
                 }
+            } else {
+                Self.logger.trace("Not in archive")
             }
             return .Continue
         }

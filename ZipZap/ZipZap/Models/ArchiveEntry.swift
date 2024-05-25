@@ -75,6 +75,10 @@ extension Array where Element == String {
 
 extension Array where Element == ArchiveEntry {
     func entryForPath(_ path: String) -> (Int, ArchiveEntry)? {
+        var path = path
+        if path.last == "/" {
+            path = String(path.dropLast())
+        }
         if let index = self.firstIndex(where: { path == $0.path }) {
             return (index, self[index])
         }

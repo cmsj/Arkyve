@@ -9,6 +9,8 @@ import SwiftUI
 import os
 import zzarchive
 
+
+// This seems to be too dynamic, it's causing rerenders for every tiny change, even selecting rows
 struct NestedTree: TableRowContent {
     let children : [ ArchiveEntry ]
 

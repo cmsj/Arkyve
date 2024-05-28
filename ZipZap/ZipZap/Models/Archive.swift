@@ -299,6 +299,9 @@ class Archive {
             return writtenURLS
         }
 
+        // Convert entries, which can be a tree, into a flat list for our libarchive walk below
+        
+
         // Initialise libarchive data structure and open our archive
         try libarchive_open()
 
@@ -307,13 +310,13 @@ class Archive {
             guard entries.count > 0 else { return .Break }
 
             if let path = libarchive_entry_path(entryPtr) {
+                // Check if this archive header matches one of the entries we are trying to extract
                 if let (index, entry) = entries.entryForPath(path) {
                     // Whether it works or fails, remove this entry so we can detect early completion
                     entries.remove(at: index)
 
                     switch entry.type {
                     case .file:
-                        // FIXME: This only works for files, we need to expand this to directories
                         let entryURL = toFolder.appendingPathComponent(entry.name)
                         Self.logger.trace("extractEntries: Constructed write URL: \(entryURL)")
 
@@ -325,11 +328,15 @@ class Archive {
                         try handle.write(contentsOf: entryData)
                         writtenURLS.append(entryURL)
                         Self.logger.trace("extractEntries: Written to \(entryURL)")
+                    case .directory:
+                        let folderURL = toFolder.appendingPathComponent(path)
+                        Self.logger.trace("extractEntries: Constructed directory URL: \(folderURL)")
+                        try FileManager.default.createDirectory(at: folderURL, withIntermediateDirectories: true)
+                        writtenURLS.append(folderURL)
                     default:
+                        // FIXME: Sockets, blockdevs, chardevs, etc need to be supported
                         Self.logger.error("Trying to extract unsupported type: \(entry.type.rawValue)")
                     }
-                } else {
-                    Self.logger.trace("Unable to find entryForPath: \(path)")
                 }
             } else {
                 Self.logger.trace("Not in archive")

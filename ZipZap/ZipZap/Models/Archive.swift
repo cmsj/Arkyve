@@ -259,11 +259,8 @@ class Archive {
     }
 
     // NOTE: These write methods do not use any async, but are self-contained and can be called from a background thread
-    func extractEntry(_ entry: ArchiveEntry, toFolder: URL) throws -> URL {
-        let writtenURLS = try extractEntries([entry], toFolder: toFolder)
-        
-        guard writtenURLS.count == 1 else { throw ArchiveError.ArchiveExtractError("Inconsistent number of files written") }
-        return writtenURLS.first!
+    func extractEntry(_ entry: ArchiveEntry, toFolder: URL) throws -> [URL] {
+        return try extractEntries([entry], toFolder: toFolder)
     }
 
     // NOTE: This method doesn't throw because it's called from SwiftUI and it's better to handle the errors here
@@ -280,66 +277,77 @@ class Archive {
     // FIXME: This needs to do something smart to handle synthetic entries
     func extractEntries(_ entries: [ArchiveEntry], toFolder: URL) throws -> [URL] {
         var writtenURLS: [URL] = []
-        var entries = entries
+
+        // Convert entries, which can be a tree, into a flat list for our libarchive walk below
+        var flatEntries: [ArchiveEntry] = []
+        for entry in entries {
+            flatEntries += entry.flatChildren()
+        }
 
         // Before we touch libarchive, deal with any synthetic directories first
-        for (index, entry) in entries.enumerated().reversed() {
+        for (index, entry) in flatEntries.enumerated().reversed() {
             if entry.isSynthesized {
                 Self.logger.trace("Handling synthesised entry: \(entry.path)")
 
                 // Whether we succeed or fail here, we don't need this again later
-                entries.remove(at: index)
-                
+                flatEntries.remove(at: index)
+
                 let folderURL = toFolder.appending(path: entry.pathComponents.joined(separator: "/"), directoryHint: .isDirectory)
                 try FileManager.default.createDirectory(at: folderURL, withIntermediateDirectories: true)
                 writtenURLS.append(folderURL)
             }
         }
-        if entries.count == 0 {
-            return writtenURLS
-        }
-
-        // Convert entries, which can be a tree, into a flat list for our libarchive walk below
-        
 
         // Initialise libarchive data structure and open our archive
         try libarchive_open()
 
         try libarchive_entries { entryPtr in
             // We can tell this closure's iterator to exit if we've processed all the entries
-            guard entries.count > 0 else { return .Break }
+            guard flatEntries.count > 0 else { return .Break }
 
             if let path = libarchive_entry_path(entryPtr) {
                 // Check if this archive header matches one of the entries we are trying to extract
-                if let (index, entry) = entries.entryForPath(path) {
+                if let (index, entry) = flatEntries.entryForPath(path) {
+                    Self.logger.trace("extractEntries: Processing libarchive path: \(path)")
                     // Whether it works or fails, remove this entry so we can detect early completion
-                    entries.remove(at: index)
+                    flatEntries.remove(at: index)
 
                     switch entry.type {
                     case .file:
-                        let entryURL = toFolder.appendingPathComponent(entry.name)
+                        let entryURL = toFolder.appendingPathComponent(entry.path)
                         Self.logger.trace("extractEntries: Constructed write URL: \(entryURL)")
 
                         // Ensure file exists
                         try Data().write(to: entryURL)
-
                         let handle = try FileHandle(forWritingTo: entryURL)
-                        let entryData = libarchive_entry_data(entryPtr)
-                        try handle.write(contentsOf: entryData)
+                        let result = archive_read_data_into_fd(self.archive, handle.fileDescriptor)
+                        if result != ARCHIVE_OK {
+                            Self.logger.error("extractEntries: Unable to write \(path) to fd")
+                            throw ArchiveError.ArchiveExtractError("Unable to write \(path) to fd")
+                        }
+
+                        // Fetch the data from libarchive and write it to our output file
+//                        let entryData = libarchive_entry_data(entryPtr)
+//                        try handle.write(contentsOf: entryData)
+
                         writtenURLS.append(entryURL)
                         Self.logger.trace("extractEntries: Written to \(entryURL)")
                     case .directory:
                         let folderURL = toFolder.appendingPathComponent(path)
                         Self.logger.trace("extractEntries: Constructed directory URL: \(folderURL)")
+
+                        // Create the directory and skip whatever data libarchive has for it
                         try FileManager.default.createDirectory(at: folderURL, withIntermediateDirectories: true)
+                        archive_read_data_skip(self.archive)
+
                         writtenURLS.append(folderURL)
                     default:
                         // FIXME: Sockets, blockdevs, chardevs, etc need to be supported
-                        Self.logger.error("Trying to extract unsupported type: \(entry.type.rawValue)")
+                        Self.logger.error("extractEntries: Trying to extract unsupported type: \(entry.type.rawValue)")
                     }
                 }
             } else {
-                Self.logger.trace("Not in archive")
+                Self.logger.trace("extractArchives: Unable to find desired entries in archive")
             }
             return .Continue
         }

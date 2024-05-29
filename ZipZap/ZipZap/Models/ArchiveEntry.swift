@@ -44,19 +44,6 @@ enum ArchiveEntryType: String {
     }
 }
 
-extension Date {
-    var userFormatted: String {
-        get {
-            if self == Date(timeIntervalSince1970: 0) { return "--" }
-            let formatter = DateFormatter()
-            // TODO: Somehow hook up the styles to some user settings
-            formatter.dateStyle = .long
-            formatter.timeStyle = .long
-            return formatter.string(from: self)
-        }
-    }
-}
-
 extension Array where Element == String {
     func subtractPath(_ path: [String]) -> [String]? {
         guard self.count >= path.count else {
@@ -132,12 +119,13 @@ extension ArchiveEntry {
                     let cacheURL = archive.cacheURL
                     Self.logger.trace("Writing data to \(cacheURL)")
                     do {
-                        let entryURL = try archive.extractEntry(self, toFolder: cacheURL)
+                        let writtenURLs = try archive.extractEntry(self, toFolder: cacheURL)
+                        guard writtenURLs.count > 0 else { throw ArchiveError.ArchiveExtractError("Zero entries extracted")}
                         Self.logger.trace("Reporting success")
                         progress.completedUnitCount = 100
-                        completion(entryURL.dataRepresentation, nil)
+                        completion(writtenURLs.first!.dataRepresentation, nil)
                     } catch {
-                        Self.logger.trace("Writing failed for \(self.path)")
+                        Self.logger.trace("Writing failed for \(self.path): \(error)")
                         completion(nil, NSError(domain: "DragAndDrop", code: -1, userInfo: [NSLocalizedDescriptionKey: "Unable to write in \(cacheURL)"]))
                     }
                 }
@@ -204,7 +192,7 @@ class ArchiveEntry: Identifiable {
             self.path = pathString
             Self.logger.trace("Creating ArchiveEntry for \(pathString)")
 
-            // Parse pathname to store our hierarchy
+            // Parse pathname to store our hierarchy/Users/cmsj/Library/Containers/net.tenshu.ZipZap/Data/tmp/7dba18a5-afc7-49ab-879d-d46e226688e4-discovery.iso/zipl.prm
             let pathBits = pathString.split(separator: "/").map(String.init)
             name = pathBits.last ?? "Unknown"
             pathComponents = pathBits
@@ -329,5 +317,25 @@ class ArchiveEntry: Identifiable {
             self.children?.append(ArchiveEntry(path: synthPath, forArchive: self.archive!))
             children?[children!.count - 1].addChildHierarchically(entry)
         }
+    }
+
+    // Return an Array of ourselves and all of our descendents.
+    func flatChildren() -> [ArchiveEntry] {
+        var flatChildren: [ArchiveEntry] = []
+        flatChildren.append(self)
+
+        guard self.children != nil && self.children!.count > 0 else {
+            // No children, we can bail now
+            return flatChildren
+        }
+
+        for child in self.children! {
+            flatChildren.append(child)
+
+            if child.children != nil && child.children!.count > 0 {
+                flatChildren += child.flatChildren()
+            }
+        }
+        return flatChildren
     }
 }

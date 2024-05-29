@@ -16,6 +16,7 @@
 		4FCEEF292BEE3D3E009E9E17 /* Archive.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FCEEF282BEE3D3E009E9E17 /* Archive.swift */; };
 		4FCEEF2C2BEE3D72009E9E17 /* ArchiveEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FCEEF2B2BEE3D72009E9E17 /* ArchiveEntry.swift */; };
 		4FCEEF2E2BEE4C6C009E9E17 /* libarchive.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4FCEEF2D2BEE4C6C009E9E17 /* libarchive.a */; };
+		4FD4BA562C07C58E00082C13 /* Date.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FD4BA552C07C58E00082C13 /* Date.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -39,11 +40,11 @@
 		4FCEEEE12BEE39E9009E9E17 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		4FCEEEE42BEE39E9009E9E17 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		4FCEEEE62BEE39E9009E9E17 /* ZipZap.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = ZipZap.entitlements; sourceTree = "<group>"; };
-		4FCEEEED2BEE39F6009E9E17 /* libarchive.20.dylib */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.dylib"; path = libarchive.20.dylib; sourceTree = BUILT_PRODUCTS_DIR; };
 		4FCEEF252BEE3D0E009E9E17 /* zzarchive.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = zzarchive.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		4FCEEF282BEE3D3E009E9E17 /* Archive.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Archive.swift; sourceTree = "<group>"; };
 		4FCEEF2B2BEE3D72009E9E17 /* ArchiveEntry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArchiveEntry.swift; sourceTree = "<group>"; };
 		4FCEEF2D2BEE4C6C009E9E17 /* libarchive.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libarchive.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		4FD4BA552C07C58E00082C13 /* Date.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Date.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -79,6 +80,7 @@
 		4FCEEEDC2BEE39E7009E9E17 /* ZipZap */ = {
 			isa = PBXGroup;
 			children = (
+				4FD4BA542C07C57C00082C13 /* Extensions */,
 				4FCEEF2A2BEE3D43009E9E17 /* Models */,
 				4FCEEEDD2BEE39E7009E9E17 /* ZipZapApp.swift */,
 				4FCEEEDF2BEE39E7009E9E17 /* ContentView.swift */,
@@ -102,7 +104,6 @@
 			children = (
 				4FCEEF2D2BEE4C6C009E9E17 /* libarchive.a */,
 				4FCEEF252BEE3D0E009E9E17 /* zzarchive.framework */,
-				4FCEEEED2BEE39F6009E9E17 /* libarchive.20.dylib */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -114,6 +115,14 @@
 				4FCEEF2B2BEE3D72009E9E17 /* ArchiveEntry.swift */,
 			);
 			path = Models;
+			sourceTree = "<group>";
+		};
+		4FD4BA542C07C57C00082C13 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				4FD4BA552C07C58E00082C13 /* Date.swift */,
+			);
+			path = Extensions;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -188,6 +197,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				4FCEEEE02BEE39E7009E9E17 /* ContentView.swift in Sources */,
+				4FD4BA562C07C58E00082C13 /* Date.swift in Sources */,
 				4FCEEF2C2BEE3D72009E9E17 /* ArchiveEntry.swift in Sources */,
 				4FCEEF292BEE3D3E009E9E17 /* Archive.swift in Sources */,
 				4FCEEEDE2BEE39E7009E9E17 /* ZipZapApp.swift in Sources */,

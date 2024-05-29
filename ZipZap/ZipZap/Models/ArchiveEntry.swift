@@ -9,7 +9,7 @@ import Foundation
 import UniformTypeIdentifiers
 import SwiftUI
 import os
-import zzarchive
+//import zzarchive
 
 enum ArchiveEntryType: String {
     case unknown = "questionmark"

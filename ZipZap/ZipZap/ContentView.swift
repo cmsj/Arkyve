@@ -7,7 +7,7 @@
 
 import SwiftUI
 import os
-import zzarchive
+//import archive
 
 
 // This seems to be too dynamic, it's causing rerenders for every tiny change, even selecting rows

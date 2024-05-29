@@ -6,7 +6,7 @@
 //
 
 import SwiftUI
-import zzarchive
+//import zzarchive
 
 class AppDelegate: NSObject, NSApplicationDelegate {
 

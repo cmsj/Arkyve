@@ -1,0 +1,15 @@
+[submodule "vendor/src/libb2"]
+	path = vendor/src/libb2
+	url = https://github.com/BLAKE2/libb2
+[submodule "vendor/src/lz4"]
+	path = vendor/src/lz4
+	url = https://github.com/lz4/lz4
+[submodule "vendor/src/xz"]
+	path = vendor/src/xz
+	url = https://github.com/tukaani-project/xz
+[submodule "vendor/src/zstd"]
+	path = vendor/src/zstd
+	url = https://github.com/facebook/zstd
+[submodule "vendor/src/libarchive"]
+	path = vendor/src/libarchive
+	url = https://github.com/libarchive/libarchive

@@ -187,6 +187,9 @@ function buildARCHIVE() {
         /bin/sh build/autogen.sh
         ./configure ${CONFIGURE_FLAGS} --prefix="${PWD}/output/" --enable-static --disable-shared --host="${CHOST}" --disable-shared --disable-bsdtar --disable-bsdcat --disable-bsdcpio --disable-bsdunzip
         make clean
+
+        export CFLAGS="-I${PWD}../../include/ ${CFLAGS}"
+        export LD_FLAGS="-L${PWD}../../lib/ ${LD_FLAGS}"
         ${MAKE}
         make install
 

@@ -189,14 +189,12 @@ function buildARCHIVE() {
         ${MAKE}
         make install
 
-        find output
-        exit 0
-        cp blah lib
+        cp output/lib/libarchive.a "../../lib/${CONFIGURATION}/libarchive-${PLATFORM}.a"
         make clean
     done
 
     # Copy headers
-    cp build/include/* ../../include/
+    cp output/include/* ../../include/
 
     repo_exit
     fatten_lib archive
@@ -204,17 +202,16 @@ function buildARCHIVE() {
 
 # Call our builder functions
 
-#buildZSTD
-#
-#buildLZMA Debug
-#buildLZMA Release
-#
-#buildLZ4 Debug
-#buildLZ4 Release
-#
-#buildB2 Debug
-#buildB2 Release
+buildZSTD # Builds both Debug and Release
+
+buildLZMA Debug
+buildLZMA Release
+
+buildLZ4 Debug
+buildLZ4 Release
+
+buildB2 Debug
+buildB2 Release
 
 buildARCHIVE Debug
-#buildARCHIVE Release
-
+buildARCHIVE Release

@@ -127,18 +127,19 @@ function buildLZ4() {
     repo_enter src/lz4/lib
     set_release $1
 
+set -x
     for arch in arm x86_64 ; do
         set_arch "${arch}"
 
         rm -f *.o
 
-        ${CC} ${CFLAGS} -o lz4.o lz4.c
-        ${CC} ${CFLAGS} -o lz4file.o lz4file.c
-        ${CC} ${CFLAGS} -o lz4frame.o lz4frame.c
-        ${CC} ${CFLAGS} -o lz4hc.o lz4hc.c
-        ${CC} ${CFLAGS} -o xxhash.o xxhash.c
+        ${CC} ${CFLAGS} -c -o lz4.o lz4.c
+        ${CC} ${CFLAGS} -c -o lz4file.o lz4file.c
+        ${CC} ${CFLAGS} -c -o lz4frame.o lz4frame.c
+        ${CC} ${CFLAGS} -c -o lz4hc.o lz4hc.c
+        ${CC} ${CFLAGS} -c -o xxhash.o xxhash.c
 
-        ${AR} r liblz4-${PLATFORM}.a *.o
+        ${AR} rcs liblz4-${PLATFORM}.a *.o
         cp liblz4-${PLATFORM}.a ../../../lib/${CONFIGURATION}/liblz4-${PLATFORM}.a
     done
 

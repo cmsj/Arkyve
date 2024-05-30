@@ -9,7 +9,7 @@
 #define libarchive_Bridge_h
 
 #import <Foundation/Foundation.h>
-#import <archive/archive.h>
-#import <archive/archive_entry.h>
+#import "archive.h"
+#import "archive_entry.h"
 
 #endif /* libarchive_Bridge_h */

@@ -1564,7 +1564,7 @@
 		4FFE7D1666FB47CF885FAD06 /* test_option_a.c */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.c; fileEncoding = 4; name = test_option_a.c; path = cpio/test/test_option_a.c; sourceTree = SOURCE_ROOT; };
 		50E3452A817C4CA2BC275096 /* archive_write_disk_private.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = archive_write_disk_private.h; path = libarchive/archive_write_disk_private.h; sourceTree = SOURCE_ROOT; };
 		51469E5969A04C5AA52E5EC5 /* archive_write_set_format_ar.c */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.c; fileEncoding = 4; name = archive_write_set_format_ar.c; path = libarchive/archive_write_set_format_ar.c; sourceTree = SOURCE_ROOT; };
-		51E200DD4883440E8E3DDB45 /* libarchive.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libarchive.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		51E200DD4883440E8E3DDB45 /* libzzarchive.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libzzarchive.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		51FEC938BAD0495F9C362983 /* test_0.c */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.c; fileEncoding = 4; name = test_0.c; path = unzip/test/test_0.c; sourceTree = SOURCE_ROOT; };
 		522DF7548AA540F683F14400 /* test_gnutar_filename_encoding.c */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.c; fileEncoding = 4; name = test_gnutar_filename_encoding.c; path = libarchive/test/test_gnutar_filename_encoding.c; sourceTree = SOURCE_ROOT; };
 		523F45C3F44D47F684CE791D /* test_read_format_zip_winzip_aes.c */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.c; fileEncoding = 4; name = test_read_format_zip_winzip_aes.c; path = libarchive/test/test_read_format_zip_winzip_aes.c; sourceTree = SOURCE_ROOT; };
@@ -2742,7 +2742,7 @@
 			isa = PBXGroup;
 			children = (
 				5D13B5D118024A1D929225C6 /* libarchive.20.dylib */,
-				51E200DD4883440E8E3DDB45 /* libarchive.a */,
+				51E200DD4883440E8E3DDB45 /* libzzarchive.a */,
 				B0D76565F6FB46D886C2ADB5 /* bsdcat */,
 				98AFDE3F072148D1AD0F5432 /* bsdcat_test */,
 				FC425123B0594DC5AC1B62EA /* bsdcpio */,
@@ -3652,7 +3652,7 @@
 			);
 			name = archive_static;
 			productName = archive_static;
-			productReference = 51E200DD4883440E8E3DDB45 /* libarchive.a */;
+			productReference = 51E200DD4883440E8E3DDB45 /* libzzarchive.a */;
 			productType = "com.apple.product-type.library.static";
 		};
 		B105D4B6AD904E0BAFDF20F1 /* libarchive_test */ = {
@@ -6033,6 +6033,7 @@
 				);
 				INSTALL_PATH = "";
 				LIBRARY_STYLE = STATIC;
+				MACOSX_DEPLOYMENT_TARGET = 14.4;
 				ONLY_ACTIVE_ARCH = NO;
 				OTHER_CFLAGS = (
 					"-Wall",
@@ -6045,7 +6046,7 @@
 				);
 				OTHER_LIBTOOLFLAGS = "";
 				OTHER_REZFLAGS = "";
-				PRODUCT_NAME = archive;
+				PRODUCT_NAME = zzarchive;
 				SDKROOT = macosx14.5;
 				SECTORDER_FLAGS = "";
 				TARGET_TEMP_DIR = "/Users/cmsj/hacking/ZipZap/libarchive-3.7.4/build/archive_static.build/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)";
@@ -6334,6 +6335,8 @@
 				CODE_SIGN_IDENTITY = "Apple Development: Chris Jones (68H5QX5794)";
 				COMBINE_HIDPI_IMAGES = YES;
 				CONFIGURATION_BUILD_DIR = "/Users/cmsj/hacking/ZipZap/libarchive-3.7.4/libarchive/Debug";
+				COPY_PHASE_STRIP = NO;
+				ENABLE_TESTABILITY = YES;
 				EXECUTABLE_PREFIX = lib;
 				EXECUTABLE_SUFFIX = .a;
 				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
@@ -6359,6 +6362,7 @@
 				);
 				INSTALL_PATH = "";
 				LIBRARY_STYLE = STATIC;
+				MACOSX_DEPLOYMENT_TARGET = 14.4;
 				ONLY_ACTIVE_ARCH = NO;
 				OTHER_CFLAGS = (
 					"-Wall",
@@ -6375,9 +6379,11 @@
 				);
 				OTHER_LIBTOOLFLAGS = "";
 				OTHER_REZFLAGS = "";
-				PRODUCT_NAME = archive;
+				PRODUCT_NAME = zzarchive;
 				SDKROOT = macosx14.5;
 				SECTORDER_FLAGS = "";
+				STRIP_INSTALLED_PRODUCT = NO;
+				STRIP_SWIFT_SYMBOLS = NO;
 				TARGET_TEMP_DIR = "/Users/cmsj/hacking/ZipZap/libarchive-3.7.4/build/archive_static.build/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)";
 				USE_HEADERMAP = NO;
 				WARNING_CFLAGS = "$(inherited)";
@@ -8125,6 +8131,7 @@
 				);
 				INSTALL_PATH = "";
 				LIBRARY_STYLE = STATIC;
+				MACOSX_DEPLOYMENT_TARGET = 14.4;
 				ONLY_ACTIVE_ARCH = NO;
 				OTHER_CFLAGS = (
 					"-Wall",
@@ -8137,7 +8144,7 @@
 				);
 				OTHER_LIBTOOLFLAGS = "";
 				OTHER_REZFLAGS = "";
-				PRODUCT_NAME = archive;
+				PRODUCT_NAME = zzarchive;
 				SDKROOT = macosx14.5;
 				SECTORDER_FLAGS = "";
 				TARGET_TEMP_DIR = "/Users/cmsj/hacking/ZipZap/libarchive-3.7.4/build/archive_static.build/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)";
@@ -8925,6 +8932,7 @@
 				);
 				INSTALL_PATH = "";
 				LIBRARY_STYLE = STATIC;
+				MACOSX_DEPLOYMENT_TARGET = 14.4;
 				ONLY_ACTIVE_ARCH = NO;
 				OTHER_CFLAGS = (
 					"-Wall",
@@ -8937,7 +8945,7 @@
 				);
 				OTHER_LIBTOOLFLAGS = "";
 				OTHER_REZFLAGS = "";
-				PRODUCT_NAME = archive;
+				PRODUCT_NAME = zzarchive;
 				SDKROOT = macosx14.5;
 				SECTORDER_FLAGS = "";
 				TARGET_TEMP_DIR = "/Users/cmsj/hacking/ZipZap/libarchive-3.7.4/build/archive_static.build/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)";

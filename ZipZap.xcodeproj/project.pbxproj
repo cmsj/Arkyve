@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		4FB4984D2C089F76004DE958 /* libarchive in Resources */ = {isa = PBXBuildFile; fileRef = 4FB4984C2C089F76004DE958 /* libarchive */; };
 		4FB498532C089FC1004DE958 /* libb2.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4FB4984E2C089FC0004DE958 /* libb2.a */; };
 		4FB498542C089FC1004DE958 /* liblz4.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4FB4984F2C089FC0004DE958 /* liblz4.a */; };
 		4FB498552C089FC1004DE958 /* libzstd.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4FB498502C089FC0004DE958 /* libzstd.a */; };
@@ -36,7 +35,6 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		4FB4984C2C089F76004DE958 /* libarchive */ = {isa = PBXFileReference; lastKnownFileType = folder; path = libarchive; sourceTree = SOURCE_ROOT; };
 		4FB4984E2C089FC0004DE958 /* libb2.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libb2.a; path = libarchive/fat/lib/libb2.a; sourceTree = "<group>"; };
 		4FB4984F2C089FC0004DE958 /* liblz4.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = liblz4.a; path = libarchive/fat/lib/liblz4.a; sourceTree = "<group>"; };
 		4FB498502C089FC0004DE958 /* libzstd.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libzstd.a; path = libarchive/fat/lib/libzstd.a; sourceTree = "<group>"; };
@@ -46,6 +44,7 @@
 		4FB4985A2C08A018004DE958 /* libexpat.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libexpat.tbd; path = usr/lib/libexpat.tbd; sourceTree = SDKROOT; };
 		4FB4985C2C08A020004DE958 /* libbz2.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libbz2.tbd; path = usr/lib/libbz2.tbd; sourceTree = SDKROOT; };
 		4FB4985E2C08A02D004DE958 /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
+		4FB498612C090B79004DE958 /* vendor */ = {isa = PBXFileReference; lastKnownFileType = folder; path = vendor; sourceTree = SOURCE_ROOT; };
 		4FCEEEDA2BEE39E7009E9E17 /* ZipZap.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ZipZap.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4FCEEEDD2BEE39E7009E9E17 /* ZipZapApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZipZapApp.swift; sourceTree = "<group>"; };
 		4FCEEEDF2BEE39E7009E9E17 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -94,7 +93,7 @@
 		4FCEEEDC2BEE39E7009E9E17 /* ZipZap */ = {
 			isa = PBXGroup;
 			children = (
-				4FB4984C2C089F76004DE958 /* libarchive */,
+				4FB498612C090B79004DE958 /* vendor */,
 				4FD4BA542C07C57C00082C13 /* Extensions */,
 				4FCEEF2A2BEE3D43009E9E17 /* Models */,
 				4FCEEEDD2BEE39E7009E9E17 /* ZipZapApp.swift */,
@@ -208,7 +207,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				4FCEEEE52BEE39E9009E9E17 /* Preview Assets.xcassets in Resources */,
-				4FB4984D2C089F76004DE958 /* libarchive in Resources */,
 				4FCEEEE22BEE39E9009E9E17 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -1,0 +1,6 @@
+cmake
+ninja
+libtool
+po4a
+autoconf
+automake

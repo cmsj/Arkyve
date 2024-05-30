@@ -2,3 +2,5 @@ libarchive*/build
 libarchive-*/libarchive/Debug
 .DS_Store
 xcuserdata
+vendor/include/*
+vendor/lib/*

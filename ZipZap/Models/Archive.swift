@@ -315,7 +315,7 @@ class Archive {
                     switch entry.type {
                     case .file:
                         let entryURL = toFolder.appendingPathComponent(entry.path)
-                        Self.logger.trace("extractEntries: Constructed write URL: \(entryURL)")
+                        Self.logger.trace("extractEntries: Constructed file URL: \(entryURL)")
 
                         // Ensure file exists
                         try Data().write(to: entryURL)

@@ -7,7 +7,6 @@
 
 import Foundation
 import os
-//import zzarchive
 
 enum ArchiveError: Error {
     case ArchiveOpenError(String)
@@ -20,46 +19,7 @@ enum ArchiveEntriesAction {
     case Break
 }
 
-// Taken from: https://stackoverflow.com/questions/26678362/how-do-i-insert-an-element-at-the-correct-position-into-a-sorted-array-in-swift/55395494#55395494
-extension RandomAccessCollection where Element : Comparable {
-    func insertionIndex(of value: Element) -> Index {
-        var slice : SubSequence = self[...]
-
-        while !slice.isEmpty {
-            let middle = slice.index(slice.startIndex, offsetBy: slice.count / 2)
-            if value < slice[middle] {
-                slice = slice[..<middle]
-            } else {
-                slice = slice[index(after: middle)...]
-            }
-        }
-        return slice.startIndex
-    }
-}
-
-extension Array {
-    func filterBothwise(_ isIncluded: (Element) throws -> Bool) rethrows -> ([Element], [Element]) {
-        var included: [Element] = []
-        var excluded: [Element] = []
-
-        for element in self {
-            if try isIncluded(element) {
-                included.append(element)
-            } else {
-                excluded.append(element)
-            }
-        }
-
-        return (included, excluded)
-    }
-}
-
-extension String {
-    func countOccurrences(of char: Character) -> Int {
-        self.ranges(of: String(char)).count
-    }
-}
-
+// MARK: Sorting
 extension Archive {
     // Sort our entries and return a new value, munging keypaths appropriately for the various fields of ArchiveEntry which need to be passed to Table as Strings, but don't sort well as Strings (ie dates)
     func sort(using: [KeyPathComparator<ArchiveEntry>]) {
@@ -81,11 +41,13 @@ extension Archive {
 
         Self.logger.trace("Changing sort order to \(String(describing: newSort.keyPath))::\(String(describing: newSort.order))")
         DispatchQueue.main.async {
+            // FIXME: This should be sorting the tree, not the array
             self.entries.sort(using: [newSort])
         }
     }
 }
 
+// MARK: Libarchive wrappers
 extension Archive {
     func libarchive_open() throws {
         if self.fd >= 0 {
@@ -175,6 +137,7 @@ class Archive {
     var entries: [ArchiveEntry] = []
     var root: ArchiveEntry!
     var error: String? = nil
+    var log: [ArchiveLogEntry] = []
     private var fd: Int32 = -1
     private var archive: OpaquePointer? = nil
     var cacheURL: URL
@@ -274,7 +237,6 @@ class Archive {
         }
     }
 
-    // FIXME: This needs to do something smart to handle synthetic entries
     func extractEntries(_ entries: [ArchiveEntry], toFolder: URL) throws -> [URL] {
         var writtenURLS: [URL] = []
 
@@ -312,9 +274,9 @@ class Archive {
                     // Whether it works or fails, remove this entry so we can detect early completion
                     flatEntries.remove(at: index)
 
+                    let entryURL = toFolder.appendingPathComponent(entry.path)
                     switch entry.type {
                     case .file:
-                        let entryURL = toFolder.appendingPathComponent(entry.path)
                         Self.logger.trace("extractEntries: Constructed file URL: \(entryURL)")
 
                         // Ensure file exists
@@ -326,13 +288,10 @@ class Archive {
                             throw ArchiveError.ArchiveExtractError("Unable to write \(path) to fd")
                         }
 
-                        // Fetch the data from libarchive and write it to our output file
-//                        let entryData = libarchive_entry_data(entryPtr)
-//                        try handle.write(contentsOf: entryData)
-
                         writtenURLS.append(entryURL)
                         Self.logger.trace("extractEntries: Written to \(entryURL)")
                     case .directory:
+                        // FIXME: Is folderURL different to entryURL?
                         let folderURL = toFolder.appendingPathComponent(path)
                         Self.logger.trace("extractEntries: Constructed directory URL: \(folderURL)")
 
@@ -341,8 +300,25 @@ class Archive {
                         archive_read_data_skip(self.archive)
 
                         writtenURLS.append(folderURL)
+                    case .blockdev:
+                        Self.logger.warning("extractEntries: blockdev extraction not supported: \(path)")
+                        return .Continue
+                    case .chardev:
+                        Self.logger.warning("extractEntries: chardev extraction not supported: \(path)")
+                        return .Continue
+                    case .socket:
+                        Self.logger.warning("extractEntries: socket extraction not supported: \(path)")
+                        return .Continue
+                    case .fifo:
+                        //mkfifo(path, mode_t)
+                        Self.logger.warning("extractEntries: fifo extraction not supported: \(path)")
+                        return .Continue
+                    case .symlink:
+                        // FIXME: This is untested, doubly so its ability to produce directory symlinks (if that even makes a difference on macOS)
+                        let linkDest = String(cString: archive_entry_symlink(entryPtr))
+                        let linkDestURL = Foundation.URL(fileURLWithPath: linkDest, isDirectory: archive_entry_symlink_type(entryPtr) == AE_SYMLINK_TYPE_DIRECTORY)
+                        try FileManager.default.createSymbolicLink(at: entryURL, withDestinationURL: linkDestURL)
                     default:
-                        // FIXME: Sockets, blockdevs, chardevs, etc need to be supported
                         Self.logger.error("extractEntries: Trying to extract unsupported type: \(entry.type.rawValue)")
                     }
                 }

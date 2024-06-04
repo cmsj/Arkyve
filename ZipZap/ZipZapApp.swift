@@ -21,7 +21,7 @@ struct ZipZapApp: App {
 
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            MainWindowView()
         }
         .windowToolbarStyle(.expanded)
     }

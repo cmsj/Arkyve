@@ -9,7 +9,6 @@ import Foundation
 import UniformTypeIdentifiers
 import SwiftUI
 import os
-//import zzarchive
 
 enum ArchiveEntryType: String {
     case unknown = "questionmark"
@@ -85,6 +84,12 @@ extension ArchiveEntry: Comparable {
     }
 }
 
+extension ArchiveEntry: Hashable {
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(path)
+    }
+}
+
 // Array behaviour for inspecting first level children
 extension ArchiveEntry {
     subscript(_ name: String) -> ArchiveEntry? {
@@ -96,12 +101,8 @@ extension ArchiveEntry {
     }
 }
 
-extension ArchiveEntry: Hashable {
-    func hash(into hasher: inout Hasher) {
-        hasher.combine(path)
-    }
-}
-
+// Drag and drop provider
+// FIXME: Should some of this logic, particularly the async parts, move to Archive?
 extension ArchiveEntry {
     var itemProvider: NSItemProvider {
         let provider = NSItemProvider()
@@ -178,6 +179,9 @@ class ArchiveEntry: Identifiable {
     var btime: Date = Date(timeIntervalSince1970: 0)
     var perms: String = "--"
 
+    var uid: String = "--"
+    var gid: String = "--"
+
     var type: ArchiveEntryType = .unknown
 
     init?(_ entry: OpaquePointer?, forArchive: Archive) {
@@ -226,6 +230,14 @@ class ArchiveEntry: Identifiable {
         }
 
         // TODO: Get UID/GID here too
+        if archive_entry_uid_is_set(entry) != 0 {
+            let uid = archive_entry_uid(entry)
+            self.uid = "\(uid)"
+        }
+        if archive_entry_gid_is_set(entry) != 0 {
+            let gid = archive_entry_gid(entry)
+            self.gid = "\(gid)"
+        }
 
         self.type = ArchiveEntryType(rawValue: archive_entry_filetype(entry))
         if self.type == .directory {

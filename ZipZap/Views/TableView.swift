@@ -9,16 +9,18 @@ import SwiftUI
 
 struct TableView: View {
     @Environment(MainWindowViewModel.self) var viewModel
+
+    @SceneStorage("ArchiveEntryTableConfig") private var columnCustomization: TableColumnCustomization<ArchiveEntry>
     @State private var sortOrder = [KeyPathComparator(\ArchiveEntry.path)]
     @SceneStorage("ArchiveEntryTableConfig")
     private var columnCustomization: TableColumnCustomization<ArchiveEntry>
 
     var body: some View {
-        // FIXME: This is an ugly hack: https://www.hackingwithswift.com/books/ios-swiftui/sharing-observable-objects-through-swiftuis-environment
+        // FIXME: This @Bindable is an ugly hack: https://www.hackingwithswift.com/books/ios-swiftui/sharing-observable-objects-through-swiftuis-environment
         @Bindable var viewModel = viewModel
 
         Table(of: ArchiveEntry.self, selection: $viewModel.selectedEntries, sortOrder: $sortOrder, columnCustomization: $columnCustomization) {
-            TableColumn("Name") { entry in
+            TableColumn("Name", value: \ArchiveEntry.name) { entry in
                 HStack {
                     Image(systemName: entry.type.rawValue)
                     Text(entry.name)
@@ -34,21 +36,22 @@ struct TableView: View {
 //                    .width(min: sizeWidth, max: sizeWidth)
             TableColumn("Date Modified", value: \.mtime.userFormatted)
                 .customizationID("mtime")
-            TableColumn("Permissions", value: \.perms)
+            TableColumn("Permissions", value: \ArchiveEntry.perms)
                 .customizationID("perms")
-            TableColumn("UID", value: \.uid)
+                .defaultVisibility(.hidden)
+            TableColumn("UID", value: \ArchiveEntry.uid)
                 .customizationID("uid")
                 .defaultVisibility(.hidden)
-            TableColumn("GID", value: \.uid)
+            TableColumn("GID", value: \ArchiveEntry.uid)
                 .customizationID("gid")
                 .defaultVisibility(.hidden)
-            TableColumn("Date Changed", value: \.ctime.userFormatted)
+            TableColumn("Date Changed", value: \ArchiveEntry.ctime.userFormatted)
                 .customizationID("ctime")
                 .defaultVisibility(.hidden)
-            TableColumn("Date Accessed", value: \.atime.userFormatted)
+            TableColumn("Date Accessed", value: \ArchiveEntry.atime.userFormatted)
                 .customizationID("atime")
                 .defaultVisibility(.hidden)
-            TableColumn("Date Created", value: \.btime.userFormatted)
+            TableColumn("Date Created", value: \ArchiveEntry.btime.userFormatted)
                 .customizationID("btime")
                 .defaultVisibility(.hidden)
         } rows: {
@@ -63,4 +66,5 @@ struct TableView: View {
 
 #Preview {
     TableView()
+        .environment(MainWindowViewModel())
 }

@@ -51,4 +51,8 @@ class MainWindowViewModel {
             }
         }
     }
+
+    func sort(using: [KeyPathComparator<ArchiveEntry>]) {
+        self.archive?.sort(using: using)
+    }
 }

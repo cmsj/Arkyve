@@ -30,4 +30,5 @@ struct StatusbarView: View {
 
 #Preview {
     StatusbarView()
+        .environment(MainWindowViewModel())
 }

@@ -57,6 +57,18 @@ struct ToolbarContentView: CustomizableToolbarContent {
     }
 }
 
-//#Preview {
-//    ToolbarContent()
-//}
+#Preview {
+    VStack {
+        Spacer()
+        HStack {
+            Spacer()
+            Text("Preview")
+                .padding(300.0)
+            Spacer()
+        }
+        Spacer()
+    }
+    .toolbar(id: "Preview") {
+        ToolbarContentView(viewModel: MainWindowViewModel())
+    }
+}

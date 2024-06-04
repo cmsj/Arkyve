@@ -12,8 +12,6 @@ struct TableView: View {
 
     @SceneStorage("ArchiveEntryTableConfig") private var columnCustomization: TableColumnCustomization<ArchiveEntry>
     @State private var sortOrder = [KeyPathComparator(\ArchiveEntry.path)]
-    @SceneStorage("ArchiveEntryTableConfig")
-    private var columnCustomization: TableColumnCustomization<ArchiveEntry>
 
     var body: some View {
         // FIXME: This @Bindable is an ugly hack: https://www.hackingwithswift.com/books/ios-swiftui/sharing-observable-objects-through-swiftuis-environment
@@ -27,14 +25,10 @@ struct TableView: View {
                 }
             }
             .customizationID("name")
-            TableColumn("Size", value: \.sizeString) //{ size in
-//                    Text(size)
-//                        .overlay( GeometryReader { geo in Color.clear.onAppear { sizeWidth = geo.size.width }})
-//                }
+            TableColumn("Size", value: \ArchiveEntry.sizeString)
                 .customizationID("sizeString")
-//                    .alignment(.trailing)
-//                    .width(min: sizeWidth, max: sizeWidth)
-            TableColumn("Date Modified", value: \.mtime.userFormatted)
+                .alignment(.trailing)
+            TableColumn("Date Modified", value: \ArchiveEntry.mtime.userFormatted)
                 .customizationID("mtime")
             TableColumn("Permissions", value: \ArchiveEntry.perms)
                 .customizationID("perms")
@@ -57,9 +51,8 @@ struct TableView: View {
         } rows: {
             TableRowTreeContent(children: viewModel.archive?.root.children ?? [])
         }
-        .onChange(of: sortOrder) { _, sortOrder in
-            // FIXME: Make this a viewmodel func call
-            viewModel.archive?.sort(using: sortOrder)
+        .onChange(of: sortOrder) { _, newSortOrder in
+            viewModel.sort(using: sortOrder)
         }
     }
 }

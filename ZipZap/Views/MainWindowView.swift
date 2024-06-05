@@ -12,47 +12,41 @@ struct MainWindowView: View {
     @State var windowTitle = "ZipZap"
     @State var showFileChooser = false
     @State var showLog: Bool = false
-    @State var showError: Bool = false
+    @State var showErrors = ShowErrors()
 
     var body: some View {
         VStack(spacing: 0) {
-            HStack {
-                Spacer()
-                Text(viewModel.archive?.error ?? "")
-                Spacer()
-            }
-            .padding([.top, .bottom], 2)
-            .background(Color(#colorLiteral(red: 0.7470226884, green: 0, blue: 0, alpha: 0.5411817071)))
-            .hide(if: !showError)
-
+            ErrorView()
+                .environment(viewModel)
+                .environment(showErrors)
             TableView()
                 .environment(viewModel)
             StatusbarView()
                 .environment(viewModel)
+        }
+        .onChange(of: viewModel.archive?.error, initial: true) { old, new in
+            // Nicely animate the error view appearing/disappearing
+            if showErrors.state && new == nil {
+                withAnimation {
+                    showErrors.state = false
+                }
+            } else if !showErrors.state && new != nil {
+                withAnimation {
+                    showErrors.state = true
+                }
+            }
         }
         .toolbar(id: "Main") {
             ToolbarContentView(viewModel: viewModel)
         }
         .navigationTitle(windowTitle)
         .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .onChange(of: viewModel.archive?.error) { old, new in
-            // Nicely animate the error view appearing/disappearing
-            if showError && new == nil {
-                withAnimation {
-                    showError = false
-                }
-            } else if !showError && new != nil {
-                withAnimation {
-                    showError = true
-                }
-            }
-        }
     }
 }
 
 #Preview {
     let view = MainWindowView()
     view.viewModel.newButton()
-    view.viewModel.archive?.error = "Testing error"
+    view.viewModel.archive?.error = "Preview error"
     return view
 }

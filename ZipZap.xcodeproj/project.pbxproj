@@ -52,6 +52,7 @@
 		4F7121962C0F6B4C000EB268 /* MainWindowViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainWindowViewModel.swift; sourceTree = "<group>"; };
 		4F71219A2C10864F000EB268 /* HideViewModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HideViewModifier.swift; sourceTree = "<group>"; };
 		4F71219C2C10BB1D000EB268 /* ErrorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorView.swift; sourceTree = "<group>"; };
+		4F71219E2C110C67000EB268 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		4FB498582C08A00F004DE958 /* libiconv.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libiconv.tbd; path = usr/lib/libiconv.tbd; sourceTree = SDKROOT; };
 		4FB4985A2C08A018004DE958 /* libexpat.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libexpat.tbd; path = usr/lib/libexpat.tbd; sourceTree = SDKROOT; };
 		4FB4985C2C08A020004DE958 /* libbz2.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libbz2.tbd; path = usr/lib/libbz2.tbd; sourceTree = SDKROOT; };
@@ -121,6 +122,7 @@
 		4FCEEEDC2BEE39E7009E9E17 /* ZipZap */ = {
 			isa = PBXGroup;
 			children = (
+				4F71219E2C110C67000EB268 /* Info.plist */,
 				4FB498612C090B79004DE958 /* vendor */,
 				4FCEEEDD2BEE39E7009E9E17 /* ZipZapApp.swift */,
 				4FD4BA572C07EC7F00082C13 /* libarchive_Bridge.h */,
@@ -405,6 +407,7 @@
 				GCC_WARN_UNUSED_LABEL = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				HEADER_SEARCH_PATHS = "${PROJECT_DIR}/vendor/include";
+				INFOPLIST_FILE = ZipZap/Info.plist;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -455,6 +458,7 @@
 				GCC_WARN_UNUSED_LABEL = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				HEADER_SEARCH_PATHS = "${PROJECT_DIR}/vendor/include";
+				INFOPLIST_FILE = ZipZap/Info.plist;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				LD_RUNPATH_SEARCH_PATHS = (

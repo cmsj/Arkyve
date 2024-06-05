@@ -104,9 +104,24 @@ extension ArchiveEntry {
 // Drag and drop provider
 // FIXME: Should some of this logic, particularly the async parts, move to Archive?
 extension ArchiveEntry {
+    static var draggableType = UTType(exportedAs: "net.tenshu.ZipZap.ArchiveEntry")
+
     var itemProvider: NSItemProvider {
         let provider = NSItemProvider()
 
+        // Register our internal type first, so re-arranging tables takes precedence if we're dragging to ourselves
+        provider.registerDataRepresentation(forTypeIdentifier: Self.draggableType.identifier, visibility: .all) { completion in
+            let encoder = JSONEncoder()
+            do {
+                let data = try encoder.encode(self.id)
+                completion(data, nil)
+            } catch {
+                completion(nil, error)
+            }
+            return nil
+        }
+
+        // Register a generic type so we can export files to anything else
         provider.registerDataRepresentation(for: .fileURL, visibility: .all) { completion in
             let progress = Progress(totalUnitCount: 100)
             guard let archive = self.archive else {

@@ -291,6 +291,10 @@ class Archive {
     }
 
     // NOTE: These write methods do not use any async, but are self-contained and can be called from a background thread
+    func extractEntryToCache(_ entry: ArchiveEntry) throws -> [URL] {
+        return try extractEntries([entry], toFolder: cacheURL)
+    }
+
     func extractEntry(_ entry: ArchiveEntry, toFolder: URL) throws -> [URL] {
         return try extractEntries([entry], toFolder: toFolder)
     }
@@ -308,6 +312,8 @@ class Archive {
 
     func extractEntries(_ entries: [ArchiveEntry], toFolder: URL) throws -> [URL] {
         var writtenURLS: [URL] = []
+
+        Self.logger.trace("extractEntries: extracting \(entries.count) items to: \(toFolder)")
 
         // Convert entries, which can be a tree, into a flat list for our libarchive walk below
         var flatEntries: [ArchiveEntry] = []

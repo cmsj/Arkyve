@@ -117,17 +117,16 @@ extension ArchiveEntry {
 
             do {
                 archive.queue.async {
-                    let cacheURL = archive.cacheURL // FIXME: It's weird that we're pulling cacheURL out of archive and feeding it back 3 lines later. Refactor this.
-                    Self.logger.trace("Writing data to \(cacheURL)")
                     do {
-                        let writtenURLs = try archive.extractEntry(self, toFolder: cacheURL)
+                        let writtenURLs = try archive.extractEntryToCache(self)
                         guard writtenURLs.count > 0 else { throw ArchiveError.ArchiveExtractError("Zero entries extracted")}
                         Self.logger.trace("Reporting success")
                         progress.completedUnitCount = 100
                         completion(writtenURLs.first!.dataRepresentation, nil)
                     } catch {
+                        // FIXME: We're should explicitly catch ArchiveExtractError here, and feed our errors into archive.error
                         Self.logger.trace("Writing failed for \(self.path): \(error)")
-                        completion(nil, NSError(domain: "DragAndDrop", code: -1, userInfo: [NSLocalizedDescriptionKey: "Unable to write in \(cacheURL)"]))
+                        completion(nil, NSError(domain: "DragAndDrop", code: -1, userInfo: [NSLocalizedDescriptionKey: "Unable to write to cache"]))
                     }
                 }
             }

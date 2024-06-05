@@ -16,6 +16,7 @@
 		4F7121922C0F5DE1000EB268 /* ToolbarContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F7121912C0F5DE1000EB268 /* ToolbarContent.swift */; };
 		4F7121942C0F6938000EB268 /* TableRowTreeContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F7121932C0F6938000EB268 /* TableRowTreeContent.swift */; };
 		4F7121972C0F6B4C000EB268 /* MainWindowViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F7121962C0F6B4C000EB268 /* MainWindowViewModel.swift */; };
+		4F71219B2C10864F000EB268 /* HideViewModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F71219A2C10864F000EB268 /* HideViewModifier.swift */; };
 		4FCEEEDE2BEE39E7009E9E17 /* ZipZapApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FCEEEDD2BEE39E7009E9E17 /* ZipZapApp.swift */; };
 		4FCEEEE02BEE39E7009E9E17 /* MainWindowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FCEEEDF2BEE39E7009E9E17 /* MainWindowView.swift */; };
 		4FCEEEE22BEE39E9009E9E17 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4FCEEEE12BEE39E9009E9E17 /* Assets.xcassets */; };
@@ -48,6 +49,7 @@
 		4F7121912C0F5DE1000EB268 /* ToolbarContent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToolbarContent.swift; sourceTree = "<group>"; };
 		4F7121932C0F6938000EB268 /* TableRowTreeContent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableRowTreeContent.swift; sourceTree = "<group>"; };
 		4F7121962C0F6B4C000EB268 /* MainWindowViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainWindowViewModel.swift; sourceTree = "<group>"; };
+		4F71219A2C10864F000EB268 /* HideViewModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HideViewModifier.swift; sourceTree = "<group>"; };
 		4FB498582C08A00F004DE958 /* libiconv.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libiconv.tbd; path = usr/lib/libiconv.tbd; sourceTree = SDKROOT; };
 		4FB4985A2C08A018004DE958 /* libexpat.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libexpat.tbd; path = usr/lib/libexpat.tbd; sourceTree = SDKROOT; };
 		4FB4985C2C08A020004DE958 /* libbz2.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libbz2.tbd; path = usr/lib/libbz2.tbd; sourceTree = SDKROOT; };
@@ -166,6 +168,7 @@
 				4FD4BA552C07C58E00082C13 /* Date.swift */,
 				4F7121842C0F48B1000EB268 /* RandomAccessCollection.swift */,
 				4F7121882C0F48FD000EB268 /* String.swift */,
+				4F71219A2C10864F000EB268 /* HideViewModifier.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -251,6 +254,7 @@
 				4FCEEF2C2BEE3D72009E9E17 /* ArchiveEntry.swift in Sources */,
 				4F7121872C0F48EB000EB268 /* Array.swift in Sources */,
 				4FCEEF292BEE3D3E009E9E17 /* Archive.swift in Sources */,
+				4F71219B2C10864F000EB268 /* HideViewModifier.swift in Sources */,
 				4F71218C2C0F4CCA000EB268 /* StatusbarView.swift in Sources */,
 				4F71218E2C0F4DE7000EB268 /* TableView.swift in Sources */,
 				4F7121942C0F6938000EB268 /* TableRowTreeContent.swift in Sources */,

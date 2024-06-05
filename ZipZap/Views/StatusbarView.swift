@@ -11,24 +11,24 @@ struct StatusbarView: View {
     @Environment(MainWindowViewModel.self) var viewModel
 
     var body: some View {
-        ZStack {
-            HStack {
-                Spacer()
-                Text(viewModel.archive?.error ?? "")
-                Spacer()
-            }
+        VStack {
             HStack {
                 Spacer()
                 Text("\(viewModel.archive?.entries.count ?? 0) items")
-                    .opacity(viewModel.archive?.error != nil ? 0 : 1)
-                    .padding([.trailing])
+                Spacer()
             }
-            .padding([.top, .bottom])
+            .padding([.top, .bottom], 5)
         }
     }
 }
 
 #Preview {
-    StatusbarView()
-        .environment(MainWindowViewModel())
+    let viewModel = MainWindowViewModel()
+
+    return VStack(spacing: 0) {
+        Rectangle()
+            .background(.white)
+        StatusbarView()
+            .environment(viewModel)
+    }
 }

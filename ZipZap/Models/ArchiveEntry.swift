@@ -117,7 +117,7 @@ extension ArchiveEntry {
 
             do {
                 archive.queue.async {
-                    let cacheURL = archive.cacheURL
+                    let cacheURL = archive.cacheURL // FIXME: It's weird that we're pulling cacheURL out of archive and feeding it back 3 lines later. Refactor this.
                     Self.logger.trace("Writing data to \(cacheURL)")
                     do {
                         let writtenURLs = try archive.extractEntry(self, toFolder: cacheURL)

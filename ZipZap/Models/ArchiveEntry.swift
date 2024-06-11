@@ -104,7 +104,7 @@ extension ArchiveEntry {
 // Drag and drop provider
 // FIXME: Should some of this logic, particularly the async parts, move to Archive?
 extension ArchiveEntry {
-    static var draggableType = UTType(exportedAs: "net.tenshu.ZipZap.ArchiveEntry")
+    static let draggableType = UTType(exportedAs: "net.tenshu.ZipZap.ArchiveEntry")
 
     var itemProvider: NSItemProvider {
         let provider = NSItemProvider()
@@ -157,7 +157,7 @@ extension ArchiveEntry {
 @Observable
 class ArchiveEntry: Identifiable {
     weak var archive: Archive?
-    var id = UUID()
+    let id = UUID()
     private var entry: OpaquePointer?
     private static let logger = Logger(
         subsystem: Bundle.main.bundleIdentifier!,

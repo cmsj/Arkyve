@@ -408,4 +408,21 @@ class Archive {
 
         return writtenURLS
     }
+
+    func processInternalDrop(providers:[NSItemProvider], atIndex:Int, treeHint:[ArchiveEntry]) {
+        // Process internal drops
+//        let decoder = JSONDecoder()
+//        let id: UUID
+//
+//        let group = DispatchGroup()
+//        let result =
+//        provider.loadDataRepresentation(for: ArchiveEntry.draggableType) { data, error in
+//            guard let data = data else { return }
+//            let id = try? decoder.decode(UUID.self, from: data)
+//        }
+    }
+
+    func processExternalDrop(providers:[NSItemProvider], atIndex:Int, treeHint:[ArchiveEntry]) {
+
+    }
 }

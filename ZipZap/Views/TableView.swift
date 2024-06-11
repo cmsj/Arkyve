@@ -49,7 +49,7 @@ struct TableView: View {
                 .customizationID("btime")
                 .defaultVisibility(.hidden)
         } rows: {
-            TableRowTreeContent(children: viewModel.archive?.root.children ?? [])
+            TableRowTreeContent(children: viewModel.archive?.root.children ?? [], viewModel: viewModel)
         }
         .onChange(of: sortOrder) { _, newSortOrder in
             viewModel.sort(using: sortOrder)

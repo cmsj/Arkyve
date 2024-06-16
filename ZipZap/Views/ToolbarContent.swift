@@ -21,7 +21,14 @@ struct ToolbarContentView: CustomizableToolbarContent {
         }
         ToolbarItem(id: "Open") {
             Button {
-                viewModel.openButton()
+                let panel = NSOpenPanel()
+                panel.allowsMultipleSelection = false
+                panel.canChooseDirectories = false
+                if panel.runModal() == .OK {
+                    if let url = panel.url {
+                        viewModel.openArchive(url: url)
+                    }
+                }
             } label: {
                 Label("Open...", systemImage: "folder")
                     .padding()
@@ -47,7 +54,7 @@ struct ToolbarContentView: CustomizableToolbarContent {
         }
         ToolbarItem(id: "Extract"){
             Button {
-                viewModel.extractButton()
+//                viewModel.extractButton()
             } label: {
                 Label("Extract", systemImage: "folder.badge.minus")
                     .padding()

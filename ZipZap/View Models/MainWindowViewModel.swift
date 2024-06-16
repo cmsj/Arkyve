@@ -23,7 +23,13 @@ class MainWindowViewModel {
         archive = Archive(name: "Untitled.zip", URL: newFolderURL.appendingPathComponent("Untitled.zip"))
     }
 
-    func openButton() {
+    func openArchive(url: URL) async {
+        let name = url.lastPathComponent
+        archive = Archive(name: name, URL: url)
+        await archive?.open()
+    }
+
+    @MainActor func openButton() async {
         let panel = NSOpenPanel()
         panel.allowsMultipleSelection = false
         panel.canChooseDirectories = false
@@ -31,7 +37,7 @@ class MainWindowViewModel {
             if let url = panel.url {
                 let name = url.lastPathComponent
                 archive = Archive(name: name, URL: url)
-                archive?.open()
+                await archive?.open()
             }
         }
     }
@@ -40,7 +46,7 @@ class MainWindowViewModel {
         archive = nil
     }
 
-    func extractButton() {
+    @MainActor func extractButton() {
         let panel = NSOpenPanel()
         panel.allowsMultipleSelection = false
         panel.canChooseDirectories = true

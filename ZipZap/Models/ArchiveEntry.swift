@@ -108,48 +108,49 @@ extension ArchiveEntry {
 
     var itemProvider: NSItemProvider {
         let provider = NSItemProvider()
+        let selfID = self.id
 
-        // Register our internal type first, so re-arranging tables takes precedence if we're dragging to ourselves
-        provider.registerDataRepresentation(forTypeIdentifier: Self.draggableType.identifier, visibility: .all) { completion in
-            let encoder = JSONEncoder()
-            do {
-                let data = try encoder.encode(self.id)
-                completion(data, nil)
-            } catch {
-                completion(nil, error)
-            }
-            return nil
-        }
-
-        // Register a generic type so we can export files to anything else
-        provider.registerDataRepresentation(for: .fileURL, visibility: .all) { completion in
-            let progress = Progress(totalUnitCount: 100)
-            guard let archive = self.archive else {
-                Self.logger.error("Unable to find Archive for ArchiveEntry::\(self.name)")
-                completion(nil, NSError(domain: "DragAndDrop", code: -1, userInfo: [NSLocalizedDescriptionKey: "Unable to find Archive for ArchiveEntry::\(self.name)"]))
-                return progress
-            }
-
-            do {
-                archive.queue.async {
-                    do {
-                        let writtenURLs = try archive.extractEntryToCache(self)
-                        guard writtenURLs.count > 0 else { throw ArchiveError.ArchiveExtractError("Zero entries extracted")}
-                        Self.logger.trace("Reporting success")
-                        progress.completedUnitCount = 100
-                        completion(writtenURLs.first!.dataRepresentation, nil)
-                    } catch {
-                        // FIXME: We're should explicitly catch ArchiveExtractError here, and feed our errors into archive.error
-                        Self.logger.trace("Writing failed for \(self.path): \(error)")
-                        completion(nil, NSError(domain: "DragAndDrop", code: -1, userInfo: [NSLocalizedDescriptionKey: "Unable to write to cache"]))
-                    }
-                }
-            }
-
-            Self.logger.trace("Returning progress")
-            return progress
-        }
-        Self.logger.trace("Item provider registered")
+//        // Register our internal type first, so re-arranging tables takes precedence if we're dragging to ourselves
+//        provider.registerDataRepresentation(forTypeIdentifier: Self.draggableType.identifier, visibility: .all) { completion in
+//            let encoder = JSONEncoder()
+//            do {
+//                let data = try encoder.encode(selfID)
+//                completion(data, nil)
+//            } catch {
+//                completion(nil, error)
+//            }
+//            return nil
+//        }
+//
+//        // Register a generic type so we can export files to anything else
+//        provider.registerDataRepresentation(for: .fileURL, visibility: .all) { completion in
+//            let progress = Progress(totalUnitCount: 100)
+//            guard let archive = self.archive else {
+//                Self.logger.error("Unable to find Archive for ArchiveEntry::\(self.name)")
+//                completion(nil, NSError(domain: "DragAndDrop", code: -1, userInfo: [NSLocalizedDescriptionKey: "Unable to find Archive for ArchiveEntry::\(self.name)"]))
+//                return progress
+//            }
+//
+//            do {
+//                archive.queue.async {
+//                    do {
+//                        let writtenURLs = try archive.extractEntryToCache(self)
+//                        guard writtenURLs.count > 0 else { throw ArchiveError.ArchiveExtractError("Zero entries extracted")}
+//                        Self.logger.trace("Reporting success")
+//                        progress.completedUnitCount = 100
+//                        completion(writtenURLs.first!.dataRepresentation, nil)
+//                    } catch {
+//                        // FIXME: We're should explicitly catch ArchiveExtractError here, and feed our errors into archive.error
+//                        Self.logger.trace("Writing failed for \(self.path): \(error)")
+//                        completion(nil, NSError(domain: "DragAndDrop", code: -1, userInfo: [NSLocalizedDescriptionKey: "Unable to write to cache"]))
+//                    }
+//                }
+//            }
+//
+//            Self.logger.trace("Returning progress")
+//            return progress
+//        }
+//        Self.logger.trace("Item provider registered")
         return provider
     }
 }
@@ -158,11 +159,7 @@ extension ArchiveEntry {
 class ArchiveEntry: Identifiable {
     weak var archive: Archive?
     let id = UUID()
-    private var entry: OpaquePointer?
-    private static let logger = Logger(
-        subsystem: Bundle.main.bundleIdentifier!,
-        category: String(describing: ArchiveEntry.self)
-    )
+    let logger: Logger
 
     var children: [ArchiveEntry]? = nil
     // Archives don't always contain directories, but the files in them still contain paths
@@ -198,62 +195,27 @@ class ArchiveEntry: Identifiable {
 
     var type: ArchiveEntryType = .unknown
 
-    init?(_ entry: OpaquePointer?, forArchive: Archive) {
-        guard entry != nil else { return nil }
-        self.entry = entry
+    init(_ entry: Entry, forArchive: Archive) {
         self.archive = forArchive
+        self.path = entry.path
+        self.name = entry.name
+        self.pathComponents = entry.pathComponents
+        self.size = entry.size
+        self.atime = entry.atime
+        self.mtime = entry.mtime
+        self.btime = entry.btime
+        self.ctime = entry.ctime
+        self.perms = entry.perms
+        self.uid = entry.uid
+        self.gid = entry.gid
+        self.type = entry.type
 
-        if var pathString = forArchive.libarchive_entry_path(entry) {
-            if pathString.last == "/" {
-                pathString = String(pathString.dropLast())
-            }
-            self.path = pathString
-            Self.logger.trace("Creating ArchiveEntry for \(pathString)")
-
-            // Parse pathname to store our hierarchy/Users/cmsj/Library/Containers/net.tenshu.ZipZap/Data/tmp/7dba18a5-afc7-49ab-879d-d46e226688e4-discovery.iso/zipl.prm
-            let pathBits = pathString.split(separator: "/").map(String.init)
-            name = pathBits.last ?? "Unknown"
-            pathComponents = pathBits
-        } else {
-            self.path = "Unknown"
-            self.name = "Unknown"
-            Self.logger.trace("Creating ArchiveEntry for entry with no pathname")
-        }
-
-        if archive_entry_size_is_set(entry) != 0 {
-            self.size = archive_entry_size(entry)
-        } else {
-            self.size = -1
-        }
-
-        if archive_entry_atime_is_set(entry) != 0 {
-            self.atime = Date(timeIntervalSince1970: TimeInterval(archive_entry_atime(entry)))
-        }
-        if archive_entry_ctime_is_set(entry) != 0 {
-            self.ctime = Date(timeIntervalSince1970: TimeInterval(archive_entry_ctime(entry)))
-        }
-        if archive_entry_mtime_is_set(entry) != 0 {
-            self.mtime = Date(timeIntervalSince1970: TimeInterval(archive_entry_mtime(entry)))
-        }
-        if archive_entry_birthtime_is_set(entry) != 0 {
-            self.btime = Date(timeIntervalSince1970: TimeInterval(archive_entry_birthtime(entry)))
-        }
-
-        if let modeCstring = archive_entry_strmode(entry) {
-            self.perms = String(cString: modeCstring)
-        }
-
-        // TODO: Get UID/GID here too
-        if archive_entry_uid_is_set(entry) != 0 {
-            let uid = archive_entry_uid(entry)
-            self.uid = "\(uid)"
-        }
-        if archive_entry_gid_is_set(entry) != 0 {
-            let gid = archive_entry_gid(entry)
-            self.gid = "\(gid)"
-        }
-
-        self.type = ArchiveEntryType(rawValue: archive_entry_filetype(entry))
+        // This is pretty terrible, one logger instance per archive entry. yuck.
+        self.logger = Logger(
+            subsystem: Bundle.main.bundleIdentifier!,
+            category: String(describing: ArchiveEntry.self)
+        )
+        
         if self.type == .directory {
             // If we're a directory, we have at least zero children
             self.children = []
@@ -263,11 +225,16 @@ class ArchiveEntry: Identifiable {
     init(path: String, forArchive: Archive) {
         self.archive = forArchive
         self.isSynthesized = true
-        self.entry = nil
         self.type = .directory
         self.children = []
         self.path = path
         self.size = -1
+
+        // This is pretty terrible, one logger instance per archive entry. yuck.
+        self.logger = Logger(
+            subsystem: Bundle.main.bundleIdentifier!,
+            category: String(describing: ArchiveEntry.self)
+        )
 
         // Parse pathname to store our hierarchy
         let pathBits = path.split(separator: "/").map(String.init)
@@ -277,16 +244,21 @@ class ArchiveEntry: Identifiable {
 
     init?(isRoot: Bool, forArchive: Archive) {
         guard isRoot == true else {
-            Self.logger.error("Root ArchiveEntry initialiser called without true")
+            print("Root ArchiveEntry initialiser called without true")
             return nil
         }
         self.archive = forArchive
         self.isSynthesized = true
-        self.entry = nil
         self.type = .root
         self.children = []
         self.path = "."
         self.size = -1
+
+        // This is pretty terrible, one logger instance per archive entry. yuck.
+        self.logger = Logger(
+            subsystem: Bundle.main.bundleIdentifier!,
+            category: String(describing: ArchiveEntry.self)
+        )
 
         pathComponents = ["."]
         name = "root"
@@ -294,7 +266,7 @@ class ArchiveEntry: Identifiable {
 
     func addChildren(_ entries: [ArchiveEntry]) {
         guard self.children != nil else {
-            Self.logger.error("addChildren called on an ArchiveEntry which can not possess children")
+            logger.error("addChildren called on an ArchiveEntry which can not possess children")
             return
         }
         entries.forEach { self.children?.append($0) }
@@ -306,11 +278,11 @@ class ArchiveEntry: Identifiable {
 
     func addChildHierarchically(_ entry: ArchiveEntry) {
         guard [.directory, .root].contains(self.type) else {
-            Self.logger.error("addChildHierarchically called on something other than directory/root")
+            logger.error("addChildHierarchically called on something other than directory/root")
             return
         }
         guard self.children != nil else {
-            Self.logger.error("addCH found an uninitialised children array")
+            logger.error("addCH found an uninitialised children array")
             return
         }
 
@@ -320,7 +292,7 @@ class ArchiveEntry: Identifiable {
                 children?[dispatchIndex].addChildHierarchically(entry)
             } else {
                 let synthPath = entry.pathComponents.first!
-                Self.logger.trace("Creating synthetic root directory \(synthPath)")
+                logger.trace("Creating synthetic root directory \(synthPath)")
                 self.children?.append(ArchiveEntry(path: synthPath, forArchive: self.archive!))
                 children?[children!.count - 1].addChildHierarchically(entry)
             }
@@ -339,7 +311,7 @@ class ArchiveEntry: Identifiable {
             children?[dispatchIndex].addChildHierarchically(entry)
         } else {
             let synthPath = (self.pathComponents + [relativePath!.first!]).joined(separator: "/")
-            Self.logger.trace("Creating synthetic subdirectory \(synthPath)")
+            logger.trace("Creating synthetic subdirectory \(synthPath)")
             self.children?.append(ArchiveEntry(path: synthPath, forArchive: self.archive!))
             children?[children!.count - 1].addChildHierarchically(entry)
         }

@@ -8,7 +8,7 @@
 import Foundation
 import SwiftUI
 
-struct Entry: Identifiable{
+struct Entry: Identifiable {
     let id = UUID()
     let isSynthesized = false
     let type: ArchiveEntryType
@@ -46,12 +46,16 @@ actor libarchive {
     private var archive: OpaquePointer? = nil
 
     private var path: String
-    private var entries: [Entry] = []
-    private var format: ArchiveFormat = .Unknown
-    private var filters: [ArchiveFilter] = []
+    private(set) var entries: [Entry] = []
+    private(set) var format: ArchiveFormat = .Unknown
+    private(set) var filters: [ArchiveFilter] = []
 
     init(path: String) {
         self.path = path
+    }
+    
+    init(url: URL) {
+        self.path = url.path(percentEncoded: false)
     }
 
     private func open() throws {
@@ -208,14 +212,14 @@ actor libarchive {
         return string
     }
 
-    func readEntriesFormatFilters() throws -> ([Entry], ArchiveFormat, [ArchiveFilter]) {
+    func readEntriesFormatFilters() throws {
         try open()
         defer { close() }
 
         entries = try readEntries()
         readFormatFilters()
 
-        return (entries, format, filters)
+        return
     }
 
     func extractEntries(_ paths: [String], toFolder: URL) throws -> [URL] {

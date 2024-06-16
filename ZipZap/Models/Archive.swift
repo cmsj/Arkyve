@@ -93,96 +93,90 @@ extension Archive {
             newSort = sortDetails
         }
 
-        Self.logger.trace("Changing sort order to \(String(describing: newSort.keyPath))::\(String(describing: newSort.order))")
-        DispatchQueue.main.async {
-            // FIXME: This should be sorting the tree, not the array
-            self.entries.sort(using: [newSort])
-        }
+        // FIXME: This should be sorting the tree, not the array
+        self.entries.sort(using: [newSort])
     }
 }
 
 // MARK: Libarchive wrappers
-extension Archive {
-    func libarchive_open() throws {
-        if self.fd >= 0 {
-            lseek(self.fd, 0, SEEK_SET)
-        }
-
-        // Prepare libarchive's data structure
-        archive = archive_read_new()
-        if archive == nil {
-            throw ArchiveError.ArchiveOpenError("Unable to allocate archive memory")
-        }
-        archive_read_support_filter_all(archive)
-        archive_read_support_format_all(archive)
-
-        Self.logger.trace("Opening: \(self.path)")
-        self.fd = Darwin.open(self.path, O_RDONLY)
-        if self.fd < 0 {
-            libarchive_close()
-            throw ArchiveError.ArchiveOpenError("Unable to open \(self.path): \(errno)")
-        }
-
-        let ptr = archive_read_open_fd(archive, self.fd, 10240)
-        if ptr != ARCHIVE_OK {
-            let errStr = String(cString: archive_error_string(archive))
-            libarchive_close()
-            throw ArchiveError.ArchiveOpenError("Unable to open archive (\(ptr)): \(errStr)")
-        }
-    }
-
-    func libarchive_close() {
-        guard self.archive != nil else { return }
-        archive_read_free(archive)
-        archive = nil
-    }
-
-    func libarchive_entries(_ closure: (OpaquePointer?) throws -> ArchiveEntriesAction) throws {
-        guard self.archive != nil else {
-            throw ArchiveError.ArchiveEntriesError("libarchive_entries() called on a nil archive")
-        }
-
-        var entry: OpaquePointer?
-        Self.logger.trace("Walking archive headers...")
-        while (archive_read_next_header(self.archive, &entry) == ARCHIVE_OK) {
-            if try closure(entry) == .Break {
-                break
-            }
-        }
-    }
-
-    func libarchive_entry_path(_ entry: OpaquePointer?) -> String? {
-        var string: String? = nil
-
-        if let cString = archive_entry_pathname(entry) {
-            string = String(cString: cString)
-        }
-
-        // Lots of archives include trailing slashes on their path names, which is annoying and unnecessary.
-        if string != nil && string?.last == "/" {
-            string = String(string!.dropLast())
-        }
-
-        return string
-    }
-
-    func libarchive_entry_data(_ entry: OpaquePointer?) -> Data {
-        let size = Int(archive_entry_size(entry))
-        let rawData = UnsafeMutablePointer<UInt8>.allocate(capacity: size)
-
-        Self.logger.trace("Reading entry data (\(size) bytes)")
-        archive_read_data(self.archive, rawData, size)
-
-        return Data(bytes: rawData, count: size)
-    }
-}
+//extension Archive {
+//    func libarchive_open() throws {
+//        if self.fd >= 0 {
+//            lseek(self.fd, 0, SEEK_SET)
+//        }
+//
+//        // Prepare libarchive's data structure
+//        archive = archive_read_new()
+//        if archive == nil {
+//            throw ArchiveError.ArchiveOpenError("Unable to allocate archive memory")
+//        }
+//        archive_read_support_filter_all(archive)
+//        archive_read_support_format_all(archive)
+//
+//        Self.logger.trace("Opening: \(self.path)")
+//        self.fd = Darwin.open(self.path, O_RDONLY)
+//        if self.fd < 0 {
+//            libarchive_close()
+//            throw ArchiveError.ArchiveOpenError("Unable to open \(self.path): \(errno)")
+//        }
+//
+//        let ptr = archive_read_open_fd(archive, self.fd, 10240)
+//        if ptr != ARCHIVE_OK {
+//            let errStr = String(cString: archive_error_string(archive))
+//            libarchive_close()
+//            throw ArchiveError.ArchiveOpenError("Unable to open archive (\(ptr)): \(errStr)")
+//        }
+//    }
+//
+//    func libarchive_close() {
+//        guard self.archive != nil else { return }
+//        archive_read_free(archive)
+//        archive = nil
+//    }
+//
+//    func libarchive_entries(_ closure: (OpaquePointer?) throws -> ArchiveEntriesAction) throws {
+//        guard self.archive != nil else {
+//            throw ArchiveError.ArchiveEntriesError("libarchive_entries() called on a nil archive")
+//        }
+//
+//        var entry: OpaquePointer?
+//        Self.logger.trace("Walking archive headers...")
+//        while (archive_read_next_header(self.archive, &entry) == ARCHIVE_OK) {
+//            if try closure(entry) == .Break {
+//                break
+//            }
+//        }
+//    }
+//
+//    func libarchive_entry_path(_ entry: OpaquePointer?) -> String? {
+//        var string: String? = nil
+//
+//        if let cString = archive_entry_pathname(entry) {
+//            string = String(cString: cString)
+//        }
+//
+//        // Lots of archives include trailing slashes on their path names, which is annoying and unnecessary.
+//        if string != nil && string?.last == "/" {
+//            string = String(string!.dropLast())
+//        }
+//
+//        return string
+//    }
+//
+//    func libarchive_entry_data(_ entry: OpaquePointer?) -> Data {
+//        let size = Int(archive_entry_size(entry))
+//        let rawData = UnsafeMutablePointer<UInt8>.allocate(capacity: size)
+//
+//        Self.logger.trace("Reading entry data (\(size) bytes)")
+//        archive_read_data(self.archive, rawData, size)
+//
+//        return Data(bytes: rawData, count: size)
+//    }
+//}
 
 @Observable
 class Archive {
-    private static let logger = Logger(
-        subsystem: Bundle.main.bundleIdentifier!,
-        category: String(describing: Archive.self)
-    )
+    let logger: Logger
     let queue = DispatchQueue(label: UUID().uuidString, qos: .userInitiated)
 
     var URL: URL
@@ -192,8 +186,6 @@ class Archive {
     var root: ArchiveEntry!
     var error: String? = nil
     var log: [ArchiveLogEntry] = []
-    private var fd: Int32 = -1
-    private var archive: OpaquePointer? = nil
     var format: ArchiveFormat = .Unknown
     var filters: [ArchiveFilter] = []
     var cacheURL: URL
@@ -204,116 +196,84 @@ class Archive {
         self.name = name
         self.path = URL.path().removingPercentEncoding ?? "Unknown"
         self.cacheURL = FileManager.default.temporaryDirectory.appendingPathComponent(name)
+        
+        let logger = Logger(
+            subsystem: Bundle.main.bundleIdentifier!,
+            category: String(describing: Archive.self) + name
+        )
+        self.logger = logger
         self.root = ArchiveEntry(isRoot: true, forArchive: self)
-        Self.logger.trace("Initialised for \(self.URL)")
+
+        logger.trace("Initialised for \(self.URL)")
     }
 
     deinit {
         self.close()
     }
 
-    func open() {
+    func open() async {
         do {
             try FileManager.default.createDirectory(at: self.cacheURL, withIntermediateDirectories: true)
         } catch {
-            Self.logger.error("Unable to create cache directory: \(self.cacheURL)")
+            logger.error("Unable to create cache directory: \(self.cacheURL)")
             self.error = "Unable to create cache directory"
             return
         }
 
-        // Process the archive on a background thread
-        queue.async {
-            // Initialise libarchive data structure and open our archive
-            do {
-                try self.libarchive_open()
-
-                try self.libarchive_entries { entryPtr in
-                    if let entry = ArchiveEntry(entryPtr, forArchive: self) {
-                        self.entries.insert(entry, at: self.entries.insertionIndex(of: entry))
-                    }
-                    archive_read_data_skip(self.archive)
-                    return .Continue
-                }
-            } catch ArchiveError.ArchiveOpenError(let errorMsg), ArchiveError.ArchiveEntriesError(let errorMsg) {
-                DispatchQueue.main.async {
-                    Self.logger.error("\(errorMsg)")
-                    self.error = errorMsg
-                }
-            } catch {
-                Self.logger.error("Unknown exception")
-            }
-
-            // Read out some information about the archive itself
-            if self.archive != nil {
-                self.format = ArchiveFormat(rawValue: archive_format(self.archive)) ?? .Unknown
-
-                for i in 0...archive_filter_count(self.archive) {
-                    if let filter = ArchiveFilter(rawValue: archive_filter_code(self.archive, i)) {
-                        self.filters.append(filter)
-                    }
-                }
-            }
-
-            Self.logger.trace("Archive format: \(String(describing: self.format)), filters: \(String(describing: self.filters))")
-
-            // We're done with libarchive now
-            self.libarchive_close()
-
-            // At this point, Archive.entries is a flat list, but archives can be hiearchical, so we need to collapse the list down to a tree
-
-            // Find archive entries that aren't in a directory, merge them directly into the tree, keeping the rest for later
-            let (rootItems, remainingAll) = self.entries.filterBothwise { $0.path.countOccurrences(of: "/") == 0 }
-            DispatchQueue.main.async {
-                self.root.addChildren(rootItems)
-            }
-
-            // Find all the entries we still need to fit into the tree, split into directories and files
-            let (remainingDirs, remainingFiles) = remainingAll.filterBothwise { $0.type == .directory }
-
-            DispatchQueue.main.async {
-                Self.logger.trace("Adding remaining directories")
-                self.root.addChildrenHierarchically(remainingDirs)
-
-                print("Adding remaining files...")
-                self.root.addChildrenHierarchically(remainingFiles)
-            }
+        let libarchive = libarchive(url: self.URL)
+        
+        do {
+            try await libarchive.readEntriesFormatFilters()
+        } catch {
+            self.error = error.localizedDescription
+            return
         }
+        let entries = await libarchive.entries
+        self.entries = entries.map { ArchiveEntry($0, forArchive: self) }
+        self.format = await libarchive.format
+        self.filters = await libarchive.filters
+
+        let (rootItems, remainingAll) = self.entries.filterBothwise { $0.path.countOccurrences(of: "/") == 0 }
+        self.root.addChildren(rootItems)
+        
+        let (remainingDirs, remainingFiles) = remainingAll.filterBothwise { $0.type == .directory }
+        self.root.addChildrenHierarchically(remainingDirs)
+        self.root.addChildrenHierarchically(remainingFiles)
     }
 
     private func close() {
-        Self.logger.trace("Archive::close() on \(self.name)")
-        Darwin.close(self.fd)
+        logger.trace("Archive::close() on \(self.name)")
         do {
             try FileManager.default.removeItem(at: self.cacheURL)
         } catch {
-            Self.logger.error("Unable to remove cache directory at: \(self.cacheURL)")
+            logger.error("Unable to remove cache directory at: \(self.cacheURL)")
         }
     }
 
     // NOTE: These write methods do not use any async, but are self-contained and can be called from a background thread
-    func extractEntryToCache(_ entry: ArchiveEntry) throws -> [URL] {
-        return try extractEntries([entry], toFolder: cacheURL)
+    func extractEntryToCache(_ entry: ArchiveEntry) async throws -> [URL] {
+        return try await extractEntries([entry], toFolder: cacheURL)
     }
 
-    func extractEntry(_ entry: ArchiveEntry, toFolder: URL) throws -> [URL] {
-        return try extractEntries([entry], toFolder: toFolder)
+    func extractEntry(_ entry: ArchiveEntry, toFolder: URL) async throws -> [URL] {
+        return try await extractEntries([entry], toFolder: toFolder)
     }
 
     // NOTE: This method doesn't throw because it's called from SwiftUI and it's better to handle the errors here
-    func extractEntries(_ entries: Set<ArchiveEntry.ID>, toFolder: URL) -> [URL] {
+    func extractEntries(_ entries: Set<ArchiveEntry.ID>, toFolder: URL) async -> [URL] {
         let foundEntries = self.entries.filter { entries.contains($0.id) }
         do {
-            return try extractEntries(foundEntries, toFolder: toFolder)
+            return try await extractEntries(foundEntries, toFolder: toFolder)
         } catch {
             self.error = "Unable to extract selected items"
             return []
         }
     }
 
-    func extractEntries(_ entries: [ArchiveEntry], toFolder: URL) throws -> [URL] {
+    func extractEntries(_ entries: [ArchiveEntry], toFolder: URL) async throws -> [URL] {
         var writtenURLS: [URL] = []
 
-        Self.logger.trace("extractEntries: extracting \(entries.count) items to: \(toFolder)")
+        logger.trace("extractEntries: extracting \(entries.count) items to: \(toFolder)")
 
         // Convert entries, which can be a tree, into a flat list for our libarchive walk below
         var flatEntries: [ArchiveEntry] = []
@@ -324,7 +284,7 @@ class Archive {
         // Before we touch libarchive, deal with any synthetic directories first
         for (index, entry) in flatEntries.enumerated().reversed() {
             if entry.isSynthesized {
-                Self.logger.trace("Handling synthesised entry: \(entry.path)")
+                logger.trace("Handling synthesised entry: \(entry.path)")
 
                 // Whether we succeed or fail here, we don't need this again later
                 flatEntries.remove(at: index)
@@ -335,76 +295,13 @@ class Archive {
             }
         }
 
-        // Initialise libarchive data structure and open our archive
-        try libarchive_open()
-
-        try libarchive_entries { entryPtr in
-            // We can tell this closure's iterator to exit if we've processed all the entries
-            guard flatEntries.count > 0 else { return .Break }
-
-            if let path = libarchive_entry_path(entryPtr) {
-                // Check if this archive header matches one of the entries we are trying to extract
-                if let (index, entry) = flatEntries.entryForPath(path) {
-                    Self.logger.trace("extractEntries: Processing libarchive path: \(path)")
-                    // Whether it works or fails, remove this entry so we can detect early completion
-                    flatEntries.remove(at: index)
-
-                    let entryURL = toFolder.appendingPathComponent(entry.path)
-                    switch entry.type {
-                    case .file:
-                        Self.logger.trace("extractEntries: Constructed file URL: \(entryURL)")
-
-                        // Ensure file exists
-                        try Data().write(to: entryURL)
-                        let handle = try FileHandle(forWritingTo: entryURL)
-                        let result = archive_read_data_into_fd(self.archive, handle.fileDescriptor)
-                        if result != ARCHIVE_OK {
-                            Self.logger.error("extractEntries: Unable to write \(path) to fd")
-                            throw ArchiveError.ArchiveExtractError("Unable to write \(path) to fd")
-                        }
-
-                        writtenURLS.append(entryURL)
-                        Self.logger.trace("extractEntries: Written to \(entryURL)")
-                    case .directory:
-                        // FIXME: Is folderURL different to entryURL?
-                        let folderURL = toFolder.appendingPathComponent(path)
-                        Self.logger.trace("extractEntries: Constructed directory URL: \(folderURL)")
-
-                        // Create the directory and skip whatever data libarchive has for it
-                        try FileManager.default.createDirectory(at: folderURL, withIntermediateDirectories: true)
-                        archive_read_data_skip(self.archive)
-
-                        writtenURLS.append(folderURL)
-                    case .blockdev:
-                        Self.logger.warning("extractEntries: blockdev extraction not supported: \(path)")
-                        return .Continue
-                    case .chardev:
-                        Self.logger.warning("extractEntries: chardev extraction not supported: \(path)")
-                        return .Continue
-                    case .socket:
-                        Self.logger.warning("extractEntries: socket extraction not supported: \(path)")
-                        return .Continue
-                    case .fifo:
-                        //mkfifo(path, mode_t)
-                        Self.logger.warning("extractEntries: fifo extraction not supported: \(path)")
-                        return .Continue
-                    case .symlink:
-                        // FIXME: This is untested, doubly so its ability to produce directory symlinks (if that even makes a difference on macOS)
-                        let linkDest = String(cString: archive_entry_symlink(entryPtr))
-                        let linkDestURL = Foundation.URL(fileURLWithPath: linkDest, isDirectory: archive_entry_symlink_type(entryPtr) == AE_SYMLINK_TYPE_DIRECTORY)
-                        try FileManager.default.createSymbolicLink(at: entryURL, withDestinationURL: linkDestURL)
-                    default:
-                        Self.logger.error("extractEntries: Trying to extract unsupported type: \(entry.type.rawValue)")
-                    }
-                }
-            } else {
-                Self.logger.trace("extractArchives: Unable to find desired entries in archive")
-            }
-            return .Continue
+        let libarchive = libarchive(url: self.URL)
+        do {
+            try await writtenURLS = libarchive.extractEntries(flatEntries.map { $0.path }, toFolder: toFolder)
+        } catch {
+            self.error = error.localizedDescription
+            return writtenURLS
         }
-
-        // We're done with libarchive at this point
-        libarchive_close()
 
         return writtenURLS
     }

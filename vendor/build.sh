@@ -219,3 +219,10 @@ buildB2 Release
 
 buildARCHIVE Debug
 buildARCHIVE Release
+
+echo "Library results:"
+find lib -type f -exec lipo -info {} \;
+
+echo "Include results:"
+find include -type f
+

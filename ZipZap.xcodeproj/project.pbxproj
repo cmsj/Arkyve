@@ -25,6 +25,7 @@
 		4FCEEF292BEE3D3E009E9E17 /* Archive.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FCEEF282BEE3D3E009E9E17 /* Archive.swift */; };
 		4FCEEF2C2BEE3D72009E9E17 /* ArchiveEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FCEEF2B2BEE3D72009E9E17 /* ArchiveEntry.swift */; };
 		4FD4BA562C07C58E00082C13 /* Date.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FD4BA552C07C58E00082C13 /* Date.swift */; };
+		4FDC674F2C19065A00A10035 /* libarchive.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FDC674E2C19065A00A10035 /* libarchive.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -68,6 +69,7 @@
 		4FCEEF2B2BEE3D72009E9E17 /* ArchiveEntry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArchiveEntry.swift; sourceTree = "<group>"; };
 		4FD4BA552C07C58E00082C13 /* Date.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Date.swift; sourceTree = "<group>"; };
 		4FD4BA572C07EC7F00082C13 /* libarchive_Bridge.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = libarchive_Bridge.h; sourceTree = "<group>"; };
+		4FDC674E2C19065A00A10035 /* libarchive.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = libarchive.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -162,6 +164,7 @@
 				4FCEEF282BEE3D3E009E9E17 /* Archive.swift */,
 				4FCEEF2B2BEE3D72009E9E17 /* ArchiveEntry.swift */,
 				4F7121822C0E800F000EB268 /* ArchiveLogEntry.swift */,
+				4FDC674E2C19065A00A10035 /* libarchive.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -207,7 +210,7 @@
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
 				LastSwiftUpdateCheck = 1530;
-				LastUpgradeCheck = 1530;
+				LastUpgradeCheck = 1540;
 				TargetAttributes = {
 					4FCEEED92BEE39E7009E9E17 = {
 						CreatedOnToolsVersion = 15.3;
@@ -264,6 +267,7 @@
 				4F71218E2C0F4DE7000EB268 /* TableView.swift in Sources */,
 				4F7121942C0F6938000EB268 /* TableRowTreeContent.swift in Sources */,
 				4FCEEEDE2BEE39E7009E9E17 /* ZipZapApp.swift in Sources */,
+				4FDC674F2C19065A00A10035 /* libarchive.swift in Sources */,
 				4F71219D2C10BB1D000EB268 /* ErrorView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -305,6 +309,7 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
+				DEAD_CODE_STRIPPING = YES;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
@@ -368,6 +373,7 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
+				DEAD_CODE_STRIPPING = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
@@ -400,6 +406,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
+				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_ASSET_PATHS = "\"ZipZap/Preview Content\"";
 				DEVELOPMENT_TEAM = VQCYSNZB89;
 				ENABLE_HARDENED_RUNTIME = YES;
@@ -436,6 +443,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_OBJC_BRIDGING_HEADER = ZipZap/libarchive_Bridge.h;
+				SWIFT_STRICT_CONCURRENCY = complete;
 				SWIFT_VERSION = 5.0;
 			};
 			name = Debug;
@@ -451,6 +459,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
+				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_ASSET_PATHS = "\"ZipZap/Preview Content\"";
 				DEVELOPMENT_TEAM = VQCYSNZB89;
 				ENABLE_HARDENED_RUNTIME = YES;
@@ -486,6 +495,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_OBJC_BRIDGING_HEADER = ZipZap/libarchive_Bridge.h;
+				SWIFT_STRICT_CONCURRENCY = complete;
 				SWIFT_VERSION = 5.0;
 			};
 			name = Release;

@@ -212,14 +212,14 @@ actor libarchive {
         return string
     }
 
-    func readEntriesFormatFilters() throws {
+    func readEntriesFormatFilters() throws -> (ArchiveFormat, [ArchiveFilter], [Entry]) {
         try open()
         defer { close() }
 
         entries = try readEntries()
         readFormatFilters()
 
-        return
+        return (self.format, self.filters, self.entries)
     }
 
     func extractEntries(_ paths: [String], toFolder: URL) throws -> [URL] {

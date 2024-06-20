@@ -88,10 +88,10 @@
 			children = (
 				4FCEEEDF2BEE39E7009E9E17 /* MainWindowView.swift */,
 				4F7121912C0F5DE1000EB268 /* ToolbarContent.swift */,
+				4F71219C2C10BB1D000EB268 /* ErrorView.swift */,
 				4F71218D2C0F4DE7000EB268 /* TableView.swift */,
 				4F7121932C0F6938000EB268 /* TableRowTreeContent.swift */,
 				4F71218B2C0F4CCA000EB268 /* StatusbarView.swift */,
-				4F71219C2C10BB1D000EB268 /* ErrorView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -444,7 +444,7 @@
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_OBJC_BRIDGING_HEADER = ZipZap/libarchive_Bridge.h;
 				SWIFT_STRICT_CONCURRENCY = complete;
-				SWIFT_VERSION = 5.0;
+				SWIFT_VERSION = 6.0;
 			};
 			name = Debug;
 		};
@@ -496,7 +496,7 @@
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_OBJC_BRIDGING_HEADER = ZipZap/libarchive_Bridge.h;
 				SWIFT_STRICT_CONCURRENCY = complete;
-				SWIFT_VERSION = 5.0;
+				SWIFT_VERSION = 6.0;
 			};
 			name = Release;
 		};

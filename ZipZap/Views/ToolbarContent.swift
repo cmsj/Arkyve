@@ -54,7 +54,7 @@ struct ToolbarContentView: CustomizableToolbarContent {
         }
         ToolbarItem(id: "Extract"){
             Button {
-//                viewModel.extractButton()
+                viewModel.extractButton()
             } label: {
                 Label("Extract", systemImage: "folder.badge.minus")
                     .padding()

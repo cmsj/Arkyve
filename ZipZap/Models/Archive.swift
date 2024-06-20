@@ -8,15 +8,12 @@
 import Foundation
 import os
 
+typealias Mutex = OSAllocatedUnfairLock
+
 enum ArchiveError: Error {
     case ArchiveOpenError(String)
     case ArchiveEntriesError(String)
     case ArchiveExtractError(String)
-}
-
-enum ArchiveEntriesAction {
-    case Continue
-    case Break
 }
 
 enum ArchiveFormat: Int32 {
@@ -98,84 +95,8 @@ extension Archive {
     }
 }
 
-// MARK: Libarchive wrappers
-//extension Archive {
-//    func libarchive_open() throws {
-//        if self.fd >= 0 {
-//            lseek(self.fd, 0, SEEK_SET)
-//        }
-//
-//        // Prepare libarchive's data structure
-//        archive = archive_read_new()
-//        if archive == nil {
-//            throw ArchiveError.ArchiveOpenError("Unable to allocate archive memory")
-//        }
-//        archive_read_support_filter_all(archive)
-//        archive_read_support_format_all(archive)
-//
-//        Self.logger.trace("Opening: \(self.path)")
-//        self.fd = Darwin.open(self.path, O_RDONLY)
-//        if self.fd < 0 {
-//            libarchive_close()
-//            throw ArchiveError.ArchiveOpenError("Unable to open \(self.path): \(errno)")
-//        }
-//
-//        let ptr = archive_read_open_fd(archive, self.fd, 10240)
-//        if ptr != ARCHIVE_OK {
-//            let errStr = String(cString: archive_error_string(archive))
-//            libarchive_close()
-//            throw ArchiveError.ArchiveOpenError("Unable to open archive (\(ptr)): \(errStr)")
-//        }
-//    }
-//
-//    func libarchive_close() {
-//        guard self.archive != nil else { return }
-//        archive_read_free(archive)
-//        archive = nil
-//    }
-//
-//    func libarchive_entries(_ closure: (OpaquePointer?) throws -> ArchiveEntriesAction) throws {
-//        guard self.archive != nil else {
-//            throw ArchiveError.ArchiveEntriesError("libarchive_entries() called on a nil archive")
-//        }
-//
-//        var entry: OpaquePointer?
-//        Self.logger.trace("Walking archive headers...")
-//        while (archive_read_next_header(self.archive, &entry) == ARCHIVE_OK) {
-//            if try closure(entry) == .Break {
-//                break
-//            }
-//        }
-//    }
-//
-//    func libarchive_entry_path(_ entry: OpaquePointer?) -> String? {
-//        var string: String? = nil
-//
-//        if let cString = archive_entry_pathname(entry) {
-//            string = String(cString: cString)
-//        }
-//
-//        // Lots of archives include trailing slashes on their path names, which is annoying and unnecessary.
-//        if string != nil && string?.last == "/" {
-//            string = String(string!.dropLast())
-//        }
-//
-//        return string
-//    }
-//
-//    func libarchive_entry_data(_ entry: OpaquePointer?) -> Data {
-//        let size = Int(archive_entry_size(entry))
-//        let rawData = UnsafeMutablePointer<UInt8>.allocate(capacity: size)
-//
-//        Self.logger.trace("Reading entry data (\(size) bytes)")
-//        archive_read_data(self.archive, rawData, size)
-//
-//        return Data(bytes: rawData, count: size)
-//    }
-//}
-
 @Observable
-class Archive {
+class Archive: @unchecked Sendable {
     let logger: Logger
     let queue = DispatchQueue(label: UUID().uuidString, qos: .userInitiated)
 
@@ -189,6 +110,8 @@ class Archive {
     var format: ArchiveFormat = .Unknown
     var filters: [ArchiveFilter] = []
     var cacheURL: URL
+
+    let lock = Mutex()
 
     init(name: String, URL: URL) {
         self.URL = URL
@@ -211,7 +134,7 @@ class Archive {
         self.close()
     }
 
-    func open() async {
+    func open() {
         do {
             try FileManager.default.createDirectory(at: self.cacheURL, withIntermediateDirectories: true)
         } catch {
@@ -220,25 +143,33 @@ class Archive {
             return
         }
 
-        let libarchive = libarchive(url: self.URL)
-        
-        do {
-            try await libarchive.readEntriesFormatFilters()
-        } catch {
-            self.error = error.localizedDescription
-            return
-        }
-        let entries = await libarchive.entries
-        self.entries = entries.map { ArchiveEntry($0, forArchive: self) }
-        self.format = await libarchive.format
-        self.filters = await libarchive.filters
+        Task {
+            self.logger.trace("Archive::open() task on \(self.name)")
+            let libarchive = libarchive(url: self.URL)
+            let archiveFormat: ArchiveFormat
+            let archiveFilters: [ArchiveFilter]
+            let archiveEntries: [Entry]
 
-        let (rootItems, remainingAll) = self.entries.filterBothwise { $0.path.countOccurrences(of: "/") == 0 }
-        self.root.addChildren(rootItems)
-        
-        let (remainingDirs, remainingFiles) = remainingAll.filterBothwise { $0.type == .directory }
-        self.root.addChildrenHierarchically(remainingDirs)
-        self.root.addChildrenHierarchically(remainingFiles)
+            do {
+                (archiveFormat, archiveFilters, archiveEntries) = try await libarchive.readEntriesFormatFilters()
+            } catch {
+                self.error = error.localizedDescription
+                return
+            }
+
+            self.lock.withLock {
+                self.entries = archiveEntries.map { ArchiveEntry($0, forArchive: self) }
+                self.format = archiveFormat
+                self.filters = archiveFilters
+
+                let (rootItems, remainingAll) = self.entries.filterBothwise { $0.path.countOccurrences(of: "/") == 0 }
+                self.root.addChildren(rootItems)
+
+                let (remainingDirs, remainingFiles) = remainingAll.filterBothwise { $0.type == .directory }
+                self.root.addChildrenHierarchically(remainingDirs)
+                self.root.addChildrenHierarchically(remainingFiles)
+            }
+        }
     }
 
     private func close() {
@@ -250,23 +181,21 @@ class Archive {
         }
     }
 
-    // NOTE: These write methods do not use any async, but are self-contained and can be called from a background thread
     func extractEntryToCache(_ entry: ArchiveEntry) async throws -> [URL] {
         return try await extractEntries([entry], toFolder: cacheURL)
     }
 
-    func extractEntry(_ entry: ArchiveEntry, toFolder: URL) async throws -> [URL] {
-        return try await extractEntries([entry], toFolder: toFolder)
-    }
-
     // NOTE: This method doesn't throw because it's called from SwiftUI and it's better to handle the errors here
-    func extractEntries(_ entries: Set<ArchiveEntry.ID>, toFolder: URL) async -> [URL] {
+    func extractEntries(_ entries: Set<ArchiveEntry.ID>, toFolder: URL) {
         let foundEntries = self.entries.filter { entries.contains($0.id) }
-        do {
-            return try await extractEntries(foundEntries, toFolder: toFolder)
-        } catch {
-            self.error = "Unable to extract selected items"
-            return []
+        Task {
+            do {
+                _ = try await extractEntries(foundEntries, toFolder: toFolder)
+            } catch {
+                self.lock.withLock {
+                    self.error = "Unable to extract selected items"
+                }
+            }
         }
     }
 
@@ -299,7 +228,9 @@ class Archive {
         do {
             try await writtenURLS = libarchive.extractEntries(flatEntries.map { $0.path }, toFolder: toFolder)
         } catch {
-            self.error = error.localizedDescription
+            self.lock.withLock {
+                self.error = error.localizedDescription
+            }
             return writtenURLS
         }
 

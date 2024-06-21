@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		4F10848B2C261BB7007DCC39 /* ZZLog in Frameworks */ = {isa = PBXBuildFile; productRef = 4F10848A2C261BB7007DCC39 /* ZZLog */; };
 		4F10848E2C262396007DCC39 /* ZipZapLog.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F10848D2C262393007DCC39 /* ZipZapLog.swift */; };
+		4F1084922C262D5D007DCC39 /* LogWindowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F1084912C262D5D007DCC39 /* LogWindowView.swift */; };
 		4F7121852C0F48B1000EB268 /* RandomAccessCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F7121842C0F48B1000EB268 /* RandomAccessCollection.swift */; };
 		4F7121872C0F48EB000EB268 /* Array.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F7121862C0F48EB000EB268 /* Array.swift */; };
 		4F7121892C0F48FD000EB268 /* String.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F7121882C0F48FD000EB268 /* String.swift */; };
@@ -45,6 +46,7 @@
 /* Begin PBXFileReference section */
 		4F1084872C26189A007DCC39 /* ZZLog */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = ZZLog; sourceTree = SOURCE_ROOT; };
 		4F10848D2C262393007DCC39 /* ZipZapLog.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZipZapLog.swift; sourceTree = "<group>"; };
+		4F1084912C262D5D007DCC39 /* LogWindowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogWindowView.swift; sourceTree = "<group>"; };
 		4F7121842C0F48B1000EB268 /* RandomAccessCollection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RandomAccessCollection.swift; sourceTree = "<group>"; };
 		4F7121862C0F48EB000EB268 /* Array.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Array.swift; sourceTree = "<group>"; };
 		4F7121882C0F48FD000EB268 /* String.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = String.swift; sourceTree = "<group>"; };
@@ -111,6 +113,7 @@
 				4F71218D2C0F4DE7000EB268 /* TableView.swift */,
 				4F7121932C0F6938000EB268 /* TableRowTreeContent.swift */,
 				4F71218B2C0F4CCA000EB268 /* StatusbarView.swift */,
+				4F1084912C262D5D007DCC39 /* LogWindowView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -285,6 +288,7 @@
 				4FD4BA562C07C58E00082C13 /* Date.swift in Sources */,
 				4FCEEF2C2BEE3D72009E9E17 /* ArchiveEntry.swift in Sources */,
 				4F7121872C0F48EB000EB268 /* Array.swift in Sources */,
+				4F1084922C262D5D007DCC39 /* LogWindowView.swift in Sources */,
 				4FCEEF292BEE3D3E009E9E17 /* Archive.swift in Sources */,
 				4F71219B2C10864F000EB268 /* HideViewModifier.swift in Sources */,
 				4F71218C2C0F4CCA000EB268 /* StatusbarView.swift in Sources */,

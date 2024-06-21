@@ -112,11 +112,15 @@ class Archive: @unchecked Sendable {
     }
 
     private func close() {
-        #ZZTrace("Archive::close() on \(self.name)")
+        // These can't be inline to the ZZ macros below, otherwise we're passing `self` to a Task, and this method is called from `deinit()` which then exits with a non-zero retain count on `self.
+        let name = self.name
+        let cacheURL = self.cacheURL
+
+        #ZZTrace("Archive::close() on \(name)")
         do {
-            try FileManager.default.removeItem(at: self.cacheURL)
+            try FileManager.default.removeItem(at: cacheURL)
         } catch {
-            #ZZError("Unable to remove cache directory at: \(self.cacheURL)")
+            #ZZError("Unable to remove cache directory at: \(cacheURL)")
         }
     }
 

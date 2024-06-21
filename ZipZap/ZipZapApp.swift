@@ -41,9 +41,16 @@ struct ZipZapApp: App {
     @NSApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
 
     var body: some Scene {
-        WindowGroup {
+        WindowGroup(id: "archive-window") {
             MainWindowView()
         }
         .windowToolbarStyle(.expanded)
+
+        // FIXME: Switch to UtilityWindow() once macOS 15 is out
+        Window("Log viewer", id: "log-window") {
+            LogWindowView()
+        }
+        // FIXME: Enable this once macOS 15 is released:
+//        .restorationBehavior(.disabled)
     }
 }

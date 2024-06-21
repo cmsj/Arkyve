@@ -19,6 +19,9 @@ struct LogWindowView: View {
                 }
             }
             Spacer()
+            Button("Clear") {
+                logs.entries.removeAll()
+            }
         }
         .padding()
         Table(of: ZipZapLogEntry.self) {

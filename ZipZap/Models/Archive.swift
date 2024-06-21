@@ -223,10 +223,13 @@ class Archive: @unchecked Sendable {
                 writtenURLS.append(folderURL)
             }
         }
+        // We processed any synthesized entries in reverse, so we need to restore the original ordering of output URLs
+        writtenURLS.reverse()
 
         let libarchive = libarchive(url: self.URL)
         do {
-            try await writtenURLS = libarchive.extractEntries(flatEntries.map { $0.path }, toFolder: toFolder)
+            // This needs to be += because we may have already written some URLs above
+            try await writtenURLS += libarchive.extractEntries(flatEntries.map { $0.path }, toFolder: toFolder)
         } catch {
             self.lock.withLock {
                 self.error = error.localizedDescription

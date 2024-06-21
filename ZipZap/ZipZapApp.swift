@@ -7,10 +7,24 @@
 
 import SwiftUI
 
+struct SettingsManager {
+    static let shared = SettingsManager()
+    private init() { }
+
+    let cacheURL = FileManager.default.temporaryDirectory.appendingPathComponent("cache")
+}
+
 class AppDelegate: NSObject, NSApplicationDelegate {
+    func applicationWillFinishLaunching(_ notification: Notification) {
+        do {
+            try FileManager.default.createDirectory(at: SettingsManager.shared.cacheURL, withIntermediateDirectories: true)
+        } catch {
+            fatalError("Unable to create cache directory at \(SettingsManager.shared.cacheURL)")
+        }
+    }
 
     func applicationWillTerminate(_ aNotification: Notification) {
-        // FIXME: Clean up cache directory here
+        try? FileManager.default.removeItem(at: SettingsManager.shared.cacheURL)
     }
 }
 

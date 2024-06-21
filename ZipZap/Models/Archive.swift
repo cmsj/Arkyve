@@ -118,7 +118,7 @@ class Archive: @unchecked Sendable {
         let name = URL.lastPathComponent
         self.name = name
         self.path = URL.path().removingPercentEncoding ?? "Unknown"
-        self.cacheURL = FileManager.default.temporaryDirectory.appendingPathComponent(name)
+        self.cacheURL = SettingsManager.shared.cacheURL.appendingPathComponent(name)
         
         let logger = Logger(
             subsystem: Bundle.main.bundleIdentifier!,

@@ -8,7 +8,7 @@
 import Foundation
 import UniformTypeIdentifiers
 import SwiftUI
-import os
+import ZZLog
 
 enum ArchiveEntryType: String {
     case unknown = "questionmark"
@@ -46,12 +46,12 @@ enum ArchiveEntryType: String {
 extension Array where Element == String {
     func subtractPath(_ path: [String]) -> [String]? {
         guard self.count >= path.count else {
-            print("Array::subtractPath called with a path that is longer (\(path.count)) than I am (\(self.count).")
+            #ZZError("Array::subtractPath called with a path that is longer (\(path.count)) than I am (\(self.count).")
             return nil
         }
 
         guard self.prefix(path.count).elementsEqual(path) else {
-            print("Array::subtractPath does not start with the path provided.")
+            #ZZError("Array::subtractPath does not start with the path provided.")
             return nil
         }
 
@@ -126,8 +126,9 @@ extension ArchiveEntry {
         provider.registerDataRepresentation(forTypeIdentifier: UTType.fileURL.identifier, visibility: .all) { completion in
             let progress = Progress(totalUnitCount: 100)
             guard let archive = self.archive else {
-                Self.logger.error("Unable to find Archive for ArchiveEntry::\(self.name)")
-                completion(nil, NSError(domain: "DragAndDrop", code: -1, userInfo: [NSLocalizedDescriptionKey: "Unable to find Archive for ArchiveEntry::\(self.name)"]))
+                let error = "Unable to find Archive for ArchiveEntry \(self.name)"
+                #ZZError(error)
+                completion(nil, NSError(domain: "DragAndDrop", code: -1, userInfo: [NSLocalizedDescriptionKey: error]))
                 return progress
             }
 
@@ -135,20 +136,21 @@ extension ArchiveEntry {
                 do {
                     let writtenURLs = try await archive.extractEntryToCache(self)
                     guard writtenURLs.count > 0 else { throw ArchiveError.ArchiveExtractError("Zero entries extracted")}
-                    Self.logger.trace("Reporting success")
+                    #ZZTrace("Reporting success")
                     progress.completedUnitCount = 100
                     completion(writtenURLs.first!.dataRepresentation, nil)
                 } catch {
                     // FIXME: We're should explicitly catch ArchiveExtractError here, and feed our errors into archive.error
-                    Self.logger.trace("Writing failed for \(self.path): \(error)")
-                    completion(nil, NSError(domain: "DragAndDrop", code: -1, userInfo: [NSLocalizedDescriptionKey: "Unable to write to cache"]))
+                    let error = "Writing failed for \(self.path): \(error)"
+                    #ZZError(error)
+                    completion(nil, NSError(domain: "DragAndDrop", code: -1, userInfo: [NSLocalizedDescriptionKey: error]))
                 }
             }
 
-            Self.logger.trace("Returning progress")
+            #ZZTrace("Returning progress")
             return progress
         }
-        Self.logger.trace("Item provider registered")
+        #ZZTrace("Item provider registered")
         return provider
     }
 }
@@ -157,10 +159,6 @@ extension ArchiveEntry {
 class ArchiveEntry: Identifiable, @unchecked Sendable {
     weak var archive: Archive?
     let id = UUID()
-    private static let logger = Logger(
-        subsystem: Bundle.main.bundleIdentifier!,
-        category: String(describing: ArchiveEntry.self)
-    )
 
     var children: [ArchiveEntry]? = nil
     // Archives don't always contain entries for directories, but the files in them still contain nested paths
@@ -198,7 +196,7 @@ class ArchiveEntry: Identifiable, @unchecked Sendable {
 
     let lock = Mutex()
 
-    init(_ entry: Entry, forArchive: Archive) {
+    init(_ entry: libarchiveEntry, forArchive: Archive) {
         self.archive = forArchive
         self.path = entry.path
         self.name = entry.name
@@ -235,7 +233,7 @@ class ArchiveEntry: Identifiable, @unchecked Sendable {
 
     init?(isRoot: Bool, forArchive: Archive) {
         guard isRoot == true else {
-            print("Root ArchiveEntry initialiser called without true")
+            #ZZError("Root ArchiveEntry initialiser called without true")
             return nil
         }
         self.archive = forArchive
@@ -251,7 +249,7 @@ class ArchiveEntry: Identifiable, @unchecked Sendable {
 
     func addChildren(_ entries: [ArchiveEntry]) {
         guard self.children != nil else {
-            Self.logger.error("addChildren called on an ArchiveEntry which can not possess children")
+            #ZZError("addChildren called on an ArchiveEntry which can not possess children")
             return
         }
         self.lock.withLock {
@@ -265,11 +263,11 @@ class ArchiveEntry: Identifiable, @unchecked Sendable {
 
     func addChildHierarchically(_ entry: ArchiveEntry) {
         guard [.directory, .root].contains(self.type) else {
-            Self.logger.error("addChildHierarchically called on something other than directory/root")
+            #ZZError("addChildHierarchically called on something other than directory/root")
             return
         }
         guard self.children != nil else {
-            Self.logger.error("addCH found an uninitialised children array")
+            #ZZError("addCH found an uninitialised children array")
             return
         }
 
@@ -279,7 +277,7 @@ class ArchiveEntry: Identifiable, @unchecked Sendable {
                 children?[dispatchIndex].addChildHierarchically(entry)
             } else {
                 let synthPath = entry.pathComponents.first!
-                Self.logger.trace("Creating synthetic root directory \(synthPath)")
+                #ZZTrace("Creating synthetic root directory \(synthPath)")
                 self.lock.withLock {
                     self.children?.append(ArchiveEntry(path: synthPath, forArchive: self.archive!))
                 }
@@ -302,7 +300,7 @@ class ArchiveEntry: Identifiable, @unchecked Sendable {
             children?[dispatchIndex].addChildHierarchically(entry)
         } else {
             let synthPath = (self.pathComponents + [relativePath!.first!]).joined(separator: "/")
-            Self.logger.trace("Creating synthetic subdirectory \(synthPath)")
+            #ZZTrace("Creating synthetic subdirectory \(synthPath)")
             self.lock.withLock {
                 self.children?.append(ArchiveEntry(path: synthPath, forArchive: self.archive!))
             }

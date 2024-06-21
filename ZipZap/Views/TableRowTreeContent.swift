@@ -7,6 +7,7 @@
 
 import SwiftUI
 import UniformTypeIdentifiers
+import ZZLog
 
 struct TableRowTreeContent: TableRowContent {
     let children: [ArchiveEntry]
@@ -27,7 +28,8 @@ struct TableRowTreeContent: TableRowContent {
             }
         }
         .onInsert(of: [ArchiveEntry.draggableType, .fileURL]) { index, providers in
-            print("Received a drop! Index: \(index) on \(String(describing: self))")
+            let error = "Received a drop! Index: \(index) on \(String(describing: self))"
+            #ZZTrace(error)
 
             // FIXME: This needs to:
             //   * Find the relevant ArchiveEntry that describes the folder the drag happened into

@@ -7,7 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		4F7121832C0E800F000EB268 /* ArchiveLogEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F7121822C0E800F000EB268 /* ArchiveLogEntry.swift */; };
+		4F10848B2C261BB7007DCC39 /* ZZLog in Frameworks */ = {isa = PBXBuildFile; productRef = 4F10848A2C261BB7007DCC39 /* ZZLog */; };
+		4F10848E2C262396007DCC39 /* ZipZapLog.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F10848D2C262393007DCC39 /* ZipZapLog.swift */; };
 		4F7121852C0F48B1000EB268 /* RandomAccessCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F7121842C0F48B1000EB268 /* RandomAccessCollection.swift */; };
 		4F7121872C0F48EB000EB268 /* Array.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F7121862C0F48EB000EB268 /* Array.swift */; };
 		4F7121892C0F48FD000EB268 /* String.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F7121882C0F48FD000EB268 /* String.swift */; };
@@ -42,7 +43,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		4F7121822C0E800F000EB268 /* ArchiveLogEntry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArchiveLogEntry.swift; sourceTree = "<group>"; };
+		4F1084872C26189A007DCC39 /* ZZLog */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = ZZLog; sourceTree = SOURCE_ROOT; };
+		4F10848D2C262393007DCC39 /* ZipZapLog.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZipZapLog.swift; sourceTree = "<group>"; };
 		4F7121842C0F48B1000EB268 /* RandomAccessCollection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RandomAccessCollection.swift; sourceTree = "<group>"; };
 		4F7121862C0F48EB000EB268 /* Array.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Array.swift; sourceTree = "<group>"; };
 		4F7121882C0F48FD000EB268 /* String.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = String.swift; sourceTree = "<group>"; };
@@ -77,12 +79,29 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4F10848B2C261BB7007DCC39 /* ZZLog in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		4F1084862C261871007DCC39 /* Modules */ = {
+			isa = PBXGroup;
+			children = (
+				4F1084872C26189A007DCC39 /* ZZLog */,
+			);
+			path = Modules;
+			sourceTree = "<group>";
+		};
+		4F10848C2C26238A007DCC39 /* Utility */ = {
+			isa = PBXGroup;
+			children = (
+				4F10848D2C262393007DCC39 /* ZipZapLog.swift */,
+			);
+			path = Utility;
+			sourceTree = "<group>";
+		};
 		4F71218A2C0F4B03000EB268 /* Views */ = {
 			isa = PBXGroup;
 			children = (
@@ -107,6 +126,7 @@
 		4FCEEED12BEE39E7009E9E17 = {
 			isa = PBXGroup;
 			children = (
+				4F1084862C261871007DCC39 /* Modules */,
 				4FCEEEDC2BEE39E7009E9E17 /* ZipZap */,
 				4FCEEEDB2BEE39E7009E9E17 /* Products */,
 				4FCEEEEC2BEE39F6009E9E17 /* Frameworks */,
@@ -132,6 +152,7 @@
 				4FCEEF2A2BEE3D43009E9E17 /* Models */,
 				4F7121952C0F6B38000EB268 /* View Models */,
 				4F71218A2C0F4B03000EB268 /* Views */,
+				4F10848C2C26238A007DCC39 /* Utility */,
 				4FCEEEE12BEE39E9009E9E17 /* Assets.xcassets */,
 				4FCEEEE62BEE39E9009E9E17 /* ZipZap.entitlements */,
 				4FCEEEE32BEE39E9009E9E17 /* Preview Content */,
@@ -163,7 +184,6 @@
 			children = (
 				4FCEEF282BEE3D3E009E9E17 /* Archive.swift */,
 				4FCEEF2B2BEE3D72009E9E17 /* ArchiveEntry.swift */,
-				4F7121822C0E800F000EB268 /* ArchiveLogEntry.swift */,
 				4FDC674E2C19065A00A10035 /* libarchive.swift */,
 			);
 			path = Models;
@@ -196,8 +216,12 @@
 			buildRules = (
 			);
 			dependencies = (
+				4F1084892C261BAE007DCC39 /* PBXTargetDependency */,
 			);
 			name = ZipZap;
+			packageProductDependencies = (
+				4F10848A2C261BB7007DCC39 /* ZZLog */,
+			);
 			productName = ZipZap;
 			productReference = 4FCEEEDA2BEE39E7009E9E17 /* ZipZap.app */;
 			productType = "com.apple.product-type.application";
@@ -252,10 +276,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				4F7121832C0E800F000EB268 /* ArchiveLogEntry.swift in Sources */,
 				4F7121922C0F5DE1000EB268 /* ToolbarContent.swift in Sources */,
 				4F7121852C0F48B1000EB268 /* RandomAccessCollection.swift in Sources */,
 				4FCEEEE02BEE39E7009E9E17 /* MainWindowView.swift in Sources */,
+				4F10848E2C262396007DCC39 /* ZipZapLog.swift in Sources */,
 				4F7121892C0F48FD000EB268 /* String.swift in Sources */,
 				4F7121972C0F6B4C000EB268 /* MainWindowViewModel.swift in Sources */,
 				4FD4BA562C07C58E00082C13 /* Date.swift in Sources */,
@@ -273,6 +297,13 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		4F1084892C261BAE007DCC39 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			productRef = 4F1084882C261BAE007DCC39 /* ZZLog */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
 		4FCEEEE72BEE39E9009E9E17 /* Debug */ = {
@@ -522,6 +553,17 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		4F1084882C261BAE007DCC39 /* ZZLog */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = ZZLog;
+		};
+		4F10848A2C261BB7007DCC39 /* ZZLog */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = ZZLog;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 4FCEEED22BEE39E7009E9E17 /* Project object */;
 }

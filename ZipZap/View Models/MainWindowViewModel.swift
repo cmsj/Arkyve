@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import ZZLog
 
 @Observable
 class MainWindowViewModel {

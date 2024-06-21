@@ -6,12 +6,20 @@
 //
 
 import SwiftUI
+import os
+import ZZLog
+
+#warning("Remove this typealias (and the `import os` above) when Swift 6 adds its native Mutex type")
+typealias Mutex = OSAllocatedUnfairLock
 
 struct SettingsManager {
     static let shared = SettingsManager()
-    private init() { }
-
     let cacheURL = FileManager.default.temporaryDirectory.appendingPathComponent("cache")
+
+    private init() {
+        let msg = "Cache directory: \(cacheURL)"
+        #ZZTrace(msg)
+    }
 }
 
 class AppDelegate: NSObject, NSApplicationDelegate {

@@ -36,15 +36,38 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     }
 }
 
+// These are used to determine which window has focus and let menus interact with the view model
+struct ActiveViewModelKey: FocusedValueKey {
+    typealias Value = MainWindowViewModel
+}
+
+extension FocusedValues {
+    var activeViewModel: MainWindowViewModel? {
+        get { self[ActiveViewModelKey.self] }
+        set { self[ActiveViewModelKey.self] = newValue }
+    }
+}
+
 @main
 struct ZipZapApp: App {
     @NSApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
+    @FocusedValue(\.activeViewModel) var activeViewModel
 
     var body: some Scene {
         WindowGroup(id: "archive-window") {
             MainWindowView()
         }
-        .windowToolbarStyle(.expanded)
+        .commands {
+            CommandGroup(after: .newItem) {
+                Button("Open...") {
+                    activeViewModel?.openButton()
+                }
+                .keyboardShortcut("o", modifiers: [.command])
+                .disabled(activeViewModel == nil)
+            }
+        }
+        // FIXME: Enable this once macOS 15 is released:
+//        .restorationBehavior(.disabled)
 
         // FIXME: Switch to UtilityWindow() once macOS 15 is out
         Window("Log viewer", id: "log-window") {

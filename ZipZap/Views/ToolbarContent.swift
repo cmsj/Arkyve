@@ -11,41 +11,9 @@ struct ToolbarContentView: CustomizableToolbarContent {
     var viewModel: MainWindowViewModel
 
     var body: some CustomizableToolbarContent {
-        ToolbarItem(id: "New") {
-            Button {
-                viewModel.newButton()
-            } label: {
-                Label("New", systemImage: "folder.badge.plus")
-                    .padding()
-            }
-        }
-        ToolbarItem(id: "Open") {
-            Button {
-                let panel = NSOpenPanel()
-                panel.allowsMultipleSelection = false
-                panel.canChooseDirectories = false
-                if panel.runModal() == .OK {
-                    if let url = panel.url {
-                        viewModel.openArchive(url: url)
-                    }
-                }
-            } label: {
-                Label("Open...", systemImage: "folder")
-                    .padding()
-            }
-        }
-        ToolbarItem(id: "Close") {
-            Button {
-                viewModel.closeButton()
-            } label: {
-                Label("Close", systemImage: "xmark.circle")
-                    .padding()
-            }
-            .disabled(viewModel.archive == nil)
-        }
         ToolbarItem(id: "Add"){
             Button {
-
+                print("Add....")
             } label: {
                 Label("Add", systemImage: "plus.circle")
                     .padding()

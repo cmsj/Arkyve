@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct MainWindowView: View {
-    var viewModel = MainWindowViewModel()
+    var viewModel: MainWindowViewModel = MainWindowViewModel()
     @State var windowTitle = "ZipZap"
     @State var showFileChooser = false
     @State var showLog: Bool = false
@@ -24,6 +24,9 @@ struct MainWindowView: View {
             StatusbarView()
                 .environment(viewModel)
         }
+        .focusedSceneValue(\.activeViewModel, viewModel)
+        .focusable()
+        .focusEffectDisabled()
         .onChange(of: viewModel.archive?.error, initial: true) { old, new in
             // Nicely animate the error view appearing/disappearing
             if showErrors.state && new == nil {
@@ -45,8 +48,5 @@ struct MainWindowView: View {
 }
 
 #Preview {
-    let view = MainWindowView()
-    view.viewModel.newButton()
-    view.viewModel.archive?.error = "Preview error"
-    return view
+    MainWindowView()
 }

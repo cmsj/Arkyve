@@ -35,18 +35,18 @@ struct ErrorView: View {
     }
 }
 
-#Preview {
-    let viewModel = MainWindowViewModel()
-    viewModel.newButton()
-    viewModel.archive?.error = "Preview error"
-    let showErrors = ShowErrors()
-    showErrors.state = true
-
-    return VStack(spacing: 0) {
-        ErrorView()
-            .environment(viewModel)
-            .environment(showErrors)
-        Rectangle()
-            .background(.white)
-    }
-}
+//#Preview {
+//    let viewModel = MainWindowViewModel()
+//    viewModel.newButton()
+//    viewModel.archive?.error = "Preview error"
+//    let showErrors = ShowErrors()
+//    showErrors.state = true
+//
+//    return VStack(spacing: 0) {
+//        ErrorView()
+//            .environment(viewModel)
+//            .environment(showErrors)
+//        Rectangle()
+//            .background(.white)
+//    }
+//}

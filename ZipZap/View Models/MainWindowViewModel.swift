@@ -20,10 +20,6 @@ class MainWindowViewModel {
         set(url) { UserDefaults.standard.setValue(url, forKey: "newFolderURL") }
     }
 
-    func newButton() {
-        archive = Archive(name: "Untitled.zip", URL: newFolderURL.appendingPathComponent("Untitled.zip"))
-    }
-
     func openArchive(url: URL) {
         let name = url.lastPathComponent
         archive = Archive(name: name, URL: url)
@@ -39,10 +35,6 @@ class MainWindowViewModel {
                 openArchive(url: url)
             }
         }
-    }
-
-    func closeButton() {
-        archive = nil
     }
 
     @MainActor func extractButton() {

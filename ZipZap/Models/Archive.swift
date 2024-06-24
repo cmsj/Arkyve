@@ -128,6 +128,15 @@ class Archive: @unchecked Sendable {
         return try await extractEntries([entry], toFolder: cacheURL)
     }
 
+    func extractEntriesToCache(_ entries: [ArchiveEntry]) async throws -> [URL] {
+        return try await extractEntries(entries, toFolder: cacheURL)
+    }
+
+    func extractEntriesToCache(_ entries: Set<ArchiveEntry.ID>) async throws -> [URL] {
+        let foundEntries = self.entries.filter { entries.contains($0.id) }
+        return try await extractEntriesToCache(foundEntries)
+    }
+
     // NOTE: This method doesn't throw because it's called from SwiftUI and it's better to handle the errors here
     func extractEntries(_ entries: Set<ArchiveEntry.ID>, toFolder: URL) {
         let foundEntries = self.entries.filter { entries.contains($0.id) }

@@ -12,6 +12,8 @@ import ZZLog
 class MainWindowViewModel {
     private(set) var archive: Archive? = nil
     var selectedEntries = Set<ArchiveEntry.ID>()
+    var quickLookURL: URL?
+    var quickLookItems: [URL] = []
 
     var newFolderURL: URL {
         get {
@@ -53,5 +55,21 @@ class MainWindowViewModel {
 
     func sort(using: [KeyPathComparator<ArchiveEntry>]) {
         self.archive?.sort(using: using)
+    }
+
+    @MainActor func extractForQuicklook() {
+        quickLookItems = []
+        Task {
+            do {
+                if let urls = try await archive?.extractEntriesToCache(selectedEntries) {
+                    quickLookItems = urls
+                    if quickLookItems.count > 0 {
+                        quickLookURL = quickLookItems.first
+                    }
+                }
+            } catch {
+                #ZZError("Unable to extract items for quicklook: \(error)")
+            }
+        }
     }
 }

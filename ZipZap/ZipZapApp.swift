@@ -65,6 +65,15 @@ struct ZipZapApp: App {
                 .keyboardShortcut("o", modifiers: [.command])
                 .disabled(activeViewModel == nil)
             }
+            CommandGroup(after: .sidebar) {
+                Button("Quick Look") {
+                    guard activeViewModel != nil else { return }
+                    activeViewModel?.extractForQuicklook()
+                }
+                .keyboardShortcut("y", modifiers: [.command])
+                .disabled(activeViewModel?.selectedEntries.count == 0)
+                Divider()
+            }
         }
         // FIXME: Enable this once macOS 15 is released:
 //        .restorationBehavior(.disabled)

@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import QuickLook
 
 struct TableView: View {
     @Environment(MainWindowViewModel.self) var viewModel
@@ -51,6 +52,15 @@ struct TableView: View {
         } rows: {
             TableRowTreeContent(children: viewModel.archive?.root.children ?? [], viewModel: viewModel)
         }
+        .onKeyPress(.space, action: {
+            if viewModel.selectedEntries.count > 0 {
+                viewModel.extractForQuicklook()
+                return .handled
+            } else {
+                return .ignored
+            }
+        })
+        .quickLookPreview($viewModel.quickLookURL, in: viewModel.quickLookItems)
         .onChange(of: sortOrder) { _, newSortOrder in
             viewModel.sort(using: sortOrder)
         }

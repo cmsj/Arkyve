@@ -14,12 +14,14 @@ struct MainWindowView: View {
     @State var showLog: Bool = false
     @State var showErrors = ShowErrors()
 
+    @FocusState private var renameEntry: UUID?
+
     var body: some View {
         VStack(spacing: 0) {
             ErrorView()
                 .environment(viewModel)
                 .environment(showErrors)
-            TableView()
+            TableView(renameEntry: $renameEntry)
                 .environment(viewModel)
             StatusbarView()
                 .environment(viewModel)
@@ -40,7 +42,7 @@ struct MainWindowView: View {
             }
         }
         .toolbar(id: "Main") {
-            ToolbarContentView(viewModel: viewModel)
+            ToolbarContentView(viewModel: viewModel, renameEntry: $renameEntry)
         }
         .navigationTitle(windowTitle)
         .frame(maxWidth: .infinity, maxHeight: .infinity)

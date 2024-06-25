@@ -166,6 +166,7 @@ class ArchiveEntry: Identifiable, @unchecked Sendable {
     var isSynthesized = false
 
     var isExpanded = false
+    var shouldFocus = false
 
     // Properties we will store for later use
     var path: String

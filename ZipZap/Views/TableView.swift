@@ -14,15 +14,26 @@ struct TableView: View {
     @SceneStorage("ArchiveEntryTableConfig") private var columnCustomization: TableColumnCustomization<ArchiveEntry>
     @State private var sortOrder = [KeyPathComparator(\ArchiveEntry.path)]
 
+    var renameEntry: FocusState<UUID?>.Binding
+
     var body: some View {
         // FIXME: This @Bindable is an ugly hack: https://www.hackingwithswift.com/books/ios-swiftui/sharing-observable-objects-through-swiftuis-environment
         @Bindable var viewModel = viewModel
 
         Table(of: ArchiveEntry.self, selection: $viewModel.selectedEntries, sortOrder: $sortOrder, columnCustomization: $columnCustomization) {
             TableColumn("Name", value: \ArchiveEntry.name) { entry in
+                @Bindable var entry = entry
                 HStack {
                     Image(systemName: entry.type.rawValue)
-                    Text(entry.name)
+                    TextField(entry.name, text: $entry.name)
+                        .focused(renameEntry, equals: entry.id)
+                        .onSubmit {
+                            // FIXME: entry.name has updated, but entry.path and entry.pathComponents haven't.
+                            // We've never before had to think about any of these changing, and it seems weird that we have all three.
+                            // Maybe rename entry.path to entry.libarchivePath, never change it, and make entry.name a computed property
+                            // that works on entry.pathComponents' last value?
+                            print("NAME CHANGED: \(entry.name) :: \(entry.path) :: \(entry.pathComponents)")
+                        }
                 }
             }
             .customizationID("name")
@@ -54,12 +65,12 @@ struct TableView: View {
         }
         .contextMenu(forSelectionType: ArchiveEntry.ID.self) { items in
             Button {
-                // FIXME: Implement
+                viewModel.renameButton(renameEntry: renameEntry, entries: items)
             } label: {
                 Text("Rename...")
             }
+            .disabled(items.count != 1)
             Button {
-                // FIXME: Implement
                 viewModel.extractButton(items)
             } label: {
                 Text("Extract")
@@ -87,7 +98,7 @@ struct TableView: View {
     }
 }
 
-#Preview {
-    TableView()
-        .environment(MainWindowViewModel())
-}
+//#Preview {
+//    TableView()
+//        .environment(MainWindowViewModel())
+//}

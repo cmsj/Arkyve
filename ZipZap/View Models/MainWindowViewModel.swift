@@ -40,17 +40,24 @@ class MainWindowViewModel {
     }
 
     @MainActor func extractButton(_ entries: Set<ArchiveEntry.ID>? = nil) {
+        let actualEntries = entries ?? selectedEntries
         let panel = NSOpenPanel()
         panel.allowsMultipleSelection = false
         panel.canChooseDirectories = true
         panel.canChooseFiles = false
+        panel.prompt = "Extract \(actualEntries.count) item\(actualEntries.count > 1 ? "s" : "")"
         if panel.runModal() == .OK {
             if let url = panel.url {
                 Task {
-                    archive?.extractEntries(entries ?? selectedEntries, toFolder: url)
+                    archive?.extractEntries(actualEntries, toFolder: url)
                 }
             }
         }
+    }
+
+    @MainActor func renameButton(renameEntry: FocusState<UUID?>.Binding, entries: Set<ArchiveEntry.ID>? = nil) {
+        let actualEntries = entries ?? selectedEntries
+        renameEntry.wrappedValue = actualEntries.first
     }
 
     func sort(using: [KeyPathComparator<ArchiveEntry>]) {

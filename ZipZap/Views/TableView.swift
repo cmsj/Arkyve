@@ -52,11 +52,31 @@ struct TableView: View {
         } rows: {
             TableRowTreeContent(children: viewModel.archive?.root.children ?? [], viewModel: viewModel)
         }
+        .contextMenu(forSelectionType: ArchiveEntry.ID.self) { items in
+            Button {
+                // FIXME: Implement
+            } label: {
+                Text("Rename...")
+            }
+            Button {
+                // FIXME: Implement
+                viewModel.extractButton(items)
+            } label: {
+                Text("Extract")
+            }
+            Divider()
+            Button {
+                // FIXME: Implement
+            } label: {
+                Text("Delete")
+            }
+        }
         .onKeyPress(.space, action: {
             if viewModel.selectedEntries.count > 0 {
                 viewModel.extractForQuicklook()
                 return .handled
             } else {
+                // It's not completely obvious that this is entirely necessary, but since we can easily distinguish if the user wanted Quick Look or not, we might as well vary our behaviour accordingly.
                 return .ignored
             }
         })

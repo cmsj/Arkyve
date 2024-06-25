@@ -39,7 +39,7 @@ class MainWindowViewModel {
         }
     }
 
-    @MainActor func extractButton() {
+    @MainActor func extractButton(_ entries: Set<ArchiveEntry.ID>? = nil) {
         let panel = NSOpenPanel()
         panel.allowsMultipleSelection = false
         panel.canChooseDirectories = true
@@ -47,7 +47,7 @@ class MainWindowViewModel {
         if panel.runModal() == .OK {
             if let url = panel.url {
                 Task {
-                    archive?.extractEntries(selectedEntries, toFolder: url)
+                    archive?.extractEntries(entries ?? selectedEntries, toFolder: url)
                 }
             }
         }

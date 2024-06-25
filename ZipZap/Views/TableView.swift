@@ -28,11 +28,7 @@ struct TableView: View {
                     TextField(entry.name, text: $entry.name)
                         .focused(renameEntry, equals: entry.id)
                         .onSubmit {
-                            // FIXME: entry.name has updated, but entry.path and entry.pathComponents haven't.
-                            // We've never before had to think about any of these changing, and it seems weird that we have all three.
-                            // Maybe rename entry.path to entry.libarchivePath, never change it, and make entry.name a computed property
-                            // that works on entry.pathComponents' last value?
-                            print("NAME CHANGED: \(entry.name) :: \(entry.path) :: \(entry.pathComponents)")
+                            viewModel.doRename(of: entry)
                         }
                 }
             }

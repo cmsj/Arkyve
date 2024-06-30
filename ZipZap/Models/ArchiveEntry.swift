@@ -41,6 +41,31 @@ enum ArchiveEntryType: String {
             self = .unknown
         }
     }
+
+    var userString: String {
+        get {
+            switch (self) {
+            case .unknown:
+                "Unknown"
+            case .file:
+                "File"
+            case .directory:
+                "Folder"
+            case .socket:
+                "Socket"
+            case .symlink:
+                "Symlink"
+            case .chardev:
+                "Char dev"
+            case .blockdev:
+                "Block dev"
+            case .fifo:
+                "FIFO"
+            case .root:
+                ""
+            }
+        }
+    }
 }
 
 extension Array where Element == String {
@@ -327,5 +352,18 @@ class ArchiveEntry: Identifiable, @unchecked Sendable {
             }
         }
         return flatChildren
+    }
+
+    // Sort the tree at all levels
+    func sort(using sortDetails: KeyPathComparator<ArchiveEntry>) {
+        guard self.children != nil else { return }
+
+        // First sort our children
+        self.children?.sort(using: sortDetails)
+
+        // Now tell each of our children to sort their children, recursively
+        for child in self.children! {
+            child.sort(using: sortDetails)
+        }
     }
 }

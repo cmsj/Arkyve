@@ -12,7 +12,7 @@ struct TableView: View {
     @Environment(MainWindowViewModel.self) var viewModel
 
     @SceneStorage("ArchiveEntryTableConfig") private var columnCustomization: TableColumnCustomization<ArchiveEntry>
-    @State private var sortOrder = [KeyPathComparator(\ArchiveEntry.path)]
+    @State private var sortOrder = [KeyPathComparator(\ArchiveEntry.name)]
 
     var renameEntry: FocusState<UUID?>.Binding
 
@@ -36,6 +36,9 @@ struct TableView: View {
             TableColumn("Size", value: \ArchiveEntry.sizeString)
                 .customizationID("sizeString")
                 .alignment(.trailing)
+            TableColumn("Kind", value: \ArchiveEntry.type.userString)
+                .customizationID("type")
+                .defaultVisibility(.hidden)
             TableColumn("Date Modified", value: \ArchiveEntry.mtime.userFormatted)
                 .customizationID("mtime")
             TableColumn("Permissions", value: \ArchiveEntry.perms)

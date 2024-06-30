@@ -34,8 +34,7 @@ extension Archive {
             newSort = sortDetails
         }
 
-        // FIXME: This should be sorting the tree, not the array
-        self.entries.sort(using: [newSort])
+        self.root.sort(using: newSort)
     }
 }
 
@@ -107,6 +106,9 @@ class Archive: @unchecked Sendable {
                 let (remainingDirs, remainingFiles) = remainingAll.filterBothwise { $0.type == .directory }
                 self.root.addChildrenHierarchically(remainingDirs)
                 self.root.addChildrenHierarchically(remainingFiles)
+
+                let defaultSort: KeyPathComparator<ArchiveEntry> = KeyPathComparator(\ArchiveEntry.type.rawValue, order: .forward)
+                self.sort(using: [defaultSort])
             }
         }
     }

@@ -82,7 +82,8 @@ struct ZipZapApp: App {
         Window("Log viewer", id: "log-window") {
             LogWindowView()
         }
-        // FIXME: Enable this once macOS 15 is released:
+        // FIXME: Enable these once macOS 15 is released:
 //        .restorationBehavior(.disabled)
+//        .defaultLaunchBehavior(.suppressed)
     }
 }

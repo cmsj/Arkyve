@@ -291,8 +291,10 @@ actor libarchive {
                     let entryType = ArchiveEntryType(rawValue: archive_entry_filetype(entryPtr))
                     switch entryType {
                     case .file:
+                        // Ensure all intermediate directories exist, incase we're extracting multiple levels of files that may not arrive in an order that guarantees their parent folder (synthetic or otherwise) is created first
+                        try FileManager.default.createDirectory(at: outputURL.deletingLastPathComponent(), withIntermediateDirectories: true)
+
                         // Ensure our file exists
-                        // FIXME: We should probably not assume intermediate directories exist
                         try Data().write(to: outputURL)
                         let handle = try FileHandle(forWritingTo: outputURL)
                         let result = archive_read_data_into_fd(archive, handle.fileDescriptor)
@@ -314,6 +316,8 @@ actor libarchive {
                     default:
                         #ZZError("UNSUPPORTED TYPE: \(entryType.rawValue)")
                     }
+
+                    // FIXME: Having extracted something, we probably ought to set its permissions
                 }
             }
         }

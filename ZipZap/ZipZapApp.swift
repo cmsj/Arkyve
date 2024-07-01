@@ -67,7 +67,6 @@ struct ZipZapApp: App {
                 Button("Revert") {
                     activeViewModel?.revertButton()
                 }
-                // FIXME: Check we got the boolean logic correct here
                 .disabled(activeViewModel == nil || activeViewModel?.archive?.dirty == false)
             }
             CommandGroup(after: .sidebar) {

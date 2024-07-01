@@ -12,42 +12,6 @@ import ZZLog
 #warning("Remove this typealias (and the `import os` above) when Swift 6 adds its native Mutex type")
 typealias Mutex = OSAllocatedUnfairLock
 
-struct SettingsManager {
-    static let shared = SettingsManager()
-    let cacheURL = FileManager.default.temporaryDirectory.appendingPathComponent("cache")
-
-    private init() {
-        let msg = "Cache directory: \(cacheURL)"
-        #ZZTrace(msg)
-    }
-}
-
-class AppDelegate: NSObject, NSApplicationDelegate {
-    func applicationWillFinishLaunching(_ notification: Notification) {
-        do {
-            try FileManager.default.createDirectory(at: SettingsManager.shared.cacheURL, withIntermediateDirectories: true)
-        } catch {
-            fatalError("Unable to create cache directory at \(SettingsManager.shared.cacheURL)")
-        }
-    }
-
-    func applicationWillTerminate(_ aNotification: Notification) {
-        try? FileManager.default.removeItem(at: SettingsManager.shared.cacheURL)
-    }
-}
-
-// These are used to determine which window has focus and let menus interact with the view model
-struct ActiveViewModelKey: FocusedValueKey {
-    typealias Value = MainWindowViewModel
-}
-
-extension FocusedValues {
-    var activeViewModel: MainWindowViewModel? {
-        get { self[ActiveViewModelKey.self] }
-        set { self[ActiveViewModelKey.self] = newValue }
-    }
-}
-
 @main
 struct ZipZapApp: App {
     @NSApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
@@ -68,10 +32,15 @@ struct ZipZapApp: App {
                     activeViewModel?.revertButton()
                 }
                 .disabled(activeViewModel == nil || activeViewModel?.archive?.dirty == false)
+                Divider()
+                Button("Save") {
+                    activeViewModel?.saveButton()
+                }
+                .keyboardShortcut("s", modifiers: [.command])
+                .disabled(activeViewModel == nil || activeViewModel?.archive?.dirty == false)
             }
             CommandGroup(after: .sidebar) {
                 Button("Quick Look") {
-                    guard activeViewModel != nil else { return }
                     activeViewModel?.extractForQuicklook()
                 }
                 .keyboardShortcut("y", modifiers: [.command])

@@ -49,6 +49,10 @@ class MainWindowViewModel {
         }
     }
 
+    @MainActor func saveButton() {
+        // FIXME: Implement
+    }
+
     @MainActor func extractButton(_ entries: Set<ArchiveEntry.ID>? = nil) {
         let actualEntries = entries ?? selectedEntries
         let panel = NSOpenPanel()

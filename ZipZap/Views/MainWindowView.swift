@@ -21,7 +21,7 @@ struct MainWindowView: View {
             ErrorView()
                 .environment(viewModel)
                 .environment(showErrors)
-            TableView(renameEntry: $renameEntry)
+            TableView(renameEntryFocus: $renameEntry)
                 .environment(viewModel)
             StatusbarView()
                 .environment(viewModel)

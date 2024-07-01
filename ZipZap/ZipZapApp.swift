@@ -64,6 +64,11 @@ struct ZipZapApp: App {
                 }
                 .keyboardShortcut("o", modifiers: [.command])
                 .disabled(activeViewModel == nil)
+                Button("Revert") {
+                    activeViewModel?.revertButton()
+                }
+                // FIXME: Check we got the boolean logic correct here
+                .disabled(activeViewModel == nil || activeViewModel?.archive?.dirty == false)
             }
             CommandGroup(after: .sidebar) {
                 Button("Quick Look") {

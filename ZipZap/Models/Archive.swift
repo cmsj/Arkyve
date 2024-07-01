@@ -51,6 +51,7 @@ class Archive: @unchecked Sendable {
     var format: libarchiveFormat = .Unknown
     var filters: [libarchiveFilter] = []
     var cacheURL: URL
+    var dirty: Bool = false
 
     let lock = Mutex()
 
@@ -197,6 +198,7 @@ class Archive: @unchecked Sendable {
     }
 
     func processInternalDrop(providers:[NSItemProvider], atIndex:Int, treeHint:[ArchiveEntry]) {
+        // FIXME: Implement
         // Process internal drops
 //        let decoder = JSONDecoder()
 //        let id: UUID
@@ -207,9 +209,30 @@ class Archive: @unchecked Sendable {
 //            guard let data = data else { return }
 //            let id = try? decoder.decode(UUID.self, from: data)
 //        }
+        self.dirty = true
     }
 
     func processExternalDrop(providers:[NSItemProvider], atIndex:Int, treeHint:[ArchiveEntry]) {
+        // FIXME: Implement
+        self.dirty = true
+    }
 
+    func removeEntries(_ entries: Set<ArchiveEntry.ID>) {
+        // FIXME: Implement (remove from self.entries and self.root)
+        self.dirty = true
+    }
+
+    func addEntries(from urls: [URL]) {
+        // FIXME: Implement
+        self.dirty = true
+    }
+
+    func processEntryRename(_ entry: ArchiveEntry) {
+        // FIXME: entry.name has updated, but entry.path and entry.pathComponents haven't.
+        // We've never before had to think about any of these changing, and it seems weird that we have all three.
+        // Maybe rename entry.path to entry.libarchivePath, never change it, and make entry.name a computed property
+        // that works on entry.pathComponents' last value?
+        print("NAME CHANGED: \(entry.name) :: \(entry.path) :: \(entry.pathComponents)")
+        self.dirty = true
     }
 }

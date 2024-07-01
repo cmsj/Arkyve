@@ -39,6 +39,16 @@ class MainWindowViewModel {
         }
     }
 
+    @MainActor func revertButton() {
+        guard archive != nil else { return }
+        if let url = archive?.URL {
+            archive = nil
+            Task { @MainActor in
+                openArchive(url: url)
+            }
+        }
+    }
+
     @MainActor func extractButton(_ entries: Set<ArchiveEntry.ID>? = nil) {
         let actualEntries = entries ?? selectedEntries
         let panel = NSOpenPanel()
@@ -55,9 +65,23 @@ class MainWindowViewModel {
         }
     }
 
-    @MainActor func renameButton(renameEntry: FocusState<UUID?>.Binding, entries: Set<ArchiveEntry.ID>? = nil) {
+    @MainActor func renameButton(renameEntryFocus: FocusState<UUID?>.Binding, entries: Set<ArchiveEntry.ID>? = nil) {
         let actualEntries = entries ?? selectedEntries
-        renameEntry.wrappedValue = actualEntries.first
+        renameEntryFocus.wrappedValue = actualEntries.first
+    }
+
+    @MainActor func deleteButton(_ entries: Set<ArchiveEntry.ID>? = nil) {
+        let actualEntries = entries ?? selectedEntries
+        archive?.removeEntries(actualEntries)
+    }
+
+    @MainActor func addButton() {
+        let panel = NSOpenPanel()
+        panel.allowsMultipleSelection = false
+        panel.canChooseDirectories = false
+        if panel.runModal() == .OK {
+            self.archive?.addEntries(from: panel.urls)
+        }
     }
 
     func sort(using: [KeyPathComparator<ArchiveEntry>]) {
@@ -81,10 +105,6 @@ class MainWindowViewModel {
     }
 
     func doRename(of entry: ArchiveEntry) {
-        // FIXME: entry.name has updated, but entry.path and entry.pathComponents haven't.
-        // We've never before had to think about any of these changing, and it seems weird that we have all three.
-        // Maybe rename entry.path to entry.libarchivePath, never change it, and make entry.name a computed property
-        // that works on entry.pathComponents' last value?
-        print("NAME CHANGED: \(entry.name) :: \(entry.path) :: \(entry.pathComponents)")
+        self.archive?.processEntryRename(entry)
     }
 }

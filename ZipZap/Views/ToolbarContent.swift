@@ -15,7 +15,7 @@ struct ToolbarContentView: CustomizableToolbarContent {
     var body: some CustomizableToolbarContent {
         ToolbarItem(id: "Add") {
             Button {
-                print("Add....")
+                viewModel.addButton()
             } label: {
                 Label("Add", systemImage: "plus.circle")
                     .padding()
@@ -33,12 +33,21 @@ struct ToolbarContentView: CustomizableToolbarContent {
         }
         ToolbarItem(id: "Rename") {
             Button {
-                viewModel.renameButton(renameEntry: renameEntry)
+                viewModel.renameButton(renameEntryFocus: renameEntry)
             } label: {
                 Label("Rename", systemImage: "character.cursor.ibeam")
                     .padding()
             }
             .disabled(viewModel.selectedEntries.count != 1)
+        }
+        ToolbarItem(id: "Delete") {
+            Button {
+                viewModel.deleteButton()
+            } label: {
+                Label("Delete", systemImage: "trash")
+                    .padding()
+            }
+            .disabled(viewModel.selectedEntries.isEmpty)
         }
     }
 }

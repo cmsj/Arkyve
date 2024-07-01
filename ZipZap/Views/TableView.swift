@@ -14,7 +14,7 @@ struct TableView: View {
     @SceneStorage("ArchiveEntryTableConfig") private var columnCustomization: TableColumnCustomization<ArchiveEntry>
     @State private var sortOrder = [KeyPathComparator(\ArchiveEntry.name)]
 
-    var renameEntry: FocusState<UUID?>.Binding
+    var renameEntryFocus: FocusState<UUID?>.Binding
 
     var body: some View {
         // FIXME: This @Bindable is an ugly hack: https://www.hackingwithswift.com/books/ios-swiftui/sharing-observable-objects-through-swiftuis-environment
@@ -26,7 +26,7 @@ struct TableView: View {
                 HStack {
                     Image(systemName: entry.type.rawValue)
                     TextField(entry.name, text: $entry.name)
-                        .focused(renameEntry, equals: entry.id)
+                        .focused(renameEntryFocus, equals: entry.id)
                         .onSubmit {
                             viewModel.doRename(of: entry)
                         }
@@ -64,7 +64,7 @@ struct TableView: View {
         }
         .contextMenu(forSelectionType: ArchiveEntry.ID.self) { items in
             Button {
-                viewModel.renameButton(renameEntry: renameEntry, entries: items)
+                viewModel.renameButton(renameEntryFocus: renameEntryFocus, entries: items)
             } label: {
                 Text("Rename...")
             }
@@ -76,7 +76,7 @@ struct TableView: View {
             }
             Divider()
             Button {
-                // FIXME: Implement
+                viewModel.deleteButton(items)
             } label: {
                 Text("Delete")
             }

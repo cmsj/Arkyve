@@ -31,13 +31,13 @@ struct ZipZapApp: App {
                 Button("Revert") {
                     activeViewModel?.revertButton()
                 }
-                .disabled(activeViewModel == nil || activeViewModel?.archive?.dirty == false)
+                .disabled(activeViewModel == nil || activeViewModel?.archive == nil || activeViewModel?.archive?.dirty == false)
                 Divider()
                 Button("Save") {
                     activeViewModel?.saveButton()
                 }
                 .keyboardShortcut("s", modifiers: [.command])
-                .disabled(activeViewModel == nil || activeViewModel?.archive?.dirty == false)
+                .disabled(activeViewModel == nil || activeViewModel?.archive == nil || activeViewModel?.archive?.dirty == false)
             }
             CommandGroup(after: .sidebar) {
                 Button("Quick Look") {

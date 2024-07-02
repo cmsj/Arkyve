@@ -334,6 +334,27 @@ class ArchiveEntry: Identifiable, @unchecked Sendable {
         }
     }
 
+    func removeChildren(_ entries: [ArchiveEntry]) {
+        entries.forEach { self.removeChild($0) }
+    }
+
+    func removeChild(_ entry: ArchiveEntry) {
+        guard var children = children else { return }
+
+        if let idx = children.firstIndex(of: entry) {
+            #ZZTrace("Removing \(entry.name) from \(self.name)")
+            self.lock.withLock {
+                _ = self.children?.remove(at: idx)
+            }
+        } else {
+            for child in children {
+                if child.children != nil {
+                    child.removeChild(entry)
+                }
+            }
+        }
+    }
+
     // Return an Array of ourselves and all of our descendents.
     func flatChildren() -> [ArchiveEntry] {
         var flatChildren: [ArchiveEntry] = []

@@ -22,4 +22,15 @@ extension Array {
 
         return (included, excluded)
     }
+
+    /// Remove elements in response to a closure
+    /// - Parameter test: Closure that returns true if an element should be removed
+    /// - Returns: true if elements were removed, otherwise false
+    @discardableResult
+    mutating func remove(where test: (Self.Element) -> Bool) -> Bool {
+        let beforeCount = self.count
+        self = self.filter { !test($0) }
+
+        return beforeCount != self.count
+    }
 }

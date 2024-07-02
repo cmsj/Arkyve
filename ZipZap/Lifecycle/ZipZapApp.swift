@@ -48,15 +48,14 @@ struct ZipZapApp: App {
                 Divider()
             }
         }
-        // FIXME: Enable this once macOS 15 is released:
 //        .restorationBehavior(.disabled)
 
-        // FIXME: Switch to UtilityWindow() once macOS 15 is out
+        #warning("Switch to UtilityWindow() once macOS 15 is released")
         Window("Log viewer", id: "log-window") {
             LogWindowView()
         }
-        // FIXME: Enable these once macOS 15 is released:
 //        .restorationBehavior(.disabled)
 //        .defaultLaunchBehavior(.suppressed)
     }
+    #warning("Enable restoration/launch behaviours when macOS 15 is released")
 }

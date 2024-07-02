@@ -218,8 +218,13 @@ class Archive: @unchecked Sendable {
     }
 
     func removeEntries(_ entries: Set<ArchiveEntry.ID>) {
-        // FIXME: Implement (remove from self.entries and self.root)
-        self.dirty = true
+        let foundEntries = self.entries.filter { entries.contains($0.id) }
+        let didRemove = self.entries.remove { foundEntries.contains($0) }
+        self.root.removeChildren(foundEntries)
+
+        if didRemove {
+            self.dirty = true
+        }
     }
 
     func addEntries(from urls: [URL]) {

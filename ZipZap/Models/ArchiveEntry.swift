@@ -339,7 +339,7 @@ class ArchiveEntry: Identifiable, @unchecked Sendable {
     }
 
     func removeChild(_ entry: ArchiveEntry) {
-        guard var children = children else { return }
+        guard let children = children else { return }
 
         if let idx = children.firstIndex(of: entry) {
             #ZZTrace("Removing \(entry.name) from \(self.name)")

@@ -25,16 +25,16 @@ struct ZipZapApp: App {
                 }
                 .keyboardShortcut("o", modifiers: [.command])
                 .disabled(activeViewModel == nil)
-                Button("Revert") {
-                    activeViewModel?.revertButton()
-                }
-                .disabled(activeViewModel == nil || activeViewModel?.archive == nil || activeViewModel?.archive?.dirty == false)
-                Divider()
-                Button("Save") {
-                    activeViewModel?.saveButton()
-                }
-                .keyboardShortcut("s", modifiers: [.command])
-                .disabled(activeViewModel == nil || activeViewModel?.archive == nil || activeViewModel?.archive?.dirty == false)
+//                Button("Revert") {
+//                    activeViewModel?.revertButton()
+//                }
+//                .disabled(activeViewModel == nil || activeViewModel?.archive == nil || activeViewModel?.archive?.dirty == false)
+//                Divider()
+//                Button("Save") {
+//                    activeViewModel?.saveButton()
+//                }
+//                .keyboardShortcut("s", modifiers: [.command])
+//                .disabled(activeViewModel == nil || activeViewModel?.archive == nil || activeViewModel?.archive?.dirty == false)
             }
             CommandGroup(after: .sidebar) {
                 Button("Quick Look") {

@@ -13,23 +13,31 @@ struct ToolbarContentView: CustomizableToolbarContent {
     var renameEntry: FocusState<UUID?>.Binding
 
     var body: some CustomizableToolbarContent {
-        ToolbarItem(id: "New") {
+//        ToolbarItem(id: "New") {
+//            Button {
+//                viewModel.newButton()
+//            } label: {
+//                Label("New archive", systemImage: "plus.rectangle.on.folder")
+//                    .padding()
+//            }
+//        }
+        ToolbarItem(id: "Open") {
             Button {
-                viewModel.newButton()
+                viewModel.openButton()
             } label: {
-                Label("New archive", systemImage: "plus.rectangle.on.folder")
+                Label("Open", systemImage: "folder")
                     .padding()
             }
         }
-        ToolbarItem(id: "Add") {
-            Button {
-                viewModel.addButton()
-            } label: {
-                Label("Add", systemImage: "plus.circle")
-                    .padding()
-            }
-            .disabled(viewModel.archive == nil)
-        }
+//        ToolbarItem(id: "Add") {
+//            Button {
+//                viewModel.addButton()
+//            } label: {
+//                Label("Add", systemImage: "plus.circle")
+//                    .padding()
+//            }
+//            .disabled(viewModel.archive == nil)
+//        }
         ToolbarItem(id: "Extract") {
             Button {
                 viewModel.extractButton()
@@ -39,24 +47,24 @@ struct ToolbarContentView: CustomizableToolbarContent {
             }
             .disabled(viewModel.selectedEntries.isEmpty)
         }
-        ToolbarItem(id: "Rename") {
-            Button {
-                viewModel.renameButton(renameEntryFocus: renameEntry)
-            } label: {
-                Label("Rename", systemImage: "character.cursor.ibeam")
-                    .padding()
-            }
-            .disabled(viewModel.selectedEntries.count != 1)
-        }
-        ToolbarItem(id: "Delete") {
-            Button {
-                viewModel.deleteButton()
-            } label: {
-                Label("Delete", systemImage: "trash")
-                    .padding()
-            }
-            .disabled(viewModel.selectedEntries.isEmpty)
-        }
+//        ToolbarItem(id: "Rename") {
+//            Button {
+//                viewModel.renameButton(renameEntryFocus: renameEntry)
+//            } label: {
+//                Label("Rename", systemImage: "character.cursor.ibeam")
+//                    .padding()
+//            }
+//            .disabled(viewModel.selectedEntries.count != 1)
+//        }
+//        ToolbarItem(id: "Delete") {
+//            Button {
+//                viewModel.deleteButton()
+//            } label: {
+//                Label("Delete", systemImage: "trash")
+//                    .padding()
+//            }
+//            .disabled(viewModel.selectedEntries.isEmpty)
+//        }
     }
 }
 

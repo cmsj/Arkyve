@@ -11,6 +11,7 @@ struct ToolbarContentView: CustomizableToolbarContent {
     var viewModel: MainWindowViewModel
 
     var renameEntry: FocusState<UUID?>.Binding
+    var openButtonTip = OpenButtonTip()
 
     var body: some CustomizableToolbarContent {
 //        ToolbarItem(id: "New") {
@@ -20,6 +21,7 @@ struct ToolbarContentView: CustomizableToolbarContent {
 //                Label("New archive", systemImage: "plus.rectangle.on.folder")
 //                    .padding()
 //            }
+//            .help("Start a new, empty archive")
 //        }
         ToolbarItem(id: "Open") {
             Button {
@@ -28,6 +30,8 @@ struct ToolbarContentView: CustomizableToolbarContent {
                 Label("Open", systemImage: "folder")
                     .padding()
             }
+            .help("Open an archive")
+            .popoverTip(openButtonTip, arrowEdge: .top)
         }
 //        ToolbarItem(id: "Add") {
 //            Button {
@@ -36,6 +40,7 @@ struct ToolbarContentView: CustomizableToolbarContent {
 //                Label("Add", systemImage: "plus.circle")
 //                    .padding()
 //            }
+//            .help("Add files to the archive")
 //            .disabled(viewModel.archive == nil)
 //        }
         ToolbarItem(id: "Extract") {
@@ -45,6 +50,7 @@ struct ToolbarContentView: CustomizableToolbarContent {
                 Label("Extract", systemImage: "folder.badge.minus")
                     .padding()
             }
+            .help("Extract selected files/folders")
             .disabled(viewModel.selectedEntries.isEmpty)
         }
 //        ToolbarItem(id: "Rename") {
@@ -54,6 +60,7 @@ struct ToolbarContentView: CustomizableToolbarContent {
 //                Label("Rename", systemImage: "character.cursor.ibeam")
 //                    .padding()
 //            }
+//            .help("Rename selected file/folder")
 //            .disabled(viewModel.selectedEntries.count != 1)
 //        }
 //        ToolbarItem(id: "Delete") {
@@ -63,6 +70,7 @@ struct ToolbarContentView: CustomizableToolbarContent {
 //                Label("Delete", systemImage: "trash")
 //                    .padding()
 //            }
+//            .help("Delete selected files/folders")
 //            .disabled(viewModel.selectedEntries.isEmpty)
 //        }
     }

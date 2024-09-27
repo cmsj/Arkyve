@@ -9,9 +9,6 @@ import SwiftUI
 import os
 import ZZLog
 
-#warning("Remove this typealias (and the `import os` above) when Swift 6 adds its native Mutex type")
-typealias Mutex = OSAllocatedUnfairLock
-
 @main
 struct ZipZapApp: App {
     @NSApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
@@ -48,14 +45,12 @@ struct ZipZapApp: App {
                 Divider()
             }
         }
-//        .restorationBehavior(.disabled)
+        .restorationBehavior(.disabled)
 
-        #warning("Switch to UtilityWindow() once macOS 15 is released")
-        Window("Log viewer", id: "log-window") {
+        UtilityWindow("Log viewer", id: "log-window") {
             LogWindowView()
         }
-//        .restorationBehavior(.disabled)
-//        .defaultLaunchBehavior(.suppressed)
+        .restorationBehavior(.disabled)
+        .defaultLaunchBehavior(.suppressed)
     }
-    #warning("Enable restoration/launch behaviours when macOS 15 is released")
 }

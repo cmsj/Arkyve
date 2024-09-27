@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import Synchronization
 import UniformTypeIdentifiers
 import SwiftUI
 import ZZLog
@@ -220,7 +221,7 @@ class ArchiveEntry: Identifiable, @unchecked Sendable {
 
     var type: ArchiveEntryType = .unknown
 
-    let lock = Mutex()
+    let lock = Mutex(true)
 
     init(_ entry: libarchiveEntry, forArchive: Archive) {
         self.archive = forArchive
@@ -278,7 +279,7 @@ class ArchiveEntry: Identifiable, @unchecked Sendable {
             #ZZError("addChildren called on an ArchiveEntry which can not possess children")
             return
         }
-        self.lock.withLock {
+        self.lock.withLock { _ in
             entries.forEach { self.children?.append($0) }
         }
     }
@@ -304,7 +305,7 @@ class ArchiveEntry: Identifiable, @unchecked Sendable {
             } else {
                 let synthPath = entry.pathComponents.first!
                 #ZZTrace("Creating synthetic root directory \(synthPath)")
-                self.lock.withLock {
+                self.lock.withLock { _ in
                     self.children?.append(ArchiveEntry(path: synthPath, forArchive: self.archive!))
                 }
                 children?[children!.count - 1].addChildHierarchically(entry)
@@ -314,7 +315,7 @@ class ArchiveEntry: Identifiable, @unchecked Sendable {
 
         // This entry belongs directly to us, so subsume it into our children
         if pathComponents == entry.pathComponents.dropLast() {
-            self.lock.withLock {
+            self.lock.withLock { _ in
                 children?.append(entry)
             }
             return
@@ -327,7 +328,7 @@ class ArchiveEntry: Identifiable, @unchecked Sendable {
         } else {
             let synthPath = (self.pathComponents + [relativePath!.first!]).joined(separator: "/")
             #ZZTrace("Creating synthetic subdirectory \(synthPath)")
-            self.lock.withLock {
+            self.lock.withLock { _ in
                 self.children?.append(ArchiveEntry(path: synthPath, forArchive: self.archive!))
             }
             children?[children!.count - 1].addChildHierarchically(entry)
@@ -343,7 +344,7 @@ class ArchiveEntry: Identifiable, @unchecked Sendable {
 
         if let idx = children.firstIndex(of: entry) {
             #ZZTrace("Removing \(entry.name) from \(self.name)")
-            self.lock.withLock {
+            self.lock.withLock { _ in
                 _ = self.children?.remove(at: idx)
             }
         } else {

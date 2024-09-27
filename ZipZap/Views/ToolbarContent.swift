@@ -13,6 +13,14 @@ struct ToolbarContentView: CustomizableToolbarContent {
     var renameEntry: FocusState<UUID?>.Binding
 
     var body: some CustomizableToolbarContent {
+        ToolbarItem(id: "New") {
+            Button {
+                viewModel.newButton()
+            } label: {
+                Label("New archive", systemImage: "plus.rectangle.on.folder")
+                    .padding()
+            }
+        }
         ToolbarItem(id: "Add") {
             Button {
                 viewModel.addButton()

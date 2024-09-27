@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import Synchronization
 import ZZLog
 
 enum ArchiveError: Error {
@@ -53,7 +54,7 @@ class Archive: @unchecked Sendable {
     var cacheURL: URL
     var dirty: Bool = false
 
-    let lock = Mutex()
+    let lock = Mutex(true)
 
     init(name: String, URL: URL) {
         self.URL = URL
@@ -96,7 +97,7 @@ class Archive: @unchecked Sendable {
                 return
             }
 
-            self.lock.withLock {
+            self.lock.withLock { _ in
                 self.entries = archiveEntries.map { ArchiveEntry($0, forArchive: self) }
                 self.format = archiveFormat
                 self.filters = archiveFilters
@@ -147,7 +148,7 @@ class Archive: @unchecked Sendable {
             do {
                 _ = try await extractEntries(foundEntries, toFolder: toFolder)
             } catch {
-                self.lock.withLock {
+                self.lock.withLock { _ in
                     let error = "Unable to extract selected items"
                     self.error = error
                     #ZZError(error)
@@ -188,7 +189,7 @@ class Archive: @unchecked Sendable {
             // This needs to be += because we may have already written some URLs above
             try await writtenURLS += libarchive.extractEntries(flatEntries.map { $0.path }, toFolder: toFolder)
         } catch {
-            self.lock.withLock {
+            self.lock.withLock { _ in
                 self.error = error.localizedDescription
             }
             return writtenURLS

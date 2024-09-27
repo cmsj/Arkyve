@@ -324,4 +324,17 @@ actor libarchive {
 
         return writtenURLs
     }
+
+    func createArchive(to: URL, format: libarchiveFormat, filters: [libarchiveFilter], entries: [libarchiveEntry]) throws {
+        try saveArchive(from: nil, to: to, format: format, filters: filters, entries: entries)
+    }
+
+    func saveArchive(from: URL?, to: URL, format: libarchiveFormat, filters: [libarchiveFilter], entries: [libarchiveEntry]) throws {
+        let writeArchive = archive_write_new()
+        archive_write_set_format(writeArchive, format.rawValue)
+        for filter in filters {
+            archive_write_add_filter(writeArchive, filter.rawValue)
+        }
+        
+    }
 }

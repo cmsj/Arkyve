@@ -14,6 +14,7 @@ struct ToolbarContentView: CustomizableToolbarContent {
     var openButtonTip = OpenButtonTip()
 
     var body: some CustomizableToolbarContent {
+// TODO: WRITE
 //        ToolbarItem(id: "New") {
 //            Button {
 //                viewModel.newButton()
@@ -33,6 +34,7 @@ struct ToolbarContentView: CustomizableToolbarContent {
             .help("Open an archive")
             .popoverTip(openButtonTip, arrowEdge: .top)
         }
+// TODO: WRITE
 //        ToolbarItem(id: "Add") {
 //            Button {
 //                viewModel.addButton()
@@ -53,6 +55,7 @@ struct ToolbarContentView: CustomizableToolbarContent {
             .help("Extract selected files/folders")
             .disabled(viewModel.selectedEntries.isEmpty)
         }
+// TODO: WRITE
 //        ToolbarItem(id: "Rename") {
 //            Button {
 //                viewModel.renameButton(renameEntryFocus: renameEntry)

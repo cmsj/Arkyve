@@ -134,19 +134,20 @@ extension ArchiveEntry {
 
     var itemProvider: NSItemProvider {
         let provider = NSItemProvider()
-        let selfID = self.id
-
-        // Register our internal type first, so re-arranging tables takes precedence if we're dragging to ourselves
-        provider.registerDataRepresentation(forTypeIdentifier: Self.draggableType.identifier, visibility: .all) { completion in
-            let encoder = JSONEncoder()
-            do {
-                let data = try encoder.encode(selfID)
-                completion(data, nil)
-            } catch {
-                completion(nil, error)
-            }
-            return nil
-        }
+// TODO: WRITE
+//        let selfID = self.id
+//
+//        // Register our internal type first, so re-arranging tables takes precedence if we're dragging to ourselves
+//        provider.registerDataRepresentation(forTypeIdentifier: Self.draggableType.identifier, visibility: .all) { completion in
+//            let encoder = JSONEncoder()
+//            do {
+//                let data = try encoder.encode(selfID)
+//                completion(data, nil)
+//            } catch {
+//                completion(nil, error)
+//            }
+//            return nil
+//        }
 
         // Register a generic type so we can export files to anything else
         provider.registerDataRepresentation(forTypeIdentifier: UTType.fileURL.identifier, visibility: .all) { completion in
@@ -190,6 +191,9 @@ class ArchiveEntry: Identifiable, @unchecked Sendable {
     // Archives don't always contain entries for directories, but the files in them still contain nested paths
     // We'll have to synthesize directories for those, and track which ones they are
     var isSynthesized = false
+    var isSynthesizedString: String {
+        get { isSynthesized ? "Yes" : "No" }
+    }
 
     var isExpanded = false
     var shouldFocus = false

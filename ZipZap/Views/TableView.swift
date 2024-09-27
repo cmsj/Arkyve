@@ -21,44 +21,53 @@ struct TableView: View {
         @Bindable var viewModel = viewModel
 
         Table(of: ArchiveEntry.self, selection: $viewModel.selectedEntries, sortOrder: $sortOrder, columnCustomization: $columnCustomization) {
-            TableColumn("Name", value: \ArchiveEntry.name) { entry in
-                @Bindable var entry = entry
-                HStack {
-                    Image(systemName: entry.type.rawValue)
-                    TextField(entry.name, text: $entry.name)
-                        .focused(renameEntryFocus, equals: entry.id)
-                        .onSubmit {
-                            viewModel.doRename(of: entry)
-                        }
+            Group {
+                TableColumn("Name", value: \ArchiveEntry.name) { entry in
+                    @Bindable var entry = entry
+                    HStack {
+                        Image(systemName: entry.type.rawValue)
+                        TextField(entry.name, text: $entry.name)
+                            .focused(renameEntryFocus, equals: entry.id)
+                            .onSubmit {
+                                viewModel.doRename(of: entry)
+                            }
+                    }
                 }
+                .customizationID("name")
+                TableColumn("Size", value: \ArchiveEntry.sizeString)
+                    .customizationID("sizeString")
+                    .alignment(.trailing)
+                TableColumn("Kind", value: \ArchiveEntry.type.userString)
+                    .customizationID("type")
+                    .defaultVisibility(.hidden)
             }
-            .customizationID("name")
-            TableColumn("Size", value: \ArchiveEntry.sizeString)
-                .customizationID("sizeString")
-                .alignment(.trailing)
-            TableColumn("Kind", value: \ArchiveEntry.type.userString)
-                .customizationID("type")
-                .defaultVisibility(.hidden)
-            TableColumn("Date Modified", value: \ArchiveEntry.mtime.userFormatted)
-                .customizationID("mtime")
-            TableColumn("Permissions", value: \ArchiveEntry.perms)
-                .customizationID("perms")
-                .defaultVisibility(.hidden)
-            TableColumn("UID", value: \ArchiveEntry.uid)
-                .customizationID("uid")
-                .defaultVisibility(.hidden)
-            TableColumn("GID", value: \ArchiveEntry.uid)
-                .customizationID("gid")
-                .defaultVisibility(.hidden)
-            TableColumn("Date Changed", value: \ArchiveEntry.ctime.userFormatted)
-                .customizationID("ctime")
-                .defaultVisibility(.hidden)
-            TableColumn("Date Accessed", value: \ArchiveEntry.atime.userFormatted)
-                .customizationID("atime")
-                .defaultVisibility(.hidden)
-            TableColumn("Date Created", value: \ArchiveEntry.btime.userFormatted)
-                .customizationID("btime")
-                .defaultVisibility(.hidden)
+            Group {
+                TableColumn("Date Modified", value: \ArchiveEntry.mtime.userFormatted)
+                    .customizationID("mtime")
+                TableColumn("Date Changed", value: \ArchiveEntry.ctime.userFormatted)
+                    .customizationID("ctime")
+                    .defaultVisibility(.hidden)
+                TableColumn("Date Accessed", value: \ArchiveEntry.atime.userFormatted)
+                    .customizationID("atime")
+                    .defaultVisibility(.hidden)
+                TableColumn("Date Created", value: \ArchiveEntry.btime.userFormatted)
+                    .customizationID("btime")
+                    .defaultVisibility(.hidden)
+            }
+            Group {
+                TableColumn("Permissions", value: \ArchiveEntry.perms)
+                    .customizationID("perms")
+                    .defaultVisibility(.hidden)
+                TableColumn("UID", value: \ArchiveEntry.uid)
+                    .customizationID("uid")
+                    .defaultVisibility(.hidden)
+                TableColumn("GID", value: \ArchiveEntry.uid)
+                    .customizationID("gid")
+                    .defaultVisibility(.hidden)
+                TableColumn("Synthetic", value: \ArchiveEntry.isSynthesizedString)
+                    .customizationID("synth")
+                    .defaultVisibility(.hidden)
+            }
         } rows: {
             TableRowTreeContent(children: viewModel.archive?.root.children ?? [], viewModel: viewModel)
         }

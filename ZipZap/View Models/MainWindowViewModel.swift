@@ -24,10 +24,12 @@ class MainWindowViewModel {
         }
     }
 
-    func openArchive(url: URL) {
+    func openArchive(url: URL) async {
         let name = url.lastPathComponent
         archive = Archive(name: name, URL: url)
-        archive?.open()
+//        Task {
+            await archive?.open()
+//        }
     }
 
     @MainActor func newButton() {
@@ -35,12 +37,18 @@ class MainWindowViewModel {
     }
 
     @MainActor func openButton() {
-        let panel = NSOpenPanel()
-        panel.allowsMultipleSelection = false
-        panel.canChooseDirectories = false
-        if panel.runModal() == .OK {
-            if let url = panel.url {
-                openArchive(url: url)
+        if (archive != nil) {
+            archive?.error = "lol"
+        } else {
+            let panel = NSOpenPanel()
+            panel.allowsMultipleSelection = false
+            panel.canChooseDirectories = false
+            if panel.runModal() == .OK {
+                if let url = panel.url {
+                    Task { @MainActor in
+                        await openArchive(url: url)
+                    }
+                }
             }
         }
     }
@@ -50,7 +58,7 @@ class MainWindowViewModel {
         if let url = archive?.URL {
             archive = nil
             Task { @MainActor in
-                openArchive(url: url)
+                await openArchive(url: url)
             }
         }
     }
@@ -69,7 +77,7 @@ class MainWindowViewModel {
         if panel.runModal() == .OK {
             if let url = panel.url {
                 Task {
-                    archive?.extractEntries(actualEntries, toFolder: url)
+                    await archive?.extractEntries(actualEntries, toFolder: url)
                 }
             }
         }

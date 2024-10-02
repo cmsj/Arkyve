@@ -40,7 +40,7 @@ extension Archive {
 }
 
 @Observable
-class Archive: @unchecked Sendable {
+class Archive {
     let queue = DispatchQueue(label: UUID().uuidString, qos: .userInitiated)
 
     var URL: URL
@@ -64,14 +64,14 @@ class Archive: @unchecked Sendable {
         self.cacheURL = SettingsManager.shared.cacheURL.appendingPathComponent(name)
         self.root = ArchiveEntry(isRoot: true, forArchive: self)
 
-        #ZZTrace("Initialised for \(self.URL)")
+        #ZZTrace("Initialised for \(URL)")
     }
 
     deinit {
         self.close()
     }
 
-    func open() {
+    func open() async {
         do {
             try FileManager.default.createDirectory(at: self.cacheURL, withIntermediateDirectories: true)
         } catch {
@@ -81,7 +81,7 @@ class Archive: @unchecked Sendable {
             return
         }
 
-        Task {
+//        Task {
             #ZZTrace("Archive::open() task on \(self.name)")
             let libarchive = libarchive(url: self.URL)
             let archiveFormat: libarchiveFormat
@@ -112,7 +112,7 @@ class Archive: @unchecked Sendable {
                 let defaultSort: KeyPathComparator<ArchiveEntry> = KeyPathComparator(\ArchiveEntry.type.rawValue, order: .forward)
                 self.sort(using: [defaultSort])
             }
-        }
+//        }
     }
 
     private func close() {
@@ -126,6 +126,11 @@ class Archive: @unchecked Sendable {
         } catch {
             #ZZError("Unable to remove cache directory at: \(cacheURL)")
         }
+    }
+
+    // NOTE: THIS MUST ONLY BE CALLED FROM WITHIN A MUTEX LOCKED CONTEXT
+    func addSynthEntry(_ entry: ArchiveEntry) {
+        self.entries.append(entry)
     }
 
     func extractEntryToCache(_ entry: ArchiveEntry) async throws -> [URL] {
@@ -142,9 +147,9 @@ class Archive: @unchecked Sendable {
     }
 
     // NOTE: This method doesn't throw because it's called from SwiftUI and it's better to handle the errors here
-    func extractEntries(_ entries: Set<ArchiveEntry.ID>, toFolder: URL) {
+    func extractEntries(_ entries: Set<ArchiveEntry.ID>, toFolder: URL) async {
         let foundEntries = self.entries.filter { entries.contains($0.id) }
-        Task {
+//        Task {
             do {
                 _ = try await extractEntries(foundEntries, toFolder: toFolder)
             } catch {
@@ -154,7 +159,7 @@ class Archive: @unchecked Sendable {
                     #ZZError(error)
                 }
             }
-        }
+//        }
     }
 
     func extractEntries(_ entries: [ArchiveEntry], toFolder: URL) async throws -> [URL] {
@@ -171,7 +176,7 @@ class Archive: @unchecked Sendable {
         // Before we touch libarchive, deal with any synthetic directories first
         for (index, entry) in flatEntries.enumerated().reversed() {
             if entry.isSynthesized {
-                #ZZTrace("Handling synthesised entry: \(entry.path)")
+                #ZZTrace("Handling synthesized entry: \(entry.path)")
 
                 // Whether we succeed or fail here, we don't need this again later
                 flatEntries.remove(at: index)
@@ -192,7 +197,6 @@ class Archive: @unchecked Sendable {
             self.lock.withLock { _ in
                 self.error = error.localizedDescription
             }
-            return writtenURLS
         }
 
         return writtenURLS

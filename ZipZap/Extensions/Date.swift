@@ -19,4 +19,8 @@ extension Date {
             return formatter.string(from: self)
         }
     }
+
+    public init(since: time_t) {
+        self.init(timeIntervalSince1970: TimeInterval(since))
+    }
 }

@@ -25,7 +25,7 @@ struct ErrorView: View {
                 .padding([.trailing], 5)
                 .onTapGesture {
                     withAnimation {
-                        showErrors.state = false
+                        viewModel.archive?.error = nil
                     }
                 }
         }

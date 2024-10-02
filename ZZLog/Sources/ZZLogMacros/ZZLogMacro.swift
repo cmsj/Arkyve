@@ -10,11 +10,12 @@ public struct ZZLogErrorMacro: ExpressionMacro {
         }
 
         return """
-            _ = Task {
-                await MainActor.run {
-                    ZipZapLog.shared.error(\(argument))
-                }
+        {
+            let zzOutput = \(argument)
+            _ = Task { @MainActor in
+                    ZipZapLog.shared.error(zzOutput)
             }
+        }()
         """
     }
 }
@@ -26,11 +27,12 @@ public struct ZZLogWarnMacro: ExpressionMacro {
         }
 
         return """
-            _ = Task {
-                await MainActor.run {
-                    ZipZapLog.shared.warn(\(argument))
-                }
+        {
+            let zzOutput = \(argument)
+            _ = Task { @MainActor in
+                    ZipZapLog.shared.warn(zzOutput)
             }
+        }()
         """
     }
 }
@@ -42,11 +44,12 @@ public struct ZZLogInfoMacro: ExpressionMacro {
         }
 
         return """
-            _ = Task {
-                await MainActor.run {
-                    ZipZapLog.shared.info(\(argument))
-                }
+        {
+            let zzOutput = \(argument)
+            _ = Task { @MainActor in
+                    ZipZapLog.shared.info(zzOutput)
             }
+        }()
         """
     }
 }
@@ -58,11 +61,12 @@ public struct ZZLogTraceMacro: ExpressionMacro {
         }
 
         return """
-            _ = Task {
-                await MainActor.run {
-                    ZipZapLog.shared.trace(\(argument))
-                }
+        {
+            let zzOutput = \(argument)
+            _ = Task { @MainActor in
+                    ZipZapLog.shared.trace(zzOutput)
             }
+        }()
         """
     }
 }

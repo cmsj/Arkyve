@@ -194,27 +194,27 @@ actor libarchive {
             }
 
             if archive_entry_atime_is_set(entry) != 0 {
-                atime = Date(timeIntervalSince1970: TimeInterval(archive_entry_atime(entry)))
+                atime = Date(since: archive_entry_atime(entry))
             } else {
-                atime = Date(timeIntervalSince1970: 0)
+                atime = Date(since: 0)
             }
 
             if archive_entry_ctime_is_set(entry) != 0 {
-                ctime = Date(timeIntervalSince1970: TimeInterval(archive_entry_ctime(entry)))
+                ctime = Date(since: archive_entry_ctime(entry))
             } else {
-                ctime = Date(timeIntervalSince1970: 0)
+                ctime = Date(since: 0)
             }
 
             if archive_entry_mtime_is_set(entry) != 0 {
-                mtime = Date(timeIntervalSince1970: TimeInterval(archive_entry_mtime(entry)))
+                mtime = Date(since: archive_entry_mtime(entry))
             } else {
-                mtime = Date(timeIntervalSince1970: 0)
+                mtime = Date(since: 0)
             }
 
             if archive_entry_birthtime_is_set(entry) != 0 {
-                btime = Date(timeIntervalSince1970: TimeInterval(archive_entry_birthtime(entry)))
+                btime = Date(since: archive_entry_birthtime(entry))
             } else {
-                btime = Date(timeIntervalSince1970: 0)
+                btime = Date(since: 0)
             }
 
             if let modeCstring = archive_entry_strmode(entry) {

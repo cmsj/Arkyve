@@ -309,8 +309,11 @@ class ArchiveEntry: Identifiable, @unchecked Sendable {
             } else {
                 let synthPath = entry.pathComponents.first!
                 #ZZTrace("Creating synthetic root directory \(synthPath)")
+                let tmpEntry = ArchiveEntry(path: synthPath, forArchive: self.archive!)
+
                 self.lock.withLock { _ in
-                    self.children?.append(ArchiveEntry(path: synthPath, forArchive: self.archive!))
+                    self.archive?.addSynthEntry(tmpEntry)
+                    self.children?.append(tmpEntry)
                 }
                 children?[children!.count - 1].addChildHierarchically(entry)
             }
@@ -332,8 +335,11 @@ class ArchiveEntry: Identifiable, @unchecked Sendable {
         } else {
             let synthPath = (self.pathComponents + [relativePath!.first!]).joined(separator: "/")
             #ZZTrace("Creating synthetic subdirectory \(synthPath)")
+            let tmpEntry = ArchiveEntry(path: synthPath, forArchive: self.archive!)
+
             self.lock.withLock { _ in
-                self.children?.append(ArchiveEntry(path: synthPath, forArchive: self.archive!))
+                self.archive?.addSynthEntry(tmpEntry)
+                self.children?.append(tmpEntry)
             }
             children?[children!.count - 1].addChildHierarchically(entry)
         }

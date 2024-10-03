@@ -10,6 +10,8 @@
 		4F10848B2C261BB7007DCC39 /* ZZLog in Frameworks */ = {isa = PBXBuildFile; productRef = 4F10848A2C261BB7007DCC39 /* ZZLog */; };
 		4F10848E2C262396007DCC39 /* ZipZapLog.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F10848D2C262393007DCC39 /* ZipZapLog.swift */; };
 		4F1084922C262D5D007DCC39 /* LogWindowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F1084912C262D5D007DCC39 /* LogWindowView.swift */; };
+		4F22BDC92CAE95750079FAC0 /* libarchiveFormat.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F22BDC82CAE95490079FAC0 /* libarchiveFormat.swift */; };
+		4F22BDCB2CAE95820079FAC0 /* libarchiveFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F22BDCA2CAE95820079FAC0 /* libarchiveFilter.swift */; };
 		4F344ECE2C335224006E1D9F /* SettingsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F344ECD2C335224006E1D9F /* SettingsManager.swift */; };
 		4F344ED02C335243006E1D9F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F344ECF2C335243006E1D9F /* AppDelegate.swift */; };
 		4F344ED22C335273006E1D9F /* FocusedValues.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F344ED12C335270006E1D9F /* FocusedValues.swift */; };
@@ -51,6 +53,8 @@
 		4F1084872C26189A007DCC39 /* ZZLog */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = ZZLog; sourceTree = SOURCE_ROOT; };
 		4F10848D2C262393007DCC39 /* ZipZapLog.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZipZapLog.swift; sourceTree = "<group>"; };
 		4F1084912C262D5D007DCC39 /* LogWindowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogWindowView.swift; sourceTree = "<group>"; };
+		4F22BDC82CAE95490079FAC0 /* libarchiveFormat.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = libarchiveFormat.swift; sourceTree = "<group>"; };
+		4F22BDCA2CAE95820079FAC0 /* libarchiveFilter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = libarchiveFilter.swift; sourceTree = "<group>"; };
 		4F344ECD2C335224006E1D9F /* SettingsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsManager.swift; sourceTree = "<group>"; };
 		4F344ECF2C335243006E1D9F /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		4F344ED12C335270006E1D9F /* FocusedValues.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FocusedValues.swift; sourceTree = "<group>"; };
@@ -65,7 +69,7 @@
 		4F7121962C0F6B4C000EB268 /* MainWindowViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainWindowViewModel.swift; sourceTree = "<group>"; };
 		4F71219A2C10864F000EB268 /* HideViewModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HideViewModifier.swift; sourceTree = "<group>"; };
 		4F71219C2C10BB1D000EB268 /* ErrorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorView.swift; sourceTree = "<group>"; };
-		4F71219E2C110C67000EB268 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		4F71219E2C110C67000EB268 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		4FB498582C08A00F004DE958 /* libiconv.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libiconv.tbd; path = usr/lib/libiconv.tbd; sourceTree = SDKROOT; };
 		4FB4985A2C08A018004DE958 /* libexpat.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libexpat.tbd; path = usr/lib/libexpat.tbd; sourceTree = SDKROOT; };
 		4FB4985C2C08A020004DE958 /* libbz2.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libbz2.tbd; path = usr/lib/libbz2.tbd; sourceTree = SDKROOT; };
@@ -110,6 +114,16 @@
 				4F10848D2C262393007DCC39 /* ZipZapLog.swift */,
 			);
 			path = Utility;
+			sourceTree = "<group>";
+		};
+		4F22BDC72CAE95060079FAC0 /* libarchive */ = {
+			isa = PBXGroup;
+			children = (
+				4FDC674E2C19065A00A10035 /* libarchive.swift */,
+				4F22BDCA2CAE95820079FAC0 /* libarchiveFilter.swift */,
+				4F22BDC82CAE95490079FAC0 /* libarchiveFormat.swift */,
+			);
+			path = libarchive;
 			sourceTree = "<group>";
 		};
 		4F344ECC2C3351E2006E1D9F /* Lifecycle */ = {
@@ -169,6 +183,7 @@
 				4F71219E2C110C67000EB268 /* Info.plist */,
 				4FD4BA572C07EC7F00082C13 /* libarchive_Bridge.h */,
 				4FB498612C090B79004DE958 /* vendor */,
+				4F22BDC72CAE95060079FAC0 /* libarchive */,
 				4F344ECC2C3351E2006E1D9F /* Lifecycle */,
 				4FD4BA542C07C57C00082C13 /* Extensions */,
 				4FCEEF2A2BEE3D43009E9E17 /* Models */,
@@ -206,7 +221,6 @@
 			children = (
 				4FCEEF282BEE3D3E009E9E17 /* Archive.swift */,
 				4FCEEF2B2BEE3D72009E9E17 /* ArchiveEntry.swift */,
-				4FDC674E2C19065A00A10035 /* libarchive.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -307,6 +321,7 @@
 				4F7121972C0F6B4C000EB268 /* MainWindowViewModel.swift in Sources */,
 				4F344ED22C335273006E1D9F /* FocusedValues.swift in Sources */,
 				4FD4BA562C07C58E00082C13 /* Date.swift in Sources */,
+				4F22BDCB2CAE95820079FAC0 /* libarchiveFilter.swift in Sources */,
 				4FCEEF2C2BEE3D72009E9E17 /* ArchiveEntry.swift in Sources */,
 				4F344ED02C335243006E1D9F /* AppDelegate.swift in Sources */,
 				4F344ECE2C335224006E1D9F /* SettingsManager.swift in Sources */,
@@ -319,6 +334,7 @@
 				4F7121942C0F6938000EB268 /* TableRowTreeContent.swift in Sources */,
 				4FCEEEDE2BEE39E7009E9E17 /* ZipZapApp.swift in Sources */,
 				4F5124072CA71BE800FB9AC6 /* Tips.swift in Sources */,
+				4F22BDC92CAE95750079FAC0 /* libarchiveFormat.swift in Sources */,
 				4FDC674F2C19065A00A10035 /* libarchive.swift in Sources */,
 				4F71219D2C10BB1D000EB268 /* ErrorView.swift in Sources */,
 			);

@@ -1,0 +1,42 @@
+//
+//  libarchiveFormat.swift
+//  ZipZap
+//
+//  Created by Chris Jones on 03/10/2024.
+//
+
+enum libarchiveFormat: Int32 {
+    case Unknown = 0x0
+    case CPIO = 0x10000
+    case CPIO_POSIX = 0x10001
+    case CPIO_BIN_LE = 0x10002
+    case CPIO_BIN_BE = 0x10003
+    case CPIO_SVR4_NOCRC = 0x10004
+    case CPIO_SVR4_CRC = 0x10005
+    case CPIO_AFIO_LARGE = 0x10006
+    case CPIO_PWB = 0x10007
+    case SHAR = 0x20000
+    case SHAR_BASE = 0x20001
+    case SHAR_DUMP = 0x20002
+    case TAR = 0x30000
+    case TAR_USTAR = 0x30001
+    case TAR_PAX_INTERCHANGE = 0x30002
+    case TAR_PAX_RESTRICTED = 0x30003
+    case TAR_GNUTAR = 0x30004
+    case ISO9660 = 0x40000
+    case ISO9660_RR = 0x40001
+    case ZIP = 0x50000
+    case Empty = 0x60000
+    case AR = 0x70000
+    case AR_GNU = 0x70001
+    case AR_BSD = 0x70002
+    case MTREE = 0x80000
+    case RAW = 0x90000
+    case XAR = 0xA0000
+    case LHA = 0xB0000
+    case CAB = 0xC0000
+    case RAR = 0xD0000
+    case _7ZIP = 0xE0000
+    case WARC = 0xF0000
+    case RAR_V5 = 0x100000
+}

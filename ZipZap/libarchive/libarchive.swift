@@ -9,7 +9,7 @@ import Foundation
 import SwiftUI
 import ZZLog
 
-struct libarchiveEntry: Identifiable {
+struct libarchiveHeader: Identifiable {
     let id = UUID()
     let isSynthesized = false
     let type: ArchiveEntryType
@@ -42,66 +42,12 @@ struct libarchiveEntry: Identifiable {
     }
 }
 
-enum libarchiveFormat: Int32 {
-    case Unknown = 0x0
-    case CPIO = 0x10000
-    case CPIO_POSIX = 0x10001
-    case CPIO_BIN_LE = 0x10002
-    case CPIO_BIN_BE = 0x10003
-    case CPIO_SVR4_NOCRC = 0x10004
-    case CPIO_SVR4_CRC = 0x10005
-    case CPIO_AFIO_LARGE = 0x10006
-    case CPIO_PWB = 0x10007
-    case SHAR = 0x20000
-    case SHAR_BASE = 0x20001
-    case SHAR_DUMP = 0x20002
-    case TAR = 0x30000
-    case TAR_USTAR = 0x30001
-    case TAR_PAX_INTERCHANGE = 0x30002
-    case TAR_PAX_RESTRICTED = 0x30003
-    case TAR_GNUTAR = 0x30004
-    case ISO9660 = 0x40000
-    case ISO9660_RR = 0x40001
-    case ZIP = 0x50000
-    case Empty = 0x60000
-    case AR = 0x70000
-    case AR_GNU = 0x70001
-    case AR_BSD = 0x70002
-    case MTREE = 0x80000
-    case RAW = 0x90000
-    case XAR = 0xA0000
-    case LHA = 0xB0000
-    case CAB = 0xC0000
-    case RAR = 0xD0000
-    case _7ZIP = 0xE0000
-    case WARC = 0xF0000
-    case RAR_V5 = 0x100000
-}
-
-enum libarchiveFilter: Int32 {
-    case None = 0
-    case GZip
-    case BZip2
-    case Compress
-    case Program
-    case LZMA
-    case XZ
-    case UU
-    case RPM
-    case LZIP
-    case LRZIP
-    case LZOP
-    case GRZIP
-    case LZ4
-    case ZSTD
-}
-
 actor libarchive {
     private var fd: Int32 = -1
     private var archive: OpaquePointer? = nil
 
     private var path: String
-    private(set) var entries: [libarchiveEntry] = []
+    private(set) var headers: [libarchiveHeader] = []
     private(set) var format: libarchiveFormat = .Unknown
     private(set) var filters: [libarchiveFilter] = []
 
@@ -110,7 +56,7 @@ actor libarchive {
     }
     
     init(url: URL) {
-        self.path = url.path(percentEncoded: false)
+        self.init(path: url.path(percentEncoded: false))
     }
 
     private func open() throws {
@@ -150,12 +96,12 @@ actor libarchive {
         }
     }
 
-    private func readEntries() throws -> [libarchiveEntry] {
+    private func readHeaders() throws {
         guard archive != nil else {
             throw ArchiveError.ArchiveEntriesError("libarchive_entries() called on a nil archive")
         }
 
-        var entries: [libarchiveEntry] = []
+        headers = []
 
         var entry: OpaquePointer?
         while (archive_read_next_header(archive, &entry) == ARCHIVE_OK) {
@@ -236,15 +182,15 @@ actor libarchive {
 
             type = ArchiveEntryType(rawValue: archive_entry_filetype(entry))
 
-            entries.append(libarchiveEntry(type: type, path: path, name: name, pathComponents: pathComponents, size: size, atime: atime, ctime: ctime, mtime: mtime, btime: btime, uid: uid, gid: gid, perms: perms))
+            headers.append(libarchiveHeader(type: type, path: path, name: name, pathComponents: pathComponents, size: size, atime: atime, ctime: ctime, mtime: mtime, btime: btime, uid: uid, gid: gid, perms: perms))
         }
-
-        return entries
     }
 
-    private func readFormatFilters() {
+    private func readFormat() {
         format = libarchiveFormat(rawValue: archive_format(archive)) ?? .Unknown
+    }
 
+    private func readFilters() {
         for i in 0...archive_filter_count(archive) {
             if let filter = libarchiveFilter(rawValue: archive_filter_code(archive, i)) {
                 filters.append(filter)
@@ -267,14 +213,15 @@ actor libarchive {
         return string
     }
 
-    func readEntriesFormatFilters() throws -> (libarchiveFormat, [libarchiveFilter], [libarchiveEntry]) {
+    func readEntriesFormatFilters() throws -> (libarchiveFormat, [libarchiveFilter], [libarchiveHeader]) {
         try open()
         defer { close() }
 
-        entries = try readEntries()
-        readFormatFilters()
+        try readHeaders()
+        readFormat()
+        readFilters()
 
-        return (self.format, self.filters, self.entries)
+        return (self.format, self.filters, self.headers)
     }
 
     func extractEntries(_ paths: [String], toFolder: URL) throws -> [URL] {
@@ -309,7 +256,6 @@ actor libarchive {
 
                         writtenURLs.append(outputURL)
                     case .symlink:
-                        // FIXME: This is untested, doubly so its ability to produce directory symlinks (if that even makes a difference on macOS)
                         let linkDest = String(cString: archive_entry_symlink(entryPtr))
                         let linkDestURL = Foundation.URL(fileURLWithPath: linkDest, isDirectory: archive_entry_symlink_type(entryPtr) == AE_SYMLINK_TYPE_DIRECTORY)
                         try FileManager.default.createSymbolicLink(at: outputURL, withDestinationURL: linkDestURL)
@@ -325,16 +271,16 @@ actor libarchive {
         return writtenURLs
     }
 
-    func createArchive(to: URL, format: libarchiveFormat, filters: [libarchiveFilter], entries: [libarchiveEntry]) throws {
-        try saveArchive(from: nil, to: to, format: format, filters: filters, entries: entries)
-    }
-
-    func saveArchive(from: URL?, to: URL, format: libarchiveFormat, filters: [libarchiveFilter], entries: [libarchiveEntry]) throws {
-        let writeArchive = archive_write_new()
-        archive_write_set_format(writeArchive, format.rawValue)
-        for filter in filters {
-            archive_write_add_filter(writeArchive, filter.rawValue)
-        }
-        
-    }
+//    func createArchive(to: URL, format: libarchiveFormat, filters: [libarchiveFilter], entries: [libarchiveHeader]) throws {
+//        try saveArchive(from: nil, to: to, format: format, filters: filters, entries: entries)
+//    }
+//
+//    func saveArchive(from: URL?, to: URL, format: libarchiveFormat, filters: [libarchiveFilter], entries: [libarchiveHeader]) throws {
+//        let writeArchive = archive_write_new()
+//        archive_write_set_format(writeArchive, format.rawValue)
+//        for filter in filters {
+//            archive_write_add_filter(writeArchive, filter.rawValue)
+//        }
+//        
+//    }
 }

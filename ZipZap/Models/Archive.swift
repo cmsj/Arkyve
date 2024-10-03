@@ -22,7 +22,9 @@ extension Archive {
         guard let sortDetails = using.first else { return }
         var newSort: KeyPathComparator<ArchiveEntry>
 
-        switch (sortDetails.keyPath) {
+        let origPath: PartialKeyPath<ArchiveEntry> = sortDetails.keyPath
+
+        switch (origPath) {
         case \ArchiveEntry.mtime.userFormatted:
             newSort = KeyPathComparator(\ArchiveEntry.mtime, order: sortDetails.order)
         case \ArchiveEntry.ctime.userFormatted:
@@ -40,6 +42,7 @@ extension Archive {
 }
 
 @Observable
+@MainActor
 class Archive {
     let queue = DispatchQueue(label: UUID().uuidString, qos: .userInitiated)
 
@@ -62,13 +65,15 @@ class Archive {
         self.name = name
         self.path = URL.path().removingPercentEncoding ?? "Unknown"
         self.cacheURL = SettingsManager.shared.cacheURL.appendingPathComponent(name)
-        self.root = ArchiveEntry(isRoot: true, forArchive: self)
+        self.root = ArchiveEntry(isRoot: true)
 
         #ZZTrace("Initialised for \(URL)")
     }
 
     deinit {
-        self.close()
+        DispatchQueue.main.sync {
+            self.close()
+        }
     }
 
     func open() async {
@@ -86,7 +91,7 @@ class Archive {
             let libarchive = libarchive(url: self.URL)
             let archiveFormat: libarchiveFormat
             let archiveFilters: [libarchiveFilter]
-            let archiveEntries: [libarchiveEntry]
+            let archiveEntries: [libarchiveHeader]
 
             do {
                 (archiveFormat, archiveFilters, archiveEntries) = try await libarchive.readEntriesFormatFilters()
@@ -98,7 +103,7 @@ class Archive {
             }
 
             self.lock.withLock { _ in
-                self.entries = archiveEntries.map { ArchiveEntry($0, forArchive: self) }
+                self.entries = archiveEntries.map { ArchiveEntry($0) }
                 self.format = archiveFormat
                 self.filters = archiveFilters
 
@@ -106,8 +111,8 @@ class Archive {
                 self.root.addChildren(rootItems)
 
                 let (remainingDirs, remainingFiles) = remainingAll.filterBothwise { $0.type == .directory }
-                self.root.addChildrenHierarchically(remainingDirs)
-                self.root.addChildrenHierarchically(remainingFiles)
+                self.root.addChildrenHierarchically(remainingDirs, for: self)
+                self.root.addChildrenHierarchically(remainingFiles, for: self)
 
                 let defaultSort: KeyPathComparator<ArchiveEntry> = KeyPathComparator(\ArchiveEntry.type.rawValue, order: .forward)
                 self.sort(using: [defaultSort])

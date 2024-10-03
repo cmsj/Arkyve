@@ -98,19 +98,19 @@ extension Array where Element == String {
 //    }
 //}
 
-extension ArchiveEntry: Equatable {
+extension ArchiveEntry: @preconcurrency Equatable {
     static func == (lhs: ArchiveEntry, rhs: ArchiveEntry) -> Bool {
         lhs.path == rhs.path
     }
 }
 
-extension ArchiveEntry: Comparable {
+extension ArchiveEntry: @preconcurrency Comparable {
     static func < (lhs: ArchiveEntry, rhs: ArchiveEntry) -> Bool {
         lhs.path < rhs.path
     }
 }
 
-extension ArchiveEntry: Hashable {
+extension ArchiveEntry: @preconcurrency Hashable {
     func hash(into hasher: inout Hasher) {
         hasher.combine(path)
     }
@@ -132,7 +132,7 @@ extension ArchiveEntry {
 extension ArchiveEntry {
     static let draggableType = UTType(exportedAs: "net.tenshu.ZipZap.ArchiveEntry")
 
-    var itemProvider: NSItemProvider {
+    func itemProvider(_ archive: Archive?) -> NSItemProvider {
         let provider = NSItemProvider()
 // TODO: WRITE
 //        let selfID = self.id
@@ -150,10 +150,11 @@ extension ArchiveEntry {
 //        }
 
         // Register a generic type so we can export files to anything else
+        let name = self.name
         provider.registerDataRepresentation(forTypeIdentifier: UTType.fileURL.identifier, visibility: .all) { completion in
             let progress = Progress(totalUnitCount: 100)
-            guard let archive = self.archive else {
-                let error = "Unable to find Archive for ArchiveEntry \(self.name)"
+            guard let archive = archive else {
+                let error = "Unable to find Archive for ArchiveEntry \(name)"
                 #ZZError(error)
                 completion(nil, NSError(domain: "DragAndDrop", code: -1, userInfo: [NSLocalizedDescriptionKey: error]))
                 return progress
@@ -168,7 +169,7 @@ extension ArchiveEntry {
                     completion(writtenURLs.first!.dataRepresentation, nil)
                 } catch {
                     // FIXME: We're should explicitly catch ArchiveExtractError here, and feed our errors into archive.error
-                    let error = "Writing failed for \(self.path): \(error)"
+                    let error = "Writing failed for \(await self.path): \(error)"
                     #ZZError(error)
                     completion(nil, NSError(domain: "DragAndDrop", code: -1, userInfo: [NSLocalizedDescriptionKey: error]))
                 }
@@ -183,8 +184,8 @@ extension ArchiveEntry {
 }
 
 @Observable
-class ArchiveEntry: Identifiable, @unchecked Sendable {
-    weak var archive: Archive?
+@MainActor
+class ArchiveEntry: Identifiable {
     let id = UUID()
 
     var children: [ArchiveEntry]? = nil
@@ -200,7 +201,7 @@ class ArchiveEntry: Identifiable, @unchecked Sendable {
 
     // Properties we will store for later use
     var path: String
-    var name: String
+    nonisolated(unsafe) var name: String
     var pathComponents: [String] = []
     var size: Int64
     var sizeString: String {
@@ -214,21 +215,20 @@ class ArchiveEntry: Identifiable, @unchecked Sendable {
             return pathComponents.dropLast().last
         }
     }
-    var atime: Date = Date(timeIntervalSince1970: 0)
-    var ctime: Date = Date(timeIntervalSince1970: 0)
-    var mtime: Date = Date(timeIntervalSince1970: 0)
-    var btime: Date = Date(timeIntervalSince1970: 0)
+    nonisolated(unsafe) var atime: Date = Date(timeIntervalSince1970: 0)
+    nonisolated(unsafe) var ctime: Date = Date(timeIntervalSince1970: 0)
+    nonisolated(unsafe) var mtime: Date = Date(timeIntervalSince1970: 0)
+    nonisolated(unsafe) var btime: Date = Date(timeIntervalSince1970: 0)
     var perms: String = "--"
 
     var uid: String = "--"
     var gid: String = "--"
 
-    var type: ArchiveEntryType = .unknown
+    nonisolated(unsafe) var type: ArchiveEntryType = .unknown
 
     let lock = Mutex(true)
 
-    init(_ entry: libarchiveEntry, forArchive: Archive) {
-        self.archive = forArchive
+    init(_ entry: libarchiveHeader) {
         self.path = entry.path
         self.name = entry.name
         self.pathComponents = entry.pathComponents
@@ -248,8 +248,7 @@ class ArchiveEntry: Identifiable, @unchecked Sendable {
         }
     }
 
-    init(path: String, forArchive: Archive) {
-        self.archive = forArchive
+    init(path: String) {
         self.isSynthesized = true
         self.type = .directory
         self.children = []
@@ -262,12 +261,11 @@ class ArchiveEntry: Identifiable, @unchecked Sendable {
         pathComponents = pathBits
     }
 
-    init?(isRoot: Bool, forArchive: Archive) {
+    init?(isRoot: Bool) {
         guard isRoot == true else {
             #ZZError("Root ArchiveEntry initialiser called without true")
             return nil
         }
-        self.archive = forArchive
         self.isSynthesized = true
         self.type = .root
         self.children = []
@@ -288,11 +286,11 @@ class ArchiveEntry: Identifiable, @unchecked Sendable {
         }
     }
 
-    func addChildrenHierarchically(_ entries: [ArchiveEntry]) {
-        entries.forEach { self.addChildHierarchically($0) }
+    func addChildrenHierarchically(_ entries: [ArchiveEntry], for archive: Archive ) {
+        entries.forEach { self.addChildHierarchically($0, for: archive) }
     }
 
-    func addChildHierarchically(_ entry: ArchiveEntry) {
+    func addChildHierarchically(_ entry: ArchiveEntry, for archive: Archive) {
         guard [.directory, .root].contains(self.type) else {
             #ZZError("addChildHierarchically called on something other than directory/root")
             return
@@ -305,17 +303,17 @@ class ArchiveEntry: Identifiable, @unchecked Sendable {
         // We're the root, so find which of our children's trees this entry belongs to and dispatch it to them to handle
         if type == .root {
             if let dispatchIndex = children?.firstIndex(where: { $0.type == .directory && $0.name == entry.pathComponents.first }) {
-                children?[dispatchIndex].addChildHierarchically(entry)
+                children?[dispatchIndex].addChildHierarchically(entry, for: archive)
             } else {
                 let synthPath = entry.pathComponents.first!
                 #ZZTrace("Creating synthetic root directory \(synthPath)")
-                let tmpEntry = ArchiveEntry(path: synthPath, forArchive: self.archive!)
+                let tmpEntry = ArchiveEntry(path: synthPath)
 
                 self.lock.withLock { _ in
-                    self.archive?.addSynthEntry(tmpEntry)
+                    archive.addSynthEntry(tmpEntry)
                     self.children?.append(tmpEntry)
                 }
-                children?[children!.count - 1].addChildHierarchically(entry)
+                children?[children!.count - 1].addChildHierarchically(entry, for: archive)
             }
             return
         }
@@ -331,17 +329,17 @@ class ArchiveEntry: Identifiable, @unchecked Sendable {
         // This entry should belong to one of our children, figure out which to dispatch it to
         let relativePath = entry.pathComponents.subtractPath(pathComponents)
         if let dispatchIndex = children?.firstIndex(where: { $0.type == .directory && $0.name == relativePath?.first }) {
-            children?[dispatchIndex].addChildHierarchically(entry)
+            children?[dispatchIndex].addChildHierarchically(entry, for: archive)
         } else {
             let synthPath = (self.pathComponents + [relativePath!.first!]).joined(separator: "/")
             #ZZTrace("Creating synthetic subdirectory \(synthPath)")
-            let tmpEntry = ArchiveEntry(path: synthPath, forArchive: self.archive!)
+            let tmpEntry = ArchiveEntry(path: synthPath)
 
             self.lock.withLock { _ in
-                self.archive?.addSynthEntry(tmpEntry)
+                archive.addSynthEntry(tmpEntry)
                 self.children?.append(tmpEntry)
             }
-            children?[children!.count - 1].addChildHierarchically(entry)
+            children?[children!.count - 1].addChildHierarchically(entry, for: archive)
         }
     }
 

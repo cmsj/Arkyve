@@ -29,7 +29,7 @@ struct TableView: View {
                         TextField(entry.name, text: $entry.name)
                             .focused(renameEntryFocus, equals: entry.id)
                             .onSubmit {
-                                viewModel.doRename(of: entry)
+//                                viewModel.doRename(of: entry)
                             }
                     }
                 }
@@ -61,7 +61,7 @@ struct TableView: View {
                 TableColumn("UID", value: \ArchiveEntry.uid)
                     .customizationID("uid")
                     .defaultVisibility(.hidden)
-                TableColumn("GID", value: \ArchiveEntry.uid)
+                TableColumn("GID", value: \ArchiveEntry.gid)
                     .customizationID("gid")
                     .defaultVisibility(.hidden)
                 TableColumn("Synthetic", value: \ArchiveEntry.isSynthesizedString)
@@ -79,7 +79,6 @@ struct TableView: View {
 //            }
 //            .disabled(items.count != 1)
             Button {
-                // FIXME: THis doesn't work
                 viewModel.extractButton(items)
             } label: {
                 Text("Extract")

@@ -26,10 +26,8 @@ class MainWindowViewModel {
 
     func openArchive(url: URL) async {
         let name = url.lastPathComponent
-        archive = Archive(name: name, URL: url)
-//        Task {
-            await archive?.open()
-//        }
+        archive = await Archive(name: name, URL: url)
+        await archive?.open()
     }
 
     @MainActor func newButton() {
@@ -102,6 +100,7 @@ class MainWindowViewModel {
         }
     }
 
+    @MainActor
     func sort(using: [KeyPathComparator<ArchiveEntry>]) {
         self.archive?.sort(using: using)
     }
@@ -122,7 +121,8 @@ class MainWindowViewModel {
         }
     }
 
-    func doRename(of entry: ArchiveEntry) {
-        self.archive?.processEntryRename(entry)
-    }
+// TODO: WRITE
+//    func doRename(of entry: ArchiveEntry) {
+//        self.archive?.processEntryRename(entry)
+//    }
 }

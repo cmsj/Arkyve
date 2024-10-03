@@ -20,11 +20,11 @@ struct TableRowTreeContent: TableRowContent {
                 DisclosureTableRow(child, isExpanded: $child.isExpanded) {
                     TableRowTreeContent(children: children, viewModel: viewModel)
                 }
-                .itemProvider { child.itemProvider }
+                .itemProvider { child.itemProvider(viewModel.archive) }
             }
             else {
                 TableRow(child)
-                    .itemProvider { child.itemProvider }
+                    .itemProvider { child.itemProvider(viewModel.archive) }
             }
         }
 // TODO: WRITE

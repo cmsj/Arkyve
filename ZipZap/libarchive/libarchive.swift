@@ -46,17 +46,15 @@ actor libarchive {
     private var fd: Int32 = -1
     private var archive: OpaquePointer? = nil
 
+    private var url: URL
     private var path: String
     private(set) var headers: [libarchiveHeader] = []
     private(set) var format: libarchiveFormat = .Unknown
     private(set) var filters: [libarchiveFilter] = []
-
-    init(path: String) {
-        self.path = path
-    }
     
     init(url: URL) {
-        self.init(path: url.path(percentEncoded: false))
+        self.url = url
+        self.path = url.path().removingPercentEncoding ?? "Unknown"
     }
 
     private func open() throws {
@@ -118,15 +116,10 @@ actor libarchive {
             let gid: String
             let type: ArchiveEntryType
 
-            if var pathString = entryPath(entry) {
-                if pathString.last == "/" {
-                    pathString = String(pathString.dropLast())
-                }
-                let pathBits = pathString.split(separator: "/").map(String.init)
-
+            if let pathString = entryPath(entry) {
                 path = pathString
-                name = pathBits.last ?? "Unknown"
-                pathComponents = pathBits
+                pathComponents = pathString.split(separator: "/").map(String.init)
+                name = pathComponents.last ?? "Unknown"
             } else {
                 path = "Unknown"
                 name = "Unknown"
@@ -222,6 +215,34 @@ actor libarchive {
         readFilters()
 
         return (self.format, self.filters, self.headers)
+    }
+
+    func readArchive() throws -> sending Archive {
+        let archive = Archive(URL: self.url)
+        let archiveFormat: libarchiveFormat
+        let archiveFilters: [libarchiveFilter]
+        let archiveEntries: [libarchiveHeader]
+
+        do {
+            let root = ArchiveEntry(isRoot: true)!
+            (archiveFormat, archiveFilters, archiveEntries) = try readEntriesFormatFilters()
+            let entries = archiveEntries.map { ArchiveEntry($0) }
+            let (rootItems, remainingAll) = entries.filterBothwise { $0.path.countOccurrences(of: "/") == 0 }
+            let (remainingDirs, remainingFiles) = remainingAll.filterBothwise { $0.type == .directory }
+
+            root.addChildren(rootItems)
+            root.addChildrenHierarchically(remainingDirs, for: archive)
+            root.addChildrenHierarchically(remainingFiles, for: archive)
+
+            archive.root = root
+            archive.format = archiveFormat
+            archive.filters = archiveFilters
+        } catch {
+            let error = error.localizedDescription
+            throw ArchiveError.ArchiveOpenError(error)
+        }
+
+        return archive
     }
 
     func extractEntries(_ paths: [String], toFolder: URL) throws -> [URL] {

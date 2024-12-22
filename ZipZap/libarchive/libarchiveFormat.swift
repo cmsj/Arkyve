@@ -40,3 +40,45 @@ enum libarchiveFormat: Int32 {
     case WARC = 0xF0000
     case RAR_V5 = 0x100000
 }
+
+extension libarchiveFormat: CustomStringConvertible {
+    var description: String {
+        get {
+            switch (self) {
+            case .Unknown: return "Unknown"
+            case .CPIO: return "CPIO"
+            case .CPIO_POSIX: return "CPIO_POSIX"
+            case .CPIO_BIN_LE: return "CPIO_BIN_LE"
+            case .CPIO_BIN_BE: return "CPIO_BIN_BE"
+            case .CPIO_SVR4_NOCRC: return "CPIO_SVR4_NOCRC"
+            case .CPIO_SVR4_CRC: return "CPIO_SVR4_CRC"
+            case .CPIO_AFIO_LARGE: return "CPIO_AFIO_LARGE"
+            case .CPIO_PWB: return "CPIO_PWB"
+            case .SHAR: return "SHAR"
+            case .SHAR_BASE: return "SHAR_BASE"
+            case .SHAR_DUMP: return "SHAR_DUMP"
+            case .TAR: return "TAR"
+            case .TAR_USTAR: return "TAR_USTAR"
+            case .TAR_PAX_INTERCHANGE: return "TAR_PAX_INTERCHANGE"
+            case .TAR_PAX_RESTRICTED: return "TAR_PAX_RESTRICTED"
+            case .TAR_GNUTAR: return "TAR_GNUTAR"
+            case .ISO9660: return "ISO9660"
+            case .ISO9660_RR: return "ISO9660_RR"
+            case .ZIP: return "ZIP"
+            case .Empty: return "Empty"
+            case .AR: return "AR"
+            case .AR_GNU: return "AR_GNU"
+            case .AR_BSD: return "AR_BSD"
+            case .MTREE: return "MTREE"
+            case .RAW: return "RAW"
+            case .XAR: return "XAR"
+            case .LHA: return "LHA"
+            case .CAB: return "CAB"
+            case .RAR: return "RAR"
+            case ._7ZIP: return "_7ZIP"
+            case .WARC: return "WARC"
+            case .RAR_V5: return "RAR_V5"
+            }
+        }
+    }
+}

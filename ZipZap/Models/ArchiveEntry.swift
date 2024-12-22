@@ -98,19 +98,19 @@ extension Array where Element == String {
 //    }
 //}
 
-extension ArchiveEntry: @preconcurrency Equatable {
+extension ArchiveEntry: Equatable {
     static func == (lhs: ArchiveEntry, rhs: ArchiveEntry) -> Bool {
         lhs.path == rhs.path
     }
 }
 
-extension ArchiveEntry: @preconcurrency Comparable {
+extension ArchiveEntry: Comparable {
     static func < (lhs: ArchiveEntry, rhs: ArchiveEntry) -> Bool {
         lhs.path < rhs.path
     }
 }
 
-extension ArchiveEntry: @preconcurrency Hashable {
+extension ArchiveEntry: Hashable {
     func hash(into hasher: inout Hasher) {
         hasher.combine(path)
     }
@@ -150,27 +150,23 @@ extension ArchiveEntry {
 //        }
 
         // Register a generic type so we can export files to anything else
-        let name = self.name
+        let path = self.path
+        guard let cacheURL = archive?.cacheURL, let archiveURL = archive?.URL else {
+            return provider
+        }
+
         provider.registerDataRepresentation(forTypeIdentifier: UTType.fileURL.identifier, visibility: .all) { completion in
+            let loader = libarchive(url: archiveURL)
             let progress = Progress(totalUnitCount: 100)
-            guard let archive = archive else {
-                let error = "Unable to find Archive for ArchiveEntry \(name)"
-                #ZZError(error)
-                completion(nil, NSError(domain: "DragAndDrop", code: -1, userInfo: [NSLocalizedDescriptionKey: error]))
-                return progress
-            }
 
             Task {
                 do {
-                    let writtenURLs = try await archive.extractEntryToCache(self)
+                    let writtenURLs = try await loader.extractEntries([path], toFolder: cacheURL)
                     guard writtenURLs.count > 0 else { throw ArchiveError.ArchiveExtractError("Zero entries extracted")}
-                    #ZZTrace("Reporting success")
                     progress.completedUnitCount = 100
                     completion(writtenURLs.first!.dataRepresentation, nil)
                 } catch {
-                    // FIXME: We're should explicitly catch ArchiveExtractError here, and feed our errors into archive.error
-                    let error = "Writing failed for \(await self.path): \(error)"
-                    #ZZError(error)
+                    let error = "Writing failed for \(path): \(error)"
                     completion(nil, NSError(domain: "DragAndDrop", code: -1, userInfo: [NSLocalizedDescriptionKey: error]))
                 }
             }
@@ -184,7 +180,6 @@ extension ArchiveEntry {
 }
 
 @Observable
-@MainActor
 class ArchiveEntry: Identifiable {
     let id = UUID()
 
@@ -365,7 +360,7 @@ class ArchiveEntry: Identifiable {
     }
 
     // Return an Array of ourselves and all of our descendents.
-    func flatChildren() -> [ArchiveEntry] {
+    @MainActor func flatChildren() -> [ArchiveEntry] {
         var flatChildren: [ArchiveEntry] = []
         flatChildren.append(self)
 

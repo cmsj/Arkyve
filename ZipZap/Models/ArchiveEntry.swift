@@ -11,62 +11,9 @@ import UniformTypeIdentifiers
 import SwiftUI
 import ZZLog
 
-enum ArchiveEntryType: String {
-    case unknown = "questionmark"
-    case file = "doc"
-    case directory = "folder"
-    case socket = "gearshape.2"
-    case symlink = "link"
-    case chardev = "chart.bar.doc.horizontal"
-    case blockdev = "batteryblock"
-    case fifo = "pipe.and.drop"
-    case root = "virtual root"
-
-    init(rawValue: mode_t) {
-        switch (S_IFMT & rawValue) {
-        case S_IFREG:
-            self = .file
-        case S_IFDIR:
-            self = .directory
-        case S_IFSOCK:
-            self = .socket
-        case S_IFLNK:
-            self = .symlink
-        case S_IFCHR:
-            self = .chardev
-        case S_IFBLK:
-            self = .blockdev
-        case S_IFIFO:
-            self = .fifo
-        default:
-            self = .unknown
-        }
-    }
-
-    var userString: String {
-        get {
-            switch (self) {
-            case .unknown:
-                "Unknown"
-            case .file:
-                "File"
-            case .directory:
-                "Folder"
-            case .socket:
-                "Socket"
-            case .symlink:
-                "Symlink"
-            case .chardev:
-                "Char dev"
-            case .blockdev:
-                "Block dev"
-            case .fifo:
-                "FIFO"
-            case .root:
-                ""
-            }
-        }
-    }
+struct ArchiveEntryFlat {
+    let path: String
+    let isSynthesized: Bool
 }
 
 extension Array where Element == String {
@@ -117,67 +64,71 @@ extension ArchiveEntry: Hashable {
 }
 
 // Array behaviour for inspecting first level children
-extension ArchiveEntry {
-    subscript(_ name: String) -> ArchiveEntry? {
-        return self.children?.first(where: { $0.name == name })
-    }
-
-    func firstIndexOf(_ name: String) -> Int? {
-        return self.children?.firstIndex(where: { $0.name == name })
-    }
-}
+// TODO: WRITE
+//extension ArchiveEntry {
+//    subscript(_ name: String) -> ArchiveEntry? {
+//        return self.children?.first(where: { $0.name == name })
+//    }
+//
+//    func firstIndexOf(_ name: String) -> Int? {
+//        return self.children?.firstIndex(where: { $0.name == name })
+//    }
+//}
 
 // Drag and drop provider
 // FIXME: Should some of this logic, particularly the async parts, move to Archive? Calling archive.extractEntryToCache() for each file seems inefficient if we could instead collect up all the files, extract them in one hit and then call their completions?
-extension ArchiveEntry {
-    static let draggableType = UTType(exportedAs: "net.tenshu.ZipZap.ArchiveEntry")
-
-    func itemProvider(_ archive: Archive?) -> NSItemProvider {
-        let provider = NSItemProvider()
-// TODO: WRITE
-//        let selfID = self.id
+//extension ArchiveEntry {
+//// TODO: WRITE
+////    static let draggableType = UTType(exportedAs: "net.tenshu.ZipZap.ArchiveEntry")
 //
-//        // Register our internal type first, so re-arranging tables takes precedence if we're dragging to ourselves
-//        provider.registerDataRepresentation(forTypeIdentifier: Self.draggableType.identifier, visibility: .all) { completion in
-//            let encoder = JSONEncoder()
-//            do {
-//                let data = try encoder.encode(selfID)
-//                completion(data, nil)
-//            } catch {
-//                completion(nil, error)
-//            }
-//            return nil
+//    @MainActor func itemProvider(_ archive: Archive?) -> NSItemProvider {
+//        let provider = NSItemProvider()
+//// TODO: WRITE
+////        let selfID = self.id
+////
+////        // Register our internal type first, so re-arranging tables takes precedence if we're dragging to ourselves
+////        provider.registerDataRepresentation(forTypeIdentifier: Self.draggableType.identifier, visibility: .all) { completion in
+////            let encoder = JSONEncoder()
+////            do {
+////                let data = try encoder.encode(selfID)
+////                completion(data, nil)
+////            } catch {
+////                completion(nil, error)
+////            }
+////            return nil
+////        }
+//
+//        // Register a generic type so we can export files to anything else
+//        let paths = self.flatChildren().map { $0.path }
+//        guard let cacheURL = archive?.cacheURL, let archiveURL = archive?.URL else {
+//            #ZZError("Unable to obtain cache/archive path, returning empty item provider")
+//            return provider
 //        }
-
-        // Register a generic type so we can export files to anything else
-        let path = self.path
-        guard let cacheURL = archive?.cacheURL, let archiveURL = archive?.URL else {
-            return provider
-        }
-
-        provider.registerDataRepresentation(forTypeIdentifier: UTType.fileURL.identifier, visibility: .all) { completion in
-            let loader = libarchive(url: archiveURL)
-            let progress = Progress(totalUnitCount: 100)
-
-            Task {
-                do {
-                    let writtenURLs = try await loader.extractEntries([path], toFolder: cacheURL)
-                    guard writtenURLs.count > 0 else { throw ArchiveError.ArchiveExtractError("Zero entries extracted")}
-                    progress.completedUnitCount = 100
-                    completion(writtenURLs.first!.dataRepresentation, nil)
-                } catch {
-                    let error = "Writing failed for \(path): \(error)"
-                    completion(nil, NSError(domain: "DragAndDrop", code: -1, userInfo: [NSLocalizedDescriptionKey: error]))
-                }
-            }
-
-            #ZZTrace("Returning progress")
-            return progress
-        }
-        #ZZTrace("Item provider registered")
-        return provider
-    }
-}
+//
+//        provider.registerDataRepresentation(forTypeIdentifier: UTType.fileURL.identifier, visibility: .all) { completion in
+//            let loader = libarchive(url: archiveURL)
+//            let progress = Progress(totalUnitCount: 100)
+//
+//            Task {
+//                do {
+//                    let writtenURLs = try await loader.extractEntries(paths, toFolder: cacheURL)
+//                    guard writtenURLs.count > 0 else { throw ArchiveError.ArchiveExtractError("Zero entries extracted")}
+//                    progress.completedUnitCount = 100
+//                    #ZZTrace("Wrote \(writtenURLs.count) entries. First is \(writtenURLs.first!.dataRepresentation)")
+//                    completion(writtenURLs.first!.dataRepresentation, nil)
+//                } catch {
+//                    let error = "Writing failed: \(error)"
+//                    completion(nil, NSError(domain: "DragAndDrop", code: -1, userInfo: [NSLocalizedDescriptionKey: error]))
+//                }
+//            }
+//
+//            #ZZTrace("Returning progress")
+//            return progress
+//        }
+//        #ZZTrace("Item provider registered")
+//        return provider
+//    }
+//}
 
 @Observable
 class ArchiveEntry: Identifiable {
@@ -202,14 +153,14 @@ class ArchiveEntry: Identifiable {
     var sizeString: String {
         get { size != -1 ? String(size) : "--" }
     }
-    var finalDirName: String? {
-        get {
-            if type == .directory {
-                return name
-            }
-            return pathComponents.dropLast().last
-        }
-    }
+//    var finalDirName: String? {
+//        get {
+//            if type == .directory {
+//                return name
+//            }
+//            return pathComponents.dropLast().last
+//        }
+//    }
     nonisolated(unsafe) var atime: Date = Date(timeIntervalSince1970: 0)
     nonisolated(unsafe) var ctime: Date = Date(timeIntervalSince1970: 0)
     nonisolated(unsafe) var mtime: Date = Date(timeIntervalSince1970: 0)
@@ -338,44 +289,61 @@ class ArchiveEntry: Identifiable {
         }
     }
 
-    func removeChildren(_ entries: [ArchiveEntry]) {
-        entries.forEach { self.removeChild($0) }
-    }
-
-    func removeChild(_ entry: ArchiveEntry) {
-        guard let children = children else { return }
-
-        if let idx = children.firstIndex(of: entry) {
-            #ZZTrace("Removing \(entry.name) from \(self.name)")
-            self.lock.withLock { _ in
-                _ = self.children?.remove(at: idx)
-            }
-        } else {
-            for child in children {
-                if child.children != nil {
-                    child.removeChild(entry)
-                }
-            }
-        }
-    }
+// TODO: WRITE
+//    func removeChildren(_ entries: [ArchiveEntry]) {
+//        entries.forEach { self.removeChild($0) }
+//    }
+//
+//    func removeChild(_ entry: ArchiveEntry) {
+//        guard let children = children else { return }
+//
+//        if let idx = children.firstIndex(of: entry) {
+//            #ZZTrace("Removing \(entry.name) from \(self.name)")
+//            self.lock.withLock { _ in
+//                _ = self.children?.remove(at: idx)
+//            }
+//        } else {
+//            for child in children {
+//                if child.children != nil {
+//                    child.removeChild(entry)
+//                }
+//            }
+//        }
+//    }
 
     // Return an Array of ourselves and all of our descendents.
-    @MainActor func flatChildren() -> [ArchiveEntry] {
-        var flatChildren: [ArchiveEntry] = []
-        flatChildren.append(self)
+//    @MainActor func flatChildren() -> [ArchiveEntry] {
+//        var flatChildren: [ArchiveEntry] = []
+//        flatChildren.append(self)
+//
+//        guard self.children != nil && self.children!.count > 0 else {
+//            // No children, we can bail now
+//            return flatChildren
+//        }
+//
+//        for child in self.children! {
+//            flatChildren.append(child)
+//
+//            if child.children != nil && child.children!.count > 0 {
+//                flatChildren += child.flatChildren()
+//            }
+//        }
+//        return flatChildren
+//    }
 
+    @MainActor func flatChildren() -> [ArchiveEntryFlat] {
+        var flatChildren: [ArchiveEntryFlat] = []
+        let flatChild = ArchiveEntryFlat(path: self.path, isSynthesized: self.isSynthesized)
+        flatChildren.append(flatChild)
+        
         guard self.children != nil && self.children!.count > 0 else {
-            // No children, we can bail now
             return flatChildren
         }
-
+        
         for child in self.children! {
-            flatChildren.append(child)
-
-            if child.children != nil && child.children!.count > 0 {
-                flatChildren += child.flatChildren()
-            }
+            flatChildren.append(contentsOf: child.flatChildren())
         }
+
         return flatChildren
     }
 

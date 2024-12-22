@@ -6,7 +6,6 @@
 //
 
 import SwiftUI
-import UniformTypeIdentifiers
 import ZZLog
 
 struct TableRowTreeContent: TableRowContent {
@@ -20,13 +19,21 @@ struct TableRowTreeContent: TableRowContent {
                 DisclosureTableRow(child, isExpanded: $child.isExpanded) {
                     TableRowTreeContent(children: children, viewModel: viewModel)
                 }
-                .itemProvider { child.itemProvider(viewModel.archive) }
-            }
-            else {
+                .draggable(ArchiveEntryDraggable(archiveURL: viewModel.archive?.URL,
+                                                 cacheURL: viewModel.archive?.cacheURL,
+                                                 entries: child.flatChildren()))
+            } else {
                 TableRow(child)
-                    .itemProvider { child.itemProvider(viewModel.archive) }
+                    .draggable(ArchiveEntryDraggable(archiveURL: viewModel.archive?.URL,
+                                                     cacheURL: viewModel.archive?.cacheURL,
+                                                     entries: child.flatChildren()))
             }
         }
+    }
+}
+
+
+
 // TODO: WRITE
 //        .onInsert(of: [ArchiveEntry.draggableType, .fileURL]) { index, providers in
 //            let error = "Received a drop! Index: \(index) on \(String(describing: self))"
@@ -47,5 +54,3 @@ struct TableRowTreeContent: TableRowContent {
 //            viewModel.archive?.processInternalDrop(providers: internalDropProviders, atIndex: index, treeHint: self.children)
 //            viewModel.archive?.processExternalDrop(providers: externalDropProviders, atIndex: index, treeHint: self.children)
 //        }
-    }
-}

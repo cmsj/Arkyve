@@ -43,8 +43,6 @@ extension Archive {
 
 @Observable
 class Archive {
-    let queue = DispatchQueue(label: UUID().uuidString, qos: .userInitiated)
-
     var URL: URL
     var path: String
     var name: String
@@ -55,8 +53,6 @@ class Archive {
     var filters: [libarchiveFilter] = []
     var cacheURL: URL
     var dirty: Bool = false
-
-    let lock = Mutex(true)
 
     init(URL: URL) {
         self.URL = URL
@@ -91,74 +87,7 @@ class Archive {
         self.entries.append(entry)
     }
 
-//    func extractEntryToCache(_ entry: ArchiveEntry) async throws -> [URL] {
-//        return try await extractEntries([entry], toFolder: cacheURL)
-//    }
-//
-//    func extractEntriesToCache(_ entries: [ArchiveEntry]) async throws -> [URL] {
-//        return try await extractEntries(entries, toFolder: cacheURL)
-//    }
-//
-//    func extractEntriesToCache(_ entries: Set<ArchiveEntry.ID>) async throws -> [URL] {
-//        let foundEntries = self.entries.filter { entries.contains($0.id) }
-//        return try await extractEntriesToCache(foundEntries)
-//    }
-//
-//    // NOTE: This method doesn't throw because it's called from SwiftUI and it's better to handle the errors here
-//    func extractEntries(_ entries: Set<ArchiveEntry.ID>, toFolder: URL) async {
-//        let foundEntries = self.entries.filter { entries.contains($0.id) }
-//        do {
-//            _ = try await extractEntries(foundEntries, toFolder: toFolder)
-//        } catch {
-//            self.lock.withLock { _ in
-//                let error = "Unable to extract selected items"
-//                self.error = error
-//                #ZZError(error)
-//            }
-//        }
-//    }
-
-//    func extractEntries(_ entries: [ArchiveEntry], toFolder: URL) async throws -> [URL] {
-//        var writtenURLS: [URL] = []
-//
-//        #ZZTrace("extractEntries: extracting \(entries.count) items to: \(toFolder)")
-//
-//        // Convert entries, which can be a tree, into a flat list for our libarchive walk below
-//        var flatEntries: [ArchiveEntry] = []
-//        for entry in entries {
-//            flatEntries += await entry.flatChildren()
-//        }
-//
-//        // Before we touch libarchive, deal with any synthetic directories first
-//        for (index, entry) in flatEntries.enumerated().reversed() {
-//            if entry.isSynthesized {
-//                #ZZTrace("Handling synthesized entry: \(entry.path)")
-//
-//                // Whether we succeed or fail here, we don't need this again later
-//                flatEntries.remove(at: index)
-//
-//                let folderURL = toFolder.appending(path: entry.pathComponents.joined(separator: "/"), directoryHint: .isDirectory)
-//                try FileManager.default.createDirectory(at: folderURL, withIntermediateDirectories: true)
-//                writtenURLS.append(folderURL)
-//            }
-//        }
-//        // We processed any synthesized entries in reverse, so we need to restore the original ordering of output URLs
-//        writtenURLS.reverse()
-//
-//        let libarchive = libarchive(url: self.URL)
-//        do {
-//            // This needs to be += because we may have already written some URLs above
-//            try await writtenURLS += libarchive.extractEntries(flatEntries.map { $0.path }, toFolder: toFolder)
-//        } catch {
-//            self.lock.withLock { _ in
-//                self.error = error.localizedDescription
-//            }
-//        }
-//
-//        return writtenURLS
-//    }
-
-    func processInternalDrop(providers:[NSItemProvider], atIndex:Int, treeHint:[ArchiveEntry]) {
+//    func processInternalDrop(providers:[NSItemProvider], atIndex:Int, treeHint:[ArchiveEntry]) {
         // FIXME: Implement
         // Process internal drops
 //        let decoder = JSONDecoder()
@@ -170,35 +99,35 @@ class Archive {
 //            guard let data = data else { return }
 //            let id = try? decoder.decode(UUID.self, from: data)
 //        }
-        self.dirty = true
-    }
+//        self.dirty = true
+//    }
 
-    func processExternalDrop(providers:[NSItemProvider], atIndex:Int, treeHint:[ArchiveEntry]) {
-        // FIXME: Implement
-        self.dirty = true
-    }
+//    func processExternalDrop(providers:[NSItemProvider], atIndex:Int, treeHint:[ArchiveEntry]) {
+//        // FIXME: Implement
+//        self.dirty = true
+//    }
 
-    func removeEntries(_ entries: Set<ArchiveEntry.ID>) {
-        let foundEntries = self.entries.filter { entries.contains($0.id) }
-        let didRemove = self.entries.remove { foundEntries.contains($0) }
-        self.root.removeChildren(foundEntries)
-
-        if didRemove {
-            self.dirty = true
-        }
-    }
-
-    func addEntries(from urls: [URL]) {
-        // FIXME: Implement
-        self.dirty = true
-    }
-
-    func processEntryRename(_ entry: ArchiveEntry) {
-        // FIXME: entry.name has updated, but entry.path and entry.pathComponents haven't.
-        // We've never before had to think about any of these changing, and it seems weird that we have all three.
-        // Maybe rename entry.path to entry.libarchivePath, never change it, and make entry.name a computed property
-        // that works on entry.pathComponents' last value?
-        print("NAME CHANGED: \(entry.name) :: \(entry.path) :: \(entry.pathComponents)")
-        self.dirty = true
-    }
+//    func removeEntries(_ entries: Set<ArchiveEntry.ID>) {
+//        let foundEntries = self.entries.filter { entries.contains($0.id) }
+//        let didRemove = self.entries.remove { foundEntries.contains($0) }
+//        self.root.removeChildren(foundEntries)
+//
+//        if didRemove {
+//            self.dirty = true
+//        }
+//    }
+//
+//    func addEntries(from urls: [URL]) {
+//        // FIXME: Implement
+//        self.dirty = true
+//    }
+//
+//    func processEntryRename(_ entry: ArchiveEntry) {
+//        // FIXME: entry.name has updated, but entry.path and entry.pathComponents haven't.
+//        // We've never before had to think about any of these changing, and it seems weird that we have all three.
+//        // Maybe rename entry.path to entry.libarchivePath, never change it, and make entry.name a computed property
+//        // that works on entry.pathComponents' last value?
+//        print("NAME CHANGED: \(entry.name) :: \(entry.path) :: \(entry.pathComponents)")
+//        self.dirty = true
+//    }
 }

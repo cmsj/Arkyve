@@ -17,15 +17,6 @@ class MainWindowViewModel {
     var quickLookURL: URL?
     var quickLookItems: [URL] = []
 
-    var newFolderURL: URL {
-        get {
-            UserDefaults.standard.url(forKey: "newFolderURL") ?? FileManager.default.urls(for: .downloadsDirectory, in: .userDomainMask).first!
-        }
-        set(url) {
-            UserDefaults.standard.setValue(url, forKey: "newFolderURL")
-        }
-    }
-
     func openArchive(url: URL) async {
         loader = libarchive(url: url)
         do {
@@ -36,39 +27,17 @@ class MainWindowViewModel {
         }
     }
 
-    @MainActor func newButton() {
-        archive = Archive(URL: URL(fileURLWithPath: "/___UNKNOWN"))
-    }
-
     @MainActor func openButton() {
-        if (archive != nil) {
-            archive?.error = "lol"
-        } else {
-            let panel = NSOpenPanel()
-            panel.allowsMultipleSelection = false
-            panel.canChooseDirectories = false
-            if panel.runModal() == .OK {
-                if let url = panel.url {
-                    Task { @MainActor in
-                        await openArchive(url: url)
-                    }
+        let panel = NSOpenPanel()
+        panel.allowsMultipleSelection = false
+        panel.canChooseDirectories = false
+        if panel.runModal() == .OK {
+            if let url = panel.url {
+                Task { @MainActor in
+                    await openArchive(url: url)
                 }
             }
         }
-    }
-
-    @MainActor func revertButton() {
-        guard archive != nil else { return }
-        if let url = archive?.URL {
-            archive = nil
-            Task { @MainActor in
-                await openArchive(url: url)
-            }
-        }
-    }
-
-    @MainActor func saveButton() {
-        // FIXME: Implement
     }
 
     @MainActor func extractButton(_ entries: Set<ArchiveEntry.ID>? = nil) {
@@ -97,25 +66,6 @@ class MainWindowViewModel {
         }
     }
 
-    @MainActor func renameButton(renameEntryFocus: FocusState<UUID?>.Binding, entries: Set<ArchiveEntry.ID>? = nil) {
-        let actualEntries = entries ?? selectedEntries
-        renameEntryFocus.wrappedValue = actualEntries.first
-    }
-
-    @MainActor func deleteButton(_ entries: Set<ArchiveEntry.ID>? = nil) {
-        let actualEntries = entries ?? selectedEntries
-        archive?.removeEntries(actualEntries)
-    }
-
-    @MainActor func addButton() {
-        let panel = NSOpenPanel()
-        panel.allowsMultipleSelection = false
-        panel.canChooseDirectories = false
-        if panel.runModal() == .OK {
-            self.archive?.addEntries(from: panel.urls)
-        }
-    }
-
     @MainActor
     func sort(using: [KeyPathComparator<ArchiveEntry>]) {
         self.archive?.sort(using: using)
@@ -134,6 +84,7 @@ class MainWindowViewModel {
             do {
                 let writtenURLs = try await loader.extractEntries(paths, toFolder: cacheURL)
                 if writtenURLs.count > 0 {
+                    quickLookItems = writtenURLs
                     quickLookURL = writtenURLs.first
                 }
             } catch {
@@ -142,6 +93,56 @@ class MainWindowViewModel {
             }
         }
     }
+
+// TODO: WRITE
+//    var newFolderURL: URL {
+//        get {
+//            UserDefaults.standard.url(forKey: "newFolderURL") ?? FileManager.default.urls(for: .downloadsDirectory, in: .userDomainMask).first!
+//        }
+//        set(url) {
+//            UserDefaults.standard.setValue(url, forKey: "newFolderURL")
+//        }
+//    }
+
+// TODO: WRITE
+//    @MainActor func newButton() {
+//        archive = Archive(URL: URL(fileURLWithPath: "/___UNKNOWN"))
+//    }
+
+// TODO: WRITE
+//    @MainActor func revertButton() {
+//        guard archive != nil else { return }
+//        if let url = archive?.URL {
+//            archive = nil
+//            Task { @MainActor in
+//                await openArchive(url: url)
+//            }
+//        }
+//    }
+
+//    @MainActor func saveButton() {
+//        // FIXME: Implement
+//    }
+
+// TODO: WRITE
+//    @MainActor func renameButton(renameEntryFocus: FocusState<UUID?>.Binding, entries: Set<ArchiveEntry.ID>? = nil) {
+//        let actualEntries = entries ?? selectedEntries
+//        renameEntryFocus.wrappedValue = actualEntries.first
+//    }
+//
+//    @MainActor func deleteButton(_ entries: Set<ArchiveEntry.ID>? = nil) {
+//        let actualEntries = entries ?? selectedEntries
+//        archive?.removeEntries(actualEntries)
+//    }
+//
+//    @MainActor func addButton() {
+//        let panel = NSOpenPanel()
+//        panel.allowsMultipleSelection = false
+//        panel.canChooseDirectories = false
+//        if panel.runModal() == .OK {
+//            self.archive?.addEntries(from: panel.urls)
+//        }
+//    }
 
 // TODO: WRITE
 //    func doRename(of entry: ArchiveEntry) {

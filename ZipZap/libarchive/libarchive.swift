@@ -9,35 +9,18 @@ import Foundation
 import SwiftUI
 import ZZLog
 
-struct libarchiveHeader: Identifiable {
-    let id = UUID()
-    let isSynthesized = false
-    let type: ArchiveEntryType
+extension FileManager {
+    func createSymbolicLink(atPath path: String, withDestinationPath destPath: String, overwrite: Bool) throws {
+        if !overwrite {
+            // Easy path
+            try self.createSymbolicLink(atPath: path, withDestinationPath: destPath)
+        }
 
-    let path: String
-    let name: String
-    let pathComponents: [String]
-    let size: Int64
-
-    let atime: Date
-    let ctime: Date
-    let mtime: Date
-    let btime: Date
-
-    let uid: String
-    let gid: String
-
-    let perms: String
-
-    var sizeString: String {
-        get { size != -1 ? String(size) : "--" }
-    }
-    var finalDirName: String? {
-        get {
-            if type == .directory {
-                return name
+        if symlink(destPath, path) == -1 {
+            if errno == EEXIST {
+                try self.removeItem(atPath: path)
+                try self.createSymbolicLink(atPath: path, withDestinationPath: destPath)
             }
-            return pathComponents.dropLast().last
         }
     }
 }
@@ -224,17 +207,19 @@ actor libarchive {
         let archiveEntries: [libarchiveHeader]
 
         do {
-            let root = ArchiveEntry(isRoot: true)!
             (archiveFormat, archiveFilters, archiveEntries) = try readEntriesFormatFilters()
+
             let entries = archiveEntries.map { ArchiveEntry($0) }
             let (rootItems, remainingAll) = entries.filterBothwise { $0.path.countOccurrences(of: "/") == 0 }
             let (remainingDirs, remainingFiles) = remainingAll.filterBothwise { $0.type == .directory }
 
+            let root = ArchiveEntry(isRoot: true)!
             root.addChildren(rootItems)
             root.addChildrenHierarchically(remainingDirs, for: archive)
             root.addChildrenHierarchically(remainingFiles, for: archive)
 
             archive.root = root
+            archive.entries = entries
             archive.format = archiveFormat
             archive.filters = archiveFilters
         } catch {
@@ -252,6 +237,8 @@ actor libarchive {
         try open()
         defer { close() }
 
+        #ZZTrace("Extracting \(paths.count) entries to \(toFolder.path)")
+
         while (archive_read_next_header(archive, &entryPtr) == ARCHIVE_OK) {
             if let path = entryPath(entryPtr) {
                 if paths.contains(path) {
@@ -267,19 +254,24 @@ actor libarchive {
                         let handle = try FileHandle(forWritingTo: outputURL)
                         let result = archive_read_data_into_fd(archive, handle.fileDescriptor)
                         if result != ARCHIVE_OK {
-                            throw ArchiveError.ArchiveExtractError("Unable to write to \(outputURL.path(percentEncoded: false))")
+                            let error = "Unable to write to \(outputURL.path(percentEncoded: false))"
+                            #ZZError(error)
+                            throw ArchiveError.ArchiveExtractError(error)
                         }
+                        #ZZTrace("  Wrote \(outputURL.path(percentEncoded: false))")
 
                         writtenURLs.append(outputURL)
                     case .directory:
                         try FileManager.default.createDirectory(at: outputURL, withIntermediateDirectories: true)
                         archive_read_data_skip(archive)
+                        #ZZTrace("  Created \(outputURL.path(percentEncoded: false))")
 
                         writtenURLs.append(outputURL)
                     case .symlink:
                         let linkDest = String(cString: archive_entry_symlink(entryPtr))
-                        let linkDestURL = Foundation.URL(fileURLWithPath: linkDest, isDirectory: archive_entry_symlink_type(entryPtr) == AE_SYMLINK_TYPE_DIRECTORY)
-                        try FileManager.default.createSymbolicLink(at: outputURL, withDestinationURL: linkDestURL)
+
+                        try FileManager.default.createSymbolicLink(atPath: outputURL.path, withDestinationPath: linkDest, overwrite: true)
+                        #ZZTrace("  Linked \(outputURL.path(percentEncoded: false)) to \(linkDest)")
                     default:
                         #ZZError("UNSUPPORTED TYPE: \(entryType.rawValue)")
                     }

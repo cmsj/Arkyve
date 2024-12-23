@@ -31,7 +31,7 @@ struct MainWindowView: View {
         .focusedSceneValue(\.activeViewModel, viewModel)
         .focusable()
         .focusEffectDisabled()
-        .onChange(of: viewModel.showErrors.msg, initial: true) { old, new in
+        .onChange(of: viewModel.showErrors.error, initial: true) { old, new in
             // Nicely animate the error view appearing/disappearing
             if viewModel.showErrors.state && new == nil {
                 withAnimation {

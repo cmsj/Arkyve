@@ -10,6 +10,8 @@ enum ArchiveError: Error {
     case ArchiveEntriesError(archive: String?, error: String)
     case ArchiveExtractError(archive: String?, error: String)
     case ArchiveQuicklookError(archive: String?, error: String)
+    case ArchiveDropError(msg: String)
+    case ArchiveUnknownError(msg: String)
 }
 
 extension ArchiveError: LocalizedError {
@@ -23,6 +25,14 @@ extension ArchiveError: LocalizedError {
             return "Unable to extract '\(archive ?? "UNKNOWN")': \(msg)"
         case .ArchiveQuicklookError(let archive, let msg):
             return "Unable to Quicklook '\(archive ?? "UNKNOWN")': \(msg)"
+        case .ArchiveDropError(let msg):
+            return "Unable to drop: \(msg)"
+        case .ArchiveUnknownError(let msg):
+            return "Unknown error: \(msg)"
         }
     }
+}
+
+extension ArchiveError: Equatable {
+    
 }

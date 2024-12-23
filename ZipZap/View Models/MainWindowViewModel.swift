@@ -81,12 +81,16 @@ class MainWindowViewModel {
 
                     do {
                         let _ = try await loader.extractEntries(extractableEntries, toFolder: destURL, retainFullPath: retainFullPath)
-                    } catch {
-                        let error = "Writing failed for \(chosenEntries.first?.path ?? "Unknown"): \(error)"
+                    } catch let error as ArchiveError {
                         Task { @MainActor in
-                            showErrors.msg = error
+                            showErrors.error = error
                         }
-                        #ZZError(error)
+                        #ZZError(error.localizedDescription)
+                    } catch {
+                        Task { @MainActor in
+                            showErrors.error = ArchiveError.ArchiveUnknownError(msg: error.localizedDescription)
+                        }
+                        #ZZError(error.localizedDescription)
                     }
                 }
             }
@@ -123,9 +127,14 @@ class MainWindowViewModel {
                     quickLookItems = writtenURLs
                     quickLookURL = writtenURLs.first
                 }
+            } catch let error as ArchiveError {
+                Task { @MainActor in
+                    showErrors.error = error
+                }
+                #ZZError(error.localizedDescription)
             } catch {
                 Task { @MainActor in
-                    showErrors.msg = error.localizedDescription
+                    showErrors.error = ArchiveError.ArchiveUnknownError(msg: error.localizedDescription)
                 }
                 #ZZError(error.localizedDescription)
             }

@@ -34,7 +34,7 @@ extension ArchiveEntryExtractable: Transferable {
             } catch {
                 #ZZError("Drop failed: \(error.localizedDescription)")
                 Task { @MainActor in
-                    entryDraggable.showErrors.msg = "Drop failed: \(error.localizedDescription)"
+                    entryDraggable.showErrors.error = ArchiveError.ArchiveDropError(msg: error.localizedDescription)
                 }
                 return Data()
             }

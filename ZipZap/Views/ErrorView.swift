@@ -11,7 +11,7 @@ import SwiftUI
 @MainActor
 class ShowErrors {
     var state: Bool = false
-    var msg: String? = nil
+    var error: ArchiveError? = nil
 }
 
 struct ErrorView: View {
@@ -20,13 +20,13 @@ struct ErrorView: View {
     var body: some View {
         HStack {
             Spacer()
-            Text(viewModel.showErrors.msg ?? "")
+            Text(viewModel.showErrors.error?.localizedDescription ?? "")
             Spacer()
             Image(systemName: "multiply")
                 .padding([.trailing], 5)
                 .onTapGesture {
                     withAnimation {
-                        viewModel.showErrors.msg = nil
+                        viewModel.showErrors.error = nil
                     }
                 }
         }

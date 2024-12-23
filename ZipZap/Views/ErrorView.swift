@@ -8,30 +8,31 @@
 import SwiftUI
 
 @Observable
+@MainActor
 class ShowErrors {
     var state: Bool = false
+    var msg: String? = nil
 }
 
 struct ErrorView: View {
     @Environment(MainWindowViewModel.self) var viewModel
-    @Environment(ShowErrors.self) var showErrors
 
     var body: some View {
         HStack {
             Spacer()
-            Text(viewModel.archive?.error ?? "")
+            Text(viewModel.showErrors.msg ?? "")
             Spacer()
             Image(systemName: "multiply")
                 .padding([.trailing], 5)
                 .onTapGesture {
                     withAnimation {
-                        viewModel.archive?.error = nil
+                        viewModel.showErrors.msg = nil
                     }
                 }
         }
         .padding([.top, .bottom], 2)
         .background(Color(#colorLiteral(red: 0.7470226884, green: 0, blue: 0, alpha: 0.5411817071)))
-        .hide(if: !showErrors.state)
+        .hide(if: !viewModel.showErrors.state)
     }
 }
 

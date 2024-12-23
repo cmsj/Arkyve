@@ -10,6 +10,7 @@ import AppKit
 import ZZLog
 
 @Observable
+@MainActor
 class MainWindowViewModel {
     private(set) var loader: libarchive? = nil
     private(set) var archive: Archive? = nil
@@ -17,6 +18,9 @@ class MainWindowViewModel {
     var selectedEntries = Set<ArchiveEntry.ID>()
     var quickLookURL: URL?
     var quickLookItems: [URL] = []
+
+    @MainActor
+    var showErrors: ShowErrors = ShowErrors()
 
     func openArchive(url: URL) async {
         loader = libarchive(url: url)
@@ -64,7 +68,8 @@ class MainWindowViewModel {
                 let chosenEntries = archive?.entries.filter { actualEntries.contains($0.id) } ?? []
 
                 for entry in chosenEntries {
-                    let extractableEntry = ArchiveEntryExtractable(archiveURL: archive?.URL,
+                    let extractableEntry = ArchiveEntryExtractable(showErrors: showErrors,
+                                                                   archiveURL: archive?.URL,
                                                                    cacheURL: archive?.cacheURL,
                                                                    selectedPath: entry.path,
                                                                    entries: entry.flatChildren())
@@ -78,6 +83,9 @@ class MainWindowViewModel {
                         let _ = try await loader.extractEntries(extractableEntries, toFolder: destURL, retainFullPath: retainFullPath)
                     } catch {
                         let error = "Writing failed for \(chosenEntries.first?.path ?? "Unknown"): \(error)"
+                        Task { @MainActor in
+                            showErrors.msg = error
+                        }
                         #ZZError(error)
                     }
                 }
@@ -101,7 +109,8 @@ class MainWindowViewModel {
             var extractableEntries: [ArchiveEntryExtractable] = []
 
             for entry in chosenEntries {
-                let extractableEntry = ArchiveEntryExtractable(archiveURL: archive?.URL,
+                let extractableEntry = ArchiveEntryExtractable(showErrors: showErrors,
+                                                               archiveURL: archive?.URL,
                                                                cacheURL: archive?.cacheURL,
                                                                selectedPath: entry.path,
                                                                entries: entry.flatChildren())
@@ -115,8 +124,10 @@ class MainWindowViewModel {
                     quickLookURL = writtenURLs.first
                 }
             } catch {
-                let error = "Quick failed for \(chosenEntries.first?.path ?? "Unknown"): \(error)"
-                #ZZError(error)
+                Task { @MainActor in
+                    showErrors.msg = error.localizedDescription
+                }
+                #ZZError(error.localizedDescription)
             }
         }
     }

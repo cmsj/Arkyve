@@ -19,13 +19,15 @@ struct TableRowTreeContent: TableRowContent {
                 DisclosureTableRow(child, isExpanded: $child.isExpanded) {
                     TableRowTreeContent(children: children, viewModel: viewModel)
                 }
-                .draggable(ArchiveEntryExtractable(archiveURL: viewModel.archive?.URL,
+                .draggable(ArchiveEntryExtractable(showErrors: viewModel.showErrors,
+                                                   archiveURL: viewModel.archive?.URL,
                                                    cacheURL: viewModel.archive?.cacheURL,
                                                    selectedPath: child.path,
                                                    entries: child.flatChildren()))
             } else {
                 TableRow(child)
-                    .draggable(ArchiveEntryExtractable(archiveURL: viewModel.archive?.URL,
+                    .draggable(ArchiveEntryExtractable(showErrors: viewModel.showErrors,
+                                                       archiveURL: viewModel.archive?.URL,
                                                        cacheURL: viewModel.archive?.cacheURL,
                                                        selectedPath: child.path,
                                                        entries: child.flatChildren()))

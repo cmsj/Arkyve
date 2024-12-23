@@ -9,6 +9,7 @@ import UniformTypeIdentifiers
 import ZZLog
 
 struct ArchiveEntryExtractable {
+    let showErrors: ShowErrors
     let archiveURL: URL?
     let cacheURL: URL?
     let selectedPath: String
@@ -27,11 +28,14 @@ extension ArchiveEntryExtractable: Transferable {
 
             do {
                 let writtenURLs = try await loader.extractEntries([entryDraggable], toFolder: cacheURL)
-                guard writtenURLs.count > 0 else { throw ArchiveError.ArchiveExtractError("Zero entries extracted")}
+                guard writtenURLs.count > 0 else { throw ArchiveError.ArchiveExtractError(archive: archiveURL.path, error: "Zero entries extracted")}
                 #ZZTrace("Wrote \(writtenURLs.count) entries. First is \(writtenURLs.first!.dataRepresentation)")
                 return writtenURLs.first!.dataRepresentation
             } catch {
-                #ZZError("Writing failed: \(error)")
+                #ZZError("Drop failed: \(error.localizedDescription)")
+                Task { @MainActor in
+                    entryDraggable.showErrors.msg = "Drop failed: \(error.localizedDescription)"
+                }
                 return Data()
             }
         }

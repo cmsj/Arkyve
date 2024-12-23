@@ -13,7 +13,6 @@ struct MainWindowView: View {
     @State var windowTitle = "ZipZap"
     @State var showFileChooser = false
     @State var showLog: Bool = false
-    @State var showErrors = ShowErrors()
 
     @FocusState private var renameEntry: UUID?
 
@@ -23,7 +22,6 @@ struct MainWindowView: View {
         VStack(spacing: 0) {
             ErrorView()
                 .environment(viewModel)
-                .environment(showErrors)
             TableView(renameEntryFocus: $renameEntry)
                 .environment(viewModel)
                 .popoverTip(tableViewTip, arrowEdge: .leading)
@@ -33,15 +31,15 @@ struct MainWindowView: View {
         .focusedSceneValue(\.activeViewModel, viewModel)
         .focusable()
         .focusEffectDisabled()
-        .onChange(of: viewModel.archive?.error, initial: true) { old, new in
+        .onChange(of: viewModel.showErrors.msg, initial: true) { old, new in
             // Nicely animate the error view appearing/disappearing
-            if showErrors.state && new == nil {
+            if viewModel.showErrors.state && new == nil {
                 withAnimation {
-                    showErrors.state = false
+                    viewModel.showErrors.state = false
                 }
-            } else if !showErrors.state && new != nil {
+            } else if !viewModel.showErrors.state && new != nil {
                 withAnimation {
-                    showErrors.state = true
+                    viewModel.showErrors.state = true
                 }
             }
         }

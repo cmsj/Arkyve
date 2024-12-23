@@ -9,11 +9,7 @@ import Foundation
 import Synchronization
 import ZZLog
 
-enum ArchiveError: Error {
-    case ArchiveOpenError(String)
-    case ArchiveEntriesError(String)
-    case ArchiveExtractError(String)
-}
+
 
 // MARK: Sorting
 extension Archive {
@@ -48,7 +44,6 @@ class Archive {
     var name: String
     var entries: [ArchiveEntry] = []
     var root: ArchiveEntry!
-    var error: String? = nil
     var format: libarchiveFormat = .Unknown
     var filters: [libarchiveFilter] = []
     var cacheURL: URL

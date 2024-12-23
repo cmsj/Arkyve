@@ -55,7 +55,7 @@ actor libarchive {
         // Prepare libarchive's data structure
         archive = archive_read_new()
         if archive == nil {
-            throw ArchiveError.ArchiveOpenError("Unable to allocate archive memory")
+            throw ArchiveError.ArchiveOpenError(archive: path, error: "Memory allocation failed")
         }
         archive_read_support_filter_all(archive)
         archive_read_support_format_all(archive)
@@ -63,14 +63,14 @@ actor libarchive {
         fd = Darwin.open(path, O_RDONLY)
         if fd < 0 {
             close()
-            throw ArchiveError.ArchiveOpenError("Unable to open \(path): \(errno)")
+            throw ArchiveError.ArchiveOpenError(archive: path, error: "open() failed: \(errno)")
         }
 
         let ptr = archive_read_open_fd(archive, fd, 10240)
         if ptr != ARCHIVE_OK {
             let errStr = String(cString: archive_error_string(archive))
             close()
-            throw ArchiveError.ArchiveOpenError("Unable to open archive (\(ptr)): \(errStr)")
+            throw ArchiveError.ArchiveOpenError(archive: path, error:errStr)
         }
     }
 
@@ -108,7 +108,7 @@ actor libarchive {
 
     private func readHeaders() throws {
         guard archive != nil else {
-            throw ArchiveError.ArchiveEntriesError("libarchive_entries() called on a nil archive")
+            throw ArchiveError.ArchiveEntriesError(archive: path, error: "readHeaders() called before archive was opened")
         }
 
         headers = []
@@ -233,8 +233,7 @@ actor libarchive {
             archive.format = archiveFormat
             archive.filters = archiveFilters
         } catch {
-            let error = error.localizedDescription
-            throw ArchiveError.ArchiveOpenError(error)
+            throw ArchiveError.ArchiveOpenError(archive: self.path, error: error.localizedDescription)
         }
 
         return archive
@@ -292,7 +291,7 @@ actor libarchive {
                         if result != ARCHIVE_OK {
                             let error = "Unable to write to \(outputURL.path(percentEncoded: false))"
                             #ZZError(error)
-                            throw ArchiveError.ArchiveExtractError(error)
+                            throw ArchiveError.ArchiveExtractError(archive: path, error: error)
                         }
                         #ZZTrace("  Wrote \(outputURL.path(percentEncoded: false))")
 
@@ -309,7 +308,7 @@ actor libarchive {
                         try FileManager.default.createSymbolicLink(atPath: outputURL.path, withDestinationPath: linkDest, overwrite: true)
                         #ZZTrace("  Linked \(outputURL.path(percentEncoded: false)) to \(linkDest)")
                     default:
-                        #ZZError("UNSUPPORTED TYPE: \(entryType.rawValue)")
+                        #ZZWarn("Skipping archive entry \(path) of type \(entryType.rawValue), it is an unsupported type")
                     }
 
                     // Set some metadata on the filesystem object we just wrote

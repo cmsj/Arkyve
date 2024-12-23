@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import AppKit
 import ZZLog
 
 @Observable
@@ -42,23 +43,41 @@ class MainWindowViewModel {
 
     @MainActor func extractButton(_ entries: Set<ArchiveEntry.ID>? = nil) {
         let actualEntries = entries ?? selectedEntries
-
         let panel = NSOpenPanel()
+
+        let button = NSButton.init()
+        button.setButtonType(.switch)
+        button.title = "Retain full archive path"
+        button.state = .off
+
+        panel.accessoryView = button
+
         panel.allowsMultipleSelection = false
         panel.canChooseDirectories = true
         panel.canChooseFiles = false
         panel.prompt = "Extract \(actualEntries.count) item\(actualEntries.count > 1 ? "s" : "")"
+
         if panel.runModal() == .OK {
             if let destURL = panel.url, let archiveURL = archive?.URL {
+                let retainFullPath = button.state == .on
+                var extractableEntries: [ArchiveEntryExtractable] = []
+                let chosenEntries = archive?.entries.filter { actualEntries.contains($0.id) } ?? []
+
+                for entry in chosenEntries {
+                    let extractableEntry = ArchiveEntryExtractable(archiveURL: archive?.URL,
+                                                                   cacheURL: archive?.cacheURL,
+                                                                   selectedPath: entry.path,
+                                                                   entries: entry.flatChildren())
+                    extractableEntries.append(extractableEntry)
+                }
+
                 Task {
                     let loader = libarchive(url: archiveURL)
-                    let chosenEntries = archive?.entries.filter { actualEntries.contains($0.id) } ?? []
-                    let paths = chosenEntries.map { $0.path }
 
                     do {
-                        let _ = try await loader.extractEntries(paths, toFolder: destURL)
+                        let _ = try await loader.extractEntries(extractableEntries, toFolder: destURL, retainFullPath: retainFullPath)
                     } catch {
-                        let error = "Writing failed for \(paths.first ?? "Unknown"): \(error)"
+                        let error = "Writing failed for \(chosenEntries.first?.path ?? "Unknown"): \(error)"
                         #ZZError(error)
                     }
                 }
@@ -79,16 +98,24 @@ class MainWindowViewModel {
         Task {
             let loader = libarchive(url: archiveURL)
             let chosenEntries = archive?.entries.filter { selectedEntries.contains($0.id) } ?? []
-            let paths = chosenEntries.map { $0.path }
+            var extractableEntries: [ArchiveEntryExtractable] = []
+
+            for entry in chosenEntries {
+                let extractableEntry = ArchiveEntryExtractable(archiveURL: archive?.URL,
+                                                               cacheURL: archive?.cacheURL,
+                                                               selectedPath: entry.path,
+                                                               entries: entry.flatChildren())
+                extractableEntries.append(extractableEntry)
+            }
 
             do {
-                let writtenURLs = try await loader.extractEntries(paths, toFolder: cacheURL)
+                let writtenURLs = try await loader.extractEntries(extractableEntries, toFolder: cacheURL)
                 if writtenURLs.count > 0 {
                     quickLookItems = writtenURLs
                     quickLookURL = writtenURLs.first
                 }
             } catch {
-                let error = "Quick failed for \(paths.first ?? "Unknown"): \(error)"
+                let error = "Quick failed for \(chosenEntries.first?.path ?? "Unknown"): \(error)"
                 #ZZError(error)
             }
         }

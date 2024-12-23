@@ -230,19 +230,45 @@ actor libarchive {
         return archive
     }
 
-    func extractEntries(_ paths: [String], toFolder: URL) throws -> [URL] {
+    func extractEntries(_ extractableEntries: [ArchiveEntryExtractable], toFolder: URL, retainFullPath: Bool = false) throws -> [URL] {
+        var pathMap: [String:URL] = [:]
         var writtenURLs: [URL] = []
         var entryPtr: OpaquePointer?
 
         try open()
         defer { close() }
 
-        #ZZTrace("Extracting \(paths.count) entries to \(toFolder.path)")
+        #ZZTrace("Extracting \(extractableEntries.count) entries to \(toFolder.path)")
+
+        let synthPaths = extractableEntries.flatMap { $0.entries.filter { $0.isSynthesized == true }}
+        for synthPath in synthPaths {
+            let synthURL = toFolder.appendingPathComponent(synthPath.path)
+            do {
+                try FileManager.default.createDirectory(at: synthURL, withIntermediateDirectories: true)
+            } catch {
+                #ZZError("Unable to create synthetic directory: \(synthURL.path) -- \(error)")
+                return writtenURLs
+            }
+            writtenURLs.append(synthURL)
+        }
+
+        for extractableEntry in extractableEntries {
+            let entryBasePath = extractableEntry.basePath
+            for entry in extractableEntry.entries.filter({ $0.isSynthesized == false }) {
+                var outputURL: URL
+                if retainFullPath {
+                    outputURL = toFolder.appendingPathComponent(entry.path)
+                } else {
+                    outputURL = toFolder.appendingPathComponent(entry.path.deletingPrefix(entryBasePath))
+                }
+                pathMap[entry.path] = outputURL
+            }
+        }
 
         while (archive_read_next_header(archive, &entryPtr) == ARCHIVE_OK) {
             if let path = entryPath(entryPtr) {
-                if paths.contains(path) {
-                    let outputURL = toFolder.appendingPathComponent(path)
+                if pathMap.keys.contains(path) {
+                    guard let outputURL = pathMap[path] else { continue }
                     let entryType = ArchiveEntryType(rawValue: archive_entry_filetype(entryPtr))
                     switch entryType {
                     case .file:

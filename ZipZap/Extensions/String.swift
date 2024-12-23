@@ -11,4 +11,9 @@ extension String {
     func countOccurrences(of char: Character) -> Int {
         self.ranges(of: String(char)).count
     }
+
+    func deletingPrefix(_ prefix: String) -> String {
+        guard self.hasPrefix(prefix) else { return self }
+        return String(self.dropFirst(prefix.count))
+    }
 }

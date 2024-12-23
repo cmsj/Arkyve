@@ -27,10 +27,10 @@ struct TableView: View {
                     HStack {
                         Image(systemName: entry.type.rawValue)
                         TextField(entry.name, text: $entry.name)
-                            .focused(renameEntryFocus, equals: entry.id)
-                            .onSubmit {
+//                            .focused(renameEntryFocus, equals: entry.id)
+//                            .onSubmit {
 //                                viewModel.doRename(of: entry)
-                            }
+//                            }
                     }
                 }
                 .customizationID("name")

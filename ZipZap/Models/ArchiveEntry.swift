@@ -11,10 +11,7 @@ import UniformTypeIdentifiers
 import SwiftUI
 import ZZLog
 
-struct ArchiveEntryFlat {
-    let path: String
-    let isSynthesized: Bool
-}
+
 
 extension Array where Element == String {
     func subtractPath(_ path: [String]) -> [String]? {
@@ -289,48 +286,6 @@ class ArchiveEntry: Identifiable {
         }
     }
 
-// TODO: WRITE
-//    func removeChildren(_ entries: [ArchiveEntry]) {
-//        entries.forEach { self.removeChild($0) }
-//    }
-//
-//    func removeChild(_ entry: ArchiveEntry) {
-//        guard let children = children else { return }
-//
-//        if let idx = children.firstIndex(of: entry) {
-//            #ZZTrace("Removing \(entry.name) from \(self.name)")
-//            self.lock.withLock { _ in
-//                _ = self.children?.remove(at: idx)
-//            }
-//        } else {
-//            for child in children {
-//                if child.children != nil {
-//                    child.removeChild(entry)
-//                }
-//            }
-//        }
-//    }
-
-    // Return an Array of ourselves and all of our descendents.
-//    @MainActor func flatChildren() -> [ArchiveEntry] {
-//        var flatChildren: [ArchiveEntry] = []
-//        flatChildren.append(self)
-//
-//        guard self.children != nil && self.children!.count > 0 else {
-//            // No children, we can bail now
-//            return flatChildren
-//        }
-//
-//        for child in self.children! {
-//            flatChildren.append(child)
-//
-//            if child.children != nil && child.children!.count > 0 {
-//                flatChildren += child.flatChildren()
-//            }
-//        }
-//        return flatChildren
-//    }
-
     @MainActor func flatChildren() -> [ArchiveEntryFlat] {
         var flatChildren: [ArchiveEntryFlat] = []
         let flatChild = ArchiveEntryFlat(path: self.path, isSynthesized: self.isSynthesized)
@@ -359,4 +314,46 @@ class ArchiveEntry: Identifiable {
             child.sort(using: sortDetails)
         }
     }
+
+    // TODO: WRITE
+    //    func removeChildren(_ entries: [ArchiveEntry]) {
+    //        entries.forEach { self.removeChild($0) }
+    //    }
+    //
+    //    func removeChild(_ entry: ArchiveEntry) {
+    //        guard let children = children else { return }
+    //
+    //        if let idx = children.firstIndex(of: entry) {
+    //            #ZZTrace("Removing \(entry.name) from \(self.name)")
+    //            self.lock.withLock { _ in
+    //                _ = self.children?.remove(at: idx)
+    //            }
+    //        } else {
+    //            for child in children {
+    //                if child.children != nil {
+    //                    child.removeChild(entry)
+    //                }
+    //            }
+    //        }
+    //    }
+
+    // Return an Array of ourselves and all of our descendents.
+    //    @MainActor func flatChildren() -> [ArchiveEntry] {
+    //        var flatChildren: [ArchiveEntry] = []
+    //        flatChildren.append(self)
+    //
+    //        guard self.children != nil && self.children!.count > 0 else {
+    //            // No children, we can bail now
+    //            return flatChildren
+    //        }
+    //
+    //        for child in self.children! {
+    //            flatChildren.append(child)
+    //
+    //            if child.children != nil && child.children!.count > 0 {
+    //                flatChildren += child.flatChildren()
+    //            }
+    //        }
+    //        return flatChildren
+    //    }
 }

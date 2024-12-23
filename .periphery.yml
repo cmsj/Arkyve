@@ -1,0 +1,5 @@
+project: ZipZap.xcodeproj
+schemes:
+- ZipZap
+targets:
+- ZipZap

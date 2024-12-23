@@ -6,10 +6,10 @@
 public macro ZZError(_ msg: String) = #externalMacro(module: "ZZLogMacros", type: "ZZLogErrorMacro")
 
 @freestanding(expression)
-public macro ZZWarn(msg: String) = #externalMacro(module: "ZZLogMacros", type: "ZZLogErrorMacro")
+public macro ZZWarn(_ msg: String) = #externalMacro(module: "ZZLogMacros", type: "ZZLogErrorMacro")
 
 @freestanding(expression)
-public macro ZZInfo(msg: String) = #externalMacro(module: "ZZLogMacros", type: "ZZLogErrorMacro")
+public macro ZZInfo(_ msg: String) = #externalMacro(module: "ZZLogMacros", type: "ZZLogErrorMacro")
 
 @freestanding(expression)
 public macro ZZTrace(_ msg: String) = #externalMacro(module: "ZZLogMacros", type: "ZZLogTraceMacro")

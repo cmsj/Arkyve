@@ -9,6 +9,13 @@ import Foundation
 import SwiftUI
 import ZZLog
 
+enum DateTypes {
+    case atime
+    case ctime
+    case mtime
+    case btime
+}
+
 extension FileManager {
     func createSymbolicLink(atPath path: String, withDestinationPath destPath: String, overwrite: Bool) throws {
         if !overwrite {
@@ -77,6 +84,28 @@ actor libarchive {
         }
     }
 
+    private func readDate(_ dateType: DateTypes, for entry: OpaquePointer?) -> Date {
+        switch dateType {
+        case .atime:
+            if archive_entry_atime_is_set(entry) != 0 {
+                return Date(since: archive_entry_atime(entry))
+            }
+        case .ctime:
+            if archive_entry_ctime_is_set(entry) != 0 {
+                return Date(since: archive_entry_ctime(entry))
+            }
+        case .mtime:
+            if archive_entry_mtime_is_set(entry) != 0 {
+                return Date(since: archive_entry_mtime(entry))
+            }
+        case .btime:
+            if archive_entry_birthtime_is_set(entry) != 0 {
+                return Date(since: archive_entry_birthtime(entry))
+            }
+        }
+        return Date(since: 0)
+    }
+
     private func readHeaders() throws {
         guard archive != nil else {
             throw ArchiveError.ArchiveEntriesError("libarchive_entries() called on a nil archive")
@@ -115,29 +144,10 @@ actor libarchive {
                 size = -1
             }
 
-            if archive_entry_atime_is_set(entry) != 0 {
-                atime = Date(since: archive_entry_atime(entry))
-            } else {
-                atime = Date(since: 0)
-            }
-
-            if archive_entry_ctime_is_set(entry) != 0 {
-                ctime = Date(since: archive_entry_ctime(entry))
-            } else {
-                ctime = Date(since: 0)
-            }
-
-            if archive_entry_mtime_is_set(entry) != 0 {
-                mtime = Date(since: archive_entry_mtime(entry))
-            } else {
-                mtime = Date(since: 0)
-            }
-
-            if archive_entry_birthtime_is_set(entry) != 0 {
-                btime = Date(since: archive_entry_birthtime(entry))
-            } else {
-                btime = Date(since: 0)
-            }
+            atime = readDate(.atime, for: entry)
+            ctime = readDate(.ctime, for: entry)
+            mtime = readDate(.mtime, for: entry)
+            btime = readDate(.btime, for: entry)
 
             if let modeCstring = archive_entry_strmode(entry) {
                 perms = String(cString: modeCstring)
@@ -302,7 +312,26 @@ actor libarchive {
                         #ZZError("UNSUPPORTED TYPE: \(entryType.rawValue)")
                     }
 
-                    // FIXME: Having extracted something, we probably ought to set its permissions/dates
+                    // Set some metadata on the filesystem object we just wrote
+                    let btime = readDate(.btime, for: entryPtr)
+                    let mtime = readDate(.mtime, for: entryPtr)
+
+                    do {
+                        var attributes: [FileAttributeKey : Any] = [:]
+
+                        if (btime != Date(since: 0)) {
+                            attributes[.creationDate] = btime
+                        }
+                        if (mtime != Date(since: 0)) {
+                            attributes[.modificationDate] = mtime
+                        }
+
+                        if attributes.count > 0 {
+                            try FileManager.default.setAttributes(attributes, ofItemAtPath: outputURL.path)
+                        }
+                    } catch {
+                        #ZZWarn("Unable to read/set file attributes for \(outputURL.path)")
+                    }
                 }
             }
         }

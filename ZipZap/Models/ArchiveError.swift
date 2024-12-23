@@ -18,21 +18,21 @@ extension ArchiveError: LocalizedError {
     public var errorDescription: String? {
         switch self {
         case .ArchiveOpenError(let archive, let msg):
-            return "Unable to open '\(archive ?? "UNKNOWN")': \(msg)"
+            return String(localized: "Unable to open '\(archive ?? "UNKNOWN")': \(msg)")
         case .ArchiveEntriesError(let archive, let msg):
-            return "Unable to read '\(archive ?? "UNKNOWN")': \(msg)"
+            return String(localized: "Unable to read '\(archive ?? "UNKNOWN")': \(msg)")
         case .ArchiveExtractError(let archive, let msg):
-            return "Unable to extract '\(archive ?? "UNKNOWN")': \(msg)"
+            return String(localized: "Unable to extract '\(archive ?? "UNKNOWN")': \(msg)")
         case .ArchiveQuicklookError(let archive, let msg):
-            return "Unable to Quicklook '\(archive ?? "UNKNOWN")': \(msg)"
+            return String(localized: "Unable to Quicklook '\(archive ?? "UNKNOWN")': \(msg)")
         case .ArchiveDropError(let msg):
-            return "Unable to drop: \(msg)"
+            return String(localized: "Unable to drop: \(msg)")
         case .ArchiveUnknownError(let msg):
-            return "Unknown error: \(msg)"
+            return String(localized: "Unknown error: \(msg)")
         }
     }
 }
 
+// We need to declare conformance to Equatable so this object can be used with .onChange() in SwiftUI
 extension ArchiveError: Equatable {
-    
 }

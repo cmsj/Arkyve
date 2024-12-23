@@ -302,7 +302,7 @@ actor libarchive {
                         #ZZError("UNSUPPORTED TYPE: \(entryType.rawValue)")
                     }
 
-                    // FIXME: Having extracted something, we probably ought to set its permissions
+                    // FIXME: Having extracted something, we probably ought to set its permissions/dates
                 }
             }
         }

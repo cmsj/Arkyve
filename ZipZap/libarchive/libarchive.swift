@@ -47,7 +47,7 @@ actor libarchive {
         self.path = url.path().removingPercentEncoding ?? "Unknown"
     }
 
-    private func open() throws {
+    private func open() throws(ArchiveError) {
         if fd >= 0 || archive != nil {
             close()
         }
@@ -210,7 +210,7 @@ actor libarchive {
         return (self.format, self.filters, self.headers)
     }
 
-    func readArchive() throws -> sending Archive {
+    func readArchive() throws(ArchiveError) -> sending Archive {
         let archive = Archive(URL: self.url)
         let archiveFormat: libarchiveFormat
         let archiveFilters: [libarchiveFilter]
@@ -239,7 +239,7 @@ actor libarchive {
         return archive
     }
 
-    func extractEntries(_ extractableEntries: [ArchiveEntryExtractable], toFolder: URL, retainFullPath: Bool = false) throws -> [URL] {
+    func extractEntries(_ extractableEntries: [ArchiveEntryExtractable], toFolder: URL, retainFullPath: Bool = false) throws(ArchiveError) -> [URL] {
         var pathMap: [String:URL] = [:]
         var writtenURLs: [URL] = []
         var entryPtr: OpaquePointer?
@@ -255,8 +255,7 @@ actor libarchive {
             do {
                 try FileManager.default.createDirectory(at: synthURL, withIntermediateDirectories: true)
             } catch {
-                #ZZError("Unable to create synthetic directory: \(synthURL.path) -- \(error)")
-                return writtenURLs
+                throw ArchiveError.ArchiveExtractError(archive: synthPath.path, error: error.localizedDescription)
             }
             writtenURLs.append(synthURL)
         }
@@ -282,22 +281,34 @@ actor libarchive {
                     switch entryType {
                     case .file:
                         // Ensure all intermediate directories exist, incase we're extracting multiple levels of files that may not arrive in an order that guarantees their parent folder (synthetic or otherwise) is created first
-                        try FileManager.default.createDirectory(at: outputURL.deletingLastPathComponent(), withIntermediateDirectories: true)
+                        do {
+                            try FileManager.default.createDirectory(at: outputURL.deletingLastPathComponent(), withIntermediateDirectories: true)
+                        } catch {
+                            throw ArchiveError.ArchiveExtractError(archive: outputURL.deletingLastPathComponent().path, error: error.localizedDescription)
+                        }
 
                         // Ensure our file exists
-                        try Data().write(to: outputURL)
-                        let handle = try FileHandle(forWritingTo: outputURL)
+                        let handle: FileHandle
+                        do {
+                            try Data().write(to: outputURL)
+                            handle = try FileHandle(forWritingTo: outputURL)
+                        } catch {
+                            throw ArchiveError.ArchiveExtractError(archive: outputURL.path, error: error.localizedDescription)
+                        }
                         let result = archive_read_data_into_fd(archive, handle.fileDescriptor)
                         if result != ARCHIVE_OK {
-                            let error = "Unable to write to \(outputURL.path(percentEncoded: false))"
-                            #ZZError(error)
+                            let error = "Unable to write to \(outputURL.path)"
                             throw ArchiveError.ArchiveExtractError(archive: path, error: error)
                         }
                         #ZZTrace("  Wrote \(outputURL.path(percentEncoded: false))")
 
                         writtenURLs.append(outputURL)
                     case .directory:
-                        try FileManager.default.createDirectory(at: outputURL, withIntermediateDirectories: true)
+                        do {
+                            try FileManager.default.createDirectory(at: outputURL, withIntermediateDirectories: true)
+                        } catch {
+                            throw ArchiveError.ArchiveExtractError(archive: outputURL.path, error: error.localizedDescription)
+                        }
                         archive_read_data_skip(archive)
                         #ZZTrace("  Created \(outputURL.path(percentEncoded: false))")
 
@@ -305,8 +316,12 @@ actor libarchive {
                     case .symlink:
                         let linkDest = String(cString: archive_entry_symlink(entryPtr))
 
-                        try FileManager.default.createSymbolicLink(atPath: outputURL.path, withDestinationPath: linkDest, overwrite: true)
-                        #ZZTrace("  Linked \(outputURL.path(percentEncoded: false)) to \(linkDest)")
+                        do {
+                            try FileManager.default.createSymbolicLink(atPath: outputURL.path, withDestinationPath: linkDest, overwrite: true)
+                        } catch {
+                            throw ArchiveError.ArchiveExtractError(archive: outputURL.path, error: error.localizedDescription)
+                        }
+                        #ZZTrace("  Linked \(outputURL.path) to \(linkDest)")
                     default:
                         #ZZWarn("Skipping archive entry \(path) of type \(entryType.rawValue), it is an unsupported type")
                     }

@@ -32,10 +32,7 @@ extension ArchiveEntryExtractable: Transferable {
                 #ZZTrace("Wrote \(writtenURLs.count) entries. First is \(writtenURLs.first!.dataRepresentation)")
                 return writtenURLs.first!.dataRepresentation
             } catch {
-                #ZZError("Drop failed: \(error.localizedDescription)")
-                Task { @MainActor in
-                    entryDraggable.showErrors.error = ArchiveError.ArchiveDropError(msg: error.localizedDescription)
-                }
+                await entryDraggable.showErrors.err(ArchiveError.ArchiveDropError(msg: error.localizedDescription))
                 return Data()
             }
         }

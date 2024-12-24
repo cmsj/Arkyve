@@ -6,12 +6,18 @@
 //
 
 import SwiftUI
+import ZZLog
 
 @Observable
 @MainActor
 class ShowErrors {
     var state: Bool = false
     var error: ArchiveError? = nil
+
+    func err(_ error: ArchiveError) {
+        self.error = error
+        #ZZError(error.localizedDescription)
+    }
 }
 
 struct ErrorView: View {

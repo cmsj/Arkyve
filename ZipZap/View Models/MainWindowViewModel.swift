@@ -27,8 +27,7 @@ class MainWindowViewModel {
         do {
             archive = try await loader?.readArchive()
         } catch {
-            let error = error.localizedDescription
-            #ZZError("Error loading archive: \(error)")
+            showErrors.err(ArchiveError.ArchiveOpenError(archive: url.path, error: error.localizedDescription))
         }
     }
 
@@ -82,15 +81,7 @@ class MainWindowViewModel {
                     do {
                         let _ = try await loader.extractEntries(extractableEntries, toFolder: destURL, retainFullPath: retainFullPath)
                     } catch let error as ArchiveError {
-                        Task { @MainActor in
-                            showErrors.error = error
-                        }
-                        #ZZError(error.localizedDescription)
-                    } catch {
-                        Task { @MainActor in
-                            showErrors.error = ArchiveError.ArchiveUnknownError(msg: error.localizedDescription)
-                        }
-                        #ZZError(error.localizedDescription)
+                        showErrors.err(error)
                     }
                 }
             }
@@ -128,15 +119,9 @@ class MainWindowViewModel {
                     quickLookURL = writtenURLs.first
                 }
             } catch let error as ArchiveError {
-                Task { @MainActor in
-                    showErrors.error = error
-                }
-                #ZZError(error.localizedDescription)
+                showErrors.err(error)
             } catch {
-                Task { @MainActor in
-                    showErrors.error = ArchiveError.ArchiveUnknownError(msg: error.localizedDescription)
-                }
-                #ZZError(error.localizedDescription)
+                showErrors.err(ArchiveError.ArchiveUnknownError(msg: error.localizedDescription))
             }
         }
     }

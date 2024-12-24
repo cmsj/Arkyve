@@ -9,8 +9,6 @@ import Foundation
 import Synchronization
 import ZZLog
 
-
-
 // MARK: Sorting
 extension Archive {
     // Sort our entries and return a new value, munging keypaths appropriately for the various fields of ArchiveEntry which need to be passed to Table as Strings, but don't sort well as Strings (ie dates)

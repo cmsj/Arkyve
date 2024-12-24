@@ -20,7 +20,7 @@ struct LogWindowView: View {
             }
             Spacer()
             Button("Clear") {
-                logs.entries.removeAll()
+                logs.clear()
             }
         }
         .padding()

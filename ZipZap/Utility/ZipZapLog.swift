@@ -58,6 +58,10 @@ class ZipZapLog {
         }
     }
 
+    func clear() {
+        entries.removeAll()
+    }
+
     func info(_ msg: String) {
         log(.Info, msg)
         logger.info("\(msg)")

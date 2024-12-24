@@ -131,6 +131,7 @@
 		4F22BDC72CAE95060079FAC0 /* libarchive */ = {
 			isa = PBXGroup;
 			children = (
+				4FD4BA572C07EC7F00082C13 /* libarchive_Bridge.h */,
 				4FDC674E2C19065A00A10035 /* libarchive.swift */,
 				4F41C4022D1891230011DAAB /* libarchiveHeader.swift */,
 				4F22BDCA2CAE95820079FAC0 /* libarchiveFilter.swift */,
@@ -194,7 +195,9 @@
 			isa = PBXGroup;
 			children = (
 				4F71219E2C110C67000EB268 /* Info.plist */,
-				4FD4BA572C07EC7F00082C13 /* libarchive_Bridge.h */,
+				4FCEEEE12BEE39E9009E9E17 /* Assets.xcassets */,
+				4FCEEEE62BEE39E9009E9E17 /* ZipZap.entitlements */,
+				4F41C40A2D1A0AD70011DAAB /* PrivacyInfo.xcprivacy */,
 				4FB498612C090B79004DE958 /* vendor */,
 				4F22BDC72CAE95060079FAC0 /* libarchive */,
 				4F344ECC2C3351E2006E1D9F /* Lifecycle */,
@@ -203,10 +206,7 @@
 				4F7121952C0F6B38000EB268 /* View Models */,
 				4F71218A2C0F4B03000EB268 /* Views */,
 				4F10848C2C26238A007DCC39 /* Utility */,
-				4FCEEEE12BEE39E9009E9E17 /* Assets.xcassets */,
-				4FCEEEE62BEE39E9009E9E17 /* ZipZap.entitlements */,
 				4FCEEEE32BEE39E9009E9E17 /* Preview Content */,
-				4F41C40A2D1A0AD70011DAAB /* PrivacyInfo.xcprivacy */,
 			);
 			path = ZipZap;
 			sourceTree = "<group>";
@@ -542,7 +542,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = net.tenshu.ZipZap;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
-				SWIFT_OBJC_BRIDGING_HEADER = ZipZap/libarchive_Bridge.h;
+				SWIFT_OBJC_BRIDGING_HEADER = ZipZap/libarchive/libarchive_Bridge.h;
 				SWIFT_STRICT_CONCURRENCY = complete;
 				SWIFT_VERSION = 6.0;
 			};
@@ -595,7 +595,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = net.tenshu.ZipZap;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
-				SWIFT_OBJC_BRIDGING_HEADER = ZipZap/libarchive_Bridge.h;
+				SWIFT_OBJC_BRIDGING_HEADER = ZipZap/libarchive/libarchive_Bridge.h;
 				SWIFT_STRICT_CONCURRENCY = complete;
 				SWIFT_VERSION = 6.0;
 			};

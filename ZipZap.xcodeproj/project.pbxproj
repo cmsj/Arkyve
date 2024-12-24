@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 56;
+	objectVersion = 70;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -21,6 +21,9 @@
 		4F41C4092D19B19D0011DAAB /* ArchiveEntryFlat.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F41C4082D19B19D0011DAAB /* ArchiveEntryFlat.swift */; };
 		4F41C40B2D1A0AD70011DAAB /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 4F41C40A2D1A0AD70011DAAB /* PrivacyInfo.xcprivacy */; };
 		4F41C40D2D1A171E0011DAAB /* ArchiveError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F41C40C2D1A171E0011DAAB /* ArchiveError.swift */; };
+		4F41C41C2D1B55990011DAAB /* String.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F7121882C0F48FD000EB268 /* String.swift */; };
+		4F41C41D2D1B58AA0011DAAB /* Date.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FD4BA552C07C58E00082C13 /* Date.swift */; };
+		4F41C41E2D1B5A320011DAAB /* Array.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F7121862C0F48EB000EB268 /* Array.swift */; };
 		4F5124072CA71BE800FB9AC6 /* Tips.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F5124062CA71BE800FB9AC6 /* Tips.swift */; };
 		4F7121852C0F48B1000EB268 /* RandomAccessCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F7121842C0F48B1000EB268 /* RandomAccessCollection.swift */; };
 		4F7121872C0F48EB000EB268 /* Array.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F7121862C0F48EB000EB268 /* Array.swift */; };
@@ -41,6 +44,16 @@
 		4FD4BA562C07C58E00082C13 /* Date.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FD4BA552C07C58E00082C13 /* Date.swift */; };
 		4FDC674F2C19065A00A10035 /* libarchive.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FDC674E2C19065A00A10035 /* libarchive.swift */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		4F41C4162D1B0C900011DAAB /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 4FCEEED22BEE39E7009E9E17 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 4FCEEED92BEE39E7009E9E17;
+			remoteInfo = ZipZap;
+		};
+/* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
 		4FCEEEF02BEE39F6009E9E17 /* Embed Libraries */ = {
@@ -70,6 +83,7 @@
 		4F41C4082D19B19D0011DAAB /* ArchiveEntryFlat.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArchiveEntryFlat.swift; sourceTree = "<group>"; };
 		4F41C40A2D1A0AD70011DAAB /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		4F41C40C2D1A171E0011DAAB /* ArchiveError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArchiveError.swift; sourceTree = "<group>"; };
+		4F41C4122D1B0C900011DAAB /* ZipZapTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ZipZapTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		4F5124062CA71BE800FB9AC6 /* Tips.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tips.swift; sourceTree = "<group>"; };
 		4F7121842C0F48B1000EB268 /* RandomAccessCollection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RandomAccessCollection.swift; sourceTree = "<group>"; };
 		4F7121862C0F48EB000EB268 /* Array.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Array.swift; sourceTree = "<group>"; };
@@ -100,7 +114,18 @@
 		4FDC674E2C19065A00A10035 /* libarchive.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = libarchive.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
+/* Begin PBXFileSystemSynchronizedRootGroup section */
+		4F41C4132D1B0C900011DAAB /* ZipZapTests */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = ZipZapTests; sourceTree = "<group>"; };
+/* End PBXFileSystemSynchronizedRootGroup section */
+
 /* Begin PBXFrameworksBuildPhase section */
+		4F41C40F2D1B0C900011DAAB /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		4FCEEED72BEE39E7009E9E17 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -178,6 +203,7 @@
 			children = (
 				4F1084862C261871007DCC39 /* Modules */,
 				4FCEEEDC2BEE39E7009E9E17 /* ZipZap */,
+				4F41C4132D1B0C900011DAAB /* ZipZapTests */,
 				4FCEEEDB2BEE39E7009E9E17 /* Products */,
 				4FCEEEEC2BEE39F6009E9E17 /* Frameworks */,
 			);
@@ -187,6 +213,7 @@
 			isa = PBXGroup;
 			children = (
 				4FCEEEDA2BEE39E7009E9E17 /* ZipZap.app */,
+				4F41C4122D1B0C900011DAAB /* ZipZapTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -259,6 +286,29 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		4F41C4112D1B0C900011DAAB /* ZipZapTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 4F41C4182D1B0C900011DAAB /* Build configuration list for PBXNativeTarget "ZipZapTests" */;
+			buildPhases = (
+				4F41C40E2D1B0C900011DAAB /* Sources */,
+				4F41C40F2D1B0C900011DAAB /* Frameworks */,
+				4F41C4102D1B0C900011DAAB /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				4F41C4172D1B0C900011DAAB /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				4F41C4132D1B0C900011DAAB /* ZipZapTests */,
+			);
+			name = ZipZapTests;
+			packageProductDependencies = (
+			);
+			productName = ZipZapTests;
+			productReference = 4F41C4122D1B0C900011DAAB /* ZipZapTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 		4FCEEED92BEE39E7009E9E17 /* ZipZap */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 4FCEEEE92BEE39E9009E9E17 /* Build configuration list for PBXNativeTarget "ZipZap" */;
@@ -288,9 +338,13 @@
 			isa = PBXProject;
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
-				LastSwiftUpdateCheck = 1530;
+				LastSwiftUpdateCheck = 1620;
 				LastUpgradeCheck = 1540;
 				TargetAttributes = {
+					4F41C4112D1B0C900011DAAB = {
+						CreatedOnToolsVersion = 16.2;
+						TestTargetID = 4FCEEED92BEE39E7009E9E17;
+					};
 					4FCEEED92BEE39E7009E9E17 = {
 						CreatedOnToolsVersion = 15.3;
 					};
@@ -310,11 +364,19 @@
 			projectRoot = "";
 			targets = (
 				4FCEEED92BEE39E7009E9E17 /* ZipZap */,
+				4F41C4112D1B0C900011DAAB /* ZipZapTests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		4F41C4102D1B0C900011DAAB /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		4FCEEED82BEE39E7009E9E17 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -328,6 +390,16 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		4F41C40E2D1B0C900011DAAB /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				4F41C41C2D1B55990011DAAB /* String.swift in Sources */,
+				4F41C41E2D1B5A320011DAAB /* Array.swift in Sources */,
+				4F41C41D2D1B58AA0011DAAB /* Date.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		4FCEEED62BEE39E7009E9E17 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -371,9 +443,50 @@
 			isa = PBXTargetDependency;
 			productRef = 4F1084882C261BAE007DCC39 /* ZZLog */;
 		};
+		4F41C4172D1B0C900011DAAB /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 4FCEEED92BEE39E7009E9E17 /* ZipZap */;
+			targetProxy = 4F41C4162D1B0C900011DAAB /* PBXContainerItemProxy */;
+		};
 /* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
+		4F41C4192D1B0C900011DAAB /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = VQCYSNZB89;
+				GENERATE_INFOPLIST_FILE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 15.2;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = net.tenshu.ZipZapTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/ZipZap.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/ZipZap";
+			};
+			name = Debug;
+		};
+		4F41C41A2D1B0C900011DAAB /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = VQCYSNZB89;
+				GENERATE_INFOPLIST_FILE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 15.2;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = net.tenshu.ZipZapTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/ZipZap.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/ZipZap";
+			};
+			name = Release;
+		};
 		4FCEEEE72BEE39E9009E9E17 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -604,6 +717,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		4F41C4182D1B0C900011DAAB /* Build configuration list for PBXNativeTarget "ZipZapTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				4F41C4192D1B0C900011DAAB /* Debug */,
+				4F41C41A2D1B0C900011DAAB /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		4FCEEED52BEE39E7009E9E17 /* Build configuration list for PBXProject "ZipZap" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (

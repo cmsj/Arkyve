@@ -247,8 +247,6 @@ actor libarchive {
         try open()
         defer { close() }
 
-        #ZZTrace("Extracting \(extractableEntries.count) entries to \(toFolder.path)")
-
         let synthPaths = extractableEntries.flatMap { $0.entries.filter { $0.isSynthesized == true }}
         for synthPath in synthPaths {
             let synthURL = toFolder.appendingPathComponent(synthPath.path)
@@ -273,6 +271,8 @@ actor libarchive {
             }
         }
 
+        #ZZTrace("Extracting \(pathMap.count) entries to \(toFolder.path)")
+
         while (archive_read_next_header(archive, &entryPtr) == ARCHIVE_OK) {
             if let path = entryPath(entryPtr) {
                 if pathMap.keys.contains(path) {
@@ -284,7 +284,8 @@ actor libarchive {
                         do {
                             try FileManager.default.createDirectory(at: outputURL.deletingLastPathComponent(), withIntermediateDirectories: true)
                         } catch {
-                            throw ArchiveError.ArchiveExtractError(archive: outputURL.deletingLastPathComponent().path, error: error.localizedDescription)
+                            throw ArchiveError.ArchiveExtractError(archive: outputURL.deletingLastPathComponent().path,
+                                                                   error: error.localizedDescription)
                         }
 
                         // Ensure our file exists
@@ -293,7 +294,8 @@ actor libarchive {
                             try Data().write(to: outputURL)
                             handle = try FileHandle(forWritingTo: outputURL)
                         } catch {
-                            throw ArchiveError.ArchiveExtractError(archive: outputURL.path, error: error.localizedDescription)
+                            throw ArchiveError.ArchiveExtractError(archive: outputURL.path,
+                                                                   error: error.localizedDescription)
                         }
                         let result = archive_read_data_into_fd(archive, handle.fileDescriptor)
                         if result != ARCHIVE_OK {

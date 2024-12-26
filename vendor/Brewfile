@@ -1,6 +1,6 @@
-cmake
-ninja
-libtool
-po4a
-autoconf
-automake
+brew "cmake"
+brew "ninja"
+brew "libtool"
+brew "po4a"
+brew "autoconf"
+brew "automake"

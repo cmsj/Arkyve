@@ -39,6 +39,18 @@ enum libarchiveFormat: Int32 {
     case _7ZIP = 0xE0000
     case WARC = 0xF0000
     case RAR_V5 = 0x100000
+
+    var canWrite: Bool {
+        get {
+            switch (self) {
+                // NOTE: These are not the only formats libarchive can write, but they are all I care to test
+            case .TAR, .TAR_GNUTAR, .ISO9660, .ISO9660_RR, .ZIP, ._7ZIP:
+                true
+            default:
+                false
+            }
+        }
+    }
 }
 
 extension libarchiveFormat: CustomStringConvertible {

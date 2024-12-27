@@ -23,6 +23,7 @@ struct TableRowTreeContent: TableRowContent {
                                                    archiveURL: viewModel.archive?.URL,
                                                    cacheURL: viewModel.archive?.cacheURL,
                                                    selectedPath: child.path,
+                                                   id: child.id,
                                                    entries: child.flatChildren()))
             } else {
                 TableRow(child)
@@ -30,8 +31,16 @@ struct TableRowTreeContent: TableRowContent {
                                                        archiveURL: viewModel.archive?.URL,
                                                        cacheURL: viewModel.archive?.cacheURL,
                                                        selectedPath: child.path,
+                                                       id: child.id,
                                                        entries: child.flatChildren()))
             }
+        }
+        // FIXME: This causes a crash if an archive is opened, then a new one is created, then a file is dragged into the tableview
+        .onInsert(of: [ArchiveEntry.draggableType, .fileURL]) { index, providers in
+            // TODO: WRITE
+//            viewModel.processDrop(index: index, providers: providers)
+            print("YOOOOOOOO")
+            print("Received a drop at \(index) on \(String(describing:self))")
         }
     }
 }

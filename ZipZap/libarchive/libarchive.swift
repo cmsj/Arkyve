@@ -127,6 +127,7 @@ actor libarchive {
             let uid: String
             let gid: String
             let type: ArchiveEntryType
+            let source: ArchiveEntrySource
 
             if let pathString = entryPath(entry) {
                 path = pathString
@@ -137,6 +138,8 @@ actor libarchive {
                 name = "Unknown"
                 pathComponents = []
             }
+
+            source = ArchiveEntrySource(type: .Archive, path: path)
 
             if archive_entry_size_is_set(entry) != 0 {
                 size = archive_entry_size(entry)
@@ -168,7 +171,7 @@ actor libarchive {
 
             type = ArchiveEntryType(rawValue: archive_entry_filetype(entry))
 
-            headers.append(libarchiveHeader(type: type, path: path, name: name, pathComponents: pathComponents, size: size, atime: atime, ctime: ctime, mtime: mtime, btime: btime, uid: uid, gid: gid, perms: perms))
+            headers.append(libarchiveHeader(source: source, type: type, path: path, name: name, pathComponents: pathComponents, size: size, atime: atime, ctime: ctime, mtime: mtime, btime: btime, uid: uid, gid: gid, perms: perms))
         }
     }
 
@@ -223,7 +226,7 @@ actor libarchive {
             let (rootItems, remainingAll) = entries.filterBothwise { $0.path.countOccurrences(of: "/") == 0 }
             let (remainingDirs, remainingFiles) = remainingAll.filterBothwise { $0.type == .directory }
 
-            let root = ArchiveEntry(isRoot: true)!
+            let root = ArchiveEntry(isRoot: true)
             root.addChildren(rootItems)
             root.addChildrenHierarchically(remainingDirs, for: archive)
             root.addChildrenHierarchically(remainingFiles, for: archive)

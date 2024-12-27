@@ -7,6 +7,7 @@
 
 import SwiftUI
 import QuickLook
+import UniformTypeIdentifiers
 
 struct TableView: View {
     @Environment(MainWindowViewModel.self) var viewModel
@@ -27,10 +28,10 @@ struct TableView: View {
                     HStack {
                         Image(systemName: entry.type.rawValue)
                         TextField(entry.name, text: $entry.name)
-//                            .focused(renameEntryFocus, equals: entry.id)
-//                            .onSubmit {
-//                                viewModel.doRename(of: entry)
-//                            }
+                            .focused(renameEntryFocus, equals: entry.id)
+                            .onSubmit {
+                                viewModel.doRename(of: entry)
+                            }
                     }
                 }
                 .customizationID("name")
@@ -72,12 +73,12 @@ struct TableView: View {
             TableRowTreeContent(children: viewModel.archive?.root.children ?? [], viewModel: viewModel)
         }
         .contextMenu(forSelectionType: ArchiveEntry.ID.self) { items in
-//            Button {
-//                viewModel.renameButton(renameEntryFocus: renameEntryFocus, entries: items)
-//            } label: {
-//                Text("Rename...")
-//            }
-//            .disabled(items.count != 1)
+            Button {
+                viewModel.renameButton(renameEntryFocus: renameEntryFocus, entries: items)
+            } label: {
+                Text("Rename...")
+            }
+            .disabled(items.count != 1)
             Button {
                 viewModel.extractButton(items)
             } label: {
@@ -89,6 +90,7 @@ struct TableView: View {
 //            } label: {
 //                Text("Delete")
 //            }
+//            .disabled(viewModel.disableDelete)
         }
         .onKeyPress(.space, action: {
             if viewModel.selectedEntries.count > 0 {
@@ -103,6 +105,14 @@ struct TableView: View {
         .onChange(of: sortOrder) { _, newSortOrder in
             viewModel.sort(using: sortOrder)
         }
+        .onDrop(of: [ArchiveEntry.draggableType, .fileURL], isTargeted: nil, perform: { items in
+            guard viewModel.archive != nil else { return false }
+
+            print("WAAAAAAAA")
+            // TODO: WRITE
+            // viewModel.processDrop(items)
+            return false
+        })
     }
 }
 

@@ -22,6 +22,47 @@ class MainWindowViewModel {
     @MainActor
     var showErrors: ShowErrors = ShowErrors()
 
+    var disableRevert: Bool {
+        get {
+            archive?.dirty != true || archive?.existsOnDisk != true
+        }
+    }
+    var disableClose: Bool {
+        get {
+            archive == nil
+        }
+    }
+    var disableSave: Bool {
+        get {
+            archive?.dirty != true
+        }
+    }
+    var disableSaveAs: Bool {
+        get {
+            archive == nil
+        }
+    }
+    var disableQuicklook: Bool {
+        get {
+            selectedEntries.isEmpty
+        }
+    }
+    var disableExtract: Bool {
+        get {
+            selectedEntries.isEmpty
+        }
+    }
+    var disableRename: Bool {
+        get {
+            selectedEntries.count != 1
+        }
+    }
+    var disableDelete: Bool {
+        get {
+            selectedEntries.isEmpty
+        }
+    }
+
     func openArchive(url: URL) async {
         loader = libarchive(url: url)
         do {
@@ -42,6 +83,13 @@ class MainWindowViewModel {
                 }
             }
         }
+    }
+
+    @MainActor func closeButton() {
+        archive = nil
+        selectedEntries = []
+        quickLookURL = nil
+        quickLookItems = []
     }
 
     @MainActor func extractButton(_ entries: Set<ArchiveEntry.ID>? = nil) {
@@ -71,6 +119,7 @@ class MainWindowViewModel {
                                                                    archiveURL: archive?.URL,
                                                                    cacheURL: archive?.cacheURL,
                                                                    selectedPath: entry.path,
+                                                                   id: entry.id,
                                                                    entries: entry.flatChildren())
                     extractableEntries.append(extractableEntry)
                 }
@@ -108,6 +157,7 @@ class MainWindowViewModel {
                                                                archiveURL: archive?.URL,
                                                                cacheURL: archive?.cacheURL,
                                                                selectedPath: entry.path,
+                                                               id: entry.id,
                                                                entries: entry.flatChildren())
                 extractableEntries.append(extractableEntry)
             }
@@ -126,42 +176,37 @@ class MainWindowViewModel {
         }
     }
 
-// TODO: WRITE
-//    var newFolderURL: URL {
-//        get {
-//            UserDefaults.standard.url(forKey: "newFolderURL") ?? FileManager.default.urls(for: .downloadsDirectory, in: .userDomainMask).first!
-//        }
-//        set(url) {
-//            UserDefaults.standard.setValue(url, forKey: "newFolderURL")
-//        }
-//    }
+    @MainActor func newButton() {
+        archive = Archive()
+        selectedEntries = []
+        quickLookURL = nil
+        quickLookItems = []
+    }
 
-// TODO: WRITE
-//    @MainActor func newButton() {
-//        archive = Archive(URL: URL(fileURLWithPath: "/___UNKNOWN"))
-//    }
+    @MainActor func revertButton() {
+        guard archive != nil else { return }
+        if let url = archive?.URL {
+            archive = nil
+            Task { @MainActor in
+                await openArchive(url: url)
+            }
+        }
+    }
 
-// TODO: WRITE
-//    @MainActor func revertButton() {
-//        guard archive != nil else { return }
-//        if let url = archive?.URL {
-//            archive = nil
-//            Task { @MainActor in
-//                await openArchive(url: url)
-//            }
-//        }
-//    }
+    @MainActor func renameButton(renameEntryFocus: FocusState<UUID?>.Binding, entries: Set<ArchiveEntry.ID>? = nil) {
+        let actualEntries = entries ?? selectedEntries
+        renameEntryFocus.wrappedValue = actualEntries.first
+    }
 
-//    @MainActor func saveButton() {
-//        // FIXME: Implement
-//    }
+    @MainActor func saveButton() {
+        // TODO: WRITE
+    }
 
-// TODO: WRITE
-//    @MainActor func renameButton(renameEntryFocus: FocusState<UUID?>.Binding, entries: Set<ArchiveEntry.ID>? = nil) {
-//        let actualEntries = entries ?? selectedEntries
-//        renameEntryFocus.wrappedValue = actualEntries.first
-//    }
-//
+    @MainActor func saveAsButton() {
+        // TODO: WRITE
+    }
+
+    // TODO: WRITE
 //    @MainActor func deleteButton(_ entries: Set<ArchiveEntry.ID>? = nil) {
 //        let actualEntries = entries ?? selectedEntries
 //        archive?.removeEntries(actualEntries)
@@ -177,7 +222,8 @@ class MainWindowViewModel {
 //    }
 
 // TODO: WRITE
-//    func doRename(of entry: ArchiveEntry) {
+    func doRename(of entry: ArchiveEntry) {
 //        self.archive?.processEntryRename(entry)
-//    }
+        self.archive?.dirty = true
+    }
 }

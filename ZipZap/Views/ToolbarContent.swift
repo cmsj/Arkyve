@@ -14,16 +14,15 @@ struct ToolbarContentView: CustomizableToolbarContent {
     var openButtonTip = OpenButtonTip()
 
     var body: some CustomizableToolbarContent {
-// TODO: WRITE
-//        ToolbarItem(id: "New") {
-//            Button {
-//                viewModel.newButton()
-//            } label: {
-//                Label("New archive", systemImage: "plus.rectangle.on.folder")
-//                    .padding()
-//            }
-//            .help("Start a new, empty archive")
-//        }
+        ToolbarItem(id: "New") {
+            Button {
+                viewModel.newButton()
+            } label: {
+                Label("New archive", systemImage: "plus.rectangle.on.folder")
+                    .padding()
+            }
+            .help("Start a new, empty archive")
+        }
         ToolbarItem(id: "Open") {
             Button {
                 viewModel.openButton()
@@ -33,6 +32,15 @@ struct ToolbarContentView: CustomizableToolbarContent {
             }
             .help("Open an archive")
             .popoverTip(openButtonTip, arrowEdge: .top)
+        }
+        ToolbarItem(id: "Close") {
+            Button {
+                viewModel.closeButton()
+            } label: {
+                Label("Close", systemImage: "xmark.circle")
+                    .padding()
+            }
+            .disabled(viewModel.disableClose)
         }
 // TODO: WRITE
 //        ToolbarItem(id: "Add") {
@@ -53,19 +61,18 @@ struct ToolbarContentView: CustomizableToolbarContent {
                     .padding()
             }
             .help("Extract selected files/folders")
-            .disabled(viewModel.selectedEntries.isEmpty)
+            .disabled(viewModel.disableExtract)
         }
-// TODO: WRITE
-//        ToolbarItem(id: "Rename") {
-//            Button {
-//                viewModel.renameButton(renameEntryFocus: renameEntry)
-//            } label: {
-//                Label("Rename", systemImage: "character.cursor.ibeam")
-//                    .padding()
-//            }
-//            .help("Rename selected file/folder")
-//            .disabled(viewModel.selectedEntries.count != 1)
-//        }
+        ToolbarItem(id: "Rename") {
+            Button {
+                viewModel.renameButton(renameEntryFocus: renameEntry)
+            } label: {
+                Label("Rename", systemImage: "character.cursor.ibeam")
+                    .padding()
+            }
+            .help("Rename selected file/folder")
+            .disabled(viewModel.disableRename)
+        }
 //        ToolbarItem(id: "Delete") {
 //            Button {
 //                viewModel.deleteButton()
@@ -74,7 +81,7 @@ struct ToolbarContentView: CustomizableToolbarContent {
 //                    .padding()
 //            }
 //            .help("Delete selected files/folders")
-//            .disabled(viewModel.selectedEntries.isEmpty)
+//            .disabled(viewModel.disableDelete)
 //        }
     }
 }

@@ -19,31 +19,7 @@ struct ZipZapApp: App {
             MainWindowView()
         }
         .commands {
-            CommandGroup(after: .newItem) {
-                Button("Open...") {
-                    activeViewModel?.openButton()
-                }
-                .keyboardShortcut("o", modifiers: [.command])
-                .disabled(activeViewModel == nil)
-//                Button("Revert") {
-//                    activeViewModel?.revertButton()
-//                }
-//                .disabled(activeViewModel == nil || activeViewModel?.archive == nil || activeViewModel?.archive?.dirty == false)
-//                Divider()
-//                Button("Save") {
-//                    activeViewModel?.saveButton()
-//                }
-//                .keyboardShortcut("s", modifiers: [.command])
-//                .disabled(activeViewModel == nil || activeViewModel?.archive == nil || activeViewModel?.archive?.dirty == false)
-            }
-            CommandGroup(after: .sidebar) {
-                Button("Quick Look") {
-                    activeViewModel?.extractForQuicklook()
-                }
-                .keyboardShortcut("y", modifiers: [.command])
-                .disabled(activeViewModel?.selectedEntries.count == 0)
-                Divider()
-            }
+            MenuCommands()
         }
         .restorationBehavior(.disabled)
 

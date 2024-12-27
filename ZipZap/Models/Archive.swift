@@ -41,11 +41,18 @@ class Archive {
     var path: String
     var name: String
     var entries: [ArchiveEntry] = []
-    var root: ArchiveEntry!
+    var root: ArchiveEntry = ArchiveEntry(isRoot: true)
     var format: libarchiveFormat = .Unknown
     var filters: [libarchiveFilter] = []
     var cacheURL: URL
     var dirty: Bool = false
+    var existsOnDisk: Bool {
+        URL.path != "/___UNKNOWN"
+    }
+
+    var canWrite: Bool {
+        get { format.canWrite }
+    }
 
     init(URL: URL) {
         self.URL = URL
@@ -53,9 +60,14 @@ class Archive {
         self.name = name
         self.path = URL.path().removingPercentEncoding ?? "Unknown"
         self.cacheURL = SettingsManager.shared.cacheURL.appendingPathComponent(name)
-        self.root = ArchiveEntry(isRoot: true)
 
         #ZZTrace("Initialised for \(URL)")
+    }
+
+    convenience init() {
+        let path = "/___UNKNOWN"
+        self.init(URL: Foundation.URL(fileURLWithPath: path))
+        self.dirty = true
     }
 
     deinit {

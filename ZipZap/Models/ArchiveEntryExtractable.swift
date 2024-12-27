@@ -13,6 +13,7 @@ struct ArchiveEntryExtractable {
     let archiveURL: URL?
     let cacheURL: URL?
     let selectedPath: String
+    let id: UUID
     let entries: [ArchiveEntryFlat]
 
     var basePath: String { selectedPath.split(separator: "/").dropLast().joined(separator: "/") }
@@ -33,6 +34,14 @@ extension ArchiveEntryExtractable: Transferable {
                 return writtenURLs.first!.dataRepresentation
             } catch {
                 await entryDraggable.showErrors.err(ArchiveError.ArchiveDropError(msg: error.localizedDescription))
+                return Data()
+            }
+        }
+        DataRepresentation(exportedContentType: ArchiveEntry.draggableType) { entryDraggable in
+            let encoder = JSONEncoder()
+            do {
+                return try encoder.encode(entryDraggable.id)
+            } catch {
                 return Data()
             }
         }

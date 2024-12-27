@@ -51,10 +51,7 @@ struct MainWindowView: View {
         .task {
             // Configure and load your tips at app launch.
             do {
-                try Tips.configure([
-                    .displayFrequency(.immediate),
-                    .datastoreLocation(.applicationDefault)
-                ])
+                try Tips.configure()
             }
             catch {
                 // Handle TipKit errors

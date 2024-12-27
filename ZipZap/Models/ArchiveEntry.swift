@@ -11,24 +11,6 @@ import UniformTypeIdentifiers
 import SwiftUI
 import ZZLog
 
-
-
-extension Array where Element == String {
-    func subtractPath(_ path: [String]) -> [String]? {
-        guard self.count >= path.count else {
-            #ZZError("Array::subtractPath called with a path that is longer (\(path.count)) than I am (\(self.count).")
-            return nil
-        }
-
-        guard self.prefix(path.count).elementsEqual(path) else {
-            #ZZError("Array::subtractPath does not start with the path provided.")
-            return nil
-        }
-
-        return Array(self.suffix(from: path.count))
-    }
-}
-
 //extension Array where Element == ArchiveEntry {
 //    func entryForPath(_ path: String) -> (Int, ArchiveEntry)? {
 //        var path = path
@@ -72,69 +54,20 @@ extension ArchiveEntry: Hashable {
 //    }
 //}
 
-// Drag and drop provider
-// FIXME: Should some of this logic, particularly the async parts, move to Archive? Calling archive.extractEntryToCache() for each file seems inefficient if we could instead collect up all the files, extract them in one hit and then call their completions?
-//extension ArchiveEntry {
-//// TODO: WRITE
-////    static let draggableType = UTType(exportedAs: "net.tenshu.ZipZap.ArchiveEntry")
-//
-//    @MainActor func itemProvider(_ archive: Archive?) -> NSItemProvider {
-//        let provider = NSItemProvider()
-//// TODO: WRITE
-////        let selfID = self.id
-////
-////        // Register our internal type first, so re-arranging tables takes precedence if we're dragging to ourselves
-////        provider.registerDataRepresentation(forTypeIdentifier: Self.draggableType.identifier, visibility: .all) { completion in
-////            let encoder = JSONEncoder()
-////            do {
-////                let data = try encoder.encode(selfID)
-////                completion(data, nil)
-////            } catch {
-////                completion(nil, error)
-////            }
-////            return nil
-////        }
-//
-//        // Register a generic type so we can export files to anything else
-//        let paths = self.flatChildren().map { $0.path }
-//        guard let cacheURL = archive?.cacheURL, let archiveURL = archive?.URL else {
-//            #ZZError("Unable to obtain cache/archive path, returning empty item provider")
-//            return provider
-//        }
-//
-//        provider.registerDataRepresentation(forTypeIdentifier: UTType.fileURL.identifier, visibility: .all) { completion in
-//            let loader = libarchive(url: archiveURL)
-//            let progress = Progress(totalUnitCount: 100)
-//
-//            Task {
-//                do {
-//                    let writtenURLs = try await loader.extractEntries(paths, toFolder: cacheURL)
-//                    guard writtenURLs.count > 0 else { throw ArchiveError.ArchiveExtractError("Zero entries extracted")}
-//                    progress.completedUnitCount = 100
-//                    #ZZTrace("Wrote \(writtenURLs.count) entries. First is \(writtenURLs.first!.dataRepresentation)")
-//                    completion(writtenURLs.first!.dataRepresentation, nil)
-//                } catch {
-//                    let error = "Writing failed: \(error)"
-//                    completion(nil, NSError(domain: "DragAndDrop", code: -1, userInfo: [NSLocalizedDescriptionKey: error]))
-//                }
-//            }
-//
-//            #ZZTrace("Returning progress")
-//            return progress
-//        }
-//        #ZZTrace("Item provider registered")
-//        return provider
-//    }
-//}
-
 @Observable
 class ArchiveEntry: Identifiable {
+    static let draggableType = UTType(exportedAs: "net.tenshu.ZipZap.ArchiveEntry")
+
     let id = UUID()
+    var source: ArchiveEntrySource
 
     var children: [ArchiveEntry]? = nil
+
     // Archives don't always contain entries for directories, but the files in them still contain nested paths
     // We'll have to synthesize directories for those, and track which ones they are
-    var isSynthesized = false
+    var isSynthesized: Bool {
+        get { [.Synthetic, .Root].contains(source.type) }
+    }
     var isSynthesizedString: String {
         get { isSynthesized ? "Yes" : "No" }
     }
@@ -172,6 +105,7 @@ class ArchiveEntry: Identifiable {
     let lock = Mutex(true)
 
     init(_ entry: libarchiveHeader) {
+        self.source = entry.source
         self.path = entry.path
         self.name = entry.name
         self.pathComponents = entry.pathComponents
@@ -192,11 +126,11 @@ class ArchiveEntry: Identifiable {
     }
 
     init(path: String) {
-        self.isSynthesized = true
         self.type = .directory
         self.children = []
         self.path = path
         self.size = -1
+        self.source = ArchiveEntrySource(type: .Synthetic, path: path)
 
         // Parse pathname to store our hierarchy
         let pathBits = path.split(separator: "/").map(String.init)
@@ -204,13 +138,9 @@ class ArchiveEntry: Identifiable {
         pathComponents = pathBits
     }
 
-    init?(isRoot: Bool) {
-        guard isRoot == true else {
-            #ZZError("Root ArchiveEntry initialiser called without true")
-            return nil
-        }
-        self.isSynthesized = true
+    init(isRoot: Bool) {
         self.type = .root
+        self.source = ArchiveEntrySource(type: .Root, path: ".")
         self.children = []
         self.path = "."
         self.size = -1

@@ -8,7 +8,7 @@
 
 struct libarchiveHeader: Identifiable {
     let id = UUID()
-    let isSynthesized = false
+    let source: ArchiveEntrySource
     let type: ArchiveEntryType
 
     let path: String

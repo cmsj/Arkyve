@@ -34,3 +34,19 @@ extension Array {
         return beforeCount != self.count
     }
 }
+
+extension Array where Element == String {
+    func subtractPath(_ path: [String]) -> [String]? {
+        guard self.count >= path.count else {
+            print("Array::subtractPath called with a path that is longer (\(path.count)) than I am (\(self.count).")
+            return nil
+        }
+
+        guard self.prefix(path.count).elementsEqual(path) else {
+            print("Array::subtractPath does not start with the path provided.")
+            return nil
+        }
+
+        return Array(self.suffix(from: path.count))
+    }
+}

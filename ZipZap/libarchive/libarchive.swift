@@ -361,13 +361,13 @@ actor libarchive {
 //    func createArchive(to: URL, format: libarchiveFormat, filters: [libarchiveFilter], entries: [libarchiveHeader]) throws {
 //        try saveArchive(from: nil, to: to, format: format, filters: filters, entries: entries)
 //    }
-//
-//    func saveArchive(from: URL?, to: URL, format: libarchiveFormat, filters: [libarchiveFilter], entries: [libarchiveHeader]) throws {
-//        let writeArchive = archive_write_new()
-//        archive_write_set_format(writeArchive, format.rawValue)
-//        for filter in filters {
-//            archive_write_add_filter(writeArchive, filter.rawValue)
-//        }
-//        
-//    }
+
+    func writeArchive(to: URL, format: libarchiveFormat, filters: [libarchiveFilter], entries: [libarchiveHeader]) throws {
+        let writeArchive = archive_write_new()
+        archive_write_set_format(writeArchive, format.rawValue)
+        for filter in filters {
+            archive_write_add_filter(writeArchive, filter.rawValue)
+        }
+        
+    }
 }

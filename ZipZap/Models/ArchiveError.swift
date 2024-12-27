@@ -7,6 +7,7 @@
 
 enum ArchiveError: Error {
     case ArchiveOpenError(archive: String?, error: String)
+    case ArchiveWriteError(archive: String?, error: String)
     case ArchiveEntriesError(archive: String?, error: String)
     case ArchiveExtractError(archive: String?, error: String)
     case ArchiveQuicklookError(archive: String?, error: String)
@@ -19,6 +20,8 @@ extension ArchiveError: LocalizedError {
         switch self {
         case .ArchiveOpenError(let archive, let msg):
             return String(localized: "Unable to open '\(archive ?? "UNKNOWN")': \(msg)")
+        case .ArchiveWriteError(let archive, let msg):
+            return String(localized: "Unable to write \(archive ?? "UNKNOWN")': \(msg)")
         case .ArchiveEntriesError(let archive, let msg):
             return String(localized: "Unable to read '\(archive ?? "UNKNOWN")': \(msg)")
         case .ArchiveExtractError(let archive, let msg):

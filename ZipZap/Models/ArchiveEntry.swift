@@ -95,7 +95,8 @@ class ArchiveEntry: Identifiable {
     nonisolated(unsafe) var ctime: Date = Date(timeIntervalSince1970: 0)
     nonisolated(unsafe) var mtime: Date = Date(timeIntervalSince1970: 0)
     nonisolated(unsafe) var btime: Date = Date(timeIntervalSince1970: 0)
-    var perms: String = "--"
+    var perms: mode_t
+    var permsString: String = "--"
 
     var uid: String = "--"
     var gid: String = "--"
@@ -131,6 +132,7 @@ class ArchiveEntry: Identifiable {
         self.path = path
         self.size = -1
         self.source = ArchiveEntrySource(type: .Synthetic, path: path)
+        self.perms = 0
 
         // Parse pathname to store our hierarchy
         let pathBits = path.split(separator: "/").map(String.init)
@@ -144,6 +146,7 @@ class ArchiveEntry: Identifiable {
         self.children = []
         self.path = "."
         self.size = -1
+        self.perms = 0
 
         pathComponents = ["."]
         name = "root"
@@ -230,6 +233,10 @@ class ArchiveEntry: Identifiable {
         }
 
         return flatChildren
+    }
+
+    @MainActor func asHeader() -> libarchiveHeader {
+        return libarchiveHeader(source: source, type: type, path: path, name: name, pathComponents: pathComponents, size: size, atime: atime, ctime: ctime, mtime: mtime, btime: btime, uid: uid, gid: gid, perms: perms)
     }
 
     // Sort the tree at all levels

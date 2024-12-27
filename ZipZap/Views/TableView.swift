@@ -56,7 +56,7 @@ struct TableView: View {
                     .defaultVisibility(.hidden)
             }
             Group {
-                TableColumn("Permissions", value: \ArchiveEntry.perms)
+                TableColumn("Permissions", value: \ArchiveEntry.permsString)
                     .customizationID("perms")
                     .defaultVisibility(.hidden)
                 TableColumn("UID", value: \ArchiveEntry.uid)

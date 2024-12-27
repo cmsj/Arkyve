@@ -11,6 +11,7 @@ import ZZLog
 struct SettingsManager {
     static let shared = SettingsManager()
     let cacheURL = FileManager.default.temporaryDirectory.appendingPathComponent("cache")
+    let writeCacheURL = FileManager.default.temporaryDirectory.appendingPathComponent("write-cache")
 
     var newFolderURL: URL {
         get {

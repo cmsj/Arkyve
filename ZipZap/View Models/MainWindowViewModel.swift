@@ -7,6 +7,7 @@
 
 import SwiftUI
 import AppKit
+import System
 import ZZLog
 
 @Observable
@@ -69,6 +70,20 @@ class MainWindowViewModel {
             archive = try await loader?.readArchive()
         } catch {
             showErrors.err(ArchiveError.ArchiveOpenError(archive: url.path, error: error.localizedDescription))
+        }
+    }
+
+    func saveArchive(to: URL) async {
+        guard let archive = archive else { return }
+        loader = libarchive(url: archive.URL)
+
+        let headerMap = archive.entries.reduce(into: [String:libarchiveHeader]()) {
+            $0[$1.path] = $1.asHeader()
+        }
+        do {
+            try await loader?.writeArchive(headerMap: headerMap, to: archive.URL, format: archive.format, filters: archive.filters)
+        } catch {
+            showErrors.err(ArchiveError.ArchiveWriteError(archive: "\(String(describing: URL.path)) -> \(to.path)", error: error.localizedDescription))
         }
     }
 
@@ -199,7 +214,9 @@ class MainWindowViewModel {
     }
 
     @MainActor func saveButton() {
-        // TODO: WRITE
+        Task { @MainActor in
+            await saveArchive(to: URL(filePath:"/Users/cmsj/Downloads/lol.zip"))
+        }
     }
 
     @MainActor func saveAsButton() {

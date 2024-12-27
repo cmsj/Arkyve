@@ -24,7 +24,7 @@ struct libarchiveHeader: Identifiable {
     let uid: String
     let gid: String
 
-    let perms: String
+    let perms: mode_t
 
     var sizeString: String {
         get { size != -1 ? String(size) : "--" }

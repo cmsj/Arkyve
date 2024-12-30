@@ -224,11 +224,7 @@ class ArchiveEntry: Identifiable {
         let flatChild = ArchiveEntryFlat(path: self.path, isSynthesized: self.isSynthesized)
         flatChildren.append(flatChild)
         
-        guard self.children != nil && self.children!.count > 0 else {
-            return flatChildren
-        }
-        
-        for child in self.children! {
+        for child in self.children ?? [] {
             flatChildren.append(contentsOf: child.flatChildren())
         }
 

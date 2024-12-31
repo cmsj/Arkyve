@@ -67,7 +67,7 @@ class MainWindowViewModel {
     func openArchive(url: URL) async {
         loader = libarchive(url: url)
         do {
-            archive = try await loader?.readArchive()
+            archive = try await loader?.loadArchive()
         } catch {
             showErrors.err(ArchiveError.ArchiveOpenError(archive: url.path, error: error.localizedDescription))
         }

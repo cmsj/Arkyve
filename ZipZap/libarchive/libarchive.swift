@@ -32,10 +32,11 @@ extension FileManager {
     }
 }
 
+
+
 actor libarchive {
-    private var fd: Int32 = -1
-    private var archive: OpaquePointer? = nil
-    private var writeArchive: OpaquePointer? = nil
+    private var readArchive = libarchiveFD(type: .read)
+    private var writeArchive = libarchiveFD(type: .write)
 
     private var url: URL
     private var path: String {
@@ -44,43 +45,6 @@ actor libarchive {
 
     init(url: URL) {
         self.url = url
-    }
-
-    private func open() throws(ArchiveError) {
-        if fd >= 0 || archive != nil {
-            close()
-        }
-
-        // Prepare libarchive's data structure
-        archive = archive_read_new()
-        if archive == nil {
-            throw ArchiveError.ArchiveOpenError(archive: path, error: "Memory allocation failed")
-        }
-        archive_read_support_filter_all(archive)
-        archive_read_support_format_all(archive)
-
-        fd = Darwin.open(path, O_RDONLY)
-        if fd < 0 {
-            close()
-            throw ArchiveError.ArchiveOpenError(archive: path, error: "open() failed: \(errno)")
-        }
-
-        let ptr = archive_read_open_fd(archive, fd, 10240)
-        if ptr != ARCHIVE_OK {
-            let errStr = String(cString: archive_error_string(archive))
-            close()
-            throw ArchiveError.ArchiveOpenError(archive: path, error:errStr)
-        }
-    }
-
-    private func close() {
-        if archive != nil {
-            archive_read_free(archive)
-            archive = nil
-        }
-        if fd >= 0 {
-            Darwin.close(fd)
-        }
     }
 
     private func readDate(_ dateType: DateTypes, for entry: OpaquePointer?) -> Date {
@@ -106,14 +70,14 @@ actor libarchive {
     }
 
     private func readHeaders() throws -> [libarchiveHeader] {
-        guard archive != nil else {
+        guard readArchive.archive != nil else {
             throw ArchiveError.ArchiveEntriesError(archive: path, error: "readHeaders() called before archive was opened")
         }
 
         var headers: [libarchiveHeader] = []
 
         var entry: OpaquePointer?
-        while (archive_read_next_header(archive, &entry) == ARCHIVE_OK) {
+        while (archive_read_next_header(readArchive.archive, &entry) == ARCHIVE_OK) {
             let name: String
             let path: String
             let pathComponents: [String]
@@ -173,14 +137,14 @@ actor libarchive {
     }
 
     private func readFormat() -> libarchiveFormat {
-        return libarchiveFormat(rawValue: archive_format(archive)) ?? .Unknown
+        return libarchiveFormat(rawValue: archive_format(readArchive.archive)) ?? .Unknown
     }
 
     private func readFilters() -> [libarchiveFilter] {
         var filters: [libarchiveFilter] = []
 
-        for i in 0...archive_filter_count(archive) {
-            if let filter = libarchiveFilter(rawValue: archive_filter_code(archive, i)) {
+        for i in 0...archive_filter_count(readArchive.archive) {
+            if let filter = libarchiveFilter(rawValue: archive_filter_code(readArchive.archive, i)) {
                 filters.append(filter)
             }
         }
@@ -204,8 +168,8 @@ actor libarchive {
     }
 
     func readEntriesFormatFilters() throws -> (libarchiveFormat, [libarchiveFilter], [libarchiveHeader]) {
-        try open()
-        defer { close() }
+        try readArchive.openRead(path: path)
+        defer { readArchive.close() }
 
         let headers = try readHeaders()
         let format = readFormat()
@@ -214,7 +178,7 @@ actor libarchive {
         return (format, filters, headers)
     }
 
-    func readArchive() throws(ArchiveError) -> sending Archive {
+    func loadArchive() throws(ArchiveError) -> sending Archive {
         let archive = Archive(URL: self.url)
         let archiveFormat: libarchiveFormat
         let archiveFilters: [libarchiveFilter]
@@ -248,8 +212,8 @@ actor libarchive {
         var writtenURLs: [URL] = []
         var entryPtr: OpaquePointer?
 
-        try open()
-        defer { close() }
+        try readArchive.openRead(path: path)
+        defer { readArchive.close() }
 
         let synthPaths = extractableEntries.flatMap { $0.entries.filter { $0.isSynthesized == true }}
         for synthPath in synthPaths {
@@ -277,7 +241,7 @@ actor libarchive {
 
         #ZZTrace("Extracting \(pathMap.count) entries to \(toFolder.path)")
 
-        while (archive_read_next_header(archive, &entryPtr) == ARCHIVE_OK) {
+        while (archive_read_next_header(readArchive.archive, &entryPtr) == ARCHIVE_OK) {
             if let path = entryPath(entryPtr) {
                 if pathMap.keys.contains(path) {
                     guard let outputURL = pathMap[path] else { continue }
@@ -301,7 +265,7 @@ actor libarchive {
                             throw ArchiveError.ArchiveExtractError(archive: outputURL.path,
                                                                    error: error.localizedDescription)
                         }
-                        let result = archive_read_data_into_fd(archive, handle.fileDescriptor)
+                        let result = archive_read_data_into_fd(readArchive.archive, handle.fileDescriptor)
                         if result != ARCHIVE_OK {
                             let error = "Unable to write to \(outputURL.path)"
                             throw ArchiveError.ArchiveExtractError(archive: path, error: error)
@@ -315,7 +279,7 @@ actor libarchive {
                         } catch {
                             throw ArchiveError.ArchiveExtractError(archive: outputURL.path, error: error.localizedDescription)
                         }
-                        archive_read_data_skip(archive)
+                        archive_read_data_skip(readArchive.archive)
                         #ZZTrace("  Created \(outputURL.path(percentEncoded: false))")
 
                         writtenURLs.append(outputURL)
@@ -365,38 +329,14 @@ actor libarchive {
 
     func writeArchive(headerMap: [String:ArchiveEntryFlat], to: URL, format: libarchiveFormat, filters: [libarchiveFilter]) throws {
         var headerMap = headerMap
-        var readResult: Int32
-        var writeResult: Int32
+        var readResult: Int32 = ARCHIVE_OK
+        var writeResult: Int32 = ARCHIVE_OK
 
-        try open()
-        defer { close() }
-
-        writeArchive = archive_write_new()
-        if (writeArchive == nil) {
-            throw ArchiveError.ArchiveWriteError(archive: to.path, error: "Unable to allocate memory")
-        }
-
-        writeResult = archive_write_set_format(writeArchive, format.rawValue)
-        if (writeResult != ARCHIVE_OK) {
-            throw ArchiveError.ArchiveWriteError(archive: to.path, error: "Unable to set format: \(String(describing: archive_error_string(writeArchive)))")
-        }
-
-        for filter in filters {
-            writeResult = archive_write_add_filter(writeArchive, filter.rawValue)
-            if (writeResult != ARCHIVE_OK) {
-                throw ArchiveError.ArchiveWriteError(archive: to.path, error: "Unable tp add filter: \(String(describing: archive_error_string(writeArchive)))")
-            }
-        }
-
-        // Figure out cache filename
-        let cachePath = SettingsManager.shared.writeCacheURL.appendingPathComponent(to.lastPathComponent).path
-
-        #ZZTrace("Writing archive to cache \(cachePath)")
-
-        writeResult = archive_write_open_filename(writeArchive, cachePath)
-        if (writeResult != ARCHIVE_OK) {
-            throw ArchiveError.ArchiveWriteError(archive: to.path, error: "Unable to open output archive: \(String(describing: archive_error_string(writeArchive)))")
-        }
+        try readArchive.openRead(path: path)
+        defer { readArchive.close() }
+        
+        try writeArchive.openWrite(at: to, format: format, filters: filters)
+        defer { writeArchive.close() }
 
         var readEntry: OpaquePointer?
         let rbuf: UnsafeMutableRawPointer = UnsafeMutableRawPointer.allocate(byteCount: 524288, alignment: MemoryLayout<UInt8>.size)
@@ -404,7 +344,7 @@ actor libarchive {
         var rsize: size_t = size_t()
         var wsize: size_t = size_t()
 
-        while (archive_read_next_header(archive, &readEntry) == ARCHIVE_OK && writeResult != ARCHIVE_EOF) {
+        while (archive_read_next_header(readArchive.archive, &readEntry) == ARCHIVE_OK && writeResult != ARCHIVE_EOF) {
             guard let path = entryPath(readEntry) else { continue }
             if headerMap[path] != nil && headerMap[path]?.header.source.type == .Archive {
                 // Read from archive and write to new archive
@@ -432,15 +372,15 @@ actor libarchive {
 
                 archive_entry_set_mode(writeEntry, readHeader.perms)
 
-                archive_write_header(writeArchive, writeEntry)
+                archive_write_header(writeArchive.archive, writeEntry)
 
                 while (true) {
-                    rsize = archive_read_data(archive, rbuf, 524288)
+                    rsize = archive_read_data(readArchive.archive, rbuf, 524288)
                     if (rsize <= 0) { break }
 
-                    wsize = archive_write_data(writeArchive, rbuf, rsize)
+                    wsize = archive_write_data(writeArchive.archive, rbuf, rsize)
                     if (wsize < 0) {
-                        throw ArchiveError.ArchiveWriteError(archive: to.path, error: "Failed to write data: \(String(describing: archive_error_string(writeArchive))).")
+                        throw ArchiveError.ArchiveWriteError(archive: to.path, error: "Failed to write data: \(String(describing: archive_error_string(writeArchive.archive))).")
                     }
 
                     if (rsize != wsize) {
@@ -449,15 +389,12 @@ actor libarchive {
                     }
                 }
 
-                writeResult = archive_write_finish_entry(writeArchive)
+                writeResult = archive_write_finish_entry(writeArchive.archive)
                 if (writeResult != ARCHIVE_OK) {
-                    let error = String(cString: archive_error_string(writeArchive))
-                    throw ArchiveError.ArchiveWriteError(archive: cachePath, error: error)
+                    let error = String(cString: archive_error_string(writeArchive.archive))
+                    throw ArchiveError.ArchiveWriteError(archive: to.path, error: error)
                 }
             }
         }
-
-        archive_write_close(writeArchive)
-        archive_write_free(writeArchive)
     }
 }

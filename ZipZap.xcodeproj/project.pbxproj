@@ -49,6 +49,7 @@
 		4FCEEF2C2BEE3D72009E9E17 /* ArchiveEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FCEEF2B2BEE3D72009E9E17 /* ArchiveEntry.swift */; };
 		4FD4BA562C07C58E00082C13 /* Date.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FD4BA552C07C58E00082C13 /* Date.swift */; };
 		4FDC674F2C19065A00A10035 /* libarchive.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FDC674E2C19065A00A10035 /* libarchive.swift */; };
+		4FED41E32D23752A003BA92B /* libarchiveFD.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FED41E22D23752A003BA92B /* libarchiveFD.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -122,6 +123,7 @@
 		4FD4BA552C07C58E00082C13 /* Date.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Date.swift; sourceTree = "<group>"; };
 		4FD4BA572C07EC7F00082C13 /* libarchive_Bridge.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = libarchive_Bridge.h; sourceTree = "<group>"; };
 		4FDC674E2C19065A00A10035 /* libarchive.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = libarchive.swift; sourceTree = "<group>"; };
+		4FED41E22D23752A003BA92B /* libarchiveFD.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = libarchiveFD.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -168,6 +170,7 @@
 			children = (
 				4FD4BA572C07EC7F00082C13 /* libarchive_Bridge.h */,
 				4FDC674E2C19065A00A10035 /* libarchive.swift */,
+				4FED41E22D23752A003BA92B /* libarchiveFD.swift */,
 				4F41C4022D1891230011DAAB /* libarchiveHeader.swift */,
 				4F22BDCA2CAE95820079FAC0 /* libarchiveFilter.swift */,
 				4F22BDC82CAE95490079FAC0 /* libarchiveFormat.swift */,
@@ -433,6 +436,7 @@
 				4F344ED22C335273006E1D9F /* FocusedValues.swift in Sources */,
 				4FD4BA562C07C58E00082C13 /* Date.swift in Sources */,
 				4F22BDCB2CAE95820079FAC0 /* libarchiveFilter.swift in Sources */,
+				4FED41E32D23752A003BA92B /* libarchiveFD.swift in Sources */,
 				4FCEEF2C2BEE3D72009E9E17 /* ArchiveEntry.swift in Sources */,
 				4F344ED02C335243006E1D9F /* AppDelegate.swift in Sources */,
 				4F344ECE2C335224006E1D9F /* SettingsManager.swift in Sources */,

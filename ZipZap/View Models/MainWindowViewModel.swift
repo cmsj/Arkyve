@@ -77,8 +77,8 @@ class MainWindowViewModel {
         guard let archive = archive else { return }
         loader = libarchive(url: archive.URL)
 
-        let headerMap = archive.entries.reduce(into: [String:libarchiveHeader]()) {
-            $0[$1.path] = $1.asHeader()
+        let headerMap = archive.entries.reduce(into: [String:ArchiveEntryFlat]()) {
+            $0[$1.path] = $1.flatSelf()
         }
         do {
             try await loader?.writeArchive(headerMap: headerMap, to: archive.URL, format: archive.format, filters: archive.filters)

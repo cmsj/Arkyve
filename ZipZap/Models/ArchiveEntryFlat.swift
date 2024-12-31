@@ -9,4 +9,5 @@
 struct ArchiveEntryFlat {
     let path: String
     let isSynthesized: Bool
+    let header: libarchiveHeader
 }

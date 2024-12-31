@@ -219,10 +219,13 @@ class ArchiveEntry: Identifiable {
         }
     }
 
+    @MainActor func flatSelf() -> ArchiveEntryFlat {
+        return ArchiveEntryFlat(path: self.path, isSynthesized: self.isSynthesized, header: self.asHeader())
+    }
+
     @MainActor func flatChildren() -> [ArchiveEntryFlat] {
         var flatChildren: [ArchiveEntryFlat] = []
-        let flatChild = ArchiveEntryFlat(path: self.path, isSynthesized: self.isSynthesized)
-        flatChildren.append(flatChild)
+        flatChildren.append(self.flatSelf())
         
         for child in self.children ?? [] {
             flatChildren.append(contentsOf: child.flatChildren())

@@ -363,7 +363,7 @@ actor libarchive {
 //        try saveArchive(from: nil, to: to, format: format, filters: filters, entries: entries)
 //    }
 
-    func writeArchive(headerMap: [String:libarchiveHeader], to: URL, format: libarchiveFormat, filters: [libarchiveFilter]) throws {
+    func writeArchive(headerMap: [String:ArchiveEntryFlat], to: URL, format: libarchiveFormat, filters: [libarchiveFilter]) throws {
         var headerMap = headerMap
         var readResult: Int32
         var writeResult: Int32
@@ -406,10 +406,10 @@ actor libarchive {
 
         while (archive_read_next_header(archive, &readEntry) == ARCHIVE_OK && writeResult != ARCHIVE_EOF) {
             guard let path = entryPath(readEntry) else { continue }
-            if headerMap[path] != nil && headerMap[path]?.source.type == .Archive {
+            if headerMap[path] != nil && headerMap[path]?.header.source.type == .Archive {
                 // Read from archive and write to new archive
                 let writeEntry = archive_entry_new()
-                let readHeader = headerMap[path]!
+                let readHeader = headerMap[path]!.header
 
                 let data = readHeader.path.data(using: .utf8)!
                 archive_entry_set_pathname(writeEntry, data.bytes)

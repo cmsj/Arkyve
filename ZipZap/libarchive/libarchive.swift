@@ -9,29 +9,6 @@ import Foundation
 import SwiftUI
 import ZZLog
 
-enum DateTypes {
-    case atime
-    case ctime
-    case mtime
-    case btime
-}
-
-extension FileManager {
-    func createSymbolicLink(atPath path: String, withDestinationPath destPath: String, overwrite: Bool) throws {
-        if !overwrite {
-            // Easy path
-            try self.createSymbolicLink(atPath: path, withDestinationPath: destPath)
-        }
-
-        if symlink(destPath, path) == -1 {
-            if errno == EEXIST {
-                try self.removeItem(atPath: path)
-                try self.createSymbolicLink(atPath: path, withDestinationPath: destPath)
-            }
-        }
-    }
-}
-
 
 
 actor libarchive {
@@ -41,6 +18,13 @@ actor libarchive {
     private var url: URL
     private var path: String {
         get { url.path.removingPercentEncoding ?? "Unknown" }
+    }
+
+    enum DateTypes {
+        case atime
+        case ctime
+        case mtime
+        case btime
     }
 
     init(url: URL) {
@@ -327,10 +311,36 @@ actor libarchive {
 //        try saveArchive(from: nil, to: to, format: format, filters: filters, entries: entries)
 //    }
 
+    func writeArchiveEntryHeader(to: libarchiveFD, headers: libarchiveHeader) {
+        let writeEntry = archive_entry_new()
+
+        let data = headers.path.data(using: .utf8)!
+        archive_entry_set_pathname(writeEntry, data.bytes)
+
+        if headers.size != -1 {
+            archive_entry_set_size(writeEntry, headers.size)
+        }
+
+        archive_entry_set_atime(writeEntry, Int(headers.atime.timeIntervalSince1970), 0)
+        archive_entry_set_birthtime(writeEntry, Int(headers.btime.timeIntervalSince1970), 0)
+        archive_entry_set_ctime(writeEntry, Int(headers.ctime.timeIntervalSince1970), 0)
+        archive_entry_set_mtime(writeEntry, Int(headers.mtime.timeIntervalSince1970), 0)
+
+        if headers.uid != "--" {
+            archive_entry_set_uid(writeEntry, Int64(headers.uid) ?? 0)
+        }
+        if headers.gid != "--" {
+            archive_entry_set_gid(writeEntry, Int64(headers.gid) ?? 0)
+        }
+
+        archive_entry_set_mode(writeEntry, headers.perms)
+
+        archive_write_header(to.archive, writeEntry)
+    }
+
     func writeArchive(headerMap: [String:ArchiveEntryFlat], to: URL, format: libarchiveFormat, filters: [libarchiveFilter]) throws {
         var headerMap = headerMap
-        var readResult: Int32 = ARCHIVE_OK
-        var writeResult: Int32 = ARCHIVE_OK
+        var result: Int32 = ARCHIVE_OK
 
         try readArchive.openRead(path: path)
         defer { readArchive.close() }
@@ -344,35 +354,15 @@ actor libarchive {
         var rsize: size_t = size_t()
         var wsize: size_t = size_t()
 
-        while (archive_read_next_header(readArchive.archive, &readEntry) == ARCHIVE_OK && writeResult != ARCHIVE_EOF) {
-            guard let path = entryPath(readEntry) else { continue }
-            if headerMap[path] != nil && headerMap[path]?.header.source.type == .Archive {
+        // First, examine the existing archive to find entries we need to copy over
+        while (archive_read_next_header(readArchive.archive, &readEntry) == ARCHIVE_OK && result != ARCHIVE_EOF) {
+            guard let readEntryPath = entryPath(readEntry) else { continue }
+            
+            // Find every entry in the tree that started out as this path, and in the archive
+            // NOTE: We're not expecting to find multiple values here, but in the future we might want to offer the ability to duplicate a file within an archive
+            for mapEntryKey in headerMap.keys.filter({ headerMap[$0]?.header.source.path == readEntryPath && headerMap[$0]?.header.source.type == .Archive }) {
                 // Read from archive and write to new archive
-                let writeEntry = archive_entry_new()
-                let readHeader = headerMap[path]!.header
-
-                let data = readHeader.path.data(using: .utf8)!
-                archive_entry_set_pathname(writeEntry, data.bytes)
-
-                if readHeader.size != -1 {
-                    archive_entry_set_size(writeEntry, readHeader.size)
-                }
-
-                archive_entry_set_atime(writeEntry, Int(readHeader.atime.timeIntervalSince1970), 0)
-                archive_entry_set_birthtime(writeEntry, Int(readHeader.btime.timeIntervalSince1970), 0)
-                archive_entry_set_ctime(writeEntry, Int(readHeader.ctime.timeIntervalSince1970), 0)
-                archive_entry_set_mtime(writeEntry, Int(readHeader.mtime.timeIntervalSince1970), 0)
-
-                if readHeader.uid != "--" {
-                    archive_entry_set_uid(writeEntry, Int64(readHeader.uid) ?? 0)
-                }
-                if readHeader.gid != "--" {
-                    archive_entry_set_gid(writeEntry, Int64(readHeader.gid) ?? 0)
-                }
-
-                archive_entry_set_mode(writeEntry, readHeader.perms)
-
-                archive_write_header(writeArchive.archive, writeEntry)
+                writeArchiveEntryHeader(to: writeArchive, headers: headerMap[mapEntryKey]!.header)
 
                 while (true) {
                     rsize = archive_read_data(readArchive.archive, rbuf, 524288)
@@ -389,12 +379,34 @@ actor libarchive {
                     }
                 }
 
-                writeResult = archive_write_finish_entry(writeArchive.archive)
-                if (writeResult != ARCHIVE_OK) {
+                result = archive_write_finish_entry(writeArchive.archive)
+                if (result != ARCHIVE_OK) {
                     let error = String(cString: archive_error_string(writeArchive.archive))
                     throw ArchiveError.ArchiveWriteError(archive: to.path, error: error)
                 }
+
+                // Remove the headerMap value now we've processed it
+                headerMap.removeValue(forKey: mapEntryKey)
             }
         }
+
+        // Second, process any filesystem-sourced entries that have been added to the archive
+        for filePath in headerMap.keys.filter({ headerMap[$0]?.header.source.type == .Filesystem }) {
+            writeArchiveEntryHeader(to: writeArchive, headers: headerMap[filePath]!.header)
+            
+            // FIXME: Open the filesystem file here
+            while (true) {
+                // FIXME: Read the filesystem file in chunks here and archive_write_data() them
+            }
+            
+            result = archive_write_finish_entry(writeArchive.archive)
+            if (result != ARCHIVE_OK) {
+                let error = String(cString: archive_error_string(writeArchive.archive))
+                throw ArchiveError.ArchiveWriteError(archive: to.path, error: error)
+            }
+            
+            headerMap.removeValue(forKey: filePath)
+        }
+        // FIXME: Deal with: do we have any headerMap entries left?
     }
 }

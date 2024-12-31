@@ -50,6 +50,7 @@
 		4FD4BA562C07C58E00082C13 /* Date.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FD4BA552C07C58E00082C13 /* Date.swift */; };
 		4FDC674F2C19065A00A10035 /* libarchive.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FDC674E2C19065A00A10035 /* libarchive.swift */; };
 		4FED41E32D23752A003BA92B /* libarchiveFD.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FED41E22D23752A003BA92B /* libarchiveFD.swift */; };
+		4FED41E52D237674003BA92B /* FileManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FED41E42D237674003BA92B /* FileManager.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -124,6 +125,7 @@
 		4FD4BA572C07EC7F00082C13 /* libarchive_Bridge.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = libarchive_Bridge.h; sourceTree = "<group>"; };
 		4FDC674E2C19065A00A10035 /* libarchive.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = libarchive.swift; sourceTree = "<group>"; };
 		4FED41E22D23752A003BA92B /* libarchiveFD.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = libarchiveFD.swift; sourceTree = "<group>"; };
+		4FED41E42D237674003BA92B /* FileManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileManager.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -289,13 +291,14 @@
 		4FD4BA542C07C57C00082C13 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
-				4F41C42B2D1F47650011DAAB /* Data.swift */,
-				4F344ED12C335270006E1D9F /* FocusedValues.swift */,
 				4F7121862C0F48EB000EB268 /* Array.swift */,
+				4F41C42B2D1F47650011DAAB /* Data.swift */,
 				4FD4BA552C07C58E00082C13 /* Date.swift */,
+				4FED41E42D237674003BA92B /* FileManager.swift */,
+				4F344ED12C335270006E1D9F /* FocusedValues.swift */,
+				4F71219A2C10864F000EB268 /* HideViewModifier.swift */,
 				4F7121842C0F48B1000EB268 /* RandomAccessCollection.swift */,
 				4F7121882C0F48FD000EB268 /* String.swift */,
-				4F71219A2C10864F000EB268 /* HideViewModifier.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -435,6 +438,7 @@
 				4F7121972C0F6B4C000EB268 /* MainWindowViewModel.swift in Sources */,
 				4F344ED22C335273006E1D9F /* FocusedValues.swift in Sources */,
 				4FD4BA562C07C58E00082C13 /* Date.swift in Sources */,
+				4FED41E52D237674003BA92B /* FileManager.swift in Sources */,
 				4F22BDCB2CAE95820079FAC0 /* libarchiveFilter.swift in Sources */,
 				4FED41E32D23752A003BA92B /* libarchiveFD.swift in Sources */,
 				4FCEEF2C2BEE3D72009E9E17 /* ArchiveEntry.swift in Sources */,

@@ -13,61 +13,38 @@ import ZZLog
 @Observable
 @MainActor
 class MainWindowViewModel {
-    private(set) var loader: libarchive? = nil
     private(set) var archive: Archive? = nil
 
     var selectedEntries = Set<ArchiveEntry.ID>()
     var quickLookURL: URL?
     var quickLookItems: [URL] = []
+    var progress = false
 
-    @MainActor
     var showErrors: ShowErrors = ShowErrors()
 
-    var disableRevert: Bool {
-        get {
-            archive?.dirty != true || archive?.existsOnDisk != true
-        }
-    }
-    var disableClose: Bool {
-        get {
-            archive == nil
-        }
-    }
-    var disableSave: Bool {
-        get {
-            archive?.dirty != true
-        }
-    }
-    var disableSaveAs: Bool {
-        get {
-            archive == nil
-        }
-    }
-    var disableQuicklook: Bool {
-        get {
-            selectedEntries.isEmpty
-        }
-    }
-    var disableExtract: Bool {
-        get {
-            selectedEntries.isEmpty
-        }
-    }
-    var disableRename: Bool {
-        get {
-            selectedEntries.count != 1
-        }
-    }
-    var disableDelete: Bool {
-        get {
-            selectedEntries.isEmpty
-        }
-    }
+    var disableRevert: Bool { get { archive?.dirty != true || archive?.existsOnDisk != true }}
+    var disableClose: Bool { get { archive == nil }}
+    var disableSave: Bool { get { archive?.dirty != true }}
+    var disableSaveAs: Bool { get { archive == nil }}
+    var disableQuicklook: Bool { get { selectedEntries.isEmpty }}
+    var disableExtract: Bool { get { selectedEntries.isEmpty }}
+    var disableRename: Bool { get { selectedEntries.count != 1 }}
+    var disableDelete: Bool { get { selectedEntries.isEmpty }}
 
+    func setProgress(_ tp: TaskProgress) {
+        switch tp.status {
+        case .running(_): progress = true
+        case .finished, .failed(_): progress = false
+        }
+    }
     func openArchive(url: URL) async {
-        loader = libarchive(url: url)
+        let loader = libarchive(url: url)
         do {
-            archive = try await loader?.loadArchive()
+            try await withTaskProgression { _ in
+                archive = try await loader.loadArchive()
+            } progress: { progression in
+                Task { @MainActor in setProgress(progression) }
+            }
         } catch {
             showErrors.err(ArchiveError.ArchiveOpenError(archive: url.path, error: error.localizedDescription))
         }
@@ -75,19 +52,23 @@ class MainWindowViewModel {
 
     func saveArchive(to: URL) async {
         guard let archive = archive else { return }
-        loader = libarchive(url: archive.URL)
+        let loader = libarchive(url: archive.URL)
 
         let headerMap = archive.entries.reduce(into: [String:ArchiveEntryFlat]()) {
             $0[$1.path] = $1.flatSelf()
         }
         do {
-            try await loader?.writeArchive(headerMap: headerMap, to: archive.URL, format: archive.format, filters: archive.filters)
+            try await withTaskProgression { _ in
+                try await loader.writeArchive(headerMap: headerMap, to: archive.URL, format: archive.format, filters: archive.filters)
+            } progress: { progression in
+                Task { @MainActor in setProgress(progression) }
+            }
         } catch {
             showErrors.err(ArchiveError.ArchiveWriteError(archive: "\(String(describing: URL.path)) -> \(to.path)", error: error.localizedDescription))
         }
     }
 
-    @MainActor func openButton() {
+    func openButton() {
         let panel = NSOpenPanel()
         panel.allowsMultipleSelection = false
         panel.canChooseDirectories = false
@@ -100,14 +81,14 @@ class MainWindowViewModel {
         }
     }
 
-    @MainActor func closeButton() {
+    func closeButton() {
         archive = nil
         selectedEntries = []
         quickLookURL = nil
         quickLookItems = []
     }
 
-    @MainActor func extractButton(_ entries: Set<ArchiveEntry.ID>? = nil) {
+    func extractButton(_ entries: Set<ArchiveEntry.ID>? = nil) {
         let actualEntries = entries ?? selectedEntries
         let panel = NSOpenPanel()
 
@@ -143,7 +124,11 @@ class MainWindowViewModel {
                     let loader = libarchive(url: archiveURL)
 
                     do {
-                        let _ = try await loader.extractEntries(extractableEntries, toFolder: destURL, retainFullPath: retainFullPath)
+                        try await withTaskProgression { _ in
+                            let _ = try await loader.extractEntries(extractableEntries, toFolder: destURL, retainFullPath: retainFullPath)
+                        } progress: { progression in
+                            Task { @MainActor in setProgress(progression) }
+                        }
                     } catch let error as ArchiveError {
                         showErrors.err(error)
                     }
@@ -152,12 +137,11 @@ class MainWindowViewModel {
         }
     }
 
-    @MainActor
     func sort(using: [KeyPathComparator<ArchiveEntry>]) {
         self.archive?.sort(using: using)
     }
 
-    @MainActor func extractForQuicklook() {
+    func extractForQuicklook() {
         quickLookItems = []
         guard let archiveURL = archive?.URL else { return }
         guard let cacheURL = archive?.cacheURL else { return }
@@ -178,10 +162,13 @@ class MainWindowViewModel {
             }
 
             do {
-                let writtenURLs = try await loader.extractEntries(extractableEntries, toFolder: cacheURL)
-                if writtenURLs.count > 0 {
-                    quickLookItems = writtenURLs
-                    quickLookURL = writtenURLs.first
+                try await withTaskProgression { _ in
+                    let writtenURLs = try await loader.extractEntries(extractableEntries, toFolder: cacheURL)
+                    if writtenURLs.count > 0 {
+                        quickLookItems = writtenURLs
+                        quickLookURL = writtenURLs.first
+                    }                } progress: { progression in
+                    Task { @MainActor in setProgress(progression) }
                 }
             } catch let error as ArchiveError {
                 showErrors.err(error)
@@ -191,14 +178,14 @@ class MainWindowViewModel {
         }
     }
 
-    @MainActor func newButton() {
+    func newButton() {
         archive = Archive()
         selectedEntries = []
         quickLookURL = nil
         quickLookItems = []
     }
 
-    @MainActor func revertButton() {
+    func revertButton() {
         guard archive != nil else { return }
         if let url = archive?.URL {
             archive = nil
@@ -208,28 +195,28 @@ class MainWindowViewModel {
         }
     }
 
-    @MainActor func renameButton(renameEntryFocus: FocusState<UUID?>.Binding, entries: Set<ArchiveEntry.ID>? = nil) {
+    func renameButton(renameEntryFocus: FocusState<UUID?>.Binding, entries: Set<ArchiveEntry.ID>? = nil) {
         let actualEntries = entries ?? selectedEntries
         renameEntryFocus.wrappedValue = actualEntries.first
     }
 
-    @MainActor func saveButton() {
+    func saveButton() {
         Task { @MainActor in
             await saveArchive(to: URL(filePath:"/Users/cmsj/Downloads/lol.zip"))
         }
     }
 
-    @MainActor func saveAsButton() {
+    func saveAsButton() {
         // TODO: WRITE
     }
 
     // TODO: WRITE
-//    @MainActor func deleteButton(_ entries: Set<ArchiveEntry.ID>? = nil) {
+//    func deleteButton(_ entries: Set<ArchiveEntry.ID>? = nil) {
 //        let actualEntries = entries ?? selectedEntries
 //        archive?.removeEntries(actualEntries)
 //    }
 //
-//    @MainActor func addButton() {
+//    func addButton() {
 //        let panel = NSOpenPanel()
 //        panel.allowsMultipleSelection = false
 //        panel.canChooseDirectories = false

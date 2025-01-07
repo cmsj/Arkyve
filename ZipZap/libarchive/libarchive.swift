@@ -9,8 +9,6 @@ import Foundation
 import SwiftUI
 import ZZLog
 
-
-
 actor libarchive {
     private var readArchive = libarchiveFD(type: .read)
     private var writeArchive = libarchiveFD(type: .write)
@@ -162,12 +160,13 @@ actor libarchive {
         return (format, filters, headers)
     }
 
-    func loadArchive() throws(ArchiveError) -> sending Archive {
+    func loadArchive() async throws(ArchiveError) -> sending Archive {
         let archive = Archive(URL: self.url)
         let archiveFormat: libarchiveFormat
         let archiveFilters: [libarchiveFilter]
         let archiveEntries: [libarchiveHeader]
 
+        await Task.unsafeProgress?.progressed()
         do {
             (archiveFormat, archiveFilters, archiveEntries) = try readEntriesFormatFilters()
 
@@ -185,16 +184,19 @@ actor libarchive {
             archive.format = archiveFormat
             archive.filters = archiveFilters
         } catch {
-            throw ArchiveError.ArchiveOpenError(archive: self.path, error: error.localizedDescription)
+            let error = ArchiveError.ArchiveOpenError(archive: self.path, error: error.localizedDescription)
+            throw error
         }
 
         return archive
     }
 
-    func extractEntries(_ extractableEntries: [ArchiveEntryExtractable], toFolder: URL, retainFullPath: Bool = false) throws(ArchiveError) -> [URL] {
+    func extractEntries(_ extractableEntries: [ArchiveEntryExtractable], toFolder: URL, retainFullPath: Bool = false) async throws(ArchiveError) -> [URL] {
         var pathMap: [String:URL] = [:]
         var writtenURLs: [URL] = []
         var entryPtr: OpaquePointer?
+
+        await Task.unsafeProgress?.progressed()
 
         try readArchive.openRead(path: path)
         defer { readArchive.close() }
@@ -311,7 +313,7 @@ actor libarchive {
 //        try saveArchive(from: nil, to: to, format: format, filters: filters, entries: entries)
 //    }
 
-    func writeArchiveEntryHeader(to: libarchiveFD, headers: libarchiveHeader) {
+    private func writeArchiveEntryHeader(to: libarchiveFD, headers: libarchiveHeader) {
         let writeEntry = archive_entry_new()
 
         let data = headers.path.data(using: .utf8)!
@@ -338,9 +340,11 @@ actor libarchive {
         archive_write_header(to.archive, writeEntry)
     }
 
-    func writeArchive(headerMap: [String:ArchiveEntryFlat], to: URL, format: libarchiveFormat, filters: [libarchiveFilter]) throws {
+    func writeArchive(headerMap: [String:ArchiveEntryFlat], to: URL, format: libarchiveFormat, filters: [libarchiveFilter]) async throws {
         var headerMap = headerMap
         var result: Int32 = ARCHIVE_OK
+
+        await Task.unsafeProgress?.progressed()
 
         try readArchive.openRead(path: path)
         defer { readArchive.close() }

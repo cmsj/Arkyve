@@ -219,11 +219,11 @@ class ArchiveEntry: Identifiable {
         }
     }
 
-    @MainActor func flatSelf() -> ArchiveEntryFlat {
+    func flatSelf() -> ArchiveEntryFlat {
         return ArchiveEntryFlat(path: self.path, isSynthesized: self.isSynthesized, header: self.asHeader())
     }
 
-    @MainActor func flatChildren() -> [ArchiveEntryFlat] {
+    func flatChildren() -> [ArchiveEntryFlat] {
         var flatChildren: [ArchiveEntryFlat] = []
         flatChildren.append(self.flatSelf())
         
@@ -234,7 +234,7 @@ class ArchiveEntry: Identifiable {
         return flatChildren
     }
 
-    @MainActor func asHeader() -> libarchiveHeader {
+    func asHeader() -> libarchiveHeader {
         return libarchiveHeader(source: source, type: type, path: path, name: name, pathComponents: pathComponents, size: size, atime: atime, ctime: ctime, mtime: mtime, btime: btime, uid: uid, gid: gid, perms: perms)
     }
 
@@ -271,25 +271,5 @@ class ArchiveEntry: Identifiable {
     //                }
     //            }
     //        }
-    //    }
-
-    // Return an Array of ourselves and all of our descendents.
-    //    @MainActor func flatChildren() -> [ArchiveEntry] {
-    //        var flatChildren: [ArchiveEntry] = []
-    //        flatChildren.append(self)
-    //
-    //        guard self.children != nil && self.children!.count > 0 else {
-    //            // No children, we can bail now
-    //            return flatChildren
-    //        }
-    //
-    //        for child in self.children! {
-    //            flatChildren.append(child)
-    //
-    //            if child.children != nil && child.children!.count > 0 {
-    //                flatChildren += child.flatChildren()
-    //            }
-    //        }
-    //        return flatChildren
     //    }
 }

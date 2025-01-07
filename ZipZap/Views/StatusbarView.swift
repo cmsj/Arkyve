@@ -16,6 +16,12 @@ struct StatusbarView: View {
                 Spacer()
                 Text("\(viewModel.archive?.entries.count ?? 0) items")
                 Spacer()
+                if viewModel.progress {
+                    ProgressView()
+                        .progressViewStyle(.circular)
+                        .controlSize(.small)
+                        .padding([.trailing])
+                }
             }
             .padding([.top, .bottom], 5)
         }

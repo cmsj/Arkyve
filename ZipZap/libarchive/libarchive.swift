@@ -196,8 +196,6 @@ actor libarchive {
         var writtenURLs: [URL] = []
         var entryPtr: OpaquePointer?
 
-        await Task.unsafeProgress?.progressed()
-
         try readArchive.openRead(path: path)
         defer { readArchive.close() }
 
@@ -302,6 +300,8 @@ actor libarchive {
                     } catch {
                         #ZZWarn("Unable to read/set file attributes for \(outputURL.path)")
                     }
+
+                    await Task.unsafeProgress?.progressed()
                 }
             }
         }

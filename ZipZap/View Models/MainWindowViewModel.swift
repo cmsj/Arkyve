@@ -18,7 +18,7 @@ class MainWindowViewModel {
     var selectedEntries = Set<ArchiveEntry.ID>()
     var quickLookURL: URL?
     var quickLookItems: [URL] = []
-    var progress = false
+    var progress = 0.0
 
     var showErrors: ShowErrors = ShowErrors()
 
@@ -33,10 +33,16 @@ class MainWindowViewModel {
 
     func setProgress(_ tp: TaskProgress) {
         switch tp.status {
-        case .running(_): progress = true
-        case .finished, .failed(_): progress = false
+        case .running(let units):
+            if let total = units.total {
+                progress = Double(units.completed) / Double(total)
+            } else {
+                progress = 1.0
+            }
+        case .finished, .failed(_): progress = 0.0
         }
     }
+
     func openArchive(url: URL) async {
         let loader = libarchive(url: url)
         do {
@@ -110,7 +116,11 @@ class MainWindowViewModel {
                 var extractableEntries: [ArchiveEntryExtractable] = []
                 let chosenEntries = archive?.entries.filter { actualEntries.contains($0.id) } ?? []
 
+                var itemCount = 0
                 for entry in chosenEntries {
+                    let flatChildren = entry.flatChildren()
+                    itemCount += flatChildren.count
+
                     let extractableEntry = ArchiveEntryExtractable(showErrors: showErrors,
                                                                    archiveURL: archive?.URL,
                                                                    cacheURL: archive?.cacheURL,
@@ -124,7 +134,7 @@ class MainWindowViewModel {
                     let loader = libarchive(url: archiveURL)
 
                     do {
-                        try await withTaskProgression { _ in
+                        try await withTaskProgression(totalUnits: itemCount) { _ in
                             let _ = try await loader.extractEntries(extractableEntries, toFolder: destURL, retainFullPath: retainFullPath)
                         } progress: { progression in
                             Task { @MainActor in setProgress(progression) }
@@ -151,18 +161,21 @@ class MainWindowViewModel {
             let chosenEntries = archive?.entries.filter { selectedEntries.contains($0.id) } ?? []
             var extractableEntries: [ArchiveEntryExtractable] = []
 
+            var itemCount = extractableEntries.count
             for entry in chosenEntries {
+                let flatChildren = entry.flatChildren()
+                itemCount += flatChildren.count
                 let extractableEntry = ArchiveEntryExtractable(showErrors: showErrors,
                                                                archiveURL: archive?.URL,
                                                                cacheURL: archive?.cacheURL,
                                                                selectedPath: entry.path,
                                                                id: entry.id,
-                                                               entries: entry.flatChildren())
+                                                               entries: flatChildren)
                 extractableEntries.append(extractableEntry)
             }
 
             do {
-                try await withTaskProgression { _ in
+                try await withTaskProgression(totalUnits: itemCount) { _ in
                     let writtenURLs = try await loader.extractEntries(extractableEntries, toFolder: cacheURL)
                     if writtenURLs.count > 0 {
                         quickLookItems = writtenURLs

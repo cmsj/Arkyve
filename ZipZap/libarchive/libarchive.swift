@@ -167,6 +167,7 @@ actor libarchive {
         let archiveEntries: [libarchiveHeader]
 
         await Task.unsafeProgress?.progressed()
+
         do {
             (archiveFormat, archiveFilters, archiveEntries) = try readEntriesFormatFilters()
 
@@ -344,8 +345,6 @@ actor libarchive {
         var headerMap = headerMap
         var result: Int32 = ARCHIVE_OK
 
-        await Task.unsafeProgress?.progressed()
-
         try readArchive.openRead(path: path)
         defer { readArchive.close() }
         
@@ -389,6 +388,8 @@ actor libarchive {
                     throw ArchiveError.ArchiveWriteError(archive: to.path, error: error)
                 }
 
+                await Task.unsafeProgress?.progressed()
+
                 // Remove the headerMap value now we've processed it
                 headerMap.removeValue(forKey: mapEntryKey)
             }
@@ -408,7 +409,9 @@ actor libarchive {
                 let error = String(cString: archive_error_string(writeArchive.archive))
                 throw ArchiveError.ArchiveWriteError(archive: to.path, error: error)
             }
-            
+
+            await Task.unsafeProgress?.progressed()
+
             headerMap.removeValue(forKey: filePath)
         }
         // FIXME: Deal with: do we have any headerMap entries left?

@@ -21,8 +21,8 @@ struct libarchiveHeader: Identifiable {
     let mtime: Date
     let btime: Date
 
-    let uid: String
-    let gid: String
+    let uid: Int64?
+    let gid: Int64?
 
     let perms: mode_t
 

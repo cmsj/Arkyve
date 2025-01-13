@@ -98,8 +98,14 @@ class ArchiveEntry: Identifiable {
     var perms: mode_t
     var permsString: String = "--"
 
-    var uid: String = "--"
-    var gid: String = "--"
+    var uid: Int64?
+    var gid: Int64?
+    var uidString: String {
+        get { uid != nil ? "\(uid!)" : "--" }
+    }
+    var gidString: String {
+        get { gid != nil ? "\(gid!)" : "--" }
+    }
 
     nonisolated(unsafe) var type: ArchiveEntryType = .unknown
 

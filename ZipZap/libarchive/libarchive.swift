@@ -68,8 +68,8 @@ actor libarchive {
             let mtime: Date
             let btime: Date
             let perms: mode_t
-            let uid: String
-            let gid: String
+            let uid: Int64?
+            let gid: Int64?
             let type: ArchiveEntryType
             let source: ArchiveEntrySource
 
@@ -99,16 +99,13 @@ actor libarchive {
             perms = archive_entry_mode(entry)
 
             if archive_entry_uid_is_set(entry) != 0 {
-                uid = "\(archive_entry_uid(entry))"
-            } else {
-                uid = "--"
-            }
-            if archive_entry_gid_is_set(entry) != 0 {
-                gid = "\(archive_entry_gid(entry))"
-            } else {
-                gid = "--"
-            }
+                uid = archive_entry_uid(entry)
+            } else { uid = nil }
 
+            if archive_entry_gid_is_set(entry) != 0 {
+                gid = archive_entry_gid(entry)
+            } else { gid = nil }
+            
             type = ArchiveEntryType(rawValue: archive_entry_filetype(entry))
 
             headers.append(libarchiveHeader(source: source, type: type, path: path, name: name, pathComponents: pathComponents, size: size, atime: atime, ctime: ctime, mtime: mtime, btime: btime, uid: uid, gid: gid, perms: perms))
@@ -328,11 +325,11 @@ actor libarchive {
         archive_entry_set_ctime(writeEntry, Int(headers.ctime.timeIntervalSince1970), 0)
         archive_entry_set_mtime(writeEntry, Int(headers.mtime.timeIntervalSince1970), 0)
 
-        if headers.uid != "--" {
-            archive_entry_set_uid(writeEntry, Int64(headers.uid) ?? 0)
+        if let uid = headers.uid {
+            archive_entry_set_uid(writeEntry, uid)
         }
-        if headers.gid != "--" {
-            archive_entry_set_gid(writeEntry, Int64(headers.gid) ?? 0)
+        if let gid = headers.gid {
+            archive_entry_set_gid(writeEntry, gid)
         }
 
         archive_entry_set_mode(writeEntry, headers.perms)

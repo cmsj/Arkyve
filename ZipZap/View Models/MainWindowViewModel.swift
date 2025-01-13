@@ -223,11 +223,10 @@ class MainWindowViewModel {
         // TODO: WRITE
     }
 
-    // TODO: WRITE
-//    func deleteButton(_ entries: Set<ArchiveEntry.ID>? = nil) {
-//        let actualEntries = entries ?? selectedEntries
-//        archive?.removeEntries(actualEntries)
-//    }
+    func deleteButton(_ entries: Set<ArchiveEntry.ID>? = nil) {
+        // TODO: WRITE
+        self.archive?.dirty = true
+    }
 //
 //    func addButton() {
 //        let panel = NSOpenPanel()

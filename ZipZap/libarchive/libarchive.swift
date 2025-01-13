@@ -10,8 +10,7 @@ import SwiftUI
 import ZZLog
 
 actor libarchive {
-    private var readArchive = libarchiveFD(type: .read)
-    private var writeArchive = libarchiveFD(type: .write)
+    private var archiveFD = libarchiveFD(type: .read)
 
     private var url: URL
     private var path: String {
@@ -52,14 +51,14 @@ actor libarchive {
     }
 
     private func readHeaders() throws -> [libarchiveHeader] {
-        guard readArchive.archive != nil else {
+        guard archiveFD.archive != nil else {
             throw ArchiveError.ArchiveEntriesError(archive: path, error: "readHeaders() called before archive was opened")
         }
 
         var headers: [libarchiveHeader] = []
 
         var entry: OpaquePointer?
-        while (archive_read_next_header(readArchive.archive, &entry) == ARCHIVE_OK) {
+        while (archive_read_next_header(archiveFD.archive, &entry) == ARCHIVE_OK) {
             let name: String
             let path: String
             let pathComponents: [String]
@@ -119,14 +118,14 @@ actor libarchive {
     }
 
     private func readFormat() -> libarchiveFormat {
-        return libarchiveFormat(rawValue: archive_format(readArchive.archive)) ?? .Unknown
+        return libarchiveFormat(rawValue: archive_format(archiveFD.archive)) ?? .Unknown
     }
 
     private func readFilters() -> [libarchiveFilter] {
         var filters: [libarchiveFilter] = []
 
-        for i in 0...archive_filter_count(readArchive.archive) {
-            if let filter = libarchiveFilter(rawValue: archive_filter_code(readArchive.archive, i)) {
+        for i in 0...archive_filter_count(archiveFD.archive) {
+            if let filter = libarchiveFilter(rawValue: archive_filter_code(archiveFD.archive, i)) {
                 filters.append(filter)
             }
         }
@@ -150,8 +149,8 @@ actor libarchive {
     }
 
     func readEntriesFormatFilters() throws -> (libarchiveFormat, [libarchiveFilter], [libarchiveHeader]) {
-        try readArchive.openRead(path: path)
-        defer { readArchive.close() }
+        try archiveFD.openRead(path: path)
+        defer { archiveFD.close() }
 
         let headers = try readHeaders()
         let format = readFormat()
@@ -197,8 +196,8 @@ actor libarchive {
         var writtenURLs: [URL] = []
         var entryPtr: OpaquePointer?
 
-        try readArchive.openRead(path: path)
-        defer { readArchive.close() }
+        try archiveFD.openRead(path: path)
+        defer { archiveFD.close() }
 
         let synthPaths = extractableEntries.flatMap { $0.entries.filter { $0.isSynthesized == true }}
         for synthPath in synthPaths {
@@ -226,7 +225,7 @@ actor libarchive {
 
         #ZZTrace("Extracting \(pathMap.count) entries to \(toFolder.path)")
 
-        while (archive_read_next_header(readArchive.archive, &entryPtr) == ARCHIVE_OK) {
+        while (archive_read_next_header(archiveFD.archive, &entryPtr) == ARCHIVE_OK) {
             if let path = entryPath(entryPtr) {
                 if pathMap.keys.contains(path) {
                     guard let outputURL = pathMap[path] else { continue }
@@ -250,7 +249,7 @@ actor libarchive {
                             throw ArchiveError.ArchiveExtractError(archive: outputURL.path,
                                                                    error: error.localizedDescription)
                         }
-                        let result = archive_read_data_into_fd(readArchive.archive, handle.fileDescriptor)
+                        let result = archive_read_data_into_fd(archiveFD.archive, handle.fileDescriptor)
                         if result != ARCHIVE_OK {
                             let error = "Unable to write to \(outputURL.path)"
                             throw ArchiveError.ArchiveExtractError(archive: path, error: error)
@@ -264,7 +263,7 @@ actor libarchive {
                         } catch {
                             throw ArchiveError.ArchiveExtractError(archive: outputURL.path, error: error.localizedDescription)
                         }
-                        archive_read_data_skip(readArchive.archive)
+                        archive_read_data_skip(archiveFD.archive)
                         #ZZTrace("  Created \(outputURL.path(percentEncoded: false))")
 
                         writtenURLs.append(outputURL)
@@ -345,9 +344,10 @@ actor libarchive {
         var headerMap = headerMap
         var result: Int32 = ARCHIVE_OK
 
-        try readArchive.openRead(path: path)
-        defer { readArchive.close() }
-        
+        try archiveFD.openRead(path: path)
+        defer { archiveFD.close() }
+
+        var writeArchive = libarchiveFD(type: .write)
         try writeArchive.openWrite(at: to, format: format, filters: filters)
         defer { writeArchive.close() }
 
@@ -358,7 +358,7 @@ actor libarchive {
         var wsize: size_t = size_t()
 
         // First, examine the existing archive to find entries we need to copy over
-        while (archive_read_next_header(readArchive.archive, &readEntry) == ARCHIVE_OK && result != ARCHIVE_EOF) {
+        while (archive_read_next_header(archiveFD.archive, &readEntry) == ARCHIVE_OK && result != ARCHIVE_EOF) {
             guard let readEntryPath = entryPath(readEntry) else { continue }
             
             // Find every entry in the tree that started out as this path, and in the archive
@@ -368,7 +368,7 @@ actor libarchive {
                 writeArchiveEntryHeader(to: writeArchive, headers: headerMap[mapEntryKey]!.header)
 
                 while (true) {
-                    rsize = archive_read_data(readArchive.archive, rbuf, 524288)
+                    rsize = archive_read_data(archiveFD.archive, rbuf, 524288)
                     if (rsize <= 0) { break }
 
                     wsize = archive_write_data(writeArchive.archive, rbuf, rsize)

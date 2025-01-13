@@ -78,19 +78,20 @@ struct TableView: View {
             } label: {
                 Text("Rename...")
             }
-            .disabled(items.count != 1)
+            .keyboardShortcut("r")
             Button {
                 viewModel.extractButton(items)
             } label: {
                 Text("Extract")
             }
-//            Divider()
-//            Button {
-//                viewModel.deleteButton(items)
-//            } label: {
-//                Text("Delete")
-//            }
-//            .disabled(viewModel.disableDelete)
+            .keyboardShortcut("e")
+            Divider()
+            Button {
+                viewModel.deleteButton(items)
+            } label: {
+                Text("Delete")
+            }
+            .keyboardShortcut("d")
         }
         .onKeyPress(.space, action: {
             if viewModel.selectedEntries.count > 0 {

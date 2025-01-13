@@ -13,6 +13,7 @@ struct MainWindowView: View {
     @State var windowTitle = "ZipZap"
     @State var showFileChooser = false
     @State var showLog: Bool = false
+    @State var showFilePicker: Bool = false
 
     @FocusState private var renameEntry: UUID?
 
@@ -33,12 +34,10 @@ struct MainWindowView: View {
         .focusEffectDisabled()
         .onChange(of: viewModel.showErrors.error, initial: true) { old, new in
             // Nicely animate the error view appearing/disappearing
-            if viewModel.showErrors.state && new == nil {
-                withAnimation {
+            withAnimation {
+                if viewModel.showErrors.state && new == nil {
                     viewModel.showErrors.state = false
-                }
-            } else if !viewModel.showErrors.state && new != nil {
-                withAnimation {
+                } else if !viewModel.showErrors.state && new != nil {
                     viewModel.showErrors.state = true
                 }
             }
@@ -48,16 +47,31 @@ struct MainWindowView: View {
         }
         .navigationTitle("\(windowTitle)\(viewModel.archive?.dirty ?? false ? " (Unsaved)" : "")")
         .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .onChange(of: viewModel.archive, initial: true, { oldValue, newValue in
+            showFilePicker = (newValue == nil ? true : false)
+        })
         .task {
-            // Configure and load your tips at app launch.
             do {
                 try Tips.configure()
             }
             catch {
-                // Handle TipKit errors
                 print("Error initializing TipKit \(error.localizedDescription)")
             }
         }
+        .fileImporter(isPresented: $showFilePicker, allowedContentTypes: [.archive], allowsMultipleSelection: false, onCompletion: { result in
+            switch result {
+            case .success(let files):
+                files.forEach { file in
+                    let gotAccess = file.startAccessingSecurityScopedResource()
+                    if !gotAccess { return }
+
+                    viewModel.openArchive(url: file)
+                    file.stopAccessingSecurityScopedResource()
+                }
+            case .failure(let error):
+                viewModel.showErrors.err(ArchiveError.ArchiveOpenError(archive: "", error: error.localizedDescription))
+            }
+        })
     }
 }
 

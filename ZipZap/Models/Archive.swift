@@ -35,8 +35,15 @@ extension Archive {
     }
 }
 
+extension Archive: Equatable {
+    static func == (lhs: Archive, rhs: Archive) -> Bool {
+        return lhs.id == rhs.id
+    }
+}
+
 @Observable
 class Archive {
+    var id: UUID = UUID()
     var URL: URL
     var path: String
     var name: String

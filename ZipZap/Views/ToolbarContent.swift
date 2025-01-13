@@ -73,6 +73,16 @@ struct ToolbarContentView: CustomizableToolbarContent {
             .help("Rename selected file/folder")
             .disabled(viewModel.disableRename)
         }
+#if DEBUG
+        ToolbarItem(id: "ShoeError") {
+            Button {
+                viewModel.showErrors.err(ArchiveError.ArchiveOpenError(archive: "test1", error: "test2"))
+            } label: {
+                Label("DEBUG ERROR", systemImage: "ant.circle")
+                    .padding()
+            }
+        }
+#endif
 //        ToolbarItem(id: "Delete") {
 //            Button {
 //                viewModel.deleteButton()

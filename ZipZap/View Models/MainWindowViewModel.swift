@@ -87,6 +87,12 @@ class MainWindowViewModel {
         }
     }
 
+    func openArchive(url: URL) {
+        Task { @MainActor in
+            await openArchive(url: url)
+        }
+    }
+
     func closeButton() {
         archive = nil
         selectedEntries = []

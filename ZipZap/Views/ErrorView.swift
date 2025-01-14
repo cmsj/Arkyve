@@ -18,6 +18,11 @@ class ShowErrors {
         self.error = error
         #ZZError(error.localizedDescription)
     }
+
+    func clear() {
+        self.error = nil
+        self.state = false
+    }
 }
 
 struct ErrorView: View {

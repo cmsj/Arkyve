@@ -22,6 +22,8 @@ class MainWindowViewModel {
 
     var showErrors: ShowErrors = ShowErrors()
 
+    var showSavePrompt = false
+
     var disableRevert: Bool { get { archive?.dirty != true || archive?.existsOnDisk != true }}
     var disableClose: Bool { get { archive == nil }}
     var disableSave: Bool { get { archive?.dirty != true }}
@@ -56,6 +58,17 @@ class MainWindowViewModel {
         }
     }
 
+    func closeArchive() {
+        guard archive != nil else { return }
+
+        archive = nil
+        selectedEntries = []
+        quickLookURL = nil
+        quickLookItems = []
+
+        showErrors.clear()
+    }
+
     func saveArchive(to: URL) async {
         guard let archive = archive else { return }
         let loader = libarchive(url: archive.URL)
@@ -78,6 +91,8 @@ class MainWindowViewModel {
         let panel = NSOpenPanel()
         panel.allowsMultipleSelection = false
         panel.canChooseDirectories = false
+        panel.allowedContentTypes = [.archive]
+
         if panel.runModal() == .OK {
             if let url = panel.url {
                 Task { @MainActor in
@@ -87,17 +102,12 @@ class MainWindowViewModel {
         }
     }
 
-    func openArchive(url: URL) {
-        Task { @MainActor in
-            await openArchive(url: url)
+    func closeButton(force: Bool = false) {
+        if archive?.dirty == true && !force {
+            showSavePrompt = true
+        } else {
+            closeArchive()
         }
-    }
-
-    func closeButton() {
-        archive = nil
-        selectedEntries = []
-        quickLookURL = nil
-        quickLookItems = []
     }
 
     func extractButton(_ entries: Set<ArchiveEntry.ID>? = nil) {
@@ -220,13 +230,33 @@ class MainWindowViewModel {
     }
 
     func saveButton() {
+        guard archive?.name != "___UNKNOWN" else {
+            // We're trying to save, but the archive has never been written to disk, so we need to do a Save As
+            saveAsButton()
+            return
+        }
+
         Task { @MainActor in
+            // FIXME: This obviously should save over the original archive
             await saveArchive(to: URL(filePath:"/Users/cmsj/Downloads/lol.zip"))
         }
     }
 
     func saveAsButton() {
-        // TODO: WRITE
+        let panel = NSOpenPanel()
+
+        panel.allowsMultipleSelection = false
+        panel.canChooseDirectories = true
+        panel.canChooseFiles = true
+        panel.prompt = "Save"
+
+        if panel.runModal() == .OK {
+            if let destURL = panel.url {
+                Task {
+                    await saveArchive(to: destURL)
+                }
+            }
+        }
     }
 
     func deleteButton(_ entries: Set<ArchiveEntry.ID>? = nil) {

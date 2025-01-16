@@ -5,7 +5,9 @@
 //  Created by Chris Jones on 03/10/2024.
 //
 
-enum libarchiveFormat: Int32 {
+enum libarchiveFormat: Int32, CaseIterable, Identifiable {
+    var id: RawValue { rawValue }
+
     case Unknown = 0x0
     case CPIO = 0x10000
     case CPIO_POSIX = 0x10001
@@ -53,6 +55,12 @@ enum libarchiveFormat: Int32 {
     }
 }
 
+extension libarchiveFormat: Comparable {
+    static func <(lhs: Self, rhs: Self) -> Bool {
+        return lhs.rawValue < rhs.rawValue
+    }
+}
+
 extension libarchiveFormat: CustomStringConvertible {
     var description: String {
         get {
@@ -69,14 +77,14 @@ extension libarchiveFormat: CustomStringConvertible {
             case .SHAR: return "SHAR"
             case .SHAR_BASE: return "SHAR_BASE"
             case .SHAR_DUMP: return "SHAR_DUMP"
-            case .TAR: return "TAR"
+            case .TAR: return "BSD tar"
             case .TAR_USTAR: return "TAR_USTAR"
             case .TAR_PAX_INTERCHANGE: return "TAR_PAX_INTERCHANGE"
             case .TAR_PAX_RESTRICTED: return "TAR_PAX_RESTRICTED"
-            case .TAR_GNUTAR: return "TAR_GNUTAR"
+            case .TAR_GNUTAR: return "GNU tar"
             case .ISO9660: return "ISO9660"
-            case .ISO9660_RR: return "ISO9660_RR"
-            case .ZIP: return "ZIP"
+            case .ISO9660_RR: return "ISO9660 Rock Ridge"
+            case .ZIP: return "Zip"
             case .Empty: return "Empty"
             case .AR: return "AR"
             case .AR_GNU: return "AR_GNU"
@@ -87,7 +95,7 @@ extension libarchiveFormat: CustomStringConvertible {
             case .LHA: return "LHA"
             case .CAB: return "CAB"
             case .RAR: return "RAR"
-            case ._7ZIP: return "_7ZIP"
+            case ._7ZIP: return "7Zip"
             case .WARC: return "WARC"
             case .RAR_V5: return "RAR_V5"
             }

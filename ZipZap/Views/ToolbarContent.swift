@@ -14,45 +14,46 @@ struct ToolbarContentView: CustomizableToolbarContent {
     var openButtonTip = OpenButtonTip()
 
     var body: some CustomizableToolbarContent {
-        ToolbarItem(id: "New") {
-            Button {
-                viewModel.newButton()
-            } label: {
-                Label("New archive", systemImage: "plus.rectangle.on.folder")
-                    .padding()
-            }
-            .help("Start a new, empty archive")
-        }
-        ToolbarItem(id: "Open") {
-            Button {
-                viewModel.openButton()
-            } label: {
-                Label("Open", systemImage: "folder")
-                    .padding()
-            }
-            .help("Open an archive")
-            .popoverTip(openButtonTip, arrowEdge: .top)
-        }
-        ToolbarItem(id: "Close") {
-            Button {
-                viewModel.closeButton()
-            } label: {
-                Label("Close", systemImage: "xmark.circle")
-                    .padding()
-            }
-            .disabled(viewModel.disableClose)
-        }
-// TODO: WRITE
-//        ToolbarItem(id: "Add") {
+//        ToolbarItem(id: "New") {
 //            Button {
-//                viewModel.addButton()
+//                viewModel.newButton()
 //            } label: {
-//                Label("Add", systemImage: "plus.circle")
+//                Label("New archive", systemImage: "plus.rectangle.on.folder")
 //                    .padding()
 //            }
-//            .help("Add files to the archive")
-//            .disabled(viewModel.archive == nil)
+//            .help("Start a new, empty archive")
 //        }
+//        ToolbarItem(id: "Open") {
+//            Button {
+//                viewModel.openButton()
+//            } label: {
+//                Label("Open", systemImage: "folder")
+//                    .padding()
+//            }
+//            .help("Open an archive")
+//            .popoverTip(openButtonTip, arrowEdge: .top)
+//        }
+//        ToolbarItem(id: "Close") {
+//            Button {
+//                viewModel.closeButton()
+//            } label: {
+//                Label("Close", systemImage: "xmark.circle")
+//                    .padding()
+//            }
+//            .disabled(viewModel.disableClose)
+//        }
+
+        ToolbarItem(id: "Add") {
+            Button {
+                // TODO: WRITE
+//                viewModel.addButton()
+            } label: {
+                Label("Add", systemImage: "plus.circle")
+                    .padding()
+            }
+            .help("Add files to the archive")
+            .disabled(viewModel.archive == nil)
+        }
         ToolbarItem(id: "Extract") {
             Button {
                 viewModel.extractButton()
@@ -73,8 +74,19 @@ struct ToolbarContentView: CustomizableToolbarContent {
             .help("Rename selected file/folder")
             .disabled(viewModel.disableRename)
         }
+        ToolbarItem(id: "Delete") {
+            Button {
+                // TODO: WRITE
+                //                viewModel.deleteButton()
+            } label: {
+                Label("Delete", systemImage: "trash")
+                    .padding()
+            }
+            .help("Delete selected files/folders")
+            .disabled(viewModel.disableDelete)
+        }
 #if DEBUG
-        ToolbarItem(id: "ShoeError") {
+        ToolbarItem(id: "ShowError") {
             Button {
                 viewModel.showErrors.err(ArchiveError.ArchiveOpenError(archive: "test1", error: "test2"))
             } label: {
@@ -83,16 +95,6 @@ struct ToolbarContentView: CustomizableToolbarContent {
             }
         }
 #endif
-//        ToolbarItem(id: "Delete") {
-//            Button {
-//                viewModel.deleteButton()
-//            } label: {
-//                Label("Delete", systemImage: "trash")
-//                    .padding()
-//            }
-//            .help("Delete selected files/folders")
-//            .disabled(viewModel.disableDelete)
-//        }
     }
 }
 

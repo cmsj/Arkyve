@@ -243,16 +243,21 @@ class MainWindowViewModel {
     }
 
     func saveAsButton() {
-        let panel = NSOpenPanel()
+        let panel = NSSavePanel()
 
-        panel.allowsMultipleSelection = false
-        panel.canChooseDirectories = true
-        panel.canChooseFiles = true
         panel.prompt = "Save"
+        panel.isExtensionHidden = false
+
+        let viewModel = FormatPickerViewModel()
+        let accessoryViewHosted = FormatPicker().environment(\.formatPickerViewModel, viewModel)
+        let hostingController = NSHostingController(rootView: accessoryViewHosted)
+        panel.accessoryView = hostingController.view
 
         if panel.runModal() == .OK {
             if let destURL = panel.url {
                 Task {
+                    // FIXME: This should include details about the chosen format/filters
+                    print("User chose format: \(viewModel.format) \(viewModel.filter)")
                     await saveArchive(to: destURL)
                 }
             }

@@ -249,6 +249,14 @@ class MainWindowViewModel {
         panel.isExtensionHidden = false
 
         let viewModel = FormatPickerViewModel()
+
+        if archive?.format != .Unknown {
+            viewModel.format = archive!.format
+        }
+        if archive?.format == .TAR || archive?.format == .TAR_GNUTAR {
+            viewModel.filter = archive?.filters.first ?? .GZip
+        }
+
         let accessoryViewHosted = FormatPicker().environment(\.formatPickerViewModel, viewModel)
         let hostingController = NSHostingController(rootView: accessoryViewHosted)
         panel.accessoryView = hostingController.view
@@ -258,7 +266,7 @@ class MainWindowViewModel {
                 Task {
                     // FIXME: This should include details about the chosen format/filters
                     print("User chose format: \(viewModel.format) \(viewModel.filter)")
-                    await saveArchive(to: destURL)
+                    await saveArchive(to: destURL)//, overrideFormat: viewModel.format, overrideFilter: viewModel.filter)
                 }
             }
         }

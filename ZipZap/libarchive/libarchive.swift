@@ -185,6 +185,7 @@ actor libarchive {
             throw error
         }
 
+        #ZZTrace("Loaded archive with format \(archiveFormat) and filters \(archiveFilters)")
         return archive
     }
 

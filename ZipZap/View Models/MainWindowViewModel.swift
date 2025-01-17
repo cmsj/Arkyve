@@ -69,16 +69,19 @@ class MainWindowViewModel {
         showErrors.clear()
     }
 
-    func saveArchive(to: URL) async {
+    func saveArchive(to: URL, overrideFormat: libarchiveFormat = .Unknown, overrideFilter: libarchiveFilter = .None) async {
         guard let archive = archive else { return }
         let loader = libarchive(url: archive.URL)
+
+        let format = overrideFormat == .Unknown ? archive.format : overrideFormat
+        let filters = overrideFilter == .None ? archive.filters : [overrideFilter, .None]
 
         let headerMap = archive.entries.reduce(into: [String:ArchiveEntryFlat]()) {
             $0[$1.path] = $1.flatSelf()
         }
         do {
             try await withTaskProgression { _ in
-                try await loader.writeArchive(headerMap: headerMap, to: archive.URL, format: archive.format, filters: archive.filters)
+                try await loader.writeArchive(headerMap: headerMap, to: archive.URL, format: format, filters: filters)
             } progress: { progression in
                 Task { @MainActor in setProgress(progression) }
             }
@@ -266,7 +269,7 @@ class MainWindowViewModel {
                 Task {
                     // FIXME: This should include details about the chosen format/filters
                     print("User chose format: \(viewModel.format) \(viewModel.filter)")
-                    await saveArchive(to: destURL)//, overrideFormat: viewModel.format, overrideFilter: viewModel.filter)
+                    await saveArchive(to: destURL, overrideFormat: viewModel.format, overrideFilter: viewModel.filter)
                 }
             }
         }

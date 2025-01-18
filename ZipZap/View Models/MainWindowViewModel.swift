@@ -267,7 +267,6 @@ class MainWindowViewModel {
         if panel.runModal() == .OK {
             if let destURL = panel.url {
                 Task {
-                    // FIXME: This should include details about the chosen format/filters
                     print("User chose format: \(viewModel.format) \(viewModel.filter)")
                     await saveArchive(to: destURL, overrideFormat: viewModel.format, overrideFilter: viewModel.filter)
                 }

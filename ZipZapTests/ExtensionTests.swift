@@ -34,8 +34,16 @@ import Foundation
 }
 
 @Suite("Array Extensions") struct ArrayTests {
-    @Test func filterBothwise() async throws {
+    @Test func filterBothwiseSplit() async throws {
         #expect([1,2,3,4].filterBothwise { $0.isMultiple(of: 2) } == ([2,4], [1,3]))
+    }
+
+    @Test func filterBothwiseEmpty() async throws {
+        let emptyArray: [Int] = []
+        let (inc, exc) = emptyArray.filterBothwise { $0 > 0 }
+
+        #expect(inc.isEmpty)
+        #expect(exc.isEmpty)
     }
 
     @Test func remove() async throws {
@@ -44,5 +52,30 @@ import Foundation
 
         #expect(result == true)
         #expect(testArray == [1,3])
+    }
+
+    @Test func subtractPathHappy() async throws {
+        let path = ["user", "documents", "files"]
+        let result = path.subtractPath(["user", "documents"])
+
+        #expect(result == ["files"])
+    }
+}
+
+@Suite("Data Extensions") struct DataTests {
+    @Test func bytesEmpty() async throws {
+        let data = Data()
+        #expect(data.isEmpty)
+        #expect(data.bytes.isEmpty)
+    }
+
+    @Test func bytesIntegrity() async throws {
+        let data = Data([1,2,3,4])
+        #expect(data.bytes == [UInt8]([1,2,3,4]))
+    }
+
+    @Test func bytesString() async throws {
+        let string = "Hello"
+        #expect(Data(string.utf8).bytes == [UInt8](string.utf8))
     }
 }

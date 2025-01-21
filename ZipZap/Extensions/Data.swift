@@ -5,6 +5,8 @@
 //  Created by Chris Jones on 27/12/2024.
 //
 
+import Foundation
+
 extension Data {
     public var bytes: [UInt8]
     {

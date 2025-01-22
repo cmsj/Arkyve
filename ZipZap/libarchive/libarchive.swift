@@ -9,6 +9,7 @@ import Foundation
 import SwiftUI
 import ZZLog
 
+/// Wrapper for all libarchive activities
 actor libarchive {
     private var archiveFD = libarchiveFD(type: .read)
 
@@ -17,6 +18,7 @@ actor libarchive {
         get { url.path.removingPercentEncoding ?? "Unknown" }
     }
 
+    // MARK: Internal datatypes
     enum DateTypes {
         case atime
         case ctime
@@ -24,10 +26,17 @@ actor libarchive {
         case btime
     }
 
+    // MARK: Initialisers
     init(url: URL) {
         self.url = url
     }
 
+    // MARK: Helper methods
+    /// Convert a libarchive entry's date field into a Swift Date object
+    /// - Parameters:
+    ///   - dateType: Which type of date to read
+    ///   - entry: A pointer to the libarchive entry
+    /// - Returns: A Swift Date object. If the date could not be read from the archive, the epoch is returned
     private func readDate(_ dateType: DateTypes, for entry: OpaquePointer?) -> Date {
         switch dateType {
         case .atime:
@@ -48,6 +57,24 @@ actor libarchive {
             }
         }
         return Date(since: 0)
+    }
+    
+    /// Read the filesystem path of a libarchive entry, if it has one
+    /// - Parameter entry: A pointer to the libarchive entry
+    /// - Returns: An optional string containing the filesystem path
+    private func entryPath(_ entry: OpaquePointer?) -> String? {
+        var string: String? = nil
+
+        if let cString = archive_entry_pathname(entry) {
+            string = String(cString: cString)
+        }
+
+        // Lots of archives include trailing slashes on their path names, which is annoying and unnecessary.
+        if string?.last == "/" {
+            string = String(string!.dropLast())
+        }
+
+        return string
     }
 
     private func readHeaders() throws -> [libarchiveHeader] {
@@ -130,21 +157,6 @@ actor libarchive {
         return filters
     }
 
-    private func entryPath(_ entry: OpaquePointer?) -> String? {
-        var string: String? = nil
-
-        if let cString = archive_entry_pathname(entry) {
-            string = String(cString: cString)
-        }
-
-        // Lots of archives include trailing slashes on their path names, which is annoying and unnecessary.
-        if string != nil && string?.last == "/" {
-            string = String(string!.dropLast())
-        }
-
-        return string
-    }
-
     func readEntriesFormatFilters() throws -> (libarchiveFormat, [libarchiveFilter], [libarchiveHeader]) {
         try archiveFD.openRead(path: path)
         defer { archiveFD.close() }
@@ -156,7 +168,34 @@ actor libarchive {
         return (format, filters, headers)
     }
 
-    func loadArchive() async throws(ArchiveError) -> sending Archive {
+    private func writeArchiveEntryHeader(to: libarchiveFD, headers: libarchiveHeader) {
+        let writeEntry = archive_entry_new()
+
+        let data = headers.path.data(using: .utf8)!
+        archive_entry_set_pathname(writeEntry, data.bytes)
+
+        if headers.size != -1 {
+            archive_entry_set_size(writeEntry, headers.size)
+        }
+
+        archive_entry_set_atime(writeEntry, Int(headers.atime.timeIntervalSince1970), 0)
+        archive_entry_set_birthtime(writeEntry, Int(headers.btime.timeIntervalSince1970), 0)
+        archive_entry_set_ctime(writeEntry, Int(headers.ctime.timeIntervalSince1970), 0)
+        archive_entry_set_mtime(writeEntry, Int(headers.mtime.timeIntervalSince1970), 0)
+
+        if let uid = headers.uid {
+            archive_entry_set_uid(writeEntry, uid)
+        }
+        if let gid = headers.gid {
+            archive_entry_set_gid(writeEntry, gid)
+        }
+
+        archive_entry_set_mode(writeEntry, headers.perms)
+
+        archive_write_header(to.archive, writeEntry)
+    }
+
+    public func loadArchive() async throws(ArchiveError) -> sending Archive {
         let archive = Archive(URL: self.url)
         let archiveFormat: libarchiveFormat
         let archiveFilters: [libarchiveFilter]
@@ -189,7 +228,7 @@ actor libarchive {
         return archive
     }
 
-    func extractEntries(_ extractableEntries: [ArchiveEntryExtractable], toFolder: URL, retainFullPath: Bool = false) async throws(ArchiveError) -> [URL] {
+    public func extractEntries(_ extractableEntries: [ArchiveEntryExtractable], toFolder: URL, retainFullPath: Bool = false) async throws(ArchiveError) -> [URL] {
         var pathMap: [String:URL] = [:]
         var writtenURLs: [URL] = []
         var entryPtr: OpaquePointer?
@@ -310,35 +349,14 @@ actor libarchive {
 //    func createArchive(to: URL, format: libarchiveFormat, filters: [libarchiveFilter], entries: [libarchiveHeader]) throws {
 //        try saveArchive(from: nil, to: to, format: format, filters: filters, entries: entries)
 //    }
-
-    private func writeArchiveEntryHeader(to: libarchiveFD, headers: libarchiveHeader) {
-        let writeEntry = archive_entry_new()
-
-        let data = headers.path.data(using: .utf8)!
-        archive_entry_set_pathname(writeEntry, data.bytes)
-
-        if headers.size != -1 {
-            archive_entry_set_size(writeEntry, headers.size)
-        }
-
-        archive_entry_set_atime(writeEntry, Int(headers.atime.timeIntervalSince1970), 0)
-        archive_entry_set_birthtime(writeEntry, Int(headers.btime.timeIntervalSince1970), 0)
-        archive_entry_set_ctime(writeEntry, Int(headers.ctime.timeIntervalSince1970), 0)
-        archive_entry_set_mtime(writeEntry, Int(headers.mtime.timeIntervalSince1970), 0)
-
-        if let uid = headers.uid {
-            archive_entry_set_uid(writeEntry, uid)
-        }
-        if let gid = headers.gid {
-            archive_entry_set_gid(writeEntry, gid)
-        }
-
-        archive_entry_set_mode(writeEntry, headers.perms)
-
-        archive_write_header(to.archive, writeEntry)
-    }
-
-    func writeArchive(headerMap: [String:ArchiveEntryFlat], to: URL, format: libarchiveFormat, filters: [libarchiveFilter]) async throws {
+    
+    /// Write the archive to a URL
+    /// - Parameters:
+    ///   - headerMap: A dictionary containing path to ArchiveEntryFlat mappings. This determins the entries that will be written to the new archive
+    ///   - to: A URL describing the filesystem location to write the archive to
+    ///   - format: A libarchiveFormat describing the type of archive to write
+    ///   - filters: An array of libarchiveFilter, describing which filters to apply to the archive
+    public func writeArchive(headerMap: [String:ArchiveEntryFlat], to: URL, format: libarchiveFormat, filters: [libarchiveFilter]) async throws {
         var headerMap = headerMap
         var result: Int32 = ARCHIVE_OK
 

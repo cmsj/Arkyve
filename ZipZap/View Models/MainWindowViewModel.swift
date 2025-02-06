@@ -14,6 +14,7 @@ import ZZLog
 @MainActor
 class MainWindowViewModel {
     private(set) var archive: Archive? = nil
+    private(set) var document: ArchiveDocument
 
     var selectedEntries = Set<ArchiveEntry.ID>()
     var quickLookURL: URL?
@@ -32,6 +33,11 @@ class MainWindowViewModel {
     var disableExtract: Bool { get { selectedEntries.isEmpty }}
     var disableRename: Bool { get { selectedEntries.count != 1 }}
     var disableDelete: Bool { get { selectedEntries.isEmpty }}
+
+    init(for document: ArchiveDocument) {
+        self.document = document
+        self.archive = document.archive
+    }
 
     func setProgress(_ tp: TaskProgress) {
         switch tp.status {

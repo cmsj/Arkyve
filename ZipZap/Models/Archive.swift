@@ -36,13 +36,12 @@ extension Archive {
 }
 
 extension Archive: Equatable {
-    static func == (lhs: Archive, rhs: Archive) -> Bool {
+    nonisolated static func == (lhs: Archive, rhs: Archive) -> Bool {
         return lhs.id == rhs.id
     }
 }
 
-@Observable
-class Archive {
+struct ArchiveBackingStore {
     var id: UUID = UUID()
     var URL: URL
     var path: String
@@ -53,6 +52,49 @@ class Archive {
     var filters: [libarchiveFilter] = []
     var cacheURL: URL
     var dirty: Bool = false
+}
+
+@Observable
+final class Archive: Sendable {
+    private let store: Mutex<ArchiveBackingStore>
+    let id: UUID = UUID()
+    var URL: URL {
+        get { store.withLock { $0.URL }}
+        set { store.withLock { $0.URL = newValue }}
+    }
+    var path: String {
+        get { store.withLock { $0.path }}
+        set { store.withLock { $0.path = newValue }}
+    }
+    var name: String {
+        get { store.withLock { $0.name }}
+        set { store.withLock { $0.name = newValue }}
+    }
+    var entries: [ArchiveEntry] {
+        get { store.withLock { $0.entries }}
+        set { store.withLock { $0.entries = newValue }}
+    }
+    var root: ArchiveEntry {
+        get { store.withLock { $0.root }}
+        set { store.withLock { $0.root = newValue }}
+    }
+    var format: libarchiveFormat {
+        get { store.withLock { $0.format }}
+        set { store.withLock { $0.format = newValue }}
+    }
+    var filters: [libarchiveFilter] {
+        get { store.withLock { $0.filters }}
+        set { store.withLock { $0.filters = newValue }}
+    }
+    var cacheURL: URL {
+        get { store.withLock { $0.cacheURL }}
+        set { store.withLock { $0.cacheURL = newValue }}
+    }
+    var dirty: Bool {
+        get { store.withLock { $0.dirty }}
+        set { store.withLock { $0.dirty = newValue }}
+    }
+
     var existsOnDisk: Bool {
         URL.path != "/___UNKNOWN"
     }
@@ -62,11 +104,16 @@ class Archive {
     }
 
     init(URL: URL) {
-        self.URL = URL
         let name = URL.lastPathComponent
-        self.name = name
-        self.path = URL.path().removingPercentEncoding ?? "Unknown"
-        self.cacheURL = SettingsManager.shared.cacheURL.appendingPathComponent(name)
+        let path = URL.path().removingPercentEncoding ?? "Unknown"
+        let cacheURL = SettingsManager.shared.cacheURL.appendingPathComponent(name)
+
+        store = Mutex(ArchiveBackingStore(
+            URL: URL,
+            path: path,
+            name: name,
+            cacheURL: cacheURL
+        ))
 
         #ZZTrace("Initialised for \(URL)")
     }

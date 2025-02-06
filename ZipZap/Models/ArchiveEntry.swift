@@ -54,14 +54,42 @@ extension ArchiveEntry: Hashable {
 //    }
 //}
 
+struct ArchiveEntryBackingStore {
+    var id = UUID()
+    var source: ArchiveEntrySource
+    var children: [ArchiveEntry]? = nil
+    var isExpanded = false
+    var shouldFocus = false
+    var path: String
+    var name: String
+    var pathComponents: [String] = []
+    var size: Int64
+    var atime = Date(timeIntervalSince1970: 0)
+    var ctime = Date(timeIntervalSince1970: 0)
+    var mtime = Date(timeIntervalSince1970: 0)
+    var btime = Date(timeIntervalSince1970: 0)
+    var perms: mode_t
+    var permsString: String = "--"
+    var uid: Int64?
+    var gid: Int64?
+    var type: ArchiveEntryType = .unknown
+}
+
 @Observable
-class ArchiveEntry: Identifiable {
+final class ArchiveEntry: Identifiable, Sendable {
     static let draggableType = UTType(exportedAs: "net.tenshu.ZipZap.ArchiveEntry")
+    private let store: Mutex<ArchiveEntryBackingStore>
 
     let id = UUID()
-    var source: ArchiveEntrySource
+    var source: ArchiveEntrySource {
+        get { store.withLock { $0.source }}
+        set { store.withLock { $0.source = newValue }}
+    }
 
-    var children: [ArchiveEntry]? = nil
+    var children: [ArchiveEntry]? {
+        get { store.withLock { $0.children }}
+        set { store.withLock { $0.children = newValue }}
+    }
 
     // Archives don't always contain entries for directories, but the files in them still contain nested paths
     // We'll have to synthesize directories for those, and track which ones they are
@@ -72,14 +100,33 @@ class ArchiveEntry: Identifiable {
         get { isSynthesized ? "Yes" : "No" }
     }
 
-    var isExpanded = false
-    var shouldFocus = false
+    var isExpanded: Bool {
+        get { store.withLock { $0.isExpanded }}
+        set { store.withLock { $0.isExpanded = newValue }}
+    }
+    var shouldFocus: Bool {
+        get { store.withLock { $0.shouldFocus }}
+        set { store.withLock { $0.shouldFocus = newValue }}
+    }
 
     // Properties we will store for later use
-    var path: String
-    nonisolated(unsafe) var name: String
-    var pathComponents: [String] = []
-    var size: Int64
+    var path: String {
+        get { store.withLock { $0.path }}
+        set { store.withLock { $0.path = newValue }}
+    }
+    var name: String {
+        get { store.withLock { $0.name }}
+        set { store.withLock { $0.name = newValue }}
+    }
+    var pathComponents: [String] {
+        get { store.withLock { $0.pathComponents }}
+        set { store.withLock { $0.pathComponents = newValue }}
+    }
+    var size: Int64 {
+        get { store.withLock { $0.size }}
+        set { store.withLock { $0.size = newValue }}
+    }
+
     var sizeString: String {
         get { size != -1 ? String(size) : "--" }
     }
@@ -91,15 +138,41 @@ class ArchiveEntry: Identifiable {
 //            return pathComponents.dropLast().last
 //        }
 //    }
-    nonisolated(unsafe) var atime: Date = Date(timeIntervalSince1970: 0)
-    nonisolated(unsafe) var ctime: Date = Date(timeIntervalSince1970: 0)
-    nonisolated(unsafe) var mtime: Date = Date(timeIntervalSince1970: 0)
-    nonisolated(unsafe) var btime: Date = Date(timeIntervalSince1970: 0)
-    var perms: mode_t
-    var permsString: String = "--"
 
-    var uid: Int64?
-    var gid: Int64?
+    var atime: Date {
+        get { store.withLock { $0.atime }}
+        set { store.withLock { $0.atime = newValue }}
+    }
+    var ctime: Date {
+        get { store.withLock { $0.ctime }}
+        set { store.withLock { $0.ctime = newValue }}
+    }
+    var mtime: Date {
+        get { store.withLock { $0.mtime }}
+        set { store.withLock { $0.mtime = newValue }}
+    }
+    var btime: Date {
+        get { store.withLock { $0.btime }}
+        set { store.withLock { $0.btime = newValue }}
+    }
+    var perms: mode_t {
+        get { store.withLock { $0.perms }}
+        set { store.withLock { $0.perms = newValue }}
+    }
+    var permsString: String {
+        get { store.withLock { $0.permsString }}
+        set { store.withLock { $0.permsString = newValue }}
+    }
+
+    var uid: Int64? {
+        get { store.withLock { $0.uid }}
+        set { store.withLock { $0.uid = newValue }}
+    }
+    var gid: Int64? {
+        get { store.withLock { $0.gid }}
+        set { store.withLock { $0.gid = newValue }}
+    }
+
     var uidString: String {
         get { uid != nil ? "\(uid!)" : "--" }
     }
@@ -107,24 +180,29 @@ class ArchiveEntry: Identifiable {
         get { gid != nil ? "\(gid!)" : "--" }
     }
 
-    nonisolated(unsafe) var type: ArchiveEntryType = .unknown
+    var type: ArchiveEntryType {
+        get { store.withLock { $0.type }}
+        set { store.withLock { $0.type = newValue }}
+    }
 
     let lock = Mutex(true)
 
     init(_ entry: libarchiveHeader) {
-        self.source = entry.source
-        self.path = entry.path
-        self.name = entry.name
-        self.pathComponents = entry.pathComponents
-        self.size = entry.size
-        self.atime = entry.atime
-        self.mtime = entry.mtime
-        self.btime = entry.btime
-        self.ctime = entry.ctime
-        self.perms = entry.perms
-        self.uid = entry.uid
-        self.gid = entry.gid
-        self.type = entry.type
+        store = Mutex(ArchiveEntryBackingStore(
+            source: entry.source,
+            path: entry.path,
+            name: entry.name,
+            pathComponents: entry.pathComponents,
+            size: entry.size,
+            atime: entry.atime,
+            ctime: entry.ctime,
+            mtime: entry.mtime,
+            btime: entry.btime,
+            perms: entry.perms,
+            uid: entry.uid,
+            gid: entry.gid,
+            type: entry.type
+        ))
 
         if self.type == .directory {
             // If we're a directory, we have at least zero children
@@ -133,29 +211,32 @@ class ArchiveEntry: Identifiable {
     }
 
     init(path: String) {
-        self.type = .directory
-        self.children = []
-        self.path = path
-        self.size = -1
-        self.source = ArchiveEntrySource(type: .Synthetic, path: path)
-        self.perms = 0
-
         // Parse pathname to store our hierarchy
         let pathBits = path.split(separator: "/").map(String.init)
-        name = pathBits.last ?? "Unknown"
-        pathComponents = pathBits
+        let name = pathBits.last ?? "Unknown"
+        let pathComponents = pathBits
+
+        store = Mutex(ArchiveEntryBackingStore(
+            source: ArchiveEntrySource(type: .Synthetic, path: path),
+            path: path,
+            name: name,
+            pathComponents: pathComponents,
+            size: -1,
+            perms: 0
+        ))
+        self.children = []
     }
 
     init(isRoot: Bool) {
-        self.type = .root
-        self.source = ArchiveEntrySource(type: .Root, path: ".")
+        store = Mutex(ArchiveEntryBackingStore(
+            source: ArchiveEntrySource(type: .Root, path: "."),
+            path: ".",
+            name: "root",
+            pathComponents: ["."],
+            size: -1,
+            perms: 0
+        ))
         self.children = []
-        self.path = "."
-        self.size = -1
-        self.perms = 0
-
-        pathComponents = ["."]
-        name = "root"
     }
 
     func addChildren(_ entries: [ArchiveEntry]) {

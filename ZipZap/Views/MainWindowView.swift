@@ -9,12 +9,20 @@ import SwiftUI
 import TipKit
 
 struct MainWindowView: View {
-    var viewModel: MainWindowViewModel = MainWindowViewModel()
+    var viewModel: MainWindowViewModel
+    var documentURL: URL?
     @State var windowTitle = "ZipZap"
+    @Binding var document: ArchiveDocument
 
     @FocusState private var renameEntry: UUID?
 
     var tableViewTip = TableViewTip()
+
+    init(document: Binding<ArchiveDocument>, fullURL: URL?) {
+        viewModel = MainWindowViewModel(for: document.wrappedValue)
+        _document = document
+        documentURL = fullURL
+    }
 
     var body: some View {
         // FIXME: This @Bindable is an ugly hack: https://www.hackingwithswift.com/books/ios-swiftui/sharing-observable-objects-through-swiftuis-environment
@@ -48,17 +56,17 @@ struct MainWindowView: View {
         }
         .navigationTitle("\(windowTitle)\(viewModel.archive?.dirty ?? false ? " (Unsaved)" : "")")
         .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .alert("Save before closing?", isPresented: $viewModel.showSavePrompt) {
-            Button("Save") {
-                viewModel.saveButton()
-            }
-            Button("Close", role: .destructive) {
-                viewModel.closeButton(force: true)
-            }
-            Button("Cancel", role: .cancel) {}
-        } message: {
-            Text("Archive has unsaved changes, do you want to save it?")
-        }
+//        .alert("Save before closing?", isPresented: $viewModel.showSavePrompt) {
+//            Button("Save") {
+//                viewModel.saveButton()
+//            }
+//            Button("Close", role: .destructive) {
+//                viewModel.closeButton(force: true)
+//            }
+//            Button("Cancel", role: .cancel) {}
+//        } message: {
+//            Text("Archive has unsaved changes, do you want to save it?")
+//        }
 //        .onChange(of: viewModel.archive, initial: true, { oldValue, newValue in
 //            showFilePicker = (newValue == nil ? true : false)
 //        })
@@ -68,6 +76,13 @@ struct MainWindowView: View {
             }
             catch {
                 print("Error initializing TipKit \(error.localizedDescription)")
+            }
+        }
+        .task {
+            if let url = documentURL {
+                Task {
+                    await viewModel.openArchive(url: url)
+                }
             }
         }
 //        .fileImporter(isPresented: $showFilePicker, allowedContentTypes: [.archive], allowsMultipleSelection: false, onCompletion: { result in
@@ -86,7 +101,7 @@ struct MainWindowView: View {
 //        })
     }
 }
-
-#Preview {
-    MainWindowView()
-}
+//
+//#Preview {
+//    MainWindowView()
+//}

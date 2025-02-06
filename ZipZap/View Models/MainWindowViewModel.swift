@@ -298,5 +298,6 @@ class MainWindowViewModel {
     func doRename(of entry: ArchiveEntry) {
 //        self.archive?.processEntryRename(entry)
         self.archive?.dirty = true
+        self.document.isDirty = true
     }
 }

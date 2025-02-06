@@ -13,6 +13,7 @@ import UniformTypeIdentifiers
 struct ArchiveDocument: FileDocument {
     static let readableContentTypes: [UTType] = [.bz2, .gzip, .tarArchive, .zip] // FIXME: This list is nonsense
     var archive: Archive
+    var isDirty: Bool = false
 
     init(file: Archive? = nil) {
         self.archive = Archive()
@@ -31,8 +32,6 @@ struct ArchiveDocument: FileDocument {
     func fileWrapper(configuration: WriteConfiguration) throws -> FileWrapper {
         return FileWrapper()
     }
-
-
 }
 
 @main

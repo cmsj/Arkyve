@@ -38,9 +38,9 @@ struct StatusbarView: View {
 }
 
 #Preview {
-    let viewModel = MainWindowViewModel()
+    let viewModel = MainWindowViewModel(for: ArchiveDocument())
 
-    return VStack(spacing: 0) {
+    VStack(spacing: 0) {
         Rectangle()
             .background(.white)
         StatusbarView()

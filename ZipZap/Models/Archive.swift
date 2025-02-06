@@ -58,6 +58,7 @@ struct ArchiveBackingStore {
 final class Archive: Sendable {
     private let store: Mutex<ArchiveBackingStore>
     let id: UUID = UUID()
+
     var URL: URL {
         get { store.withLock { $0.URL }}
         set { store.withLock { $0.URL = newValue }}

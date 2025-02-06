@@ -101,7 +101,7 @@ struct MainWindowView: View {
 //        })
     }
 }
-//
+
 //#Preview {
-//    MainWindowView()
+//    MainWindowView(document: <#Binding<ArchiveDocument>#>, fullURL: <#URL?#>)
 //}

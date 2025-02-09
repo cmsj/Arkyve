@@ -38,7 +38,7 @@ struct StatusbarView: View {
 }
 
 #Preview {
-    let viewModel = MainWindowViewModel(for: ArchiveDocument())
+    let viewModel = MainWindowViewModel(for: Archive())
 
     VStack(spacing: 0) {
         Rectangle()

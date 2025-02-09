@@ -9,18 +9,20 @@ import SwiftUI
 import TipKit
 
 struct MainWindowView: View {
+    @Environment(\.undoManager) var undoManager
+
     var viewModel: MainWindowViewModel
     var documentURL: URL?
     @State var windowTitle = "ZipZap"
-    @Binding var document: ArchiveDocument
+    var document: Archive
 
     @FocusState private var renameEntry: UUID?
 
     var tableViewTip = TableViewTip()
 
-    init(document: Binding<ArchiveDocument>, fullURL: URL?) {
-        viewModel = MainWindowViewModel(for: document.wrappedValue)
-        _document = document
+    init(document: Archive, fullURL: URL?) {
+        viewModel = MainWindowViewModel(for: document)
+        self.document = document
         documentURL = fullURL
     }
 
@@ -56,20 +58,6 @@ struct MainWindowView: View {
         }
         .navigationTitle("\(windowTitle)\(viewModel.archive?.dirty ?? false ? " (Unsaved)" : "")")
         .frame(maxWidth: .infinity, maxHeight: .infinity)
-//        .alert("Save before closing?", isPresented: $viewModel.showSavePrompt) {
-//            Button("Save") {
-//                viewModel.saveButton()
-//            }
-//            Button("Close", role: .destructive) {
-//                viewModel.closeButton(force: true)
-//            }
-//            Button("Cancel", role: .cancel) {}
-//        } message: {
-//            Text("Archive has unsaved changes, do you want to save it?")
-//        }
-//        .onChange(of: viewModel.archive, initial: true, { oldValue, newValue in
-//            showFilePicker = (newValue == nil ? true : false)
-//        })
         .task {
             do {
                 try Tips.configure()
@@ -85,20 +73,11 @@ struct MainWindowView: View {
                 }
             }
         }
-//        .fileImporter(isPresented: $showFilePicker, allowedContentTypes: [.archive], allowsMultipleSelection: false, onCompletion: { result in
-//            switch result {
-//            case .success(let files):
-//                files.forEach { file in
-//                    let gotAccess = file.startAccessingSecurityScopedResource()
-//                    if !gotAccess { return }
-//
-//                    viewModel.openArchive(url: file)
-//                    file.stopAccessingSecurityScopedResource()
-//                }
-//            case .failure(let error):
-//                viewModel.showErrors.err(ArchiveError.ArchiveOpenError(archive: "", error: error.localizedDescription))
-//            }
-//        })
+        .onAppear {
+            undoManager?.registerUndo(withTarget: document, handler: {
+                print($0, "undo")
+            })
+        }
     }
 }
 

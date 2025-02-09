@@ -6,7 +6,9 @@
 //
 
 import Foundation
+import SwiftUI
 import Synchronization
+import UniformTypeIdentifiers
 import ZZLog
 
 // MARK: Sorting
@@ -54,44 +56,44 @@ struct ArchiveBackingStore {
     var dirty: Bool = false
 }
 
-@Observable
-final class Archive: Sendable {
+//@Observable
+final class Archive: Sendable, ReferenceFileDocument {
     private let store: Mutex<ArchiveBackingStore>
     let id: UUID = UUID()
 
-    var URL: URL {
+    private(set) var URL: URL {
         get { store.withLock { $0.URL }}
         set { store.withLock { $0.URL = newValue }}
     }
-    var path: String {
+    private(set) var path: String {
         get { store.withLock { $0.path }}
         set { store.withLock { $0.path = newValue }}
     }
-    var name: String {
+    private(set) var name: String {
         get { store.withLock { $0.name }}
         set { store.withLock { $0.name = newValue }}
     }
-    var entries: [ArchiveEntry] {
+    private(set) var entries: [ArchiveEntry] {
         get { store.withLock { $0.entries }}
         set { store.withLock { $0.entries = newValue }}
     }
-    var root: ArchiveEntry {
+    private(set) var root: ArchiveEntry {
         get { store.withLock { $0.root }}
         set { store.withLock { $0.root = newValue }}
     }
-    var format: libarchiveFormat {
+    private(set) var format: libarchiveFormat {
         get { store.withLock { $0.format }}
         set { store.withLock { $0.format = newValue }}
     }
-    var filters: [libarchiveFilter] {
+    private(set) var filters: [libarchiveFilter] {
         get { store.withLock { $0.filters }}
         set { store.withLock { $0.filters = newValue }}
     }
-    var cacheURL: URL {
+    private(set) var cacheURL: URL {
         get { store.withLock { $0.cacheURL }}
         set { store.withLock { $0.cacheURL = newValue }}
     }
-    var dirty: Bool {
+    private(set) var dirty: Bool {
         get { store.withLock { $0.dirty }}
         set { store.withLock { $0.dirty = newValue }}
     }
@@ -102,6 +104,56 @@ final class Archive: Sendable {
 
     var canWrite: Bool {
         get { format.canWrite }
+    }
+
+    static let readableContentTypes: [UTType] = [.bz2, .gzip, .tarArchive, .zip] // FIXME: This list is nonsense
+    static let writableContentTypes: [UTType] = [.bz2, .gzip, .tarArchive, .zip] // FIXME: This list is nonsense
+
+    required init(configuration: ReadConfiguration) throws {
+        let URL = Foundation.URL(fileURLWithPath: "/___UNKNOWN")
+        let name = URL.lastPathComponent
+        let path = URL.path().removingPercentEncoding ?? "Unknown"
+        let cacheURL = SettingsManager.shared.cacheURL.appendingPathComponent(name)
+
+        self.store = Mutex(ArchiveBackingStore(
+            URL: URL,
+            path: path,
+            name: name,
+            cacheURL: cacheURL
+        ))
+
+        #ZZTrace("Initialised for \(URL)")
+        self.dirty = true
+    }
+
+    func snapshot(contentType: UTType) throws -> Data {
+        print("LOL SNAPSHOT")
+        return Data()
+    }
+
+    func fileWrapper(snapshot: Data, configuration: WriteConfiguration) throws -> FileWrapper {
+        return FileWrapper(regularFileWithContents: snapshot)
+    }
+
+    init(store: consuming Mutex<ArchiveBackingStore>? = nil) {
+        if let store = store {
+            self.store = store
+        } else {
+            let URL = Foundation.URL(fileURLWithPath: "/___UNKNOWN")
+            let name = URL.lastPathComponent
+            let path = URL.path().removingPercentEncoding ?? "Unknown"
+            let cacheURL = SettingsManager.shared.cacheURL.appendingPathComponent(name)
+
+            self.store = Mutex(ArchiveBackingStore(
+                URL: URL,
+                path: path,
+                name: name,
+                cacheURL: cacheURL
+            ))
+
+            self.dirty = true
+            #ZZTrace("Initialised for \(URL)")
+        }
     }
 
     init(URL: URL) {
@@ -119,11 +171,11 @@ final class Archive: Sendable {
         #ZZTrace("Initialised for \(URL)")
     }
 
-    convenience init() {
-        let path = "/___UNKNOWN"
-        self.init(URL: Foundation.URL(fileURLWithPath: path))
-        self.dirty = true
-    }
+//    convenience init() {
+//        let path = "/___UNKNOWN"
+//        self.init(URL: Foundation.URL(fileURLWithPath: path))
+//        self.dirty = true
+//    }
 
     deinit {
         self.close()
@@ -145,6 +197,17 @@ final class Archive: Sendable {
     // NOTE: THIS MUST ONLY BE CALLED FROM WITHIN A MUTEX LOCKED CONTEXT
     func addSynthEntry(_ entry: ArchiveEntry) {
         self.entries.append(entry)
+    }
+
+    func populate(root: ArchiveEntry, entries: [ArchiveEntry], format: libarchiveFormat, filters: [libarchiveFilter]) {
+        self.root = root
+        self.entries = entries
+        self.format = format
+        self.filters = filters
+    }
+
+    func setDirty(_ dirty: Bool = true) {
+        self.dirty = dirty
     }
 
 //    func processInternalDrop(providers:[NSItemProvider], atIndex:Int, treeHint:[ArchiveEntry]) {

@@ -14,7 +14,6 @@ import ZZLog
 @MainActor
 class MainWindowViewModel {
     private(set) var archive: Archive? = nil
-    private(set) var document: ArchiveDocument
 
     var selectedEntries = Set<ArchiveEntry.ID>()
     var quickLookURL: URL?
@@ -34,9 +33,8 @@ class MainWindowViewModel {
     var disableRename: Bool { get { selectedEntries.count != 1 }}
     var disableDelete: Bool { get { selectedEntries.isEmpty }}
 
-    init(for document: ArchiveDocument) {
-        self.document = document
-        self.archive = document.archive
+    init(for document: Archive) {
+        self.archive = document
     }
 
     func setProgress(_ tp: TaskProgress) {
@@ -282,7 +280,7 @@ class MainWindowViewModel {
 
     func deleteButton(_ entries: Set<ArchiveEntry.ID>? = nil) {
         // TODO: WRITE
-        self.archive?.dirty = true
+        self.archive?.setDirty()
     }
 //
 //    func addButton() {
@@ -297,7 +295,6 @@ class MainWindowViewModel {
 // TODO: WRITE
     func doRename(of entry: ArchiveEntry) {
 //        self.archive?.processEntryRename(entry)
-        self.archive?.dirty = true
-        self.document.isDirty = true
+        self.archive?.setDirty()
     }
 }

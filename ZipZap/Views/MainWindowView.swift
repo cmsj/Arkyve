@@ -9,22 +9,11 @@ import SwiftUI
 import TipKit
 
 struct MainWindowView: View {
-    @Environment(\.undoManager) var undoManager
-
-    var viewModel: MainWindowViewModel
-    var documentURL: URL?
+    @State var viewModel: MainWindowViewModel = MainWindowViewModel()
     @State var windowTitle = "ZipZap"
-    var document: Archive
-
     @FocusState private var renameEntry: UUID?
 
     var tableViewTip = TableViewTip()
-
-    init(document: Archive, fullURL: URL?) {
-        viewModel = MainWindowViewModel(for: document)
-        self.document = document
-        documentURL = fullURL
-    }
 
     var body: some View {
         // FIXME: This @Bindable is an ugly hack: https://www.hackingwithswift.com/books/ios-swiftui/sharing-observable-objects-through-swiftuis-environment
@@ -46,11 +35,7 @@ struct MainWindowView: View {
         .onChange(of: viewModel.showErrors.error, initial: true) { old, new in
             // Nicely animate the error view appearing/disappearing
             withAnimation {
-                if viewModel.showErrors.state && new == nil {
-                    viewModel.showErrors.state = false
-                } else if !viewModel.showErrors.state && new != nil {
-                    viewModel.showErrors.state = true
-                }
+                viewModel.showErrors.show = new != nil
             }
         }
         .toolbar(id: "Main") {
@@ -66,18 +51,13 @@ struct MainWindowView: View {
                 print("Error initializing TipKit \(error.localizedDescription)")
             }
         }
-        .task {
-            if let url = documentURL {
-                Task {
-                    await viewModel.openArchive(url: url)
-                }
-            }
-        }
-        .onAppear {
-            undoManager?.registerUndo(withTarget: document, handler: {
-                print($0, "undo")
-            })
-        }
+//        .task {
+//            if let url = documentURL {
+//                Task {
+//                    await viewModel.openArchive(url: url)
+//                }
+//            }
+//        }
     }
 }
 

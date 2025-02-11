@@ -11,17 +11,17 @@ import ZZLog
 @Observable
 @MainActor
 class ShowErrors {
-    var state: Bool = false
+    var show: Bool = false
     var error: ArchiveError? = nil
 
     func err(_ error: ArchiveError) {
         self.error = error
-        #ZZError(error.localizedDescription)
+        #ZZError("ShowErrors::err: \(error.localizedDescription)")
     }
 
     func clear() {
         self.error = nil
-        self.state = false
+        #ZZError("ShoeErrors::clear")
     }
 }
 
@@ -37,13 +37,13 @@ struct ErrorView: View {
                 .padding([.trailing], 5)
                 .onTapGesture {
                     withAnimation {
-                        viewModel.showErrors.error = nil
+                        viewModel.showErrors.clear()
                     }
                 }
         }
         .padding([.top, .bottom], 2)
         .background(Color(#colorLiteral(red: 0.7470226884, green: 0, blue: 0, alpha: 0.5411817071)))
-        .hide(if: !viewModel.showErrors.state)
+        .hide(if: !viewModel.showErrors.show)
     }
 }
 

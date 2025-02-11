@@ -196,6 +196,7 @@ actor libarchive {
     }
 
     public func loadArchive() async throws(ArchiveError) -> sending Archive {
+        #ZZTrace("loadArchive() for \(path)")
         let archive = Archive(URL: self.url)
         let archiveFormat: libarchiveFormat
         let archiveFilters: [libarchiveFilter]

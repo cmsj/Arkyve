@@ -14,7 +14,7 @@ struct StatusbarView: View {
         ZStack {
             HStack {
                 Spacer()
-                Text("\(viewModel.archive?.entries.count ?? 0) items")
+                Text(viewModel.statusBarText)
                 Spacer()
             }
             HStack {
@@ -38,7 +38,7 @@ struct StatusbarView: View {
 }
 
 #Preview {
-    let viewModel = MainWindowViewModel(for: Archive())
+    let viewModel = MainWindowViewModel()
 
     VStack(spacing: 0) {
         Rectangle()

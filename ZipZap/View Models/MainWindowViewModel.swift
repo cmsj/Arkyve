@@ -33,8 +33,9 @@ class MainWindowViewModel {
     var disableRename: Bool { get { selectedEntries.count != 1 }}
     var disableDelete: Bool { get { selectedEntries.isEmpty }}
 
-    init(for document: Archive) {
-        self.archive = document
+    var statusBarText: String {
+        guard let archive else { return "No archive open" }
+        return "\(archive.entries.count) items"
     }
 
     func setProgress(_ tp: TaskProgress) {

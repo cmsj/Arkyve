@@ -15,8 +15,8 @@ struct ZipZapApp: App {
     @FocusedValue(\.activeViewModel) var activeViewModel
 
     var body: some Scene {
-        DocumentGroup(newDocument: { Archive() }) { file in
-            MainWindowView(document: file.document, fullURL: file.fileURL)
+        Window("ZipZap", id: "main") {
+            MainWindowView()
         }
         .commands {
             MenuCommands()

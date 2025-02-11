@@ -27,7 +27,7 @@ struct libarchiveFD {
         archive = nil
         fd = -1
     }
-    
+
     mutating private func closeRead() {
         if archive != nil {
             archive_read_close(archive)
@@ -37,14 +37,14 @@ struct libarchiveFD {
             Darwin.close(fd)
         }
     }
-    
+
     mutating private func closeWrite() {
         if archive != nil {
             archive_write_close(archive)
             archive_write_free(archive)
         }
     }
-    
+
     mutating func openRead(path: String) throws(ArchiveError) {
         if fd >= 0 || archive != nil {
             close()

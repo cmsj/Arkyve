@@ -39,6 +39,7 @@ extension Archive {
 
 extension Archive: Equatable {
     nonisolated static func == (lhs: Archive, rhs: Archive) -> Bool {
+        // This is declared nonisolated to conform to the protocol, and it is accessing a read-only property so should be thread-safe.
         return lhs.id == rhs.id
     }
 }
@@ -56,10 +57,11 @@ struct ArchiveBackingStore {
     var dirty: Bool = false
 }
 
-//@Observable
-final class Archive: Sendable, ReferenceFileDocument {
+@Observable
+final class Archive: Sendable {
     private let store: Mutex<ArchiveBackingStore>
     let id: UUID = UUID()
+    let newFilePath = "/___UNKNOWN"
 
     private(set) var URL: URL {
         get { store.withLock { $0.URL }}
@@ -99,7 +101,7 @@ final class Archive: Sendable, ReferenceFileDocument {
     }
 
     var existsOnDisk: Bool {
-        URL.path != "/___UNKNOWN"
+        URL.path != newFilePath
     }
 
     var canWrite: Bool {
@@ -109,37 +111,11 @@ final class Archive: Sendable, ReferenceFileDocument {
     static let readableContentTypes: [UTType] = [.bz2, .gzip, .tarArchive, .zip] // FIXME: This list is nonsense
     static let writableContentTypes: [UTType] = [.bz2, .gzip, .tarArchive, .zip] // FIXME: This list is nonsense
 
-    required init(configuration: ReadConfiguration) throws {
-        let URL = Foundation.URL(fileURLWithPath: "/___UNKNOWN")
-        let name = URL.lastPathComponent
-        let path = URL.path().removingPercentEncoding ?? "Unknown"
-        let cacheURL = SettingsManager.shared.cacheURL.appendingPathComponent(name)
-
-        self.store = Mutex(ArchiveBackingStore(
-            URL: URL,
-            path: path,
-            name: name,
-            cacheURL: cacheURL
-        ))
-
-        #ZZTrace("Initialised for \(URL)")
-        self.dirty = true
-    }
-
-    func snapshot(contentType: UTType) throws -> Data {
-        print("LOL SNAPSHOT")
-        return Data()
-    }
-
-    func fileWrapper(snapshot: Data, configuration: WriteConfiguration) throws -> FileWrapper {
-        return FileWrapper(regularFileWithContents: snapshot)
-    }
-
     init(store: consuming Mutex<ArchiveBackingStore>? = nil) {
         if let store = store {
             self.store = store
         } else {
-            let URL = Foundation.URL(fileURLWithPath: "/___UNKNOWN")
+            let URL = Foundation.URL(fileURLWithPath: newFilePath)
             let name = URL.lastPathComponent
             let path = URL.path().removingPercentEncoding ?? "Unknown"
             let cacheURL = SettingsManager.shared.cacheURL.appendingPathComponent(name)
@@ -171,11 +147,11 @@ final class Archive: Sendable, ReferenceFileDocument {
         #ZZTrace("Initialised for \(URL)")
     }
 
-//    convenience init() {
-//        let path = "/___UNKNOWN"
-//        self.init(URL: Foundation.URL(fileURLWithPath: path))
-//        self.dirty = true
-//    }
+    convenience init() {
+        let path = "/___UNKNOWN"
+        self.init(URL: Foundation.URL(fileURLWithPath: path))
+        self.dirty = true
+    }
 
     deinit {
         self.close()
@@ -194,7 +170,6 @@ final class Archive: Sendable, ReferenceFileDocument {
         }
     }
 
-    // NOTE: THIS MUST ONLY BE CALLED FROM WITHIN A MUTEX LOCKED CONTEXT
     func addSynthEntry(_ entry: ArchiveEntry) {
         self.entries.append(entry)
     }

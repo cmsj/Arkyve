@@ -86,7 +86,7 @@ final class ArchiveEntry: Identifiable, Sendable {
         set { store.withLock { $0.source = newValue }}
     }
 
-    var children: [ArchiveEntry]? {
+    private(set) var children: [ArchiveEntry]? {
         get { store.withLock { $0.children }}
         set { store.withLock { $0.children = newValue }}
     }
@@ -234,7 +234,8 @@ final class ArchiveEntry: Identifiable, Sendable {
             name: "root",
             pathComponents: ["."],
             size: -1,
-            perms: 0
+            perms: 0,
+            type: .root
         ))
         self.children = []
     }
@@ -255,7 +256,7 @@ final class ArchiveEntry: Identifiable, Sendable {
 
     func addChildHierarchically(_ entry: ArchiveEntry, for archive: Archive) {
         guard [.directory, .root].contains(self.type) else {
-            #ZZError("addChildHierarchically called on something other than directory/root")
+            #ZZError("addChildHierarchically called on something other than directory/root: \(self.type)")
             return
         }
         guard self.children != nil else {
@@ -271,6 +272,7 @@ final class ArchiveEntry: Identifiable, Sendable {
                 let synthPath = entry.pathComponents.first!
                 #ZZTrace("Creating synthetic root directory \(synthPath)")
                 let tmpEntry = ArchiveEntry(path: synthPath)
+                tmpEntry.type = .root
 
                 self.lock.withLock { _ in
                     archive.addSynthEntry(tmpEntry)

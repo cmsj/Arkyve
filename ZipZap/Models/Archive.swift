@@ -37,15 +37,18 @@ extension Archive {
     }
 }
 
-extension Archive: Equatable {
-    nonisolated static func == (lhs: Archive, rhs: Archive) -> Bool {
-        // This is declared nonisolated to conform to the protocol, and it is accessing a read-only property so should be thread-safe.
-        return lhs.id == rhs.id
-    }
-}
+//extension Archive: Equatable {
+//    nonisolated static func == (lhs: Archive, rhs: Archive) -> Bool {
+//        // This is declared nonisolated to conform to the protocol, and it is accessing a read-only property so should be thread-safe.
+//        return lhs.id == rhs.id
+//    }
+//}
 
-struct ArchiveBackingStore {
-    var id: UUID = UUID()
+@Observable
+class Archive {
+    let id: UUID = UUID()
+    let newFilePath = "/___UNKNOWN"
+
     var URL: URL
     var path: String
     var name: String
@@ -55,93 +58,27 @@ struct ArchiveBackingStore {
     var filters: [libarchiveFilter] = []
     var cacheURL: URL
     var dirty: Bool = false
-}
-
-@Observable
-final class Archive: Sendable {
-    private let store: Mutex<ArchiveBackingStore>
-    let id: UUID = UUID()
-    let newFilePath = "/___UNKNOWN"
-
-    private(set) var URL: URL {
-        get { store.withLock { $0.URL }}
-        set {
-            withMutation(keyPath: \.URL) {
-                store.withLock { $0.URL = newValue }
-            }
-        }
-    }
-    private(set) var path: String {
-        get { store.withLock { $0.path }}
-        set { store.withLock { $0.path = newValue }}
-    }
-    private(set) var name: String {
-        get { store.withLock { $0.name }}
-        set { store.withLock { $0.name = newValue }}
-    }
-    private(set) var entries: [ArchiveEntry] {
-        get { store.withLock { $0.entries }}
-        set { store.withLock { $0.entries = newValue }}
-    }
-    private(set) var root: ArchiveEntry {
-        get { store.withLock { $0.root }}
-        set { store.withLock { $0.root = newValue }}
-    }
-    private(set) var format: libarchiveFormat {
-        get { store.withLock { $0.format }}
-        set { store.withLock { $0.format = newValue }}
-    }
-    private(set) var filters: [libarchiveFilter] {
-        get { store.withLock { $0.filters }}
-        set { store.withLock { $0.filters = newValue }}
-    }
-    private(set) var cacheURL: URL {
-        get { store.withLock { $0.cacheURL }}
-        set { store.withLock { $0.cacheURL = newValue }}
-    }
-    private(set) var dirty: Bool {
-        get { store.withLock { $0.dirty }}
-        set {
-            withMutation(keyPath: \.dirty) {
-                print("MUTATING YO")
-                store.withLock { $0.dirty = newValue }
-            }
-        }
-    }
 
     var existsOnDisk: Bool {
         URL.path != newFilePath
     }
 
     var canWrite: Bool {
-        get { format.canWrite }
+        format.canWrite
     }
 
     static let readableContentTypes: [UTType] = [.bz2, .gzip, .tarArchive, .zip] // FIXME: This list is nonsense
     static let writableContentTypes: [UTType] = [.bz2, .gzip, .tarArchive, .zip] // FIXME: This list is nonsense
-
-    init(store: consuming Mutex<ArchiveBackingStore>? = nil) {
-        if let store = store {
-            self.store = store
-        } else {
-            let URL = Foundation.URL(fileURLWithPath: newFilePath)
-            let name = URL.lastPathComponent
-            let path = URL.path().removingPercentEncoding ?? "Unknown"
-            let cacheURL = SettingsManager.shared.cacheURL.appendingPathComponent(name)
-
-            self.store = .init(.init(URL: URL, path: path, name: name, cacheURL: cacheURL))
-
-            self.dirty = true
-            #ZZTrace("Initialised for \(URL)")
-        }
-    }
 
     init(URL: URL) {
         let name = URL.lastPathComponent
         let path = URL.path().removingPercentEncoding ?? "Unknown"
         let cacheURL = SettingsManager.shared.cacheURL.appendingPathComponent(name)
 
-        store = .init(.init(URL: URL, path: path, name: name, cacheURL: cacheURL))
+        self.URL = URL
+        self.path = path
+        self.name = name
+        self.cacheURL = cacheURL
 
         #ZZTrace("Initialised for \(URL)")
     }
@@ -153,7 +90,8 @@ final class Archive: Sendable {
     }
 
     deinit {
-        self.close()
+        #ZZTrace("Archive::deinit()")
+//        self.close()
     }
 
     private func close() {

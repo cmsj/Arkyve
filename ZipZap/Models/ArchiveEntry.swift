@@ -23,24 +23,24 @@ import ZZLog
 //        return nil
 //    }
 //}
+//
+//extension ArchiveEntry: Equatable {
+//    static func == (lhs: ArchiveEntry, rhs: ArchiveEntry) -> Bool {
+//        lhs.path == rhs.path
+//    }
+//}
 
-extension ArchiveEntry: Equatable {
-    static func == (lhs: ArchiveEntry, rhs: ArchiveEntry) -> Bool {
-        lhs.path == rhs.path
-    }
-}
+//extension ArchiveEntry: Comparable {
+//    static func < (lhs: ArchiveEntry, rhs: ArchiveEntry) -> Bool {
+//        lhs.path < rhs.path
+//    }
+//}
 
-extension ArchiveEntry: Comparable {
-    static func < (lhs: ArchiveEntry, rhs: ArchiveEntry) -> Bool {
-        lhs.path < rhs.path
-    }
-}
-
-extension ArchiveEntry: Hashable {
-    func hash(into hasher: inout Hasher) {
-        hasher.combine(path)
-    }
-}
+//extension ArchiveEntry: Hashable {
+//    func hash(into hasher: inout Hasher) {
+//        hasher.combine(path)
+//    }
+//}
 
 // Array behaviour for inspecting first level children
 // TODO: WRITE
@@ -76,20 +76,12 @@ struct ArchiveEntryBackingStore {
 }
 
 @Observable
-final class ArchiveEntry: Identifiable, Sendable {
+class ArchiveEntry: Identifiable {
     static let draggableType = UTType(exportedAs: "net.tenshu.ZipZap.ArchiveEntry")
-    private let store: Mutex<ArchiveEntryBackingStore>
 
     let id = UUID()
-    var source: ArchiveEntrySource {
-        get { store.withLock { $0.source }}
-        set { store.withLock { $0.source = newValue }}
-    }
-
-    private(set) var children: [ArchiveEntry]? {
-        get { store.withLock { $0.children }}
-        set { store.withLock { $0.children = newValue }}
-    }
+    var source: ArchiveEntrySource
+    var children: [ArchiveEntry]? = nil
 
     // Archives don't always contain entries for directories, but the files in them still contain nested paths
     // We'll have to synthesize directories for those, and track which ones they are
@@ -100,32 +92,14 @@ final class ArchiveEntry: Identifiable, Sendable {
         get { isSynthesized ? "Yes" : "No" }
     }
 
-    var isExpanded: Bool {
-        get { store.withLock { $0.isExpanded }}
-        set { store.withLock { $0.isExpanded = newValue }}
-    }
-    var shouldFocus: Bool {
-        get { store.withLock { $0.shouldFocus }}
-        set { store.withLock { $0.shouldFocus = newValue }}
-    }
+    var isExpanded: Bool = false
+    var shouldFocus: Bool = false
 
     // Properties we will store for later use
-    var path: String {
-        get { store.withLock { $0.path }}
-        set { store.withLock { $0.path = newValue }}
-    }
-    var name: String {
-        get { store.withLock { $0.name }}
-        set { store.withLock { $0.name = newValue }}
-    }
-    var pathComponents: [String] {
-        get { store.withLock { $0.pathComponents }}
-        set { store.withLock { $0.pathComponents = newValue }}
-    }
-    var size: Int64 {
-        get { store.withLock { $0.size }}
-        set { store.withLock { $0.size = newValue }}
-    }
+    var path: String
+    var name: String
+    var pathComponents: [String] = []
+    var size: Int64
 
     var sizeString: String {
         get { size != -1 ? String(size) : "--" }
@@ -139,39 +113,15 @@ final class ArchiveEntry: Identifiable, Sendable {
 //        }
 //    }
 
-    var atime: Date {
-        get { store.withLock { $0.atime }}
-        set { store.withLock { $0.atime = newValue }}
-    }
-    var ctime: Date {
-        get { store.withLock { $0.ctime }}
-        set { store.withLock { $0.ctime = newValue }}
-    }
-    var mtime: Date {
-        get { store.withLock { $0.mtime }}
-        set { store.withLock { $0.mtime = newValue }}
-    }
-    var btime: Date {
-        get { store.withLock { $0.btime }}
-        set { store.withLock { $0.btime = newValue }}
-    }
-    var perms: mode_t {
-        get { store.withLock { $0.perms }}
-        set { store.withLock { $0.perms = newValue }}
-    }
-    var permsString: String {
-        get { store.withLock { $0.permsString }}
-        set { store.withLock { $0.permsString = newValue }}
-    }
+    var atime = Date(timeIntervalSince1970: 0)
+    var ctime = Date(timeIntervalSince1970: 0)
+    var mtime = Date(timeIntervalSince1970: 0)
+    var btime = Date(timeIntervalSince1970: 0)
+    var perms: mode_t = 0
+    var permsString: String = "--" // FIXME: Shouldn't this be a computed property?
 
-    var uid: Int64? {
-        get { store.withLock { $0.uid }}
-        set { store.withLock { $0.uid = newValue }}
-    }
-    var gid: Int64? {
-        get { store.withLock { $0.gid }}
-        set { store.withLock { $0.gid = newValue }}
-    }
+    var uid: Int64? = 0
+    var gid: Int64? = 0
 
     var uidString: String {
         get { uid != nil ? "\(uid!)" : "--" }
@@ -180,29 +130,24 @@ final class ArchiveEntry: Identifiable, Sendable {
         get { gid != nil ? "\(gid!)" : "--" }
     }
 
-    var type: ArchiveEntryType {
-        get { store.withLock { $0.type }}
-        set { store.withLock { $0.type = newValue }}
-    }
+    var type: ArchiveEntryType = .unknown
 
     let lock = Mutex(true)
 
     init(_ entry: libarchiveHeader) {
-        store = Mutex(ArchiveEntryBackingStore(
-            source: entry.source,
-            path: entry.path,
-            name: entry.name,
-            pathComponents: entry.pathComponents,
-            size: entry.size,
-            atime: entry.atime,
-            ctime: entry.ctime,
-            mtime: entry.mtime,
-            btime: entry.btime,
-            perms: entry.perms,
-            uid: entry.uid,
-            gid: entry.gid,
-            type: entry.type
-        ))
+        source = entry.source
+        path = entry.path
+        name = entry.name
+        pathComponents = entry.pathComponents
+        size = entry.size
+        atime = entry.atime
+        ctime = entry.ctime
+        mtime = entry.mtime
+        btime = entry.btime
+        perms = entry.perms
+        uid = entry.uid
+        gid = entry.gid
+        type = entry.type
 
         if self.type == .directory {
             // If we're a directory, we have at least zero children
@@ -216,27 +161,21 @@ final class ArchiveEntry: Identifiable, Sendable {
         let name = pathBits.last ?? "Unknown"
         let pathComponents = pathBits
 
-        store = Mutex(ArchiveEntryBackingStore(
-            source: ArchiveEntrySource(type: .Synthetic, path: path),
-            path: path,
-            name: name,
-            pathComponents: pathComponents,
-            size: -1,
-            perms: 0
-        ))
+        self.source = ArchiveEntrySource(type: .Synthetic, path: path)
+        self.path = path
+        self.name = name
+        self.pathComponents = pathComponents
+        self.size = -1
         self.children = []
     }
 
     init(isRoot: Bool) {
-        store = Mutex(ArchiveEntryBackingStore(
-            source: ArchiveEntrySource(type: .Root, path: "."),
-            path: ".",
-            name: "root",
-            pathComponents: ["."],
-            size: -1,
-            perms: 0,
-            type: .root
-        ))
+        self.source = ArchiveEntrySource(type: .Root, path: ".")
+        self.path = "."
+        self.name = "root"
+        self.pathComponents = ["."]
+        self.size = -1
+        self.type = .root
         self.children = []
     }
 

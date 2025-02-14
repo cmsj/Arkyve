@@ -26,6 +26,7 @@ struct MainWindowView: View {
                 .environment(viewModel)
                 .popoverTip(tableViewTip, arrowEdge: .leading)
                 .disabled(viewModel.archive == nil)
+                .hide(if: viewModel.archive == nil)
             StatusbarView()
                 .environment(viewModel)
         }
@@ -52,13 +53,7 @@ struct MainWindowView: View {
                 print("Error initializing TipKit \(error.localizedDescription)")
             }
         }
-//        .task {
-//            if let url = documentURL {
-//                Task {
-//                    await viewModel.openArchive(url: url)
-//                }
-//            }
-//        }
+        // FIXME: closing the archive doesn't do anything if the archive is dirty, it should prompt to save
     }
 }
 

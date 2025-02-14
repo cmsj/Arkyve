@@ -243,7 +243,7 @@ class MainWindowViewModel {
     }
 
     func saveButton() {
-        guard archive?.name != "___UNKNOWN" else {
+        guard archive?.existsOnDisk != false else {
             // We're trying to save, but the archive has never been written to disk, so we need to do a Save As
             saveAsButton()
             return

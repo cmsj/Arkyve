@@ -13,6 +13,10 @@ struct MenuCommands: Commands {
     var body: some Commands {
         CommandGroup(replacing: .undoRedo) {}
         CommandGroup(after: .newItem) {
+            Button("New") {
+                activeViewModel?.newButton()
+            }
+            .keyboardShortcut("n", modifiers: [.command])
             Button("Open...") {
                 activeViewModel?.openButton()
             }
@@ -34,6 +38,11 @@ struct MenuCommands: Commands {
                 }
                 .disabled(activeViewModel?.disableSaveAs ?? true)
             }
+            Divider()
+            Button("Close Archive") {
+                activeViewModel?.closeButton()
+            }
+            .disabled(activeViewModel?.disableClose ?? true)
         }
         CommandGroup(after: .sidebar) {
             Button("Quick Look") {

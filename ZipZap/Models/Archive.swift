@@ -47,7 +47,9 @@ extension Archive {
 @Observable
 class Archive {
     let id: UUID = UUID()
-    let newFilePath = "/___UNKNOWN"
+    static var newFilePath: String {
+        SettingsManager.shared.newFolderURL.appending(path: "Untitled").path
+    }
 
     var URL: URL
     var path: String
@@ -60,15 +62,12 @@ class Archive {
     var dirty: Bool = false
 
     var existsOnDisk: Bool {
-        URL.path != newFilePath
+        URL.path != Archive.newFilePath
     }
 
     var canWrite: Bool {
         format.canWrite
     }
-
-    static let readableContentTypes: [UTType] = [.bz2, .gzip, .tarArchive, .zip] // FIXME: This list is nonsense
-    static let writableContentTypes: [UTType] = [.bz2, .gzip, .tarArchive, .zip] // FIXME: This list is nonsense
 
     init(URL: URL) {
         let name = URL.lastPathComponent
@@ -84,8 +83,7 @@ class Archive {
     }
 
     convenience init() {
-        let path = "/___UNKNOWN"
-        self.init(URL: Foundation.URL(fileURLWithPath: path))
+        self.init(URL: Foundation.URL(fileURLWithPath: Archive.newFilePath))
         self.dirty = true
     }
 

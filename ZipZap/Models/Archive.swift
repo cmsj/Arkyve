@@ -65,7 +65,11 @@ final class Archive: Sendable {
 
     private(set) var URL: URL {
         get { store.withLock { $0.URL }}
-        set { store.withLock { $0.URL = newValue }}
+        set {
+            withMutation(keyPath: \.URL) {
+                store.withLock { $0.URL = newValue }
+            }
+        }
     }
     private(set) var path: String {
         get { store.withLock { $0.path }}
@@ -97,7 +101,12 @@ final class Archive: Sendable {
     }
     private(set) var dirty: Bool {
         get { store.withLock { $0.dirty }}
-        set { store.withLock { $0.dirty = newValue }}
+        set {
+            withMutation(keyPath: \.dirty) {
+                print("MUTATING YO")
+                store.withLock { $0.dirty = newValue }
+            }
+        }
     }
 
     var existsOnDisk: Bool {

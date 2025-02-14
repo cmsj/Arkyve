@@ -40,7 +40,7 @@ class MainWindowViewModel {
 
     var navSubtitleText: String {
         guard let archive else { return "" }
-        return archive.dirty ? "Unsaved" : ""
+        return "\(archive.name) \(archive.dirty ? "(Unsaved)" : "")"
     }
 
     func setProgress(_ tp: TaskProgress) {

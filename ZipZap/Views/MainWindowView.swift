@@ -41,7 +41,8 @@ struct MainWindowView: View {
         .toolbar(id: "Main") {
             ToolbarContentView(viewModel: viewModel, renameEntry: $renameEntry)
         }
-        .navigationTitle("\(windowTitle)\(viewModel.archive?.dirty ?? false ? " (Unsaved)" : "")")
+        .navigationTitle(windowTitle)
+        .navigationSubtitle(viewModel.navSubtitleText)
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .task {
             do {

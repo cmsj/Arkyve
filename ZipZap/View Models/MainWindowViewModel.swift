@@ -38,6 +38,11 @@ class MainWindowViewModel {
         return "\(archive.entries.count) items"
     }
 
+    var navSubtitleText: String {
+        guard let archive else { return "" }
+        return archive.dirty ? "Unsaved" : ""
+    }
+
     func setProgress(_ tp: TaskProgress) {
         switch tp.status {
         case .running(let units):

@@ -120,12 +120,7 @@ final class Archive: Sendable {
             let path = URL.path().removingPercentEncoding ?? "Unknown"
             let cacheURL = SettingsManager.shared.cacheURL.appendingPathComponent(name)
 
-            self.store = Mutex(ArchiveBackingStore(
-                URL: URL,
-                path: path,
-                name: name,
-                cacheURL: cacheURL
-            ))
+            self.store = .init(.init(URL: URL, path: path, name: name, cacheURL: cacheURL))
 
             self.dirty = true
             #ZZTrace("Initialised for \(URL)")
@@ -137,12 +132,7 @@ final class Archive: Sendable {
         let path = URL.path().removingPercentEncoding ?? "Unknown"
         let cacheURL = SettingsManager.shared.cacheURL.appendingPathComponent(name)
 
-        store = Mutex(ArchiveBackingStore(
-            URL: URL,
-            path: path,
-            name: name,
-            cacheURL: cacheURL
-        ))
+        store = .init(.init(URL: URL, path: path, name: name, cacheURL: cacheURL))
 
         #ZZTrace("Initialised for \(URL)")
     }
@@ -182,6 +172,7 @@ final class Archive: Sendable {
     }
 
     func setDirty(_ dirty: Bool = true) {
+        #ZZTrace("Marking archive dirty")
         self.dirty = dirty
     }
 

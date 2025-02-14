@@ -102,6 +102,5 @@ struct libarchiveFD {
         if (result != ARCHIVE_OK) {
             throw ArchiveError.ArchiveWriteError(archive: at.path, error: "Unable to open output archive: \(String(describing: archive_error_string(archive)))")
         }
-
     }
 }

@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import TipKit
 
 struct ToolbarContentView: CustomizableToolbarContent {
     var viewModel: MainWindowViewModel
@@ -14,34 +15,37 @@ struct ToolbarContentView: CustomizableToolbarContent {
     var openButtonTip = OpenButtonTip()
 
     var body: some CustomizableToolbarContent {
-//        ToolbarItem(id: "New") {
-//            Button {
-//                viewModel.newButton()
-//            } label: {
-//                Label("New archive", systemImage: "plus.rectangle.on.folder")
-//                    .padding()
-//            }
-//            .help("Start a new, empty archive")
-//        }
-//        ToolbarItem(id: "Open") {
-//            Button {
-//                viewModel.openButton()
-//            } label: {
-//                Label("Open", systemImage: "folder")
-//                    .padding()
-//            }
-//            .help("Open an archive")
-//            .popoverTip(openButtonTip, arrowEdge: .top)
-//        }
-//        ToolbarItem(id: "Close") {
-//            Button {
-//                viewModel.closeButton()
-//            } label: {
-//                Label("Close", systemImage: "xmark.circle")
-//                    .padding()
-//            }
-//            .disabled(viewModel.disableClose)
-//        }
+        ToolbarItem(id: "New") {
+            Button {
+                viewModel.newButton()
+            } label: {
+                Label("New archive", systemImage: "plus.rectangle.on.folder")
+                    .padding()
+            }
+            .help("Start a new, empty archive")
+            .disabled(viewModel.disableNew)
+            .popoverTip(NewButtonTip(), arrowEdge: .top)
+        }
+        ToolbarItem(id: "Open") {
+            Button {
+                viewModel.openButton()
+            } label: {
+                Label("Open", systemImage: "folder")
+                    .padding()
+            }
+            .help("Open an archive")
+            .disabled(viewModel.disableOpen)
+            .popoverTip(openButtonTip, arrowEdge: .top)
+        }
+        ToolbarItem(id: "Close") {
+            Button {
+                viewModel.closeButton()
+            } label: {
+                Label("Close", systemImage: "xmark.circle")
+                    .padding()
+            }
+            .disabled(viewModel.disableClose)
+        }
 
         ToolbarItem(id: "Add") {
             Button {
@@ -52,7 +56,7 @@ struct ToolbarContentView: CustomizableToolbarContent {
                     .padding()
             }
             .help("Add files to the archive")
-            .disabled(viewModel.archive == nil)
+            .disabled(viewModel.disableAdd)
         }
         ToolbarItem(id: "Extract") {
             Button {

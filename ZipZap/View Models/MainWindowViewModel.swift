@@ -22,17 +22,25 @@ class MainWindowViewModel {
 
     var showErrors: ShowErrors = ShowErrors()
 
+    // MARK: - Save prompt
     var showSavePrompt = false
+    var postSavePromptClosure: (() -> Void)? = nil
 
-    var disableRevert: Bool { get { archive?.dirty != true || archive?.existsOnDisk != true }}
-    var disableClose: Bool { get { archive == nil }}
-    var disableSave: Bool { get { archive?.dirty != true }}
-    var disableSaveAs: Bool { get { archive == nil }}
-    var disableQuicklook: Bool { get { selectedEntries.isEmpty }}
-    var disableExtract: Bool { get { selectedEntries.isEmpty }}
-    var disableRename: Bool { get { selectedEntries.count != 1 }}
-    var disableDelete: Bool { get { selectedEntries.isEmpty }}
+    // MARK: - Disable various parts of the UI
+    var disableNew: Bool { get { disableUI == true }}
+    var disableOpen: Bool { get { disableUI == true }}
+    var disableAdd: Bool { get { disableUI == true || archive == nil }}
+    var disableRevert: Bool { get { disableUI == true || archive?.dirty != true || archive?.existsOnDisk != true }}
+    var disableClose: Bool { get { disableUI == true || archive == nil }}
+    var disableSave: Bool { get { disableUI == true || archive?.dirty != true }}
+    var disableSaveAs: Bool { get { disableUI == true || archive == nil }}
+    var disableQuicklook: Bool { get { disableUI == true || selectedEntries.isEmpty }}
+    var disableExtract: Bool { get { disableUI == true || selectedEntries.isEmpty }}
+    var disableRename: Bool { get { disableUI == true || selectedEntries.count != 1 }}
+    var disableDelete: Bool { get { disableUI == true || selectedEntries.isEmpty }}
+    var disableUI: Bool = false
 
+    // MARK: - Dynamic UI text
     var statusBarText: String {
         guard let archive else { return "No archive open" }
         return "\(archive.entries.count) items"
@@ -43,6 +51,7 @@ class MainWindowViewModel {
         return "\(archive.name) \(archive.dirty ? "(Unsaved)" : "")"
     }
 
+    // MARK: - Progress indicator
     func setProgress(_ tp: TaskProgress) {
         switch tp.status {
         case .running(let units):
@@ -55,11 +64,17 @@ class MainWindowViewModel {
         }
     }
 
+    // MARK: - Archive operations
+
     func openArchive(url: URL) async {
         let loader = libarchive(url: url)
+        self.disableUI = true
+        defer { self.disableUI = false }
+
         do {
             try await withTaskProgression { _ in
                 archive = try await loader.loadArchive()
+                try await Task.sleep(for: .seconds(5))
             } progress: { progression in
                 Task { @MainActor in setProgress(progression) }
             }
@@ -82,6 +97,8 @@ class MainWindowViewModel {
     func saveArchive(to: URL, overrideFormat: libarchiveFormat = .Unknown, overrideFilter: libarchiveFilter = .None) async {
         guard let archive = archive else { return }
         let loader = libarchive(url: archive.URL)
+        self.disableUI = true
+        defer { self.disableUI = false }
 
         let format = overrideFormat == .Unknown ? archive.format : overrideFormat
         let filters = overrideFilter == .None ? archive.filters : [overrideFilter, .None]
@@ -100,7 +117,56 @@ class MainWindowViewModel {
         }
     }
 
+    func extractForQuicklook() {
+        quickLookItems = []
+        guard let archiveURL = archive?.URL else { return }
+        guard let cacheURL = archive?.cacheURL else { return }
+
+        Task {
+            let loader = libarchive(url: archiveURL)
+            let chosenEntries = archive?.entries.filter { selectedEntries.contains($0.id) } ?? []
+            var extractableEntries: [ArchiveEntryExtractable] = []
+
+            var itemCount = extractableEntries.count
+            for entry in chosenEntries {
+                let flatChildren = entry.flatChildren()
+                itemCount += flatChildren.count
+                let extractableEntry = ArchiveEntryExtractable(showErrors: showErrors,
+                                                               archiveURL: archive?.URL,
+                                                               cacheURL: archive?.cacheURL,
+                                                               selectedPath: entry.path,
+                                                               id: entry.id,
+                                                               entries: flatChildren)
+                extractableEntries.append(extractableEntry)
+            }
+
+            do {
+                try await withTaskProgression(totalUnits: itemCount) { _ in
+                    let writtenURLs = try await loader.extractEntries(extractableEntries, toFolder: cacheURL)
+                    if writtenURLs.count > 0 {
+                        quickLookItems = writtenURLs
+                        quickLookURL = writtenURLs.first
+                    }                } progress: { progression in
+                        Task { @MainActor in setProgress(progression) }
+                    }
+            } catch let error as ArchiveError {
+                showErrors.err(error)
+            } catch {
+                showErrors.err(ArchiveError.ArchiveUnknownError(msg: error.localizedDescription))
+            }
+        }
+    }
+
+    // MARK: - Button handlers
     func openButton() {
+        if archive != nil && archive?.dirty == true {
+            postSavePromptClosure = {
+                self.openButton()
+            }
+            closeButton()
+            return
+        }
+
         let panel = NSOpenPanel()
         panel.allowsMultipleSelection = false
         panel.canChooseDirectories = false
@@ -139,6 +205,7 @@ class MainWindowViewModel {
         panel.canChooseFiles = false
         panel.prompt = "Extract \(actualEntries.count) item\(actualEntries.count > 1 ? "s" : "")"
 
+        // FIXME: Refactor some of this out into an extraction method
         if panel.runModal() == .OK {
             if let destURL = panel.url, let archiveURL = archive?.URL {
                 let retainFullPath = button.state == .on
@@ -161,6 +228,8 @@ class MainWindowViewModel {
 
                 Task {
                     let loader = libarchive(url: archiveURL)
+                    self.disableUI = true
+                    defer { self.disableUI = false }
 
                     do {
                         try await withTaskProgression(totalUnits: itemCount) { _ in
@@ -176,51 +245,15 @@ class MainWindowViewModel {
         }
     }
 
-    func sort(using: [KeyPathComparator<ArchiveEntry>]) {
-        self.archive?.sort(using: using)
-    }
-
-    func extractForQuicklook() {
-        quickLookItems = []
-        guard let archiveURL = archive?.URL else { return }
-        guard let cacheURL = archive?.cacheURL else { return }
-
-        Task {
-            let loader = libarchive(url: archiveURL)
-            let chosenEntries = archive?.entries.filter { selectedEntries.contains($0.id) } ?? []
-            var extractableEntries: [ArchiveEntryExtractable] = []
-
-            var itemCount = extractableEntries.count
-            for entry in chosenEntries {
-                let flatChildren = entry.flatChildren()
-                itemCount += flatChildren.count
-                let extractableEntry = ArchiveEntryExtractable(showErrors: showErrors,
-                                                               archiveURL: archive?.URL,
-                                                               cacheURL: archive?.cacheURL,
-                                                               selectedPath: entry.path,
-                                                               id: entry.id,
-                                                               entries: flatChildren)
-                extractableEntries.append(extractableEntry)
-            }
-
-            do {
-                try await withTaskProgression(totalUnits: itemCount) { _ in
-                    let writtenURLs = try await loader.extractEntries(extractableEntries, toFolder: cacheURL)
-                    if writtenURLs.count > 0 {
-                        quickLookItems = writtenURLs
-                        quickLookURL = writtenURLs.first
-                    }                } progress: { progression in
-                    Task { @MainActor in setProgress(progression) }
-                }
-            } catch let error as ArchiveError {
-                showErrors.err(error)
-            } catch {
-                showErrors.err(ArchiveError.ArchiveUnknownError(msg: error.localizedDescription))
-            }
-        }
-    }
-
     func newButton() {
+        if archive != nil && archive?.dirty == true {
+            postSavePromptClosure = {
+                self.newButton()
+            }
+            closeButton()
+            return
+        }
+
         archive = Archive()
         selectedEntries = []
         quickLookURL = nil
@@ -298,9 +331,14 @@ class MainWindowViewModel {
 //        }
 //    }
 
+    // MARK: - Other handlers
 // TODO: WRITE
     func doRename(of entry: ArchiveEntry) {
 //        self.archive?.processEntryRename(entry)
         self.archive?.setDirty()
+    }
+
+    func sort(using: [KeyPathComparator<ArchiveEntry>]) {
+        self.archive?.sort(using: using)
     }
 }

@@ -89,7 +89,7 @@ class Archive {
 
     deinit {
         #ZZTrace("Archive::deinit()")
-//        self.close()
+        self.close()
     }
 
     private func close() {

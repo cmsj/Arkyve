@@ -19,6 +19,19 @@ struct TableViewTip: Tip {
     }
 }
 
+struct NewButtonTip: Tip {
+    var id = "newButtonTip"
+    var title: Text {
+        Text("Start a new, empty archive")
+    }
+    var message: Text? {
+        Text("Use this button to start a new, empty archive")
+    }
+    var image: Image? {
+        Image(systemName: "folder.plus")
+    }
+}
+
 struct OpenButtonTip: Tip {
     var id = "openButtonTip"
     var title: Text {

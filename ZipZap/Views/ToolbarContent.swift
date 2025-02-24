@@ -12,7 +12,6 @@ struct ToolbarContentView: CustomizableToolbarContent {
     var viewModel: MainWindowViewModel
 
     var renameEntry: FocusState<UUID?>.Binding
-    var openButtonTip = OpenButtonTip()
 
     var body: some CustomizableToolbarContent {
         ToolbarItem(id: "New") {
@@ -20,6 +19,7 @@ struct ToolbarContentView: CustomizableToolbarContent {
                 viewModel.newButton()
             } label: {
                 Label("New archive", systemImage: "plus.rectangle.on.folder")
+                    .symbolRenderingMode(.hierarchical)
                     .padding()
             }
             .help("Start a new, empty archive")
@@ -31,20 +31,24 @@ struct ToolbarContentView: CustomizableToolbarContent {
                 viewModel.openButton()
             } label: {
                 Label("Open", systemImage: "folder")
+                    .symbolRenderingMode(.hierarchical)
                     .padding()
             }
             .help("Open an archive")
             .disabled(viewModel.disableOpen)
-            .popoverTip(openButtonTip, arrowEdge: .top)
+            .popoverTip(OpenButtonTip(), arrowEdge: .top)
         }
         ToolbarItem(id: "Close") {
             Button {
                 viewModel.closeButton()
             } label: {
-                Label("Close", systemImage: "xmark.circle")
+                Label("Close", image: "zzClose")
+                    .symbolRenderingMode(.hierarchical)
                     .padding()
             }
+            .help("Close this archive")
             .disabled(viewModel.disableClose)
+            .popoverTip(CloseButtonTip(), arrowEdge: .bottom)
         }
 
         ToolbarItem(id: "Add") {
@@ -52,17 +56,19 @@ struct ToolbarContentView: CustomizableToolbarContent {
                 // TODO: WRITE
 //                viewModel.addButton()
             } label: {
-                Label("Add", systemImage: "plus.circle")
+                Label("Add", image: "zzAdd")
+                    .symbolRenderingMode(.hierarchical)
                     .padding()
             }
-            .help("Add files to the archive")
+            .help("Add files to this archive")
             .disabled(viewModel.disableAdd)
         }
         ToolbarItem(id: "Extract") {
             Button {
                 viewModel.extractButton()
             } label: {
-                Label("Extract", systemImage: "folder.badge.minus")
+                Label("Extract", image: "zzExtract")
+                    .symbolRenderingMode(.hierarchical)
                     .padding()
             }
             .help("Extract selected files/folders")
@@ -73,6 +79,7 @@ struct ToolbarContentView: CustomizableToolbarContent {
                 viewModel.renameButton(renameEntryFocus: renameEntry)
             } label: {
                 Label("Rename", systemImage: "character.cursor.ibeam")
+                    .symbolRenderingMode(.hierarchical)
                     .padding()
             }
             .help("Rename selected file/folder")
@@ -84,6 +91,7 @@ struct ToolbarContentView: CustomizableToolbarContent {
                 //                viewModel.deleteButton()
             } label: {
                 Label("Delete", systemImage: "trash")
+                    .symbolRenderingMode(.hierarchical)
                     .padding()
             }
             .help("Delete selected files/folders")
@@ -95,25 +103,29 @@ struct ToolbarContentView: CustomizableToolbarContent {
                 viewModel.showErrors.err(ArchiveError.ArchiveOpenError(archive: "test1", error: "test2"))
             } label: {
                 Label("DEBUG ERROR", systemImage: "ant.circle")
+                    .symbolRenderingMode(.hierarchical)
                     .padding()
             }
+            .help("Force an error to appear")
         }
 #endif
     }
 }
 
-//#Preview {
-//    VStack {
-//        Spacer()
-//        HStack {
-//            Spacer()
-//            Text("Preview")
-//                .padding(300.0)
-//            Spacer()
-//        }
-//        Spacer()
-//    }
-//    .toolbar(id: "Preview") {
-//        ToolbarContentView(viewModel: MainWindowViewModel())
-//    }
-//}
+#Preview {
+    @FocusState var renameEntry: UUID?
+
+    VStack {
+        Spacer()
+        HStack {
+            Spacer()
+            Text("Preview")
+                .padding(300.0)
+            Spacer()
+        }
+        Spacer()
+    }
+    .toolbar(id: "Preview") {
+        ToolbarContentView(viewModel: MainWindowViewModel(), renameEntry: $renameEntry)
+    }
+}

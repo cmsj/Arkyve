@@ -28,7 +28,7 @@ struct NewButtonTip: Tip {
         Text("Use this button to start a new, empty archive")
     }
     var image: Image? {
-        Image(systemName: "folder.plus")
+        Image(systemName: "plus.rectangle.on.folder")
     }
 }
 
@@ -42,5 +42,18 @@ struct OpenButtonTip: Tip {
     }
     var image: Image? {
         Image(systemName: "folder")
+    }
+}
+
+struct CloseButtonTip: Tip {
+    var id = "closeButtonTip"
+    var title: Text {
+        Text("Close this archive")
+    }
+    var message: Text? {
+        Text("Use this button to close the current archive")
+    }
+    var image: Image? {
+        Image("zzClose")
     }
 }

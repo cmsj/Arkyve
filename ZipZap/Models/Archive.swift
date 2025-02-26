@@ -37,13 +37,6 @@ extension Archive {
     }
 }
 
-//extension Archive: Equatable {
-//    nonisolated static func == (lhs: Archive, rhs: Archive) -> Bool {
-//        // This is declared nonisolated to conform to the protocol, and it is accessing a read-only property so should be thread-safe.
-//        return lhs.id == rhs.id
-//    }
-//}
-
 @Observable
 class Archive {
     let id: UUID = UUID()

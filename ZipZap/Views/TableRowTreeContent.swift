@@ -9,15 +9,15 @@ import SwiftUI
 import ZZLog
 
 struct TableRowTreeContent: TableRowContent {
-    let children: [ArchiveEntry]
+    let node: ArchiveEntry?
     let viewModel: MainWindowViewModel
 
     var tableRowBody: some TableRowContent<ArchiveEntry> {
-        ForEach(children) { child in
-            if let children = child.children {
+        ForEach(node?.children ?? []) { child in
+            if let _ = child.children {
                 @Bindable var child = child
                 DisclosureTableRow(child, isExpanded: $child.isExpanded) {
-                    TableRowTreeContent(children: children, viewModel: viewModel)
+                    TableRowTreeContent(node: child, viewModel: viewModel)
                 }
                 .draggable(ArchiveEntryExtractable(showErrors: viewModel.showErrors,
                                                    archiveURL: viewModel.archive?.URL,
@@ -25,6 +25,10 @@ struct TableRowTreeContent: TableRowContent {
                                                    selectedPath: child.path,
                                                    id: child.id,
                                                    entries: child.flatChildren()))
+                .dropDestination(for: Data.self) { items in
+                    // FIXME: Implement
+                    print("YO DROP DATA")
+                }
             } else {
                 TableRow(child)
                     .draggable(ArchiveEntryExtractable(showErrors: viewModel.showErrors,
@@ -35,35 +39,9 @@ struct TableRowTreeContent: TableRowContent {
                                                        entries: child.flatChildren()))
             }
         }
-        // FIXME: This causes a crash if an archive is opened, then a new one is created, then a file is dragged into the tableview
         .onInsert(of: [ArchiveEntry.draggableType, .fileURL]) { index, providers in
-            // TODO: WRITE
-//            viewModel.processDrop(index: index, providers: providers)
-            print("YOOOOOOOO")
             print("Received a drop at \(index) on \(String(describing:self))")
+            viewModel.processDrop(at: index, on: node, for: providers);
         }
     }
 }
-
-
-
-// TODO: WRITE
-//        .onInsert(of: [ArchiveEntry.draggableType, .fileURL]) { index, providers in
-//            let error = "Received a drop! Index: \(index) on \(String(describing: self))"
-//            #ZZTrace(error)
-//
-//            // FIXME: This needs to:
-//            //   * Find the relevant ArchiveEntry that describes the folder the drag happened into
-//            //   * .fileURL - a net new file coming from Finder/wherever, create an ArchiveEntry for it and insert into the folder
-//            //   * ArchiveEntry.draggableType - an ArchiveEntry being re-ordered from elsewhere in the table. Remove it from its current parent and add it to the drag-destination folder
-//
-//            // Greedily consume any provider that is coming from us
-//            let internalDropProviders = providers.filter { $0.hasItemConformingToTypeIdentifier(ArchiveEntry.draggableType.identifier) }
-//            let externalDropProviders = providers.filter {
-//                // Internal drops still include public.file-url, so we only want ones here that don't also contain ArchiveEntry.draggableType
-//                $0.hasItemConformingToTypeIdentifier(UTType.fileURL.identifier) && !internalDropProviders.contains($0)
-//            }
-//
-//            viewModel.archive?.processInternalDrop(providers: internalDropProviders, atIndex: index, treeHint: self.children)
-//            viewModel.archive?.processExternalDrop(providers: externalDropProviders, atIndex: index, treeHint: self.children)
-//        }

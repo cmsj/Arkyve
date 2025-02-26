@@ -70,7 +70,7 @@ struct TableView: View {
                     .defaultVisibility(.hidden)
             }
         } rows: {
-            TableRowTreeContent(children: viewModel.archive?.root.children ?? [], viewModel: viewModel)
+            TableRowTreeContent(node: viewModel.archive?.root, viewModel: viewModel)
         }
         .contextMenu(forSelectionType: ArchiveEntry.ID.self) { items in
             Button {
@@ -117,7 +117,8 @@ struct TableView: View {
     }
 }
 
-//#Preview {
-//    TableView()
-//        .environment(MainWindowViewModel())
-//}
+#Preview {
+    @FocusState var renameEntry: UUID?
+    TableView(renameEntryFocus: $renameEntry)
+        .environment(MainWindowViewModel())
+}

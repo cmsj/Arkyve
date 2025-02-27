@@ -85,7 +85,21 @@ actor libarchive {
         var headers: [libarchiveHeader] = []
 
         var entry: OpaquePointer?
-        while (archive_read_next_header(archiveFD.archive, &entry) == ARCHIVE_OK) {
+        readLoop: while true {
+            let result = archive_read_next_header(archiveFD.archive, &entry)
+            switch result {
+            case ARCHIVE_OK:
+                break
+            case ARCHIVE_FATAL:
+                throw ArchiveError.ArchiveOpenError(archive: "", error: String(cString: archive_error_string(archiveFD.archive)))
+            case ARCHIVE_EOF:
+                #ZZTrace("Reached end of archive")
+                break readLoop
+            default:
+                #ZZError("Unknown result \(result)")
+                break readLoop
+            }
+
             let name: String
             let path: String
             let pathComponents: [String]
@@ -208,6 +222,7 @@ actor libarchive {
             (archiveFormat, archiveFilters, archiveEntries) = try readEntriesFormatFilters()
 
             let entries = archiveEntries.map { ArchiveEntry($0) }
+            #ZZTrace("loadArchive() found \(entries.count) entries")
             let (rootItems, remainingAll) = entries.filterBothwise { $0.path.countOccurrences(of: "/") == 0 }
             let (remainingDirs, remainingFiles) = remainingAll.filterBothwise { $0.type == .directory }
             let root = ArchiveEntry(isRoot: true)

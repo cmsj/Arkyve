@@ -130,7 +130,7 @@ class ArchiveEntry: Identifiable {
         get { gid != nil ? "\(gid!)" : "--" }
     }
 
-    var type: ArchiveEntryType = .unknown
+    var type: ArchiveEntryType
 
     let lock = Mutex(true)
 
@@ -155,7 +155,7 @@ class ArchiveEntry: Identifiable {
         }
     }
 
-    init(path: String) {
+    init(path: String, type: ArchiveEntryType) {
         // Parse pathname to store our hierarchy
         let pathBits = path.split(separator: "/").map(String.init)
         let name = pathBits.last ?? "Unknown"
@@ -167,6 +167,7 @@ class ArchiveEntry: Identifiable {
         self.pathComponents = pathComponents
         self.size = -1
         self.children = []
+        self.type = type
     }
 
     init(isRoot: Bool) {
@@ -210,8 +211,7 @@ class ArchiveEntry: Identifiable {
             } else {
                 let synthPath = entry.pathComponents.first!
                 #ZZTrace("Creating synthetic root directory \(synthPath)")
-                let tmpEntry = ArchiveEntry(path: synthPath)
-                tmpEntry.type = .root
+                let tmpEntry = ArchiveEntry(path: synthPath, type: .directory)
 
                 self.lock.withLock { _ in
                     archive.addSynthEntry(tmpEntry)
@@ -237,7 +237,7 @@ class ArchiveEntry: Identifiable {
         } else {
             let synthPath = (self.pathComponents + [relativePath!.first!]).joined(separator: "/")
             #ZZTrace("Creating synthetic subdirectory \(synthPath)")
-            let tmpEntry = ArchiveEntry(path: synthPath)
+            let tmpEntry = ArchiveEntry(path: synthPath, type: .directory)
 
             self.lock.withLock { _ in
                 archive.addSynthEntry(tmpEntry)

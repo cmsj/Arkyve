@@ -21,6 +21,15 @@ struct ArchiveEntryExtractable {
 
 extension ArchiveEntryExtractable: Transferable {
     static var transferRepresentation: some TransferRepresentation {
+        DataRepresentation(exportedContentType: ArchiveEntry.draggableType) { entryDraggable in
+            let encoder = JSONEncoder()
+            do {
+                return try encoder.encode(entryDraggable.id)
+            } catch {
+                return Data()
+            }
+        }
+        
         DataRepresentation(exportedContentType: .fileURL) { entryDraggable in
             guard let archiveURL = entryDraggable.archiveURL else { return Data() }
             guard let cacheURL = entryDraggable.cacheURL else { return Data() }
@@ -34,14 +43,6 @@ extension ArchiveEntryExtractable: Transferable {
                 return writtenURLs.first!.dataRepresentation
             } catch {
                 await entryDraggable.showErrors.err(ArchiveError.ArchiveDropError(msg: error.localizedDescription))
-                return Data()
-            }
-        }
-        DataRepresentation(exportedContentType: ArchiveEntry.draggableType) { entryDraggable in
-            let encoder = JSONEncoder()
-            do {
-                return try encoder.encode(entryDraggable.id)
-            } catch {
                 return Data()
             }
         }

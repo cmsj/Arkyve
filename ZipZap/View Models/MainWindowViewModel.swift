@@ -343,33 +343,45 @@ class MainWindowViewModel {
     }
 
     // MARK: - Drag and drop
-    func processDrop(at index: Int, on entry: ArchiveEntry?, for providers: [NSItemProvider]) {
+    func processDrop(at index: Int? = nil, on entry: ArchiveEntry? = nil, for providers: [NSItemProvider]) {
         for provider in providers {
             // Check for the internal type first, because internal drags also have a fileURL so they can be dragged externally
             if provider.hasItemConformingToTypeIdentifier(ArchiveEntry.draggableType.identifier) {
-                processDropInternal(at: index, on: entry, for: provider)
+//                processDropInternal(at: index, on: entry, for: provider)
+                processDropGeneric(at: index, on: entry, for: provider, ofType: ArchiveEntry.draggableType) { index, uuid, data in
+                    let uuid = String(decoding: data, as: UTF8.self)
+                    // FIXME: What now?
+                }
             } else if provider.hasItemConformingToTypeIdentifier(UTType.fileURL.identifier) {
-                processDropExternal(at: index, on: entry, for: provider)
+//                processDropExternal(at: index, on: entry, for: provider)
+                processDropGeneric(at: index, on: entry, for: provider, ofType: UTType.fileURL) { index, uuid, data in
+                    let url = URL(dataRepresentation: data, relativeTo: nil)
+                    // FIXME: What now?
+                }
             } else {
                 #ZZError("Unsupported drag item type: \(provider)")
             }
         }
     }
 
-    func processDropInternal(at index: Int, on entry: ArchiveEntry?, for provider: NSItemProvider) {
-        guard provider.hasItemConformingToTypeIdentifier(ArchiveEntry.draggableType.identifier) else { return }
-        #ZZTrace("Processing internal drop")
+    func processDropGeneric(at index: Int?,
+                            on entry: ArchiveEntry?,
+                            for provider: NSItemProvider,
+                            ofType: UTType,
+                            operation: @Sendable @escaping (Int?, UUID?, Data) -> Void
+    ) {
+        guard provider.hasItemConformingToTypeIdentifier(ofType.identifier) else { return }
+        #ZZInfo("Processing generic drop of type \(ofType)")
 
-        provider.loadItem(forTypeIdentifier: ArchiveEntry.draggableType.identifier) { [weak self] (uuidData, error) in
+        let uuid = entry?.id
+
+        provider.loadItem(forTypeIdentifier: ofType.identifier) { [weak self] (data, error) in
             guard let self = self else { return }
-
-            if let uuidData = uuidData as? Data {
-                let uuid = String(decoding: uuidData, as: UTF8.self)
-                #ZZTrace("Processing internal drop for UUID: \(uuid)")
-
-                // FIXME: What now?
+            
+            if let data = data as? Data {
+                operation(index, uuid, data)
             } else if let error = error {
-                let error = ArchiveError.ArchiveDropError(msg: "Failed to move item: \(error.localizedDescription)")
+                let error = ArchiveError.ArchiveDropError(msg: "Failed to handle drop: \(error.localizedDescription)")
                 Task { @MainActor in
                     self.showErrors.err(error)
                 }
@@ -377,24 +389,45 @@ class MainWindowViewModel {
         }
     }
 
-    func processDropExternal(at index: Int, on entry: ArchiveEntry?, for provider: NSItemProvider) {
-        guard provider.hasItemConformingToTypeIdentifier(UTType.fileURL.identifier) else { return }
-        #ZZTrace("Processing external drop")
-
-        provider.loadItem(forTypeIdentifier: UTType.fileURL.identifier) { [weak self] (urlData, error) in
-            guard let self = self else { return }
-
-            if let urlData = urlData as? Data,
-               let url = URL(dataRepresentation: urlData, relativeTo: nil) {
-                #ZZTrace("Processing external drop for file: \(url.path)")
-
-                // FIXME: What now?
-            } else if let error = error {
-                let error = ArchiveError.ArchiveDropError(msg: "Failed to load URL from provider: \(error.localizedDescription)")
-                Task { @MainActor in
-                    self.showErrors.err(error)
-                }
-            }
-        }
-    }
+//    func processDropInternal(at index: Int, on entry: ArchiveEntry?, for provider: NSItemProvider) {
+//        guard provider.hasItemConformingToTypeIdentifier(ArchiveEntry.draggableType.identifier) else { return }
+//        #ZZTrace("Processing internal drop")
+//
+//        provider.loadItem(forTypeIdentifier: ArchiveEntry.draggableType.identifier) { [weak self] (uuidData, error) in
+//            guard let self = self else { return }
+//
+//            if let uuidData = uuidData as? Data {
+//                let uuid = String(decoding: uuidData, as: UTF8.self)
+//                #ZZTrace("Processing internal drop for UUID: \(uuid)")
+//
+//                // FIXME: What now?
+//            } else if let error = error {
+//                let error = ArchiveError.ArchiveDropError(msg: "Failed to move item: \(error.localizedDescription)")
+//                Task { @MainActor in
+//                    self.showErrors.err(error)
+//                }
+//            }
+//        }
+//    }
+//
+//    func processDropExternal(at index: Int, on entry: ArchiveEntry?, for provider: NSItemProvider) {
+//        guard provider.hasItemConformingToTypeIdentifier(UTType.fileURL.identifier) else { return }
+//        #ZZTrace("Processing external drop")
+//
+//        provider.loadItem(forTypeIdentifier: UTType.fileURL.identifier) { [weak self] (urlData, error) in
+//            guard let self = self else { return }
+//
+//            if let urlData = urlData as? Data,
+//               let url = URL(dataRepresentation: urlData, relativeTo: nil) {
+//                #ZZTrace("Processing external drop for file: \(url.path)")
+//
+//                // FIXME: What now?
+//            } else if let error = error {
+//                let error = ArchiveError.ArchiveDropError(msg: "Failed to load URL from provider: \(error.localizedDescription)")
+//                Task { @MainActor in
+//                    self.showErrors.err(error)
+//                }
+//            }
+//        }
+//    }
 }

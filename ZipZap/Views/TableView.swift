@@ -111,7 +111,7 @@ struct TableView: View {
         .onChange(of: sortOrder) { _, newSortOrder in
             viewModel.sort(using: sortOrder)
         }
-        .onDrop(of: [ArchiveEntry.draggableType, .fileURL], isTargeted: nil, perform: { items, _ in
+        .onDrop(of: [.archiveEntryExtractable, .fileURL], isTargeted: nil, perform: { items, _ in
             guard viewModel.archive != nil else { return false }
             viewModel.processDrop(for: items)
 

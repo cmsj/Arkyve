@@ -77,8 +77,6 @@ struct ArchiveEntryBackingStore {
 
 @Observable
 class ArchiveEntry: Identifiable {
-    static let draggableType = UTType(exportedAs: "net.tenshu.ZipZap.ArchiveEntry")
-
     let id = UUID()
     var source: ArchiveEntrySource
     var children: [ArchiveEntry]? = nil

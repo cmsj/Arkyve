@@ -131,8 +131,7 @@ class MainWindowViewModel {
             for entry in chosenEntries {
                 let flatChildren = entry.flatChildren()
                 itemCount += flatChildren.count
-                let extractableEntry = ArchiveEntryExtractable(showErrors: showErrors,
-                                                               archiveURL: archive?.URL,
+                let extractableEntry = ArchiveEntryExtractable(archiveURL: archive?.URL,
                                                                cacheURL: archive?.cacheURL,
                                                                selectedPath: entry.path,
                                                                id: entry.id,
@@ -217,8 +216,7 @@ class MainWindowViewModel {
                     let flatChildren = entry.flatChildren()
                     itemCount += flatChildren.count
 
-                    let extractableEntry = ArchiveEntryExtractable(showErrors: showErrors,
-                                                                   archiveURL: archive?.URL,
+                    let extractableEntry = ArchiveEntryExtractable(archiveURL: archive?.URL,
                                                                    cacheURL: archive?.cacheURL,
                                                                    selectedPath: entry.path,
                                                                    id: entry.id,
@@ -344,47 +342,40 @@ class MainWindowViewModel {
 
     // MARK: - Drag and drop
     func processDrop(at index: Int? = nil, on entry: ArchiveEntry? = nil, for providers: [NSItemProvider]) {
+        let destUUID = entry?.id
+
         for provider in providers {
             // Check for the internal type first, because internal drags also have a fileURL so they can be dragged externally
-            if provider.hasItemConformingToTypeIdentifier(ArchiveEntry.draggableType.identifier) {
-//                processDropInternal(at: index, on: entry, for: provider)
-                processDropGeneric(at: index, on: entry, for: provider, ofType: ArchiveEntry.draggableType) { index, uuid, data in
-                    let uuid = String(decoding: data, as: UTF8.self)
-                    // FIXME: What now?
+            if provider.hasItemConformingToTypeIdentifier(UTType.archiveEntryExtractable.identifier) {
+                _ = provider.loadTransferable(type: ArchiveEntryExtractable.self) { result in
+                    switch result {
+                    case .success(let entry):
+                        print("GOT AN ENTRY")
+                        print(entry)
+                        // FIXME: Now what?
+                    case .failure(let error):
+                        let error = ArchiveError.ArchiveDropError(msg: "Failed to handle drop: \(error.localizedDescription)")
+                        Task { @MainActor in
+                            self.showErrors.err(error)
+                        }
+                    }
                 }
             } else if provider.hasItemConformingToTypeIdentifier(UTType.fileURL.identifier) {
-//                processDropExternal(at: index, on: entry, for: provider)
-                processDropGeneric(at: index, on: entry, for: provider, ofType: UTType.fileURL) { index, uuid, data in
-                    let url = URL(dataRepresentation: data, relativeTo: nil)
-                    // FIXME: What now?
+                _ = provider.loadTransferable(type: URL.self) { result in
+                    switch result {
+                    case .success(let url):
+                        print("GOT A URL")
+                        print(url)
+                        // FIXME: Now what?
+                    case .failure(let error):
+                        let error = ArchiveError.ArchiveDropError(msg: "Failed to handle drop: \(error.localizedDescription)")
+                        Task { @MainActor in
+                            self.showErrors.err(error)
+                        }
+                    }
                 }
             } else {
                 #ZZError("Unsupported drag item type: \(provider)")
-            }
-        }
-    }
-
-    func processDropGeneric(at index: Int?,
-                            on entry: ArchiveEntry?,
-                            for provider: NSItemProvider,
-                            ofType: UTType,
-                            operation: @Sendable @escaping (Int?, UUID?, Data) -> Void
-    ) {
-        guard provider.hasItemConformingToTypeIdentifier(ofType.identifier) else { return }
-        #ZZInfo("Processing generic drop of type \(ofType)")
-
-        let uuid = entry?.id
-
-        provider.loadItem(forTypeIdentifier: ofType.identifier) { [weak self] (data, error) in
-            guard let self = self else { return }
-            
-            if let data = data as? Data {
-                operation(index, uuid, data)
-            } else if let error = error {
-                let error = ArchiveError.ArchiveDropError(msg: "Failed to handle drop: \(error.localizedDescription)")
-                Task { @MainActor in
-                    self.showErrors.err(error)
-                }
             }
         }
     }

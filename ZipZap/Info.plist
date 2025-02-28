@@ -8,7 +8,7 @@
 			<key>UTTypeIcons</key>
 			<dict/>
 			<key>UTTypeIdentifier</key>
-			<string>net.tenshu.ZipZap.ArchiveEntry</string>
+			<string>net.tenshu.ZipZap.ArchiveEntryExtractable</string>
 			<key>UTTypeTagSpecification</key>
 			<dict/>
 		</dict>

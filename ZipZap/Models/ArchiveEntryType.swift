@@ -6,7 +6,7 @@
 //
 
 
-enum ArchiveEntryType: String {
+enum ArchiveEntryType: String, Codable {
     case unknown = "questionmark"
     case file = "doc"
     case directory = "folder"

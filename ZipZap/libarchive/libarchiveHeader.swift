@@ -6,8 +6,8 @@
 //
 
 
-struct libarchiveHeader: Identifiable {
-    let id = UUID()
+struct libarchiveHeader: Identifiable, Codable {
+    let id: UUID
     let source: ArchiveEntrySource
     let type: ArchiveEntryType
 
@@ -36,5 +36,22 @@ struct libarchiveHeader: Identifiable {
             }
             return pathComponents.dropLast().last
         }
+    }
+
+    init(id: UUID? = UUID(), source: ArchiveEntrySource, type: ArchiveEntryType, path: String, name: String, pathComponents: [String], size: Int64, atime: Date, ctime: Date, mtime: Date, btime: Date, uid: Int64?, gid: Int64?, perms: mode_t) {
+        self.id = id!
+        self.source = source
+        self.type = type
+        self.path = path
+        self.name = name
+        self.pathComponents = pathComponents
+        self.size = size
+        self.atime = atime
+        self.ctime = ctime
+        self.mtime = mtime
+        self.btime = btime
+        self.uid = uid
+        self.gid = gid
+        self.perms = perms
     }
 }

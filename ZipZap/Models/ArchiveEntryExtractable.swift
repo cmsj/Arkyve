@@ -8,8 +8,11 @@ import SwiftUI
 import UniformTypeIdentifiers
 import ZZLog
 
-struct ArchiveEntryExtractable {
-    let showErrors: ShowErrors
+extension UTType {
+    static var archiveEntryExtractable: UTType { UTType(exportedAs: "net.tenshu.ZipZap.ArchiveEntryExtractable")}
+}
+
+struct ArchiveEntryExtractable: Codable {
     let archiveURL: URL?
     let cacheURL: URL?
     let selectedPath: String
@@ -21,14 +24,7 @@ struct ArchiveEntryExtractable {
 
 extension ArchiveEntryExtractable: Transferable {
     static var transferRepresentation: some TransferRepresentation {
-        DataRepresentation(exportedContentType: ArchiveEntry.draggableType) { entryDraggable in
-            let encoder = JSONEncoder()
-            do {
-                return try encoder.encode(entryDraggable.id)
-            } catch {
-                return Data()
-            }
-        }
+        CodableRepresentation(contentType: .archiveEntryExtractable)
         
         DataRepresentation(exportedContentType: .fileURL) { entryDraggable in
             guard let archiveURL = entryDraggable.archiveURL else { return Data() }
@@ -42,8 +38,7 @@ extension ArchiveEntryExtractable: Transferable {
                 #ZZTrace("Wrote \(writtenURLs.count) entries. First is \(writtenURLs.first!.dataRepresentation)")
                 return writtenURLs.first!.dataRepresentation
             } catch {
-                await entryDraggable.showErrors.err(ArchiveError.ArchiveDropError(msg: error.localizedDescription))
-                return Data()
+                throw ArchiveError.ArchiveDropError(msg: error.localizedDescription)
             }
         }
     }

@@ -348,29 +348,25 @@ class MainWindowViewModel {
             // Check for the internal type first, because internal drags also have a fileURL so they can be dragged externally
             if provider.hasItemConformingToTypeIdentifier(UTType.archiveEntryExtractable.identifier) {
                 _ = provider.loadTransferable(type: ArchiveEntryExtractable.self) { result in
-                    switch result {
-                    case .success(let entry):
-                        print("GOT AN ENTRY")
-                        print(entry)
-                        // FIXME: Now what?
-                    case .failure(let error):
-                        let error = ArchiveError.ArchiveDropError(msg: "Failed to handle drop: \(error.localizedDescription)")
-                        Task { @MainActor in
+                    Task { @MainActor in
+                        switch result {
+                        case .success(let entry):
+                            self.handleEntryDrop(at: index, on: destUUID, entry: entry)
+                        case .failure(let error):
+                            let error = ArchiveError.ArchiveDropError(msg: "Failed to handle drop: \(error.localizedDescription)")
                             self.showErrors.err(error)
                         }
                     }
                 }
             } else if provider.hasItemConformingToTypeIdentifier(UTType.fileURL.identifier) {
                 _ = provider.loadTransferable(type: URL.self) { result in
-                    switch result {
-                    case .success(let url):
-                        print("GOT A URL")
-                        print(url)
-                        // FIXME: Now what?
-                    case .failure(let error):
-                        let error = ArchiveError.ArchiveDropError(msg: "Failed to handle drop: \(error.localizedDescription)")
-                        Task { @MainActor in
-                            self.showErrors.err(error)
+                    Task { @MainActor in
+                        switch result {
+                        case .success(let url):
+                            self.handleFileURLDrop(at: index, on: destUUID, fileURL: url)
+                        case .failure(let error):
+                            let error = ArchiveError.ArchiveDropError(msg: "Failed to handle drop: \(error.localizedDescription)")
+                                self.showErrors.err(error)
                         }
                     }
                 }
@@ -378,6 +374,30 @@ class MainWindowViewModel {
                 #ZZError("Unsupported drag item type: \(provider)")
             }
         }
+    }
+
+    func handleEntryDrop(at index: Int? = nil, on entryID: UUID? = nil, entry: ArchiveEntryExtractable) {
+        print("HANDLING ENTRY DROPPED AT \(index ?? -1) on \(entryID?.uuidString ?? "unknown"): \(entry)")
+        // FIXME: Now what?
+    }
+
+    func handleFileURLDrop(at index: Int? = nil, on entryID: UUID? = nil, fileURL: URL) {
+        print("HANDLING FILEURL DROPPED AT \(index ?? -1) on \(entryID?.uuidString ?? "unknown"): \(fileURL)")
+        // FIXME: Now what?
+    }
+
+    func handleManyDrops(on entryID: UUID? = nil, items: [DropItem]) {
+        for item in items {
+            switch (item) {
+            case .entry(let entry):
+                handleEntryDrop(on: entryID, entry: entry)
+            case .file(let url):
+                handleFileURLDrop(on: entryID, fileURL: url)
+            default:
+                showErrors.err(ArchiveError.ArchiveDropError(msg: "Unknown drop type"))
+            }
+        }
+
     }
 
 //    func processDropInternal(at index: Int, on entry: ArchiveEntry?, for provider: NSItemProvider) {

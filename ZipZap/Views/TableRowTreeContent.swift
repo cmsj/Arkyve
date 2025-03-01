@@ -9,31 +9,6 @@ import SwiftUI
 import ZZLog
 import UniformTypeIdentifiers
 
-enum DropItem: Codable, Transferable {
-    case none
-    case file(URL)
-    case entry(ArchiveEntryExtractable)
-
-    static var transferRepresentation: some TransferRepresentation {
-        ProxyRepresentation { DropItem.entry($0) }
-        ProxyRepresentation { DropItem.file($0) }
-    }
-
-    var file: URL? {
-        switch self {
-        case .file(let url): return url
-        default: return nil
-        }
-    }
-
-    var entry: ArchiveEntryExtractable? {
-        switch self {
-        case .entry(let entry): return entry
-        default: return nil
-        }
-    }
-}
-
 struct TableRowTreeContent: TableRowContent {
     let node: ArchiveEntry?
     let viewModel: MainWindowViewModel
@@ -51,9 +26,7 @@ struct TableRowTreeContent: TableRowContent {
                                                    id: child.id,
                                                    entries: child.flatChildren()))
                 .dropDestination(for: DropItem.self) { items in
-                    // FIXME: Implement
-                    print("YO DROP FILES")
-                    print(items)
+                    viewModel.handleManyDrops(on: child.id, items: items)
                 }
             } else {
                 TableRow(child)
@@ -65,7 +38,6 @@ struct TableRowTreeContent: TableRowContent {
             }
         }
         .onInsert(of: [.archiveEntryExtractable, .fileURL]) { index, providers in
-            print("Received a drop at \(index) on \(String(describing: self))")
             viewModel.processDrop(at: index, on: node, for: providers)
         }
     }

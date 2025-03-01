@@ -31,6 +31,7 @@
 		4F41C42C2D1F47660011DAAB /* Data.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F41C42B2D1F47650011DAAB /* Data.swift */; };
 		4F41C42D2D1F47660011DAAB /* Data.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F41C42B2D1F47650011DAAB /* Data.swift */; };
 		4F5124072CA71BE800FB9AC6 /* Tips.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F5124062CA71BE800FB9AC6 /* Tips.swift */; };
+		4F688A5A2D734551003B5D60 /* DropItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F688A592D734551003B5D60 /* DropItem.swift */; };
 		4F7121852C0F48B1000EB268 /* RandomAccessCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F7121842C0F48B1000EB268 /* RandomAccessCollection.swift */; };
 		4F7121872C0F48EB000EB268 /* Array.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F7121862C0F48EB000EB268 /* Array.swift */; };
 		4F7121892C0F48FD000EB268 /* String.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F7121882C0F48FD000EB268 /* String.swift */; };
@@ -101,6 +102,7 @@
 		4F41C4282D1EBAC60011DAAB /* Credits.rtf */ = {isa = PBXFileReference; lastKnownFileType = text.rtf; path = Credits.rtf; sourceTree = "<group>"; };
 		4F41C42B2D1F47650011DAAB /* Data.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Data.swift; sourceTree = "<group>"; };
 		4F5124062CA71BE800FB9AC6 /* Tips.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tips.swift; sourceTree = "<group>"; };
+		4F688A592D734551003B5D60 /* DropItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DropItem.swift; sourceTree = "<group>"; };
 		4F7121842C0F48B1000EB268 /* RandomAccessCollection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RandomAccessCollection.swift; sourceTree = "<group>"; };
 		4F7121862C0F48EB000EB268 /* Array.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Array.swift; sourceTree = "<group>"; };
 		4F7121882C0F48FD000EB268 /* String.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = String.swift; sourceTree = "<group>"; };
@@ -293,6 +295,7 @@
 				4F41C4082D19B19D0011DAAB /* ArchiveEntryFlat.swift */,
 				4F41C4042D18A7440011DAAB /* ArchiveEntryExtractable.swift */,
 				4F41C40C2D1A171E0011DAAB /* ArchiveError.swift */,
+				4F688A592D734551003B5D60 /* DropItem.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -473,6 +476,7 @@
 				4F22BDC92CAE95750079FAC0 /* libarchiveFormat.swift in Sources */,
 				4FDC674F2C19065A00A10035 /* libarchive.swift in Sources */,
 				4F71219D2C10BB1D000EB268 /* ErrorView.swift in Sources */,
+				4F688A5A2D734551003B5D60 /* DropItem.swift in Sources */,
 				4F41C4262D1EB93E0011DAAB /* Menus.swift in Sources */,
 				4F41C42C2D1F47660011DAAB /* Data.swift in Sources */,
 			);

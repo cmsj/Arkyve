@@ -371,8 +371,7 @@ class MainWindowViewModel {
                     }
                 }
             } else {
-                // FIXME: Surface this to the UI
-                #ZZError("Unsupported drag item type: \(provider)")
+                showErrors.err(ArchiveError.ArchiveDropError(msg: "Unsupported item type: \(provider.registeredTypeIdentifiers.joined(separator: ","))"))
             }
         }
     }
@@ -380,11 +379,22 @@ class MainWindowViewModel {
     func handleEntryDrop(at index: Int? = nil, on entryID: UUID? = nil, entry: ArchiveEntryExtractable) {
         print("HANDLING ENTRY DROPPED AT \(index ?? -1) on \(entryID?.uuidString ?? "unknown"): \(entry)")
         // FIXME: Now what?
+        // 1. Find the current parent
+        // 2. Find the new parent
+        // 3. Remove from current parent
+        // 4. Update pathComponents to the new parent + name
+        // 5. Add to new parent
+        // 6. Update path and pathComponents in Archive.entries (ie the flat list)
     }
 
     func handleFileURLDrop(at index: Int? = nil, on entryID: UUID? = nil, fileURL: URL) {
         print("HANDLING FILEURL DROPPED AT \(index ?? -1) on \(entryID?.uuidString ?? "unknown"): \(fileURL)")
         // FIXME: Now what?
+        // 1. Find the new parent
+        // 2. Create an ArchiveEntrySource for the filesystem file
+        // 3. Create an ArchiveEntry populated with as much metadata as we can
+        // 4. Add the new ArchiveEntry to the parent
+        // 5. Add the new ArchiveENtry to Archive.entries
     }
 
     func handleManyDrops(on entryID: UUID? = nil, items: [DropItem]) {
@@ -400,46 +410,4 @@ class MainWindowViewModel {
         }
 
     }
-
-//    func processDropInternal(at index: Int, on entry: ArchiveEntry?, for provider: NSItemProvider) {
-//        guard provider.hasItemConformingToTypeIdentifier(ArchiveEntry.draggableType.identifier) else { return }
-//        #ZZTrace("Processing internal drop")
-//
-//        provider.loadItem(forTypeIdentifier: ArchiveEntry.draggableType.identifier) { [weak self] (uuidData, error) in
-//            guard let self = self else { return }
-//
-//            if let uuidData = uuidData as? Data {
-//                let uuid = String(decoding: uuidData, as: UTF8.self)
-//                #ZZTrace("Processing internal drop for UUID: \(uuid)")
-//
-//                // FIXME: What now?
-//            } else if let error = error {
-//                let error = ArchiveError.ArchiveDropError(msg: "Failed to move item: \(error.localizedDescription)")
-//                Task { @MainActor in
-//                    self.showErrors.err(error)
-//                }
-//            }
-//        }
-//    }
-//
-//    func processDropExternal(at index: Int, on entry: ArchiveEntry?, for provider: NSItemProvider) {
-//        guard provider.hasItemConformingToTypeIdentifier(UTType.fileURL.identifier) else { return }
-//        #ZZTrace("Processing external drop")
-//
-//        provider.loadItem(forTypeIdentifier: UTType.fileURL.identifier) { [weak self] (urlData, error) in
-//            guard let self = self else { return }
-//
-//            if let urlData = urlData as? Data,
-//               let url = URL(dataRepresentation: urlData, relativeTo: nil) {
-//                #ZZTrace("Processing external drop for file: \(url.path)")
-//
-//                // FIXME: What now?
-//            } else if let error = error {
-//                let error = ArchiveError.ArchiveDropError(msg: "Failed to load URL from provider: \(error.localizedDescription)")
-//                Task { @MainActor in
-//                    self.showErrors.err(error)
-//                }
-//            }
-//        }
-//    }
 }

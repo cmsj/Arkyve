@@ -371,6 +371,7 @@ class MainWindowViewModel {
                     }
                 }
             } else {
+                // FIXME: Surface this to the UI
                 #ZZError("Unsupported drag item type: \(provider)")
             }
         }

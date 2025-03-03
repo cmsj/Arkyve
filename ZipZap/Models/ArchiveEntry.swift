@@ -54,27 +54,6 @@ import ZZLog
 //    }
 //}
 
-struct ArchiveEntryBackingStore {
-    var id = UUID()
-    var source: ArchiveEntrySource
-    var children: [ArchiveEntry]? = nil
-    var isExpanded = false
-    var shouldFocus = false
-    var path: String
-    var name: String
-    var pathComponents: [String] = []
-    var size: Int64
-    var atime = Date(timeIntervalSince1970: 0)
-    var ctime = Date(timeIntervalSince1970: 0)
-    var mtime = Date(timeIntervalSince1970: 0)
-    var btime = Date(timeIntervalSince1970: 0)
-    var perms: mode_t
-    var permsString: String = "--"
-    var uid: Int64?
-    var gid: Int64?
-    var type: ArchiveEntryType = .unknown
-}
-
 @Observable
 class ArchiveEntry: Identifiable {
     let id = UUID()
@@ -102,6 +81,12 @@ class ArchiveEntry: Identifiable {
     var sizeString: String {
         get { size != -1 ? String(size) : "--" }
     }
+    var permsString: String {
+        get {
+            if type == .root { return "" }
+            return perms.string
+        }
+    }
 //    var finalDirName: String? {
 //        get {
 //            if type == .directory {
@@ -116,7 +101,6 @@ class ArchiveEntry: Identifiable {
     var mtime = Date(timeIntervalSince1970: 0)
     var btime = Date(timeIntervalSince1970: 0)
     var perms: mode_t = 0
-    var permsString: String = "--" // FIXME: Shouldn't this be a computed property?
 
     var uid: Int64? = 0
     var gid: Int64? = 0
@@ -153,7 +137,7 @@ class ArchiveEntry: Identifiable {
         }
     }
 
-    init(path: String, type: ArchiveEntryType) {
+    init(directory path: String) {
         // Parse pathname to store our hierarchy
         let pathBits = path.split(separator: "/").map(String.init)
         let name = pathBits.last ?? "Unknown"
@@ -165,7 +149,8 @@ class ArchiveEntry: Identifiable {
         self.pathComponents = pathComponents
         self.size = -1
         self.children = []
-        self.type = type
+        self.type = .directory
+        self.perms = 0 | S_IFDIR | S_IRUSR | S_IWUSR | S_IXUSR | S_IRGRP | S_IWGRP | S_IXGRP | S_IROTH | S_IXOTH
     }
 
     init(isRoot: Bool) {
@@ -209,7 +194,7 @@ class ArchiveEntry: Identifiable {
             } else {
                 let synthPath = entry.pathComponents.first!
                 #ZZTrace("Creating synthetic root directory \(synthPath)")
-                let tmpEntry = ArchiveEntry(path: synthPath, type: .directory)
+                let tmpEntry = ArchiveEntry(directory: synthPath)
 
                 self.lock.withLock { _ in
                     archive.addSynthEntry(tmpEntry)
@@ -235,7 +220,7 @@ class ArchiveEntry: Identifiable {
         } else {
             let synthPath = (self.pathComponents + [relativePath!.first!]).joined(separator: "/")
             #ZZTrace("Creating synthetic subdirectory \(synthPath)")
-            let tmpEntry = ArchiveEntry(path: synthPath, type: .directory)
+            let tmpEntry = ArchiveEntry(directory: synthPath)
 
             self.lock.withLock { _ in
                 archive.addSynthEntry(tmpEntry)

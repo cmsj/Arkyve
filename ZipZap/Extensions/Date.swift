@@ -13,9 +13,8 @@ extension Date {
         get {
             if self == Date(timeIntervalSince1970: 0) { return "--" }
             let formatter = DateFormatter()
-            // TODO: Somehow hook up the styles to some user settings
-            formatter.dateStyle = .long
-            formatter.timeStyle = .long
+
+            formatter.dateFormat = "d MMM yyyy 'at' HH:mm"
             return formatter.string(from: self)
         }
     }

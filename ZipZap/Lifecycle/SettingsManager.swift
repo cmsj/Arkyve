@@ -22,6 +22,28 @@ struct SettingsManager {
         }
     }
 
+    var newArchiveName: String {
+        get {
+            UserDefaults.standard.string(forKey: "newArchiveName") ?? "Untitled"
+        }
+        set(name) {
+            UserDefaults.standard.setValue(name, forKey:"newArchiveName")
+        }
+    }
+
+    var newArchiveFormat: libarchiveFormat {
+        get {
+            var rawValue = Int32(UserDefaults.standard.integer(forKey: "newArchiveFormat"))
+            if rawValue == 0 {
+                return .ZIP
+            }
+            return libarchiveFormat(rawValue: rawValue) ?? .ZIP
+        }
+        set(format) {
+            UserDefaults.standard.setValue(Int(format.rawValue), forKey: "newArchiveFormat")
+        }
+    }
+
     private init() {
         let msg = "Cache directory: \(cacheURL)"
         #ZZTrace(msg)

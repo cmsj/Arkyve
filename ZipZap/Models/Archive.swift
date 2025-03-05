@@ -41,7 +41,7 @@ extension Archive {
 class Archive {
     let id: UUID = UUID()
     static var newFilePath: String {
-        SettingsManager.shared.newFolderURL.appending(path: "Untitled").path
+        SettingsManager.shared.newFolderURL.appending(path: SettingsManager.shared.newArchiveName).path
     }
 
     var URL: URL
@@ -49,7 +49,7 @@ class Archive {
     var name: String
     var entries: [ArchiveEntry] = []
     var root: ArchiveEntry = ArchiveEntry(isRoot: true)
-    var format: libarchiveFormat = .Unknown
+    var format: libarchiveFormat = SettingsManager.shared.newArchiveFormat
     var filters: [libarchiveFilter] = []
     var cacheURL: URL
     var dirty: Bool = false

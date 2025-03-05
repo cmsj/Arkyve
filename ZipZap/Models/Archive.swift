@@ -93,7 +93,10 @@ class Archive {
         }
     }
 
-    func addSynthEntry(_ entry: ArchiveEntry) {
+    func addSynthEntry(_ entry: ArchiveEntry) throws {
+        guard entry.isSynthesized == true else {
+            throw ArchiveError.ArchiveEntriesError(archive: self.name, error: "Attempted to add a non-synthetic entry")
+        }
         self.entries.append(entry)
     }
 

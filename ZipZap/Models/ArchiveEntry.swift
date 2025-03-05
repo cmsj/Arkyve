@@ -87,14 +87,6 @@ class ArchiveEntry: Identifiable {
             return perms.string
         }
     }
-//    var finalDirName: String? {
-//        get {
-//            if type == .directory {
-//                return name
-//            }
-//            return pathComponents.dropLast().last
-//        }
-//    }
 
     var atime = Date(timeIntervalSince1970: 0)
     var ctime = Date(timeIntervalSince1970: 0)
@@ -137,7 +129,7 @@ class ArchiveEntry: Identifiable {
         }
     }
 
-    init(directory path: String) {
+    init(syntheticDirectory path: String) {
         // Parse pathname to store our hierarchy
         let pathBits = path.split(separator: "/").map(String.init)
         let name = pathBits.last ?? "Unknown"
@@ -163,44 +155,46 @@ class ArchiveEntry: Identifiable {
         self.children = []
     }
 
-    func addChildren(_ entries: [ArchiveEntry]) {
+    func addChildren(_ entries: [ArchiveEntry]) throws(ArchiveError) {
         guard self.children != nil else {
             #ZZError("addChildren called on an ArchiveEntry which can not possess children")
-            return
+            throw ArchiveError.ArchiveEntriesError(archive: self.name, error: "Attempted to add children to an ArchiveEntry which can not possess children")
         }
         self.lock.withLock { _ in
             entries.forEach { self.children?.append($0) }
         }
     }
 
-    func addChildrenHierarchically(_ entries: [ArchiveEntry], for archive: Archive ) {
-        entries.forEach { self.addChildHierarchically($0, for: archive) }
+    func addChildrenHierarchically(_ entries: [ArchiveEntry], for archive: Archive ) throws {
+        try entries.forEach { try self.addChildHierarchically($0, for: archive) }
     }
 
-    func addChildHierarchically(_ entry: ArchiveEntry, for archive: Archive) {
+    func addChildHierarchically(_ entry: ArchiveEntry, for archive: Archive) throws {
         guard [.directory, .root].contains(self.type) else {
             #ZZError("addChildHierarchically called on something other than directory/root: \(self.type)")
-            return
+            throw ArchiveError.ArchiveEntriesError(archive: self.name, error: "Attempted to add a child to a non-directory/root ArchiveEntry")
         }
         guard self.children != nil else {
             #ZZError("addCH found an uninitialised children array")
-            return
+            throw ArchiveError.ArchiveEntriesError(archive: self.name, error: "Attempted to add children to an ArchiveEntry which can not possess children")
         }
 
         // We're the root, so find which of our children's trees this entry belongs to and dispatch it to them to handle
         if type == .root {
             if let dispatchIndex = children?.firstIndex(where: { $0.type == .directory && $0.name == entry.pathComponents.first }) {
-                children?[dispatchIndex].addChildHierarchically(entry, for: archive)
+                // We have a child already that contains the next part of the item's path, so add it there
+                try children?[dispatchIndex].addChildHierarchically(entry, for: archive)
             } else {
+                // We do not currently have a child that contains the next part of the item's path, so create a synthetic one
                 let synthPath = entry.pathComponents.first!
-                #ZZTrace("Creating synthetic root directory \(synthPath)")
-                let tmpEntry = ArchiveEntry(directory: synthPath)
+                #ZZTrace("Creating synthetic directory \(synthPath)")
+                let tmpEntry = ArchiveEntry(syntheticDirectory: synthPath)
 
-                self.lock.withLock { _ in
-                    archive.addSynthEntry(tmpEntry)
+                try self.lock.withLock { _ in
+                    try archive.addSynthEntry(tmpEntry)
                     self.children?.append(tmpEntry)
                 }
-                children?[children!.count - 1].addChildHierarchically(entry, for: archive)
+                try children?[children!.count - 1].addChildHierarchically(entry, for: archive)
             }
             return
         }
@@ -216,17 +210,17 @@ class ArchiveEntry: Identifiable {
         // This entry should belong to one of our children, figure out which to dispatch it to
         let relativePath = entry.pathComponents.subtractPath(pathComponents)
         if let dispatchIndex = children?.firstIndex(where: { $0.type == .directory && $0.name == relativePath?.first }) {
-            children?[dispatchIndex].addChildHierarchically(entry, for: archive)
+            try children?[dispatchIndex].addChildHierarchically(entry, for: archive)
         } else {
             let synthPath = (self.pathComponents + [relativePath!.first!]).joined(separator: "/")
             #ZZTrace("Creating synthetic subdirectory \(synthPath)")
-            let tmpEntry = ArchiveEntry(directory: synthPath)
+            let tmpEntry = ArchiveEntry(syntheticDirectory: synthPath)
 
-            self.lock.withLock { _ in
-                archive.addSynthEntry(tmpEntry)
+            try self.lock.withLock { _ in
+                try archive.addSynthEntry(tmpEntry)
                 self.children?.append(tmpEntry)
             }
-            children?[children!.count - 1].addChildHierarchically(entry, for: archive)
+            try children?[children!.count - 1].addChildHierarchically(entry, for: archive)
         }
     }
 

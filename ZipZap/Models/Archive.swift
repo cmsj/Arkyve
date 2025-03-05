@@ -50,7 +50,7 @@ class Archive {
     var entries: [ArchiveEntry] = []
     var root: ArchiveEntry = ArchiveEntry(isRoot: true)
     var format: libarchiveFormat = SettingsManager.shared.newArchiveFormat
-    var filters: [libarchiveFilter] = []
+    var filters: [libarchiveFilter] = [] // FIXME: libarchiveFilter should really give us default values for a given libarchiveFormat
     var cacheURL: URL
     var dirty: Bool = false
 

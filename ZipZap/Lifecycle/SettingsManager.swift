@@ -33,7 +33,7 @@ struct SettingsManager {
 
     var newArchiveFormat: libarchiveFormat {
         get {
-            var rawValue = Int32(UserDefaults.standard.integer(forKey: "newArchiveFormat"))
+            let rawValue = Int32(UserDefaults.standard.integer(forKey: "newArchiveFormat"))
             if rawValue == 0 {
                 return .ZIP
             }

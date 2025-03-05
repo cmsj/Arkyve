@@ -10,6 +10,7 @@
 		4F10848B2C261BB7007DCC39 /* ZZLog in Frameworks */ = {isa = PBXBuildFile; productRef = 4F10848A2C261BB7007DCC39 /* ZZLog */; };
 		4F10848E2C262396007DCC39 /* ZipZapLog.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F10848D2C262393007DCC39 /* ZipZapLog.swift */; };
 		4F1084922C262D5D007DCC39 /* LogWindowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F1084912C262D5D007DCC39 /* LogWindowView.swift */; };
+		4F14DAF32D78A8070080D7AA /* mode_t.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F688A5B2D7666FE003B5D60 /* mode_t.swift */; };
 		4F22BDC92CAE95750079FAC0 /* libarchiveFormat.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F22BDC82CAE95490079FAC0 /* libarchiveFormat.swift */; };
 		4F22BDCB2CAE95820079FAC0 /* libarchiveFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F22BDCA2CAE95820079FAC0 /* libarchiveFilter.swift */; };
 		4F344ECE2C335224006E1D9F /* SettingsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F344ECD2C335224006E1D9F /* SettingsManager.swift */; };
@@ -433,6 +434,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				4F41C41C2D1B55990011DAAB /* String.swift in Sources */,
+				4F14DAF32D78A8070080D7AA /* mode_t.swift in Sources */,
 				4F41C42D2D1F47660011DAAB /* Data.swift in Sources */,
 				4FA0204A2D2DD6A000E1CE58 /* withTaskProgression.swift in Sources */,
 				4F41C41E2D1B5A320011DAAB /* Array.swift in Sources */,

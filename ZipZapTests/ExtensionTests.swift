@@ -79,3 +79,26 @@ import Foundation
         #expect(Data(string.utf8).bytes == [UInt8](string.utf8))
     }
 }
+
+let modeStringPairs: [mode_t: String] = [
+    0o000000: "?---------",
+    S_IFDIR:  "d---------",
+    S_IFCHR:  "c---------",
+    S_IFBLK:  "b---------",
+    S_IFREG:  "----------",
+    S_IFSOCK: "s---------",
+    S_IFLNK:  "l---------",
+    S_IFIFO:  "p---------",
+    S_IRUSR|S_IRGRP|S_IROTH:  "?r--r--r--",
+    S_IWUSR|S_IWGRP|S_IWOTH:  "?-w--w--w-",
+    S_IXUSR|S_IXGRP|S_IXOTH:  "?--x--x--x",
+    S_ISUID|S_ISGID|S_ISVTX:  "?--S--S--S",
+    S_IXUSR|S_ISUID|S_IXGRP|S_ISGID|S_IXOTH|S_ISVTX: "?--s--s--s",
+    S_IRUSR|S_IRGRP|S_IROTH|S_IWUSR|S_IWGRP|S_IXGRP|S_IXUSR|S_IXGRP|S_IXOTH: "?rwxrwxrwx",
+]
+@Suite("mode_t Extensions") struct ModeTTests {
+    @Test(arguments: modeStringPairs)
+    func testModeStringPairs(_ mode: mode_t, _ expectedString: String) async throws {
+        #expect(mode.string == expectedString)
+    }
+}

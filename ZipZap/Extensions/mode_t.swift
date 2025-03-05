@@ -4,7 +4,7 @@
 //
 //  Created by Chris Jones on 03/03/2025.
 //
-
+import Darwin.sys
 
 extension mode_t {
     var string: String {

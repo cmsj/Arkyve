@@ -81,16 +81,11 @@ class Archive {
     }
 
     deinit {
-        #ZZTrace("Archive::deinit()")
-        self.close()
-    }
-
-    private func close() {
         // These can't be inline to the ZZ macros below, otherwise we're passing `self` to a Task, and this method is called from `deinit()` which then exits with a non-zero retain count on `self.
         let name = self.name
         let cacheURL = self.cacheURL
 
-        #ZZTrace("Archive::close() on \(name)")
+        #ZZTrace("Archive::deinit() on \(name)")
         do {
             try FileManager.default.removeItem(at: cacheURL)
         } catch {

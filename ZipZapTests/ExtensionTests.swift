@@ -29,7 +29,7 @@ import Foundation
     @Test func userFormatted() async throws {
         #expect(Date(since: 0).userFormatted == "--")
 
-        #expect(Date(since: 1).userFormatted == "1 January 1970 at 01:00:01 GMT+1")
+        #expect(Date(since: 1).userFormatted == "1 Jan 1970 at 01:00")
     }
 }
 
@@ -94,7 +94,7 @@ let modeStringPairs: [mode_t: String] = [
     S_IXUSR|S_IXGRP|S_IXOTH:  "?--x--x--x",
     S_ISUID|S_ISGID|S_ISVTX:  "?--S--S--S",
     S_IXUSR|S_ISUID|S_IXGRP|S_ISGID|S_IXOTH|S_ISVTX: "?--s--s--s",
-    S_IRUSR|S_IRGRP|S_IROTH|S_IWUSR|S_IWGRP|S_IXGRP|S_IXUSR|S_IXGRP|S_IXOTH: "?rwxrwxrwx",
+    S_IRUSR|S_IRGRP|S_IROTH|S_IWUSR|S_IWGRP|S_IWOTH|S_IXUSR|S_IXGRP|S_IXOTH: "?rwxrwxrwx",
 ]
 @Suite("mode_t Extensions") struct ModeTTests {
     @Test(arguments: modeStringPairs)

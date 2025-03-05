@@ -55,6 +55,7 @@ class Archive {
     var dirty: Bool = false
 
     var existsOnDisk: Bool {
+        // FIXME: Should this actually be using FileManager.default.fileExists?
         URL.path != Archive.newFilePath
     }
 
@@ -63,33 +64,29 @@ class Archive {
     }
 
     init(URL: URL) {
-        let name = URL.lastPathComponent
-        let path = URL.path().removingPercentEncoding ?? "Unknown"
-        let cacheURL = SettingsManager.shared.cacheURL.appendingPathComponent(name)
-
         self.URL = URL
-        self.path = path
-        self.name = name
-        self.cacheURL = cacheURL
+        self.path = URL.path().removingPercentEncoding ?? "Unknown"
+        self.name = URL.lastPathComponent
+        self.cacheURL = SettingsManager.shared.cacheURL.appendingPathComponent(_name)
 
         #ZZTrace("Initialised for \(URL)")
     }
 
+    // Create a new, empty archive
     convenience init() {
         self.init(URL: Foundation.URL(fileURLWithPath: Archive.newFilePath))
         self.dirty = true
     }
 
     deinit {
-        // These can't be inline to the ZZ macros below, otherwise we're passing `self` to a Task, and this method is called from `deinit()` which then exits with a non-zero retain count on `self.
-        let name = self.name
-        let cacheURL = self.cacheURL
+        #ZZTrace("Archive::deinit() on \(self.name)")
+        // Exit early if cacheURL doesn't exist
+        guard FileManager.default.fileExists(atPath: self.cacheURL.path(percentEncoded: false)) else { return }
 
-        #ZZTrace("Archive::deinit() on \(name)")
         do {
-            try FileManager.default.removeItem(at: cacheURL)
+            try FileManager.default.removeItem(at: self.cacheURL)
         } catch {
-            #ZZError("Unable to remove cache directory at: \(cacheURL)")
+            #ZZError("Unable to remove cache directory at: \(self.cacheURL)")
         }
     }
 
@@ -111,26 +108,6 @@ class Archive {
         #ZZTrace("Marking archive dirty")
         self.dirty = dirty
     }
-
-//    func processInternalDrop(providers:[NSItemProvider], atIndex:Int, treeHint:[ArchiveEntry]) {
-        // FIXME: Implement
-        // Process internal drops
-//        let decoder = JSONDecoder()
-//        let id: UUID
-//
-//        let group = DispatchGroup()
-//        let result =
-//        provider.loadDataRepresentation(for: ArchiveEntry.draggableType) { data, error in
-//            guard let data = data else { return }
-//            let id = try? decoder.decode(UUID.self, from: data)
-//        }
-//        self.dirty = true
-//    }
-
-//    func processExternalDrop(providers:[NSItemProvider], atIndex:Int, treeHint:[ArchiveEntry]) {
-//        // FIXME: Implement
-//        self.dirty = true
-//    }
 
 //    func removeEntries(_ entries: Set<ArchiveEntry.ID>) {
 //        let foundEntries = self.entries.filter { entries.contains($0.id) }

@@ -155,7 +155,7 @@ class ArchiveEntry: Identifiable {
         self.children = []
     }
 
-    func addChildren(_ entries: [ArchiveEntry]) throws(ArchiveError) {
+    func addRootItems(_ entries: [ArchiveEntry]) throws(ArchiveError) {
         guard self.children != nil else {
             #ZZError("addChildren called on an ArchiveEntry which can not possess children")
             throw ArchiveError.ArchiveEntriesError(archive: self.name, error: "Attempted to add children to an ArchiveEntry which can not possess children")

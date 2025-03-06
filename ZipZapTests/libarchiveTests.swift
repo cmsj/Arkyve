@@ -49,4 +49,11 @@ import Foundation
         #expect(archive.root.path == ".")
         #expect(archive.root.source.type == .Root)
     }
+
+    @Test func testArchiveOpenFail() async throws {
+        let loader = libarchive(url: URL(filePath: "smb://lol")!)
+        await #expect(throws: ArchiveError.self) {
+            _ = try await loader.loadArchive()
+        }
+    }
 }

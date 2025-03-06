@@ -227,10 +227,13 @@ actor libarchive {
             let (remainingDirs, remainingFiles) = remainingAll.filterBothwise { $0.type == .directory }
             let root = ArchiveEntry(isRoot: true)
 
+            var syntheticEntries: [ArchiveEntry] = []
             try root.addRootItems(rootItems)
-            try root.addChildrenHierarchically(remainingDirs, for: archive)
-            try root.addChildrenHierarchically(remainingFiles, for: archive)
-            archive.populate(root: root, entries: entries, format: archiveFormat, filters: archiveFilters)
+            syntheticEntries += try root.addChildrenHierarchically(remainingDirs)
+            syntheticEntries += try root.addChildrenHierarchically(remainingFiles)
+
+            let combinedEntries = entries + syntheticEntries
+            archive.populate(root: root, entries: combinedEntries, format: archiveFormat, filters: archiveFilters)
         } catch {
             let error = ArchiveError.ArchiveOpenError(archive: self.path, error: error.localizedDescription)
             throw error

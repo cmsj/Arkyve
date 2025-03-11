@@ -16,6 +16,7 @@ struct libarchiveFD {
     var fd: Int32 = -1
     var archive: OpaquePointer? = nil
     var type: libarchiveFDType = .read
+    var writeCacheURL: URL? = nil
 
     mutating func close() {
         switch type {
@@ -89,16 +90,19 @@ struct libarchiveFD {
         for filter in filters {
             result = archive_write_add_filter(archive, filter.rawValue)
             if (result != ARCHIVE_OK) {
-                throw ArchiveError.ArchiveWriteError(archive: at.path, error: "Unable tp add filter: \(String(describing: archive_error_string(archive)))")
+                throw ArchiveError.ArchiveWriteError(archive: at.path, error: "Unable to add filter: \(String(describing: archive_error_string(archive)))")
             }
         }
 
         // Figure out cache filename
-        let cachePath = SettingsManager.shared.writeCacheURL.appendingPathComponent(at.lastPathComponent).path
+        writeCacheURL = SettingsManager.shared.writeCacheURL.appendingPathComponent(at.lastPathComponent)
+        guard let writeCachePath = writeCacheURL else {
+            throw ArchiveError.ArchiveWriteError(archive: at.path, error: "Unable to create cache path")
+        }
 
-        #ZZTrace("Writing archive to cache \(cachePath)")
+        #ZZTrace("Archive write cache: \(writeCachePath.path)")
 
-        result = archive_write_open_filename(archive, cachePath)
+        result = archive_write_open_filename(archive, writeCachePath.path)
         if (result != ARCHIVE_OK) {
             throw ArchiveError.ArchiveWriteError(archive: at.path, error: "Unable to open output archive: \(String(describing: archive_error_string(archive)))")
         }

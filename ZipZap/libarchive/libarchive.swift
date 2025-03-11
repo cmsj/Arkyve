@@ -446,5 +446,11 @@ actor libarchive {
             headerMap.removeValue(forKey: filePath)
         }
         // FIXME: Deal with: do we have any headerMap entries left?
+
+        writeArchive.close()
+        if let writeCacheURL = writeArchive.writeCacheURL {
+            #ZZTrace("Moving archive cache to final destination: \(writeCacheURL) -> \(to)")
+            try FileManager.default.moveItem(at: writeCacheURL, to: to)
+        }
     }
 }

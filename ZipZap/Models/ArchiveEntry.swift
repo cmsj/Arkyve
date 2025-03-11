@@ -249,6 +249,14 @@ class ArchiveEntry: Identifiable {
         return libarchiveHeader(source: source, type: type, path: path, name: name, pathComponents: pathComponents, size: size, atime: atime, ctime: ctime, mtime: mtime, btime: btime, uid: uid, gid: gid, perms: perms)
     }
 
+    func asExtractable(for archive: Archive?) -> ArchiveEntryExtractable {
+        return ArchiveEntryExtractable(archiveURL: archive?.URL,
+                                       cacheURL: archive?.cacheURL,
+                                       selectedPath: self.path,
+                                       id: self.id,
+                                       entries: self.flatChildren())
+    }
+
     // Sort the tree at all levels
     func sort(using sortDetails: KeyPathComparator<ArchiveEntry>) {
         guard self.children != nil else { return }

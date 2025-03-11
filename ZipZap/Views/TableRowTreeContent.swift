@@ -20,21 +20,13 @@ struct TableRowTreeContent: TableRowContent {
                 DisclosureTableRow(child, isExpanded: $child.isExpanded) {
                     TableRowTreeContent(node: child, viewModel: viewModel)
                 }
-                .draggable(ArchiveEntryExtractable(archiveURL: viewModel.archive?.URL,
-                                                   cacheURL: viewModel.archive?.cacheURL,
-                                                   selectedPath: child.path,
-                                                   id: child.id,
-                                                   entries: child.flatChildren()))
+                .draggable(child.asExtractable(for: viewModel.archive))
                 .dropDestination(for: DropItem.self) { items in
                     viewModel.handleManyDrops(on: child.id, items: items)
                 }
             } else {
                 TableRow(child)
-                    .draggable(ArchiveEntryExtractable(archiveURL: viewModel.archive?.URL,
-                                                       cacheURL: viewModel.archive?.cacheURL,
-                                                       selectedPath: child.path,
-                                                       id: child.id,
-                                                       entries: child.flatChildren()))
+                    .draggable(child.asExtractable(for: viewModel.archive))
             }
         }
         .onInsert(of: [.archiveEntryExtractable, .fileURL]) { index, providers in

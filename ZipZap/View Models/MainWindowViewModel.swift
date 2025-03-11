@@ -129,13 +129,8 @@ class MainWindowViewModel {
 
             var itemCount = extractableEntries.count
             for entry in chosenEntries {
-                let flatChildren = entry.flatChildren()
-                itemCount += flatChildren.count
-                let extractableEntry = ArchiveEntryExtractable(archiveURL: archive?.URL,
-                                                               cacheURL: archive?.cacheURL,
-                                                               selectedPath: entry.path,
-                                                               id: entry.id,
-                                                               entries: flatChildren)
+                let extractableEntry = entry.asExtractable(for: archive)
+                itemCount += extractableEntry.entries.count
                 extractableEntries.append(extractableEntry)
             }
 
@@ -213,14 +208,8 @@ class MainWindowViewModel {
 
                 var itemCount = 0
                 for entry in chosenEntries {
-                    let flatChildren = entry.flatChildren()
-                    itemCount += flatChildren.count
-
-                    let extractableEntry = ArchiveEntryExtractable(archiveURL: archive?.URL,
-                                                                   cacheURL: archive?.cacheURL,
-                                                                   selectedPath: entry.path,
-                                                                   id: entry.id,
-                                                                   entries: entry.flatChildren())
+                    let extractableEntry = entry.asExtractable(for: archive)
+                    itemCount += extractableEntry.entries.count
                     extractableEntries.append(extractableEntry)
                 }
 

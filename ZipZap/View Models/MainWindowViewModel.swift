@@ -109,14 +109,13 @@ class MainWindowViewModel {
         do {
             try await withTaskProgression { _ in
                 try await loader.writeArchive(headerMap: headerMap, to: archive.URL, format: format, filters: filters)
+                archive.setDirty(false)
             } progress: { progression in
                 Task { @MainActor in setProgress(progression) }
             }
         } catch {
             showErrors.err(ArchiveError.ArchiveWriteError(archive: "\(String(describing: URL.path)) -> \(to.path)", error: error.localizedDescription))
         }
-
-        archive.setDirty(false)
     }
 
     func extractForQuicklook() {

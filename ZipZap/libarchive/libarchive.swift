@@ -395,8 +395,10 @@ actor libarchive {
             // Find every entry in the tree that started out as this path, and in the archive
             // NOTE: We're not expecting to find multiple values here, but in the future we might want to offer the ability to duplicate a file within an archive
             for mapEntryKey in headerMap.keys.filter({ headerMap[$0]?.header.source.path == readEntryPath && headerMap[$0]?.header.source.type == .Archive }) {
+                guard let header = headerMap[mapEntryKey]?.header else { continue }
+
                 // Read from archive and write to new archive
-                writeArchiveEntryHeader(to: writeArchiveFD, headers: headerMap[mapEntryKey]!.header)
+                writeArchiveEntryHeader(to: writeArchiveFD, headers: header)
 
                 while (true) {
                     rsize = archive_read_data(readArchiveFD.archive, rbuf, 524288)

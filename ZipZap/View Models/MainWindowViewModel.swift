@@ -115,6 +115,8 @@ class MainWindowViewModel {
         } catch {
             showErrors.err(ArchiveError.ArchiveWriteError(archive: "\(String(describing: URL.path)) -> \(to.path)", error: error.localizedDescription))
         }
+
+        archive.setDirty(false)
     }
 
     func extractForQuicklook() {
@@ -250,7 +252,6 @@ class MainWindowViewModel {
     func revertButton() {
         guard archive != nil else { return }
         if let url = archive?.URL {
-            archive = nil
             Task { @MainActor in
                 await openArchive(url: url)
             }

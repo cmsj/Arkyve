@@ -433,7 +433,7 @@ actor libarchive {
         // Second, process any filesystem-sourced entries that have been added to the archive
         for filePath in headerMap.keys.filter({ headerMap[$0]?.header.source.type == .Filesystem }) {
             try writeArchiveEntryHeader(to: writeArchiveFD, headers: headerMap[filePath]!.header)
-            
+
             // FIXME: Open the filesystem file here
             while (true) {
                 // FIXME: Read the filesystem file in chunks here and archive_write_data() them
@@ -455,7 +455,11 @@ actor libarchive {
 
         if let writeCacheURL = writeArchiveFD.writeCacheURL {
             #ZZTrace("Moving archive cache to final destination: \(writeCacheURL) -> \(to)")
-            try FileManager.default.moveItem(at: writeCacheURL, to: to)
+            do {
+                _ = try FileManager.default.replaceItemAt(to, withItemAt: writeCacheURL, options: [.usingNewMetadataOnly])
+            } catch {
+                try FileManager.default.moveItem(at: writeCacheURL, to: to)
+            }
         }
     }
 }

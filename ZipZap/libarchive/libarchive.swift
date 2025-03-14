@@ -432,7 +432,7 @@ actor libarchive {
 
         // Second, process any filesystem-sourced entries that have been added to the archive
         for filePath in headerMap.keys.filter({ headerMap[$0]?.header.source.type == .Filesystem }) {
-            writeArchiveEntryHeader(to: writeArchiveFD, headers: headerMap[filePath]!.header)
+            try writeArchiveEntryHeader(to: writeArchiveFD, headers: headerMap[filePath]!.header)
             
             // FIXME: Open the filesystem file here
             while (true) {

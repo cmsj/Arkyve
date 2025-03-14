@@ -67,7 +67,7 @@ class Archive {
         self.URL = URL
         self.path = URL.path().removingPercentEncoding ?? "Unknown"
         self.name = URL.lastPathComponent
-        self.cacheURL = SettingsManager.shared.cacheURL.appendingPathComponent(_name)
+        self.cacheURL = SettingsManager.shared.readCacheURL.appendingPathComponent(_name)
 
         #ZZTrace("Initialised for \(URL)")
     }

@@ -10,7 +10,7 @@ import ZZLog
 
 struct SettingsManager {
     static let shared = SettingsManager()
-    let cacheURL = FileManager.default.temporaryDirectory.appendingPathComponent("cache")
+    let readCacheURL = FileManager.default.temporaryDirectory.appendingPathComponent("read-cache")
     let writeCacheURL = FileManager.default.temporaryDirectory.appendingPathComponent("write-cache")
 
     var newFolderURL: URL {
@@ -45,7 +45,21 @@ struct SettingsManager {
     }
 
     private init() {
-        let msg = "Cache directory: \(cacheURL)"
+        let msg = "Cache directories: \(readCacheURL) \(writeCacheURL)"
         #ZZTrace(msg)
+    }
+
+    func removeCacheDirectories() {
+        try? FileManager.default.removeItem(at: SettingsManager.shared.readCacheURL)
+        try? FileManager.default.removeItem(at: SettingsManager.shared.writeCacheURL)
+    }
+
+    func createCacheDirectories() {
+        do {
+            try FileManager.default.createDirectory(at: SettingsManager.shared.readCacheURL, withIntermediateDirectories: true)
+            try FileManager.default.createDirectory(at: SettingsManager.shared.writeCacheURL, withIntermediateDirectories: true)
+        } catch {
+            fatalError("Unable to create cache directories: \(error.localizedDescription)")
+        }
     }
 }

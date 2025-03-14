@@ -184,6 +184,19 @@ class MainWindowViewModel {
         }
     }
 
+    func addButton() {
+        let panel = NSOpenPanel()
+
+        panel.allowsMultipleSelection = true
+        panel.canChooseFiles = true
+        panel.canChooseDirectories = true
+        panel.prompt = "Select files/folders to add"
+
+        if panel.runModal() == .OK {
+            archive?.addFiles(from: panel.urls)
+        }
+    }
+
     func extractButton(_ entries: Set<ArchiveEntry.ID>? = nil) {
         let actualEntries = entries ?? selectedEntries
         let panel = NSOpenPanel()

@@ -5,7 +5,6 @@
 //  Created by Chris Jones on 22/12/2024.
 //
 
-
 enum ArchiveEntryType: String, Codable {
     case unknown = "questionmark"
     case file = "doc"

@@ -155,6 +155,58 @@ class ArchiveEntry: Identifiable {
         self.children = []
     }
 
+    // Helper to create a new ArchiveEntry from a URL on the local filesystem
+    convenience init?(from url: URL) {
+        guard let stat = try? FileManager.default.attributesOfItem(atPath: url.path) else { return nil }
+
+        let source = ArchiveEntrySource(type: .Filesystem, path: url.path)
+
+        guard let rawType = stat[FileAttributeKey.type] as? String else { return nil }
+        let fileType = FileAttributeType(rawValue: rawType)
+        let entryType: ArchiveEntryType
+        switch fileType {
+        case .typeSocket:
+            entryType = .socket
+        case .typeRegular:
+            entryType = .file
+        case .typeDirectory:
+            entryType = .directory
+        case .typeSymbolicLink:
+            entryType = .symlink
+        case .typeCharacterSpecial:
+            entryType = .chardev
+        case .typeBlockSpecial:
+            entryType = .blockdev
+        case .typeUnknown:
+            entryType = .unknown
+        default:
+            entryType = .unknown
+        }
+
+        guard let fileSize = stat[FileAttributeKey.size] as? NSNumber,
+              let fileBtime = stat[FileAttributeKey.creationDate] as? NSDate,
+              let fileMtime = stat[FileAttributeKey.modificationDate] as? NSDate,
+              let fileUID = stat[FileAttributeKey.ownerAccountID] as? NSNumber,
+              let fileGID = stat[FileAttributeKey.groupOwnerAccountID] as? NSNumber,
+              let filePerms = stat[FileAttributeKey.posixPermissions] as? NSNumber
+        else { return nil }
+
+        let header = libarchiveHeader(source: source,
+                                      type: entryType,
+                                      path: url.path,
+                                      name: url.pathComponents.last!,
+                                      pathComponents: url.pathComponents,
+                                      size: fileSize.int64Value,
+                                      atime: Date(timeIntervalSince1970: 0),
+                                      ctime: Date(timeIntervalSince1970: 0),
+                                      mtime: fileMtime as Date,
+                                      btime: fileBtime as Date,
+                                      uid: fileUID.int64Value, gid: fileGID.int64Value,
+                                      perms: filePerms.uint16Value)
+
+        self.init(header)
+    }
+
     func addRootItems(_ entries: [ArchiveEntry]) throws(ArchiveError) {
         guard self.children != nil else {
             #ZZError("addChildren called on an ArchiveEntry which can not possess children")

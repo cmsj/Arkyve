@@ -109,7 +109,7 @@ class Archive {
 
         // FIXME: The inner part of this loop should be extracted to its own method because it needs to be recursive for adding directories
         for url in urls {
-            let entry = createEntryForURL(url)
+            let entry = ArchiveEntry(from: url)
             guard let entry = entry else { continue }
 
             newEntries.append(entry)
@@ -117,66 +117,26 @@ class Archive {
             if entry.type == .directory {
                 guard let enumerator = FileManager.default.enumerator(at: url, includingPropertiesForKeys: []) else { break }
                 for case let fileURL as URL in enumerator {
-                    if let entry = createEntryForURL(fileURL) {
+                    if let entry = ArchiveEntry(from: fileURL) {
                         newEntries.append(entry)
                     }
                 }
             }
         }
 
-        // FIXME: Add entries to self.entries and add them hierarchically
+        // Store all the new entries
+        var addedEntries: [ArchiveEntry] = []
 
-        self.setDirty()
-    }
-
-    func createEntryForURL(_ url: URL) -> ArchiveEntry? {
-        guard let stat = try? FileManager.default.attributesOfItem(atPath: url.path) else { return nil }
-
-        let source = ArchiveEntrySource(type: .Filesystem, path: url.path)
-
-        let fileType = FileAttributeType(rawValue: stat[FileAttributeKey.type] as! String)
-        let entryType: ArchiveEntryType
-
-        switch fileType {
-        case .typeSocket:
-            entryType = .socket
-        case .typeRegular:
-            entryType = .file
-        case .typeDirectory:
-            entryType = .directory
-        case .typeSymbolicLink:
-            entryType = .symlink
-        case .typeCharacterSpecial:
-            entryType = .chardev
-        case .typeBlockSpecial:
-            entryType = .blockdev
-        case .typeUnknown:
-            entryType = .unknown
-        default:
-            entryType = .unknown
+        let (newDirs, newFiles) = newEntries.filterBothwise { entry in entry.type == .directory }
+        do {
+            // FIXME: This is broken, we end up infinitely recursing for some reason
+            addedEntries += try root.addChildrenHierarchically(newDirs)
+            addedEntries += try root.addChildrenHierarchically(newFiles)
+        } catch {
+            // FIXME: Unclear what to do here.
         }
 
-        let fileSize = stat[FileAttributeKey.size] as! NSNumber
-        let fileBtime = stat[FileAttributeKey.creationDate] as! NSDate
-        let fileMtime = stat[FileAttributeKey.modificationDate] as! NSDate
-        let fileUID = stat[FileAttributeKey.ownerAccountID] as! NSNumber
-        let fileGID = stat[FileAttributeKey.groupOwnerAccountID] as! NSNumber
-        let filePerms = stat[FileAttributeKey.posixPermissions] as! NSNumber
-
-        let header = libarchiveHeader(source: source,
-                                      type: entryType,
-                                      path: url.path,
-                                      name: url.pathComponents.last!,
-                                      pathComponents: url.pathComponents,
-                                      size: fileSize.int64Value,
-                                      atime: Date(timeIntervalSince1970: 0),
-                                      ctime: Date(timeIntervalSince1970: 0),
-                                      mtime: fileMtime as Date,
-                                      btime: fileBtime as Date,
-                                      uid: fileUID.int64Value, gid: fileGID.int64Value,
-                                      perms: filePerms.uint16Value)
-
-        return ArchiveEntry(header)
+        self.setDirty()
     }
 
 //    func removeEntries(_ entries: Set<ArchiveEntry.ID>) {

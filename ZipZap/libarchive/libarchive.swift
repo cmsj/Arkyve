@@ -182,10 +182,12 @@ actor libarchive {
         return (format, filters, headers)
     }
 
-    private func writeArchiveEntryHeader(to: libarchiveFD, headers: libarchiveHeader) {
+    private func writeArchiveEntryHeader(to: libarchiveFD, headers: libarchiveHeader) throws {
         let writeEntry = archive_entry_new()
 
-        let data = headers.path.data(using: .utf8)!
+        guard let data = headers.path.data(using: .utf8) else {
+            throw ArchiveError.ArchiveWriteError(archive: nil, error: "Unable to convert path to Data: \(headers.path)")
+        }
         archive_entry_set_pathname(writeEntry, data.bytes)
 
         if headers.size != -1 {
@@ -367,7 +369,7 @@ actor libarchive {
     
     /// Write the archive to a URL
     /// - Parameters:
-    ///   - headerMap: A dictionary containing path to ArchiveEntryFlat mappings. This determins the entries that will be written to the new archive
+    ///   - headerMap: A dictionary containing path to ArchiveEntryFlat mappings. This determines the entries that will be written to the new archive
     ///   - to: A URL describing the filesystem location to write the archive to
     ///   - format: A libarchiveFormat describing the type of archive to write
     ///   - filters: An array of libarchiveFilter, describing which filters to apply to the archive
@@ -398,7 +400,7 @@ actor libarchive {
                 guard let header = headerMap[mapEntryKey]?.header else { continue }
 
                 // Read from archive and write to new archive
-                writeArchiveEntryHeader(to: writeArchiveFD, headers: header)
+                try writeArchiveEntryHeader(to: writeArchiveFD, headers: header)
 
                 while (true) {
                     rsize = archive_read_data(readArchiveFD.archive, rbuf, 524288)

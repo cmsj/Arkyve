@@ -10,7 +10,7 @@ import Foundation
 @testable import ZipZap // Assuming your module is named ZipZap
 
 @Suite("libarchiveTests", .serialized)
-struct libarchiveTestsClaude {
+struct libarchiveTestsClaudeFuyo {
 
     // MARK: - Test Helpers
 

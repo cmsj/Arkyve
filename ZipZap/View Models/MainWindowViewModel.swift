@@ -289,6 +289,8 @@ class MainWindowViewModel {
     }
 
     func saveAsButton() {
+        guard let archive = archive else { return }
+
         let panel = NSSavePanel()
 
         panel.prompt = "Save"
@@ -296,11 +298,11 @@ class MainWindowViewModel {
 
         let viewModel = FormatPickerViewModel()
 
-        if archive?.format != .Unknown {
-            viewModel.format = archive!.format
+        if archive.format != .Unknown {
+            viewModel.format = archive.format
         }
-        if archive?.format == .TAR || archive?.format == .TAR_GNUTAR {
-            viewModel.filter = archive?.filters.first ?? .GZip
+        if archive.format == .TAR || archive.format == .TAR_GNUTAR {
+            viewModel.filter = archive.filters.first ?? .GZip
         }
 
         let accessoryViewHosted = FormatPicker().environment(\.formatPickerViewModel, viewModel)

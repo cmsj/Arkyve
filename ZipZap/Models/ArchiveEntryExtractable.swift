@@ -35,8 +35,12 @@ extension ArchiveEntryExtractable: Transferable {
             do {
                 let writtenURLs = try await loader.extractEntries([entryDraggable], toFolder: cacheURL)
                 guard writtenURLs.count > 0 else { throw ArchiveError.ArchiveExtractError(archive: archiveURL.path, error: "Zero entries extracted")}
-                #ZZTrace("Wrote \(writtenURLs.count) entries. First is \(writtenURLs.first!.dataRepresentation)")
-                return writtenURLs.first!.dataRepresentation
+                #ZZTrace("Wrote \(writtenURLs.count) entries.")
+
+                guard let firstURL = writtenURLs.first else {
+                    throw ArchiveError.ArchiveEntriesError(archive: archiveURL.path, error: "Unable to retrieve written URLs")
+                }
+                return firstURL.dataRepresentation
             } catch {
                 throw ArchiveError.ArchiveDropError(msg: error.localizedDescription)
             }

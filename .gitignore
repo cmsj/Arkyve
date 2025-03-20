@@ -2,3 +2,4 @@ libarchive*/build
 libarchive-*/libarchive/Debug
 .DS_Store
 xcuserdata
+.vscode

@@ -102,14 +102,13 @@ class Archive {
         self.dirty = dirty
     }
 
-    func addFiles(from urls: [URL]) {
+    func addFiles(from urls: [URL], pwd: URL?, parent: ArchiveEntry? = nil) throws (ArchiveError) {
         guard urls.count > 0 else { return }
 
         var newEntries: [ArchiveEntry] = []
 
-        // FIXME: The inner part of this loop should be extracted to its own method because it needs to be recursive for adding directories
         for url in urls {
-            let entry = ArchiveEntry(from: url)
+            let entry = ArchiveEntry(from: url, archivePath: url.relativeTo(pwd))
             guard let entry = entry else { continue }
 
             newEntries.append(entry)
@@ -117,49 +116,65 @@ class Archive {
             if entry.type == .directory {
                 guard let enumerator = FileManager.default.enumerator(at: url, includingPropertiesForKeys: []) else { break }
                 for case let fileURL as URL in enumerator {
-                    if let entry = ArchiveEntry(from: fileURL) {
+                    if let entry = ArchiveEntry(from: fileURL, archivePath: fileURL.relativeTo(pwd)) {
                         newEntries.append(entry)
                     }
                 }
             }
         }
 
+        let targetEntry = parent ?? root
+
         // Store all the new entries
         var addedEntries: [ArchiveEntry] = []
 
         let (newDirs, newFiles) = newEntries.filterBothwise { entry in entry.type == .directory }
         do {
-            // FIXME: This is broken, we end up infinitely recursing for some reason
-            addedEntries += try root.addChildrenHierarchically(newDirs)
-            addedEntries += try root.addChildrenHierarchically(newFiles)
+            addedEntries += try targetEntry.addChildrenHierarchically(newDirs)
+            addedEntries += try targetEntry.addChildrenHierarchically(newFiles)
         } catch {
-            // FIXME: Unclear what to do here.
+            throw ArchiveError.ArchiveEntriesError(archive: self.name, error: "Failed to add entries to root: \(error.localizedDescription)")
         }
+
+        entries += newEntries
 
         self.setDirty()
     }
 
-//    func removeEntries(_ entries: Set<ArchiveEntry.ID>) {
-//        let foundEntries = self.entries.filter { entries.contains($0.id) }
-//        let didRemove = self.entries.remove { foundEntries.contains($0) }
-//        self.root.removeChildren(foundEntries)
-//
-//        if didRemove {
-//            self.dirty = true
-//        }
-//    }
-//
-//    func addEntries(from urls: [URL]) {
-//        // FIXME: Implement
-//        self.dirty = true
-//    }
-//
-//    func processEntryRename(_ entry: ArchiveEntry) {
-//        // FIXME: entry.name has updated, but entry.path and entry.pathComponents haven't.
-//        // We've never before had to think about any of these changing, and it seems weird that we have all three.
-//        // Maybe rename entry.path to entry.libarchivePath, never change it, and make entry.name a computed property
-//        // that works on entry.pathComponents' last value?
-//        print("NAME CHANGED: \(entry.name) :: \(entry.path) :: \(entry.pathComponents)")
-//        self.dirty = true
-//    }
+    func removeEntries(_ entries: Set<ArchiveEntry.ID>) {
+        // Remove entries from the entries array
+        self.entries.removeAll { entries.contains($0.id) }
+        
+        // Remove entries from the root tree structure by traversing the tree
+        func removeFromTree(_ node: ArchiveEntry) {
+            guard var children = node.children else { return }
+            
+            // Remove any direct children that match
+            children.removeAll { entries.contains($0.id) }
+            
+            // Recursively check remaining children
+            for child in children {
+                removeFromTree(child)
+            }
+        }
+        
+        removeFromTree(self.root)
+        
+        // Mark the archive as dirty since we've made changes
+        self.setDirty()
+    }
+
+    func processEntryRename(_ entry: ArchiveEntry) {
+        // Get the parent's path components (if any)
+        let parentPathComponents = entry.pathComponents.dropLast()
+        
+        // Update the path components with the new name
+        entry.pathComponents = parentPathComponents + [entry.name]
+        
+        // Update the path by joining the components with "/"
+        entry.path = entry.pathComponents.joined(separator: "/")
+        
+        // Mark the archive as dirty since we've made changes
+        self.setDirty()
+    }
 }

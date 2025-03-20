@@ -5,20 +5,37 @@
 //  Created by Chris Jones on 31/12/2024.
 //
 
+import Foundation
 
 extension FileManager {
-    // FIXME: Audit this, it seems weird that we try the easy path and then do the harder one regardless?
+    /// Creates a symbolic link at the specified path pointing to the destination path.
+    ///
+    /// This method creates a symbolic link (symlink) that points from `path` to `destPath`. If `overwrite` is true,
+    /// any existing file or link at the target path will be removed before creating the new link.
+    ///
+    /// - Parameters:
+    ///   - path: The path where the symbolic link will be created. This is the location where the link will appear
+    ///     in the filesystem.
+    ///   - destPath: The destination path that the symbolic link will point to. This is the target location that
+    ///     the link will reference.
+    ///   - overwrite: If true, any existing file or link at `path` will be removed before creating the new link.
+    ///     If false, the operation will fail if a file or link already exists at `path`.
+    ///
+    /// - Throws: An error if:
+    ///   - The symbolic link cannot be created
+    ///   - A file or link already exists at `path` and `overwrite` is false
+    ///   - The destination path doesn't exist
+    ///   - The user doesn't have sufficient permissions
+    ///
+    /// - Note: This method is a convenience wrapper around the standard `createSymbolicLink` method that adds
+    ///   the ability to overwrite existing links.
     func createSymbolicLink(atPath path: String, withDestinationPath destPath: String, overwrite: Bool) throws {
-        if !overwrite {
-            // Easy path
-            try self.createSymbolicLink(atPath: path, withDestinationPath: destPath)
+        // If overwrite is true and the link exists, remove it first
+        if overwrite {
+            try? self.removeItem(atPath: path)
         }
-
-        if symlink(destPath, path) == -1 {
-            if errno == EEXIST {
-                try self.removeItem(atPath: path)
-                try self.createSymbolicLink(atPath: path, withDestinationPath: destPath)
-            }
-        }
+        
+        // Try to create the symbolic link
+        try self.createSymbolicLink(atPath: path, withDestinationPath: destPath)
     }
 }

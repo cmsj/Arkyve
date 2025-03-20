@@ -18,7 +18,7 @@ struct TableView: View {
     var renameEntryFocus: FocusState<UUID?>.Binding
 
     var body: some View {
-        // FIXME: This @Bindable is an ugly hack: https://www.hackingwithswift.com/books/ios-swiftui/sharing-observable-objects-through-swiftuis-environment
+        // NOTE: This @Bindable is an ugly hack: https://www.hackingwithswift.com/books/ios-swiftui/sharing-observable-objects-through-swiftuis-environment
         @Bindable var viewModel = viewModel
 
         Table(of: ArchiveEntry.self, selection: $viewModel.selectedEntries, sortOrder: $sortOrder, columnCustomization: $columnCustomization) {

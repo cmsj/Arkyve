@@ -156,7 +156,7 @@ class ArchiveEntry: Identifiable {
     }
 
     // Helper to create a new ArchiveEntry from a URL on the local filesystem
-    convenience init?(from url: URL) {
+    convenience init?(from url: URL, archivePath: String) {
         guard let stat = try? FileManager.default.attributesOfItem(atPath: url.path) else { return nil }
 
         let source = ArchiveEntrySource(type: .Filesystem, path: url.path)
@@ -191,11 +191,13 @@ class ArchiveEntry: Identifiable {
               let filePerms = stat[FileAttributeKey.posixPermissions] as? NSNumber
         else { return nil }
 
+        let archivePathComponents = archivePath.components(separatedBy: "/")
+        let name = archivePathComponents.last ?? archivePath // Pretty sure this will always hit the optional default case, but just in case
         let header = libarchiveHeader(source: source,
                                       type: entryType,
-                                      path: url.path,
-                                      name: url.pathComponents.last!,
-                                      pathComponents: url.pathComponents,
+                                      path: archivePath,
+                                      name: name,
+                                      pathComponents: archivePathComponents,
                                       size: fileSize.int64Value,
                                       atime: Date(timeIntervalSince1970: 0),
                                       ctime: Date(timeIntervalSince1970: 0),
@@ -207,21 +209,11 @@ class ArchiveEntry: Identifiable {
         self.init(header)
     }
 
-    func addRootItems(_ entries: [ArchiveEntry]) throws(ArchiveError) {
-        guard self.children != nil else {
-            #ZZError("addChildren called on an ArchiveEntry which can not possess children")
-            throw ArchiveError.ArchiveEntriesError(archive: self.name, error: "Attempted to add children to an ArchiveEntry which can not possess children")
-        }
-        self.lock.withLock { _ in
-            entries.forEach { self.children?.append($0) }
-        }
-    }
-
-    func addChildrenHierarchically(_ entries: [ArchiveEntry]) throws -> [ArchiveEntry] {
+    @discardableResult func addChildrenHierarchically(_ entries: [ArchiveEntry]) throws -> [ArchiveEntry] {
         return try entries.flatMap { try self.addChildHierarchically($0) }
     }
 
-    func addChildHierarchically(_ entry: ArchiveEntry) throws -> [ArchiveEntry] {
+    @discardableResult func addChildHierarchically(_ entry: ArchiveEntry) throws -> [ArchiveEntry] {
         guard [.directory, .root].contains(self.type) else {
             #ZZError("addChildHierarchically called on something other than directory/root: \(self.type)")
             throw ArchiveError.ArchiveEntriesError(archive: self.name, error: "Attempted to add a child to a non-directory/root ArchiveEntry")
@@ -233,8 +225,8 @@ class ArchiveEntry: Identifiable {
 
         var syntheticEntries: [ArchiveEntry] = []
 
-        // We're the root, so find which of our children's trees this entry belongs to and dispatch it to them to handle
-        if type == .root {
+        // We're the root and the entry isn't a root item, so find which of our children's trees this entry belongs to and dispatch it to them to handle
+        if type == .root && entry.pathComponents.count > 1 {
             if let dispatchIndex = children?.firstIndex(where: { $0.type == .directory && $0.name == entry.pathComponents.first }) {
                 // We have a child already that contains the next part of the item's path, so add it there
                 syntheticEntries += try children?[dispatchIndex].addChildHierarchically(entry) ?? []
@@ -255,7 +247,7 @@ class ArchiveEntry: Identifiable {
         }
 
         // This entry belongs directly to us, so subsume it into our children
-        if pathComponents == entry.pathComponents.dropLast() {
+        if pathComponents == entry.pathComponents.dropLast() || entry.pathComponents.count == 1 {
             self.lock.withLock { _ in
                 children?.append(entry)
             }

@@ -16,7 +16,7 @@ struct MainWindowView: View {
     var tableViewTip = TableViewTip()
 
     var body: some View {
-        // FIXME: This @Bindable is an ugly hack: https://www.hackingwithswift.com/books/ios-swiftui/sharing-observable-objects-through-swiftuis-environment
+        // NOTE: This @Bindable is an ugly hack: https://www.hackingwithswift.com/books/ios-swiftui/sharing-observable-objects-through-swiftuis-environment
         @Bindable var viewModel = viewModel
 
         VStack(spacing: 0) {

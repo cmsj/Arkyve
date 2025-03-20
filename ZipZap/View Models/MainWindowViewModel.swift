@@ -34,7 +34,7 @@ class MainWindowViewModel {
     var disableRevert: Bool { get { disableUI == true || archive?.dirty != true || archive?.existsOnDisk != true }}
     var disableClose: Bool { get { disableUI == true || archive == nil }}
     var disableSave: Bool { get { disableUI == true || archive?.dirty != true }}
-    var disableSaveAs: Bool { get { disableUI == true || archive == nil }}
+    var disableSaveAs: Bool { get { disableSave }}
     var disableQuicklook: Bool { get { disableUI == true || selectedEntries.isEmpty }}
     var disableExtract: Bool { get { disableUI == true || selectedEntries.isEmpty }}
     var disableRename: Bool { get { disableUI == true || selectedEntries.count != 1 }}
@@ -108,7 +108,7 @@ class MainWindowViewModel {
         }
         do {
             try await withTaskProgression { _ in
-                try await loader.writeArchive(headerMap: headerMap, to: archive.URL, format: format, filters: filters)
+                try await loader.writeArchive(headerMap: headerMap, to: to, format: format, filters: filters)
                 archive.setDirty(false)
             } progress: { progression in
                 Task { @MainActor in setProgress(progression) }
@@ -193,7 +193,12 @@ class MainWindowViewModel {
         panel.prompt = "Select files/folders to add"
 
         if panel.runModal() == .OK {
-            archive?.addFiles(from: panel.urls)
+            let pwd = panel.urls.first?.deletingLastPathComponent()
+            do {
+                try archive?.addFiles(from: panel.urls, pwd: pwd)
+            } catch {
+                showErrors.err(error)
+            }
         }
     }
 
@@ -276,15 +281,14 @@ class MainWindowViewModel {
     }
 
     func saveButton() {
-        guard archive?.existsOnDisk != false else {
+        guard let archive = archive, archive.existsOnDisk != false else {
             // We're trying to save, but the archive has never been written to disk, so we need to do a Save As
             saveAsButton()
             return
         }
 
         Task { @MainActor in
-            // FIXME: This obviously should save over the original archive
-            await saveArchive(to: URL(filePath:"/Users/cmsj/Downloads/lol.zip"))
+            await saveArchive(to: archive.URL)
         }
     }
 
@@ -311,8 +315,9 @@ class MainWindowViewModel {
 
         if panel.runModal() == .OK {
             if let destURL = panel.url {
+                archive.name = destURL.lastPathComponent
                 Task {
-                    print("User chose format: \(viewModel.format) \(viewModel.filter)")
+                    #ZZTrace("Save As to \(destURL) (format: \(viewModel.format) \(viewModel.filter))")
                     await saveArchive(to: destURL, overrideFormat: viewModel.format, overrideFilter: viewModel.filter)
                 }
             }
@@ -323,21 +328,10 @@ class MainWindowViewModel {
         // TODO: WRITE
         self.archive?.setDirty()
     }
-//
-//    func addButton() {
-//        let panel = NSOpenPanel()
-//        panel.allowsMultipleSelection = false
-//        panel.canChooseDirectories = false
-//        if panel.runModal() == .OK {
-//            self.archive?.addEntries(from: panel.urls)
-//        }
-//    }
 
     // MARK: - Other handlers
-// TODO: WRITE
     func doRename(of entry: ArchiveEntry) {
-//        self.archive?.processEntryRename(entry)
-        self.archive?.setDirty()
+        self.archive?.processEntryRename(entry)
     }
 
     func sort(using: [KeyPathComparator<ArchiveEntry>]) {
@@ -382,23 +376,71 @@ class MainWindowViewModel {
 
     func handleEntryDrop(at index: Int? = nil, on entryID: UUID? = nil, entry: ArchiveEntryExtractable) {
         print("HANDLING ENTRY DROPPED AT \(index ?? -1) on \(entryID?.uuidString ?? "unknown"): \(entry)")
-        // FIXME: Now what?
-        // 1. Find the current parent
+        
+        guard let archive = archive else { return }
+        
+        // 1. Find the current parent by looking up the entry in the archive's entries
+        let currentEntry = archive.entries.first { $0.id == entry.id }
+        guard let currentEntry = currentEntry else { return }
+        
         // 2. Find the new parent
+        let newParent: ArchiveEntry
+        if let entryID = entryID {
+            // If we have an entryID, find that entry in the archive
+            guard let parent = archive.entries.first(where: { $0.id == entryID }) else { return }
+            newParent = parent
+        } else {
+            // If no entryID, use the root
+            newParent = archive.root
+        }
+        
         // 3. Remove from current parent
+        func removeFromParent(_ entry: ArchiveEntry) {
+            // Find the parent in the archive's entries
+            if let parent = archive.entries.first(where: { parent in
+                parent.children?.contains(where: { $0.id == entry.id }) ?? false
+            }) {
+                parent.children?.removeAll { $0.id == entry.id }
+            }
+        }
+        removeFromParent(currentEntry)
+        
         // 4. Update pathComponents to the new parent + name
+        let newPathComponents = newParent.pathComponents + [currentEntry.name]
+        currentEntry.pathComponents = newPathComponents
+        currentEntry.path = newPathComponents.joined(separator: "/")
+        
         // 5. Add to new parent
+        newParent.children?.append(currentEntry)
+        
         // 6. Update path and pathComponents in Archive.entries (ie the flat list)
+        // The entry in Archive.entries is already updated since we modified the same object
+        
+        // Mark the archive as dirty since we've made changes
+        archive.setDirty()
     }
 
     func handleFileURLDrop(at index: Int? = nil, on entryID: UUID? = nil, fileURL: URL) {
         print("HANDLING FILEURL DROPPED AT \(index ?? -1) on \(entryID?.uuidString ?? "unknown"): \(fileURL)")
-        // FIXME: Now what?
+        
+        guard let archive = archive else { return }
+        
         // 1. Find the new parent
-        // 2. Create an ArchiveEntrySource for the filesystem file
-        // 3. Create an ArchiveEntry populated with as much metadata as we can
-        // 4. Add the new ArchiveEntry to the parent
-        // 5. Add the new ArchiveENtry to Archive.entries
+        let newParent: ArchiveEntry
+        if let entryID = entryID {
+            // If we have an entryID, find that entry in the archive
+            guard let parent = archive.entries.first(where: { $0.id == entryID }) else { return }
+            newParent = parent
+        } else {
+            // If no entryID, use the root
+            newParent = archive.root
+        }
+
+        do {
+            try archive.addFiles(from: [fileURL], pwd: fileURL.deletingLastPathComponent(), parent: newParent)
+        } catch {
+            showErrors.err(error)
+        }
     }
 
     func handleManyDrops(on entryID: UUID? = nil, items: [DropItem]) {

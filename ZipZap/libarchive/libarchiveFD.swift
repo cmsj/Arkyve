@@ -7,17 +7,32 @@
 
 import ZZLog
 
+/// Represents the type of file descriptor operation for libarchive.
 enum libarchiveFDType {
+    /// Indicates a read operation on the archive.
     case read
+    /// Indicates a write operation on the archive.
     case write
 }
 
+/// A wrapper around libarchive's file descriptor operations.
+///
+/// This struct manages the lifecycle of libarchive file descriptors and provides
+/// methods for opening and closing archives for both read and write operations.
 struct libarchiveFD {
+    /// The file descriptor number, -1 if not open.
     var fd: Int32 = -1
+    /// The libarchive archive pointer.
     var archive: OpaquePointer? = nil
+    /// The type of operation being performed.
     var type: libarchiveFDType = .read
+    /// The URL for the write cache file.
     var writeCacheURL: URL? = nil
 
+    /// Closes the archive and cleans up resources.
+    ///
+    /// This method handles both read and write operations, ensuring proper cleanup
+    /// of system resources and libarchive structures.
     mutating func close() {
         switch type {
         case .read:
@@ -29,6 +44,10 @@ struct libarchiveFD {
         fd = -1
     }
 
+    /// Closes a read operation and frees associated resources.
+    ///
+    /// This method handles the cleanup of read-specific resources including
+    /// the libarchive read structures and file descriptor.
     mutating private func closeRead() {
         if archive != nil {
             archive_read_close(archive)
@@ -39,6 +58,10 @@ struct libarchiveFD {
         }
     }
 
+    /// Closes a write operation and frees associated resources.
+    ///
+    /// This method handles the cleanup of write-specific resources including
+    /// the libarchive write structures.
     mutating private func closeWrite() {
         if archive != nil {
             archive_write_close(archive)
@@ -46,6 +69,11 @@ struct libarchiveFD {
         }
     }
 
+    /// Opens an archive for reading.
+    ///
+    /// - Parameter path: The path to the archive file to open.
+    /// - Throws: `ArchiveError.ArchiveOpenError` if the archive cannot be opened
+    ///          or if memory allocation fails.
     mutating func openRead(path: String) throws(ArchiveError) {
         if fd >= 0 || archive != nil {
             close()
@@ -74,6 +102,14 @@ struct libarchiveFD {
         }
     }
     
+    /// Opens an archive for writing.
+    ///
+    /// - Parameters:
+    ///   - at: The URL where the archive will be written.
+    ///   - format: The format to use for the archive.
+    ///   - filters: An array of filters to apply to the archive.
+    /// - Throws: `ArchiveError.ArchiveWriteError` if the archive cannot be created
+    ///          or if memory allocation fails.
     mutating func openWrite(at: URL, format: libarchiveFormat, filters: [libarchiveFilter]) throws(ArchiveError) {
         var result: Int32
 

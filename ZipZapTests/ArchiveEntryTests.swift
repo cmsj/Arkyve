@@ -94,7 +94,7 @@ struct ArchiveEntryTests {
         let file2 = createFileEntry(path: "file2.txt")
 
         // Act
-        try root.addRootItems([file1, file2])
+        try root.addChildrenHierarchically([file1, file2])
 
         // Assert
         #expect(root.children?.count == 2)
@@ -110,7 +110,7 @@ struct ArchiveEntryTests {
 
         // Act & Assert
         #expect(throws: ArchiveError.self) {
-            try file.addRootItems([item])
+            try file.addChildrenHierarchically([item])
         }
     }
 
@@ -138,7 +138,7 @@ struct ArchiveEntryTests {
         // Arrange
         let root = ArchiveEntry(isRoot: true)
         let folder = ArchiveEntry(syntheticDirectory: "folder")
-        try root.addRootItems([folder])
+        try root.addChildrenHierarchically([folder])
         let file = createFileEntry(path: "folder/file.txt")
 
         // Act
@@ -240,7 +240,7 @@ struct ArchiveEntryTests {
         let fileA = createFileEntry(path: "a.txt")
         let fileB = createFileEntry(path: "b.txt")
 
-        try root.addRootItems([fileC, fileA, fileB])
+        try root.addChildrenHierarchically([fileC, fileA, fileB])
 
         // Act
         root.sort(using: KeyPathComparator(\.name))

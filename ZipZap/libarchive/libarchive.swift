@@ -15,7 +15,7 @@ actor libarchive {
 
     private var url: URL
     private var path: String {
-        get { url.path.removingPercentEncoding ?? "Unknown" }
+        url.path.removingPercentEncoding ?? "Unknown"
     }
 
     // MARK: Internal datatypes
@@ -58,7 +58,7 @@ actor libarchive {
         }
         return Date(since: 0)
     }
-    
+
     /// Read the filesystem path of a libarchive entry, if it has one
     /// - Parameter entry: A pointer to the libarchive entry
     /// - Returns: An optional string containing the filesystem path
@@ -79,7 +79,8 @@ actor libarchive {
 
     private func readHeaders() throws -> [libarchiveHeader] {
         guard readArchiveFD.archive != nil else {
-            throw ArchiveError.ArchiveEntriesError(archive: path, error: "readHeaders() called before archive was opened")
+            throw ArchiveError.ArchiveEntriesError(
+                archive: path, error: "readHeaders() called before archive was opened")
         }
 
         var headers: [libarchiveHeader] = []
@@ -91,7 +92,9 @@ actor libarchive {
             case ARCHIVE_OK:
                 break
             case ARCHIVE_FATAL:
-                throw ArchiveError.ArchiveOpenError(archive: "", error: String(cString: archive_error_string(readArchiveFD.archive)))
+                throw ArchiveError.ArchiveOpenError(
+                    archive: "", error: String(cString: archive_error_string(readArchiveFD.archive))
+                )
             case ARCHIVE_EOF:
                 #ZZTrace("Reached end of archive")
                 break readLoop
@@ -141,15 +144,23 @@ actor libarchive {
 
             if archive_entry_uid_is_set(entry) != 0 {
                 uid = archive_entry_uid(entry)
-            } else { uid = nil }
+            } else {
+                uid = nil
+            }
 
             if archive_entry_gid_is_set(entry) != 0 {
                 gid = archive_entry_gid(entry)
-            } else { gid = nil }
-            
+            } else {
+                gid = nil
+            }
+
             type = ArchiveEntryType(rawValue: archive_entry_filetype(entry))
 
-            headers.append(libarchiveHeader(source: source, type: type, path: path, name: name, pathComponents: pathComponents, size: size, atime: atime, ctime: ctime, mtime: mtime, btime: btime, uid: uid, gid: gid, perms: perms))
+            headers.append(
+                libarchiveHeader(
+                    source: source, type: type, path: path, name: name,
+                    pathComponents: pathComponents, size: size, atime: atime, ctime: ctime,
+                    mtime: mtime, btime: btime, uid: uid, gid: gid, perms: perms))
         }
 
         return headers
@@ -163,7 +174,9 @@ actor libarchive {
         var filters: [libarchiveFilter] = []
 
         for i in 0...archive_filter_count(readArchiveFD.archive) {
-            if let filter = libarchiveFilter(rawValue: archive_filter_code(readArchiveFD.archive, i)) {
+            if let filter = libarchiveFilter(
+                rawValue: archive_filter_code(readArchiveFD.archive, i))
+            {
                 filters.append(filter)
             }
         }
@@ -171,7 +184,9 @@ actor libarchive {
         return filters
     }
 
-    func readEntriesFormatFilters() throws -> (libarchiveFormat, [libarchiveFilter], [libarchiveHeader]) {
+    func readEntriesFormatFilters() throws -> (
+        libarchiveFormat, [libarchiveFilter], [libarchiveHeader]
+    ) {
         try readArchiveFD.openRead(path: path)
         defer { readArchiveFD.close() }
 
@@ -186,7 +201,8 @@ actor libarchive {
         let writeEntry = archive_entry_new()
 
         guard let data = headers.path.data(using: .utf8) else {
-            throw ArchiveError.ArchiveWriteError(archive: nil, error: "Unable to convert path to Data: \(headers.path)")
+            throw ArchiveError.ArchiveWriteError(
+                archive: nil, error: "Unable to convert path to Data: \(headers.path)")
         }
         archive_entry_set_pathname(writeEntry, data.bytes)
 
@@ -225,19 +241,27 @@ actor libarchive {
 
             let entries = archiveEntries.map { ArchiveEntry($0) }
             #ZZTrace("loadArchive() found \(entries.count) entries")
-            let (rootItems, remainingAll) = entries.filterBothwise { $0.path.countOccurrences(of: "/") == 0 }
-            let (remainingDirs, remainingFiles) = remainingAll.filterBothwise { $0.type == .directory }
+            let (rootItems, remainingAll) = entries.filterBothwise {
+                $0.path.countOccurrences(of: "/") == 0
+            }
+            let (remainingDirs, remainingFiles) = remainingAll.filterBothwise {
+                $0.type == .directory
+            }
             let root = ArchiveEntry(isRoot: true)
 
             var syntheticEntries: [ArchiveEntry] = []
-            try root.addRootItems(rootItems)
+//            try root.addRootItems(rootItems)
+            try root.addChildrenHierarchically(rootItems)
             syntheticEntries += try root.addChildrenHierarchically(remainingDirs)
             syntheticEntries += try root.addChildrenHierarchically(remainingFiles)
 
             let combinedEntries = entries + syntheticEntries
-            archive.populate(root: root, entries: combinedEntries, format: archiveFormat, filters: archiveFilters)
+            archive.populate(
+                root: root, entries: combinedEntries, format: archiveFormat, filters: archiveFilters
+            )
         } catch {
-            let error = ArchiveError.ArchiveOpenError(archive: self.path, error: error.localizedDescription)
+            let error = ArchiveError.ArchiveOpenError(
+                archive: self.path, error: error.localizedDescription)
             throw error
         }
 
@@ -245,21 +269,27 @@ actor libarchive {
         return archive
     }
 
-    public func extractEntries(_ extractableEntries: [ArchiveEntryExtractable], toFolder: URL, retainFullPath: Bool = false) async throws(ArchiveError) -> [URL] {
-        var pathMap: [String:URL] = [:]
+    public func extractEntries(
+        _ extractableEntries: [ArchiveEntryExtractable], toFolder: URL, retainFullPath: Bool = false
+    ) async throws(ArchiveError) -> [URL] {
+        var pathMap: [String: URL] = [:]
         var writtenURLs: [URL] = []
         var entryPtr: OpaquePointer?
 
         try readArchiveFD.openRead(path: path)
         defer { readArchiveFD.close() }
 
-        let synthPaths = extractableEntries.flatMap { $0.entries.filter { $0.isSynthesized == true }}
+        let synthPaths = extractableEntries.flatMap {
+            $0.entries.filter { $0.isSynthesized == true }
+        }
         for synthPath in synthPaths {
             let synthURL = toFolder.appendingPathComponent(synthPath.path)
             do {
-                try FileManager.default.createDirectory(at: synthURL, withIntermediateDirectories: true)
+                try FileManager.default.createDirectory(
+                    at: synthURL, withIntermediateDirectories: true)
             } catch {
-                throw ArchiveError.ArchiveExtractError(archive: synthPath.path, error: error.localizedDescription)
+                throw ArchiveError.ArchiveExtractError(
+                    archive: synthPath.path, error: error.localizedDescription)
             }
             writtenURLs.append(synthURL)
         }
@@ -271,7 +301,8 @@ actor libarchive {
                 if retainFullPath {
                     outputURL = toFolder.appendingPathComponent(entry.path)
                 } else {
-                    outputURL = toFolder.appendingPathComponent(entry.path.deletingPrefix(entryBasePath))
+                    outputURL = toFolder.appendingPathComponent(
+                        entry.path.deletingPrefix(entryBasePath))
                 }
                 pathMap[entry.path] = outputURL
             }
@@ -279,7 +310,7 @@ actor libarchive {
 
         #ZZTrace("Extracting \(pathMap.count) entries to \(toFolder.path)")
 
-        while (archive_read_next_header(readArchiveFD.archive, &entryPtr) == ARCHIVE_OK) {
+        while archive_read_next_header(readArchiveFD.archive, &entryPtr) == ARCHIVE_OK {
             if let path = entryPath(entryPtr) {
                 if pathMap.keys.contains(path) {
                     guard let outputURL = pathMap[path] else { continue }
@@ -288,10 +319,13 @@ actor libarchive {
                     case .file:
                         // Ensure all intermediate directories exist, incase we're extracting multiple levels of files that may not arrive in an order that guarantees their parent folder (synthetic or otherwise) is created first
                         do {
-                            try FileManager.default.createDirectory(at: outputURL.deletingLastPathComponent(), withIntermediateDirectories: true)
+                            try FileManager.default.createDirectory(
+                                at: outputURL.deletingLastPathComponent(),
+                                withIntermediateDirectories: true)
                         } catch {
-                            throw ArchiveError.ArchiveExtractError(archive: outputURL.deletingLastPathComponent().path,
-                                                                   error: error.localizedDescription)
+                            throw ArchiveError.ArchiveExtractError(
+                                archive: outputURL.deletingLastPathComponent().path,
+                                error: error.localizedDescription)
                         }
 
                         // Ensure our file exists
@@ -300,10 +334,12 @@ actor libarchive {
                             try Data().write(to: outputURL)
                             handle = try FileHandle(forWritingTo: outputURL)
                         } catch {
-                            throw ArchiveError.ArchiveExtractError(archive: outputURL.path,
-                                                                   error: error.localizedDescription)
+                            throw ArchiveError.ArchiveExtractError(
+                                archive: outputURL.path,
+                                error: error.localizedDescription)
                         }
-                        let result = archive_read_data_into_fd(readArchiveFD.archive, handle.fileDescriptor)
+                        let result = archive_read_data_into_fd(
+                            readArchiveFD.archive, handle.fileDescriptor)
                         if result != ARCHIVE_OK {
                             let error = "Unable to write to \(outputURL.path)"
                             throw ArchiveError.ArchiveExtractError(archive: path, error: error)
@@ -313,9 +349,11 @@ actor libarchive {
                         writtenURLs.append(outputURL)
                     case .directory:
                         do {
-                            try FileManager.default.createDirectory(at: outputURL, withIntermediateDirectories: true)
+                            try FileManager.default.createDirectory(
+                                at: outputURL, withIntermediateDirectories: true)
                         } catch {
-                            throw ArchiveError.ArchiveExtractError(archive: outputURL.path, error: error.localizedDescription)
+                            throw ArchiveError.ArchiveExtractError(
+                                archive: outputURL.path, error: error.localizedDescription)
                         }
                         archive_read_data_skip(readArchiveFD.archive)
                         #ZZTrace("  Created \(outputURL.path(percentEncoded: false))")
@@ -325,13 +363,18 @@ actor libarchive {
                         let linkDest = String(cString: archive_entry_symlink(entryPtr))
 
                         do {
-                            try FileManager.default.createSymbolicLink(atPath: outputURL.path, withDestinationPath: linkDest, overwrite: true)
+                            try FileManager.default.createSymbolicLink(
+                                atPath: outputURL.path, withDestinationPath: linkDest,
+                                overwrite: true)
                         } catch {
-                            throw ArchiveError.ArchiveExtractError(archive: outputURL.path, error: error.localizedDescription)
+                            throw ArchiveError.ArchiveExtractError(
+                                archive: outputURL.path, error: error.localizedDescription)
                         }
                         #ZZTrace("  Linked \(outputURL.path) to \(linkDest)")
                     default:
-                        #ZZWarn("Skipping archive entry \(path) of type \(entryType.rawValue), it is an unsupported type")
+                        #ZZWarn(
+                            "Skipping archive entry \(path) of type \(entryType.rawValue), it is an unsupported type"
+                        )
                     }
 
                     // Set some metadata on the filesystem object we just wrote
@@ -339,17 +382,18 @@ actor libarchive {
                     let mtime = readDate(.mtime, for: entryPtr)
 
                     do {
-                        var attributes: [FileAttributeKey : Any] = [:]
+                        var attributes: [FileAttributeKey: Any] = [:]
 
-                        if (btime != Date(since: 0)) {
+                        if btime != Date(since: 0) {
                             attributes[.creationDate] = btime
                         }
-                        if (mtime != Date(since: 0)) {
+                        if mtime != Date(since: 0) {
                             attributes[.modificationDate] = mtime
                         }
 
                         if attributes.count > 0 {
-                            try FileManager.default.setAttributes(attributes, ofItemAtPath: outputURL.path)
+                            try FileManager.default.setAttributes(
+                                attributes, ofItemAtPath: outputURL.path)
                         }
                     } catch {
                         #ZZWarn("Unable to read/set file attributes for \(outputURL.path)")
@@ -363,17 +407,20 @@ actor libarchive {
         return writtenURLs
     }
 
-//    func createArchive(to: URL, format: libarchiveFormat, filters: [libarchiveFilter], entries: [libarchiveHeader]) throws {
-//        try saveArchive(from: nil, to: to, format: format, filters: filters, entries: entries)
-//    }
-    
+    //    func createArchive(to: URL, format: libarchiveFormat, filters: [libarchiveFilter], entries: [libarchiveHeader]) throws {
+    //        try saveArchive(from: nil, to: to, format: format, filters: filters, entries: entries)
+    //    }
+
     /// Write the archive to a URL
     /// - Parameters:
     ///   - headerMap: A dictionary containing path to ArchiveEntryFlat mappings. This determines the entries that will be written to the new archive
     ///   - to: A URL describing the filesystem location to write the archive to
     ///   - format: A libarchiveFormat describing the type of archive to write
     ///   - filters: An array of libarchiveFilter, describing which filters to apply to the archive
-    public func writeArchive(headerMap: [String:ArchiveEntryFlat], to: URL, format: libarchiveFormat, filters: [libarchiveFilter]) async throws {
+    public func writeArchive(
+        headerMap: [String: ArchiveEntryFlat], to: URL, format: libarchiveFormat,
+        filters: [libarchiveFilter]
+    ) async throws {
         var headerMap = headerMap
         var result: Int32 = ARCHIVE_OK
 
@@ -385,40 +432,58 @@ actor libarchive {
         defer { writeArchiveFD.close() }
 
         var readEntry: OpaquePointer?
-        let rbuf: UnsafeMutableRawPointer = UnsafeMutableRawPointer.allocate(byteCount: 524288, alignment: MemoryLayout<UInt8>.size)
+        let rbuf: UnsafeMutableRawPointer = UnsafeMutableRawPointer.allocate(
+            byteCount: 524288, alignment: MemoryLayout<UInt8>.size)
         defer { rbuf.deallocate() }
         var rsize: size_t = size_t()
         var wsize: size_t = size_t()
 
         // First, examine the existing archive to find entries we need to copy over
-        while (archive_read_next_header(readArchiveFD.archive, &readEntry) == ARCHIVE_OK && result != ARCHIVE_EOF) {
+        while archive_read_next_header(readArchiveFD.archive, &readEntry) == ARCHIVE_OK && result != ARCHIVE_EOF
+        {
             guard let readEntryPath = entryPath(readEntry) else { continue }
-            
+
             // Find every entry in the tree that started out as this path, and in the archive
             // NOTE: We're not expecting to find multiple values here, but in the future we might want to offer the ability to duplicate a file within an archive
-            for mapEntryKey in headerMap.keys.filter({ headerMap[$0]?.header.source.path == readEntryPath && headerMap[$0]?.header.source.type == .Archive }) {
+            let mapEntryKeys = headerMap.keys.filter {
+                headerMap[$0]?.header.source.path == readEntryPath && headerMap[$0]?.header.source.type == .Archive
+            }
+
+            guard !mapEntryKeys.isEmpty else {
+                archive_read_data_skip(readArchiveFD.archive)
+                continue
+            }
+
+            for mapEntryKey in mapEntryKeys {
                 guard let header = headerMap[mapEntryKey]?.header else { continue }
 
                 // Read from archive and write to new archive
                 try writeArchiveEntryHeader(to: writeArchiveFD, headers: header)
 
-                while (true) {
+                while true {
                     rsize = archive_read_data(readArchiveFD.archive, rbuf, 524288)
-                    if (rsize <= 0) { break }
+                    if rsize <= 0 { break }
 
                     wsize = archive_write_data(writeArchiveFD.archive, rbuf, rsize)
-                    if (wsize < 0) {
-                        throw ArchiveError.ArchiveWriteError(archive: to.path, error: "Failed to write data: \(String(describing: archive_error_string(writeArchiveFD.archive))).")
+                    if wsize < 0 {
+                        throw ArchiveError.ArchiveWriteError(
+                            archive: to.path,
+                            error:
+                                "Failed to write data: \(String(describing: archive_error_string(writeArchiveFD.archive)))."
+                        )
                     }
 
-                    if (rsize != wsize) {
-                        // FIXME: Figure out if this is likely to happen and what we should do
-                        print("HELP! rsize: \(rsize), wsize: \(wsize)")
+                    if rsize != wsize {
+                        throw ArchiveError.ArchiveWriteError(
+                            archive: to.path,
+                            error:
+                                "Data size mismatch during write: read \(rsize) bytes but wrote \(wsize) bytes"
+                        )
                     }
                 }
 
                 result = archive_write_finish_entry(writeArchiveFD.archive)
-                if (result != ARCHIVE_OK) {
+                if result != ARCHIVE_OK {
                     let error = String(cString: archive_error_string(writeArchiveFD.archive))
                     throw ArchiveError.ArchiveWriteError(archive: to.path, error: error)
                 }
@@ -431,16 +496,43 @@ actor libarchive {
         }
 
         // Second, process any filesystem-sourced entries that have been added to the archive
-        for filePath in headerMap.keys.filter({ headerMap[$0]?.header.source.type == .Filesystem }) {
+        for filePath in headerMap.keys.filter({ headerMap[$0]?.header.source.type == .Filesystem })
+        {
             try writeArchiveEntryHeader(to: writeArchiveFD, headers: headerMap[filePath]!.header)
 
-            // FIXME: Open the filesystem file here
-            while (true) {
-                // FIXME: Read the filesystem file in chunks here and archive_write_data() them
+            let fileURL = URL(fileURLWithPath: filePath)
+            guard let fileHandle = try? FileHandle(forReadingFrom: fileURL) else {
+                throw ArchiveError.ArchiveWriteError(
+                    archive: to.path, error: "Failed to open file for reading: \(filePath)")
             }
-            
+            defer { try? fileHandle.close() }
+
+            while true {
+                let data = try fileHandle.read(upToCount: 524288)
+                guard let data = data, !data.isEmpty else { break }
+
+                try? data.withUnsafeBytes { ptr in
+                    let wsize = archive_write_data(
+                        writeArchiveFD.archive, ptr.baseAddress, data.count)
+                    if wsize < 0 {
+                        throw ArchiveError.ArchiveWriteError(
+                            archive: to.path,
+                            error:
+                                "Failed to write data: \(String(describing: archive_error_string(writeArchiveFD.archive)))"
+                        )
+                    }
+                    if wsize != data.count {
+                        throw ArchiveError.ArchiveWriteError(
+                            archive: to.path,
+                            error:
+                                "Data size mismatch during write: expected \(data.count) bytes but wrote \(wsize) bytes"
+                        )
+                    }
+                }
+            }
+
             result = archive_write_finish_entry(writeArchiveFD.archive)
-            if (result != ARCHIVE_OK) {
+            if result != ARCHIVE_OK {
                 let error = String(cString: archive_error_string(writeArchiveFD.archive))
                 throw ArchiveError.ArchiveWriteError(archive: to.path, error: error)
             }
@@ -450,13 +542,19 @@ actor libarchive {
             headerMap.removeValue(forKey: filePath)
         }
         // FIXME: Deal with: do we have any headerMap entries left?
+        if !headerMap.isEmpty {
+            #ZZWarn(
+                "Some entries were not processed during archive write: \(headerMap.keys.joined(separator: ", "))"
+            )
+        }
 
         writeArchiveFD.close()
 
         if let writeCacheURL = writeArchiveFD.writeCacheURL {
             #ZZTrace("Moving archive cache to final destination: \(writeCacheURL) -> \(to)")
             do {
-                _ = try FileManager.default.replaceItemAt(to, withItemAt: writeCacheURL, options: [.usingNewMetadataOnly])
+                _ = try FileManager.default.replaceItemAt(
+                    to, withItemAt: writeCacheURL, options: [.usingNewMetadataOnly])
             } catch {
                 try FileManager.default.moveItem(at: writeCacheURL, to: to)
             }

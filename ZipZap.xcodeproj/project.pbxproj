@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4F04F9002D8CAF0800F0953B /* URL.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F04F8FF2D8CAF0700F0953B /* URL.swift */; };
+		4F04F9012D8CAF0900F0953B /* URL.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F04F8FF2D8CAF0700F0953B /* URL.swift */; };
 		4F10848B2C261BB7007DCC39 /* ZZLog in Frameworks */ = {isa = PBXBuildFile; productRef = 4F10848A2C261BB7007DCC39 /* ZZLog */; };
 		4F10848E2C262396007DCC39 /* ZipZapLog.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F10848D2C262393007DCC39 /* ZipZapLog.swift */; };
 		4F1084922C262D5D007DCC39 /* LogWindowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F1084912C262D5D007DCC39 /* LogWindowView.swift */; };
@@ -84,6 +86,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		4F04F8FF2D8CAF0700F0953B /* URL.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URL.swift; sourceTree = "<group>"; };
 		4F1084872C26189A007DCC39 /* ZZLog */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = ZZLog; sourceTree = SOURCE_ROOT; };
 		4F10848D2C262393007DCC39 /* ZipZapLog.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZipZapLog.swift; sourceTree = "<group>"; };
 		4F1084912C262D5D007DCC39 /* LogWindowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogWindowView.swift; sourceTree = "<group>"; };
@@ -306,6 +309,7 @@
 		4FD4BA542C07C57C00082C13 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
+				4F04F8FF2D8CAF0700F0953B /* URL.swift */,
 				4FA020482D2DD69D00E1CE58 /* withTaskProgression.swift */,
 				4F7121862C0F48EB000EB268 /* Array.swift */,
 				4F41C42B2D1F47650011DAAB /* Data.swift */,
@@ -439,6 +443,7 @@
 				4FA0204A2D2DD6A000E1CE58 /* withTaskProgression.swift in Sources */,
 				4F41C41E2D1B5A320011DAAB /* Array.swift in Sources */,
 				4F41C41D2D1B58AA0011DAAB /* Date.swift in Sources */,
+				4F04F9012D8CAF0900F0953B /* URL.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -461,6 +466,7 @@
 				4F8BD3B12D39BD420087091C /* FormatPickerViewModel.swift in Sources */,
 				4FD4BA562C07C58E00082C13 /* Date.swift in Sources */,
 				4FED41E52D237674003BA92B /* FileManager.swift in Sources */,
+				4F04F9002D8CAF0800F0953B /* URL.swift in Sources */,
 				4F22BDCB2CAE95820079FAC0 /* libarchiveFilter.swift in Sources */,
 				4FED41E32D23752A003BA92B /* libarchiveFD.swift in Sources */,
 				4FCEEF2C2BEE3D72009E9E17 /* ArchiveEntry.swift in Sources */,

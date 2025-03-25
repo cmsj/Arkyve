@@ -30,7 +30,7 @@ extension ArchiveEntryExtractable: Transferable {
             guard let archiveURL = entryDraggable.archiveURL else { return Data() }
             guard let cacheURL = entryDraggable.cacheURL else { return Data() }
 
-            let loader = libarchive(url: archiveURL)
+            let loader = libarchiveWrapper(url: archiveURL)
 
             do {
                 let writtenURLs = try await loader.extractEntries([entryDraggable], toFolder: cacheURL)

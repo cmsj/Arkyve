@@ -68,7 +68,7 @@ class MainWindowViewModel {
     // MARK: - Archive operations
 
     func openArchive(url: URL) async {
-        let loader = libarchive(url: url)
+        let loader = libarchiveWrapper(url: url)
         self.disableUI = true
         defer { self.disableUI = false }
 
@@ -96,7 +96,7 @@ class MainWindowViewModel {
 
     func saveArchive(to: URL, overrideFormat: libarchiveFormat = .Unknown, overrideFilter: libarchiveFilter = .None) async {
         guard let archive = archive else { return }
-        let loader = libarchive(url: archive.URL)
+        let loader = libarchiveWrapper(url: archive.URL)
         self.disableUI = true
         defer { self.disableUI = false }
 
@@ -124,7 +124,7 @@ class MainWindowViewModel {
         guard let cacheURL = archive?.cacheURL else { return }
 
         Task {
-            let loader = libarchive(url: archiveURL)
+            let loader = libarchiveWrapper(url: archiveURL)
             let chosenEntries = archive?.entries.filter { selectedEntries.contains($0.id) } ?? []
             var extractableEntries: [ArchiveEntryExtractable] = []
 
@@ -233,7 +233,7 @@ class MainWindowViewModel {
                 }
 
                 Task {
-                    let loader = libarchive(url: archiveURL)
+                    let loader = libarchiveWrapper(url: archiveURL)
                     self.disableUI = true
                     defer { self.disableUI = false }
 

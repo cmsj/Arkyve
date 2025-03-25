@@ -21,7 +21,7 @@ import Foundation
 
         #expect(url != nil)
 
-        let loader = libarchive(url: url!)
+        let loader = libarchiveWrapper(url: url!)
         archive = try await loader.loadArchive()
     }
 
@@ -51,7 +51,7 @@ import Foundation
     }
 
     @Test func testArchiveOpenFail() async throws {
-        let loader = libarchive(url: URL(filePath: "smb://lol")!)
+        let loader = libarchiveWrapper(url: URL(filePath: "smb://lol")!)
         await #expect(throws: ArchiveError.self) {
             _ = try await loader.loadArchive()
         }

@@ -60,7 +60,7 @@ struct libarchiveTestsClaudeFuyo {
         let archiveURL = try getTestArchive(named: "helloworld.zip")
         defer { cleanupTestFiles([archiveURL]) }
 
-        let archive = libarchive(url: archiveURL)
+        let archive = libarchiveWrapper(url: archiveURL)
 
         // Test reading entries, format, and filters
         let (format, filters, headers) = try await archive.readEntriesFormatFilters()
@@ -88,7 +88,7 @@ struct libarchiveTestsClaudeFuyo {
         let archiveURL = try getTestArchive(named: "helloworld.zip")
         defer { cleanupTestFiles([archiveURL]) }
 
-        let archive = libarchive(url: archiveURL)
+        let archive = libarchiveWrapper(url: archiveURL)
 
         // Test loading the archive
         let loadedArchive = try await archive.loadArchive()
@@ -107,7 +107,7 @@ struct libarchiveTestsClaudeFuyo {
         let archiveURL = try getTestArchive(named: "helloworld.zip")
         defer { cleanupTestFiles([archiveURL]) }
 
-        let archive = libarchive(url: archiveURL)
+        let archive = libarchiveWrapper(url: archiveURL)
 
         // Load the archive to get entries
         let loadedArchive = try await archive.loadArchive()
@@ -139,7 +139,7 @@ struct libarchiveTestsClaudeFuyo {
         let archiveURL = try getTestArchive(named: "test_archive_nested.zip")
         defer { cleanupTestFiles([archiveURL]) }
 
-        let archive = libarchive(url: archiveURL)
+        let archive = libarchiveWrapper(url: archiveURL)
 
         // Load the archive to get entries
         let loadedArchive = try await archive.loadArchive()
@@ -184,7 +184,7 @@ struct libarchiveTestsClaudeFuyo {
         let archiveURL = try getTestArchive(named: "helloworld.zip")
         defer { cleanupTestFiles([archiveURL]) }
 
-        let archive = libarchive(url: archiveURL)
+        let archive = libarchiveWrapper(url: archiveURL)
 
         // Load the archive to get entries
         let loadedArchive = try await archive.loadArchive()
@@ -213,7 +213,7 @@ struct libarchiveTestsClaudeFuyo {
         #expect(exists)
 
         // Verify the new archive can be read
-        let newArchiveLib = libarchive(url: newArchiveURL)
+        let newArchiveLib = libarchiveWrapper(url: newArchiveURL)
         let (format, filters, headers) = try await newArchiveLib.readEntriesFormatFilters()
 
         // Verify the new archive has the expected format, filters, and entries
@@ -237,7 +237,7 @@ struct libarchiveTestsClaudeFuyo {
                 let archiveURL = try getTestArchive(named: formatName)
                 defer { cleanupTestFiles([archiveURL]) }
 
-                let archive = libarchive(url: archiveURL)
+                let archive = libarchiveWrapper(url: archiveURL)
 
                 // Test reading entries, format, and filters
                 let (format, filters, headers) = try await archive.readEntriesFormatFilters()
@@ -272,7 +272,7 @@ struct libarchiveTestsClaudeFuyo {
         let archiveURL = try getTestArchive(named: "helloworld.zip")
         defer { cleanupTestFiles([archiveURL]) }
 
-        let archive = libarchive(url: archiveURL)
+        let archive = libarchiveWrapper(url: archiveURL)
 
         // Read entries which will use the readDate method internally
         let (_, _, headers) = try await archive.readEntriesFormatFilters()
@@ -295,7 +295,7 @@ struct libarchiveTestsClaudeFuyo {
         let archiveURL = try getTestArchive(named: "helloworld.zip")
         defer { cleanupTestFiles([archiveURL]) }
 
-        let archive = libarchive(url: archiveURL)
+        let archive = libarchiveWrapper(url: archiveURL)
 
         // Read entries which will use the entryPath method internally
         let (_, _, headers) = try await archive.readEntriesFormatFilters()
@@ -313,7 +313,7 @@ struct libarchiveTestsClaudeFuyo {
     @Test("Error handling for non-existent archive")
     func testErrorHandlingForNonExistentArchive() async throws {
         let nonExistentURL = URL(fileURLWithPath: "/path/to/nonexistent.zip")
-        let archive = libarchive(url: nonExistentURL)
+        let archive = libarchiveWrapper(url: nonExistentURL)
 
         // Attempt to read a non-existent archive should throw an error
         do {
@@ -340,7 +340,7 @@ struct libarchiveTestsClaudeFuyo {
         try "This is not a valid archive".write(to: invalidArchiveURL, atomically: true, encoding: .utf8)
         defer { cleanupTestFiles([invalidArchiveURL]) }
 
-        let archive = libarchive(url: invalidArchiveURL)
+        let archive = libarchiveWrapper(url: invalidArchiveURL)
 
         // Attempt to read an invalid archive should throw an error
         do {

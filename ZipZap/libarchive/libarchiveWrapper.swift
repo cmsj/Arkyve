@@ -10,7 +10,7 @@ import SwiftUI
 import ZZLog
 
 /// Wrapper for all libarchive activities
-actor libarchive {
+actor libarchiveWrapper {
     private var readArchiveFD = libarchiveFD(type: .read)
 
     private var url: URL

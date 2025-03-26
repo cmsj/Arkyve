@@ -9,7 +9,7 @@ import Testing
 import Foundation
 @testable import ZipZap // Assuming your module is named ZipZap
 
-@Suite("libarchiveTests", .serialized)
+@Suite("libarchiveTestsClaudeFuyo", .serialized)
 struct libarchiveTestsClaudeFuyo {
 
     // MARK: - Test Helpers
@@ -136,7 +136,7 @@ struct libarchiveTestsClaudeFuyo {
     @Test("Extract entries with path retention")
     func testExtractEntriesWithPathRetention() async throws {
         // Get test archive from bundle
-        let archiveURL = try getTestArchive(named: "test_archive_nested.zip")
+        let archiveURL = try getTestArchive(named: "helloworld.zip")
         defer { cleanupTestFiles([archiveURL]) }
 
         let archive = libarchiveWrapper(url: archiveURL)

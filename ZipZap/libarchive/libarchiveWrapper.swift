@@ -18,6 +18,16 @@ actor libarchiveWrapper {
         url.path.removingPercentEncoding ?? "Unknown"
     }
 
+#if DEBUG
+    func testURL() -> URL {
+        return url
+    }
+
+    func testPath() -> String {
+        return path
+    }
+#endif
+
     // MARK: Internal datatypes
     enum DateTypes {
         case atime

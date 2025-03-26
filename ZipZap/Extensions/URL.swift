@@ -5,6 +5,8 @@
 //  Created by Chris Jones on 20/03/2025.
 //
 
+import Foundation
+
 extension URL {
     func relativeTo(_ base: URL? = nil) -> String {
         // FIXME: Can we just do this instead?

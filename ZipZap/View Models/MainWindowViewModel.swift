@@ -34,7 +34,7 @@ class MainWindowViewModel {
     var disableRevert: Bool { get { disableUI == true || archive?.dirty != true || archive?.existsOnDisk != true }}
     var disableClose: Bool { get { disableUI == true || archive == nil }}
     var disableSave: Bool { get { disableUI == true || archive?.dirty != true }}
-    var disableSaveAs: Bool { get { disableSave }}
+    var disableSaveAs: Bool { get { disableUI == true || archive == nil }}
     var disableQuicklook: Bool { get { disableUI == true || selectedEntries.isEmpty }}
     var disableExtract: Bool { get { disableUI == true || selectedEntries.isEmpty }}
     var disableRename: Bool { get { disableUI == true || selectedEntries.count != 1 }}
@@ -114,7 +114,17 @@ class MainWindowViewModel {
                 Task { @MainActor in setProgress(progression) }
             }
         } catch {
-            showErrors.err(ArchiveError.ArchiveWriteError(archive: "\(String(describing: URL.path)) -> \(to.path)", error: error.localizedDescription))
+            showErrors.err(ArchiveError.ArchiveWriteError(archive: archive.name, error: error.localizedDescription))
+        }
+    }
+
+    func copyArchive(to: URL) {
+        guard let archive else { return }
+
+        do {
+            try FileManager.default.copyItem(at: archive.URL, to: to)
+        } catch {
+            showErrors.err(ArchiveError.ArchiveWriteError(archive: archive.name, error: error.localizedDescription))
         }
     }
 
@@ -318,7 +328,13 @@ class MainWindowViewModel {
                 archive.name = destURL.lastPathComponent
                 Task {
                     #ZZTrace("Save As to \(destURL) (format: \(viewModel.format) \(viewModel.filter))")
-                    await saveArchive(to: destURL, overrideFormat: viewModel.format, overrideFilter: viewModel.filter)
+
+                    if !archive.dirty && archive.format == viewModel.format && archive.filters.contains(viewModel.filter) {
+                        // This is a performance optimisation - the archive/format/filters haven't changed, so just copy the existing archive file
+                        copyArchive(to: destURL)
+                    } else {
+                        await saveArchive(to: destURL, overrideFormat: viewModel.format, overrideFilter: viewModel.filter)
+                    }
                 }
             }
         }

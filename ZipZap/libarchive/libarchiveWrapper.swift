@@ -89,8 +89,8 @@ actor libarchiveWrapper {
 
     private func readHeaders() throws -> [libarchiveHeader] {
         guard readArchiveFD.archive != nil else {
-            throw ArchiveError.ArchiveEntriesError(
-                archive: path, error: "readHeaders() called before archive was opened")
+            throw ArchiveError.ArchiveEntriesError(archive: path,
+                                                   error: "readHeaders() called before archive was opened")
         }
 
         var headers: [libarchiveHeader] = []
@@ -102,8 +102,8 @@ actor libarchiveWrapper {
             case ARCHIVE_OK:
                 break
             case ARCHIVE_FATAL:
-                throw ArchiveError.ArchiveOpenError(
-                    archive: "", error: String(cString: archive_error_string(readArchiveFD.archive))
+                throw ArchiveError.ArchiveOpenError(archive: "",
+                                                    error: String(cString: archive_error_string(readArchiveFD.archive))
                 )
             case ARCHIVE_EOF:
                 #ZZTrace("Reached end of archive")
@@ -194,9 +194,9 @@ actor libarchiveWrapper {
         return filters
     }
 
-    func readEntriesFormatFilters() throws -> (
-        libarchiveFormat, [libarchiveFilter], [libarchiveHeader]
-    ) {
+    func readEntriesFormatFilters() throws -> (libarchiveFormat,
+                                               [libarchiveFilter],
+                                               [libarchiveHeader]) {
         try readArchiveFD.openRead(path: path)
         defer { readArchiveFD.close() }
 
@@ -220,10 +220,10 @@ actor libarchiveWrapper {
             archive_entry_set_size(writeEntry, headers.size)
         }
 
-        archive_entry_set_atime(writeEntry, Int(headers.atime.timeIntervalSince1970), 0)
+        archive_entry_set_atime(writeEntry,     Int(headers.atime.timeIntervalSince1970), 0)
         archive_entry_set_birthtime(writeEntry, Int(headers.btime.timeIntervalSince1970), 0)
-        archive_entry_set_ctime(writeEntry, Int(headers.ctime.timeIntervalSince1970), 0)
-        archive_entry_set_mtime(writeEntry, Int(headers.mtime.timeIntervalSince1970), 0)
+        archive_entry_set_ctime(writeEntry,     Int(headers.ctime.timeIntervalSince1970), 0)
+        archive_entry_set_mtime(writeEntry,     Int(headers.mtime.timeIntervalSince1970), 0)
 
         if let uid = headers.uid {
             archive_entry_set_uid(writeEntry, uid)
@@ -266,12 +266,11 @@ actor libarchiveWrapper {
             syntheticEntries += try root.addChildrenHierarchically(remainingFiles)
 
             let combinedEntries = entries + syntheticEntries
-            archive.populate(
-                root: root, entries: combinedEntries, format: archiveFormat, filters: archiveFilters
-            )
+            archive.populate(root: root, entries: combinedEntries,
+                             format: archiveFormat, filters: archiveFilters)
         } catch {
-            let error = ArchiveError.ArchiveOpenError(
-                archive: self.path, error: error.localizedDescription)
+            let error = ArchiveError.ArchiveOpenError(archive: self.path,
+                                                      error: error.localizedDescription)
             throw error
         }
 
@@ -279,9 +278,9 @@ actor libarchiveWrapper {
         return archive
     }
 
-    public func extractEntries(
-        _ extractableEntries: [ArchiveEntryExtractable], toFolder: URL, retainFullPath: Bool = false
-    ) async throws(ArchiveError) -> [URL] {
+    public func extractEntries(_ extractableEntries: [ArchiveEntryExtractable],
+                               toFolder: URL,
+                               retainFullPath: Bool = false) async throws(ArchiveError) -> [URL] {
         var pathMap: [String: URL] = [:]
         var writtenURLs: [URL] = []
         var entryPtr: OpaquePointer?
@@ -295,11 +294,11 @@ actor libarchiveWrapper {
         for synthPath in synthPaths {
             let synthURL = toFolder.appendingPathComponent(synthPath.path)
             do {
-                try FileManager.default.createDirectory(
-                    at: synthURL, withIntermediateDirectories: true)
+                try FileManager.default.createDirectory(at: synthURL,
+                                                        withIntermediateDirectories: true)
             } catch {
-                throw ArchiveError.ArchiveExtractError(
-                    archive: synthPath.path, error: error.localizedDescription)
+                throw ArchiveError.ArchiveExtractError(archive: synthPath.path,
+                                                       error: error.localizedDescription)
             }
             writtenURLs.append(synthURL)
         }
@@ -329,13 +328,11 @@ actor libarchiveWrapper {
                     case .file:
                         // Ensure all intermediate directories exist, incase we're extracting multiple levels of files that may not arrive in an order that guarantees their parent folder (synthetic or otherwise) is created first
                         do {
-                            try FileManager.default.createDirectory(
-                                at: outputURL.deletingLastPathComponent(),
-                                withIntermediateDirectories: true)
+                            try FileManager.default.createDirectory(at: outputURL.deletingLastPathComponent(),
+                                                                    withIntermediateDirectories: true)
                         } catch {
-                            throw ArchiveError.ArchiveExtractError(
-                                archive: outputURL.deletingLastPathComponent().path,
-                                error: error.localizedDescription)
+                            throw ArchiveError.ArchiveExtractError(archive: outputURL.deletingLastPathComponent().path,
+                                                                   error: error.localizedDescription)
                         }
 
                         // Ensure our file exists
@@ -344,9 +341,8 @@ actor libarchiveWrapper {
                             try Data().write(to: outputURL)
                             handle = try FileHandle(forWritingTo: outputURL)
                         } catch {
-                            throw ArchiveError.ArchiveExtractError(
-                                archive: outputURL.path,
-                                error: error.localizedDescription)
+                            throw ArchiveError.ArchiveExtractError(archive: outputURL.path,
+                                                                   error: error.localizedDescription)
                         }
                         let result = archive_read_data_into_fd(
                             readArchiveFD.archive, handle.fileDescriptor)
@@ -359,11 +355,11 @@ actor libarchiveWrapper {
                         writtenURLs.append(outputURL)
                     case .directory:
                         do {
-                            try FileManager.default.createDirectory(
-                                at: outputURL, withIntermediateDirectories: true)
+                            try FileManager.default.createDirectory(at: outputURL,
+                                                                    withIntermediateDirectories: true)
                         } catch {
-                            throw ArchiveError.ArchiveExtractError(
-                                archive: outputURL.path, error: error.localizedDescription)
+                            throw ArchiveError.ArchiveExtractError(archive: outputURL.path,
+                                                                   error: error.localizedDescription)
                         }
                         archive_read_data_skip(readArchiveFD.archive)
                         #ZZTrace("  Created \(outputURL.path(percentEncoded: false))")
@@ -373,12 +369,12 @@ actor libarchiveWrapper {
                         let linkDest = String(cString: archive_entry_symlink(entryPtr))
 
                         do {
-                            try FileManager.default.createSymbolicLink(
-                                atPath: outputURL.path, withDestinationPath: linkDest,
-                                overwrite: true)
+                            try FileManager.default.createSymbolicLink(atPath: outputURL.path,
+                                                                       withDestinationPath: linkDest,
+                                                                       overwrite: true)
                         } catch {
-                            throw ArchiveError.ArchiveExtractError(
-                                archive: outputURL.path, error: error.localizedDescription)
+                            throw ArchiveError.ArchiveExtractError(archive: outputURL.path,
+                                                                   error: error.localizedDescription)
                         }
                         #ZZTrace("  Linked \(outputURL.path) to \(linkDest)")
                     default:
@@ -476,19 +472,14 @@ actor libarchiveWrapper {
 
                     wsize = archive_write_data(writeArchiveFD.archive, rbuf, rsize)
                     if wsize < 0 {
-                        throw ArchiveError.ArchiveWriteError(
-                            archive: to.path,
-                            error:
-                                "Failed to write data: \(String(describing: archive_error_string(writeArchiveFD.archive)))."
+                        throw ArchiveError.ArchiveWriteError(archive: to.path,
+                                                             error: "Failed to write data: \(String(describing: archive_error_string(writeArchiveFD.archive)))."
                         )
                     }
 
                     if rsize != wsize {
-                        throw ArchiveError.ArchiveWriteError(
-                            archive: to.path,
-                            error:
-                                "Data size mismatch during write: read \(rsize) bytes but wrote \(wsize) bytes"
-                        )
+                        throw ArchiveError.ArchiveWriteError(archive: to.path,
+                                                             error: "Data size mismatch during write: read \(rsize) bytes but wrote \(wsize) bytes")
                     }
                 }
 
@@ -512,8 +503,8 @@ actor libarchiveWrapper {
 
             let fileURL = URL(fileURLWithPath: filePath)
             guard let fileHandle = try? FileHandle(forReadingFrom: fileURL) else {
-                throw ArchiveError.ArchiveWriteError(
-                    archive: to.path, error: "Failed to open file for reading: \(filePath)")
+                throw ArchiveError.ArchiveWriteError(archive: to.path,
+                                                     error: "Failed to open file for reading: \(filePath)")
             }
             defer { try? fileHandle.close() }
 
@@ -522,20 +513,15 @@ actor libarchiveWrapper {
                 guard let data = data, !data.isEmpty else { break }
 
                 try? data.withUnsafeBytes { ptr in
-                    let wsize = archive_write_data(
-                        writeArchiveFD.archive, ptr.baseAddress, data.count)
+                    let wsize = archive_write_data(writeArchiveFD.archive, ptr.baseAddress, data.count)
                     if wsize < 0 {
-                        throw ArchiveError.ArchiveWriteError(
-                            archive: to.path,
-                            error:
-                                "Failed to write data: \(String(describing: archive_error_string(writeArchiveFD.archive)))"
+                        throw ArchiveError.ArchiveWriteError(archive: to.path,
+                                                             error: "Failed to write data: \(String(describing: archive_error_string(writeArchiveFD.archive)))"
                         )
                     }
                     if wsize != data.count {
-                        throw ArchiveError.ArchiveWriteError(
-                            archive: to.path,
-                            error:
-                                "Data size mismatch during write: expected \(data.count) bytes but wrote \(wsize) bytes"
+                        throw ArchiveError.ArchiveWriteError(archive: to.path,
+                                                             error: "Data size mismatch during write: expected \(data.count) bytes but wrote \(wsize) bytes"
                         )
                     }
                 }
@@ -563,8 +549,7 @@ actor libarchiveWrapper {
         if let writeCacheURL = writeArchiveFD.writeCacheURL {
             #ZZTrace("Moving archive cache to final destination: \(writeCacheURL) -> \(to)")
             do {
-                _ = try FileManager.default.replaceItemAt(
-                    to, withItemAt: writeCacheURL, options: [.usingNewMetadataOnly])
+                _ = try FileManager.default.replaceItemAt(to, withItemAt: writeCacheURL, options: [.usingNewMetadataOnly])
             } catch {
                 try FileManager.default.moveItem(at: writeCacheURL, to: to)
             }

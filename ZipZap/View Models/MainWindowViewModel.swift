@@ -107,7 +107,7 @@ class MainWindowViewModel {
             $0[$1.path] = $1.flatSelf()
         }
         do {
-            try await withTaskProgression { _ in
+            try await withTaskProgression(totalUnits: archive.entries.count) { _ in
                 try await loader.writeArchive(headerMap: headerMap, to: to, format: format, filters: filters)
                 archive.setDirty(false)
             } progress: { progression in
@@ -401,12 +401,12 @@ class MainWindowViewModel {
         
         // 2. Find the new parent
         let newParent: ArchiveEntry
-        if let entryID = entryID {
+        if let entryID = entryID, entryID != archive.root.id {
             // If we have an entryID, find that entry in the archive
             guard let parent = archive.entries.first(where: { $0.id == entryID }) else { return }
             newParent = parent
         } else {
-            // If no entryID, use the root
+            // If no entryID, or the entryID was the root, use the root
             newParent = archive.root
         }
         
@@ -443,12 +443,12 @@ class MainWindowViewModel {
         
         // 1. Find the new parent
         let newParent: ArchiveEntry
-        if let entryID = entryID {
+        if let entryID = entryID, entryID != archive.root.id {
             // If we have an entryID, find that entry in the archive
             guard let parent = archive.entries.first(where: { $0.id == entryID }) else { return }
             newParent = parent
         } else {
-            // If no entryID, use the root
+            // If no entryID, or entryID is the root, use the root
             newParent = archive.root
         }
 

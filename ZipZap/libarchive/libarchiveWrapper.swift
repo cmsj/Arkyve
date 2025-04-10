@@ -423,10 +423,10 @@ actor libarchiveWrapper {
     ///   - to: A URL describing the filesystem location to write the archive to
     ///   - format: A libarchiveFormat describing the type of archive to write
     ///   - filters: An array of libarchiveFilter, describing which filters to apply to the archive
-    public func writeArchive(
-        headerMap: [String: ArchiveEntryFlat], to: URL, format: libarchiveFormat,
-        filters: [libarchiveFilter]
-    ) async throws {
+    public func writeArchive(headerMap: [String: ArchiveEntryFlat],
+                             to: URL,
+                             format: libarchiveFormat,
+                             filters: [libarchiveFilter]) async throws {
         var headerMap = headerMap
         var result: Int32 = ARCHIVE_OK
 
@@ -438,8 +438,8 @@ actor libarchiveWrapper {
         defer { writeArchiveFD.close() }
 
         var readEntry: OpaquePointer?
-        let rbuf: UnsafeMutableRawPointer = UnsafeMutableRawPointer.allocate(
-            byteCount: 524288, alignment: MemoryLayout<UInt8>.size)
+        let rbuf: UnsafeMutableRawPointer = UnsafeMutableRawPointer.allocate(byteCount: 524288,
+                                                                             alignment: MemoryLayout<UInt8>.size)
         defer { rbuf.deallocate() }
         var rsize: size_t = size_t()
         var wsize: size_t = size_t()

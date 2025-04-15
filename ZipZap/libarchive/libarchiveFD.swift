@@ -138,7 +138,7 @@ struct libarchiveFD {
 
         #ZZTrace("Archive write cache: \(writeCachePath.path)")
 
-        result = archive_write_open_filename(archive, writeCachePath.path)
+        result = archive_write_open_filename(archive, writeCachePath.path.cString(using: .utf8))
         if (result != ARCHIVE_OK) {
             throw ArchiveError.ArchiveWriteError(archive: at.path, error: "Unable to open output archive: \(String(describing: archive_error_string(archive)))")
         }

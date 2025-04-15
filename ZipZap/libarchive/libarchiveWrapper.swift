@@ -207,14 +207,16 @@ actor libarchiveWrapper {
         return (format, filters, headers)
     }
 
-    private func writeArchiveEntryHeader(to: libarchiveFD, headers: libarchiveHeader) throws {
-        let writeEntry = archive_entry_new()
-
-        guard let data = headers.path.data(using: .utf8) else {
-            throw ArchiveError.ArchiveWriteError(
-                archive: nil, error: "Unable to convert path to Data: \(headers.path)")
+    private func writeArchiveEntryHeader(to: libarchiveFD, headers: libarchiveHeader) throws -> OpaquePointer {
+        guard let writeEntry = archive_entry_new() else {
+            throw ArchiveError.ArchiveWriteError(archive: nil, error: "Unable to create new entry")
         }
-        archive_entry_set_pathname(writeEntry, data.bytes)
+
+//        guard let data = headers.path.data(using: .utf8) else {
+//            throw ArchiveError.ArchiveWriteError(
+//                archive: nil, error: "Unable to convert path to Data: \(headers.path)")
+//        }
+        archive_entry_set_pathname(writeEntry, headers.path.cString(using: .utf8)) //data.bytes)
 
         if headers.size != -1 {
             archive_entry_set_size(writeEntry, headers.size)
@@ -234,7 +236,13 @@ actor libarchiveWrapper {
 
         archive_entry_set_mode(writeEntry, headers.perms)
 
-        archive_write_header(to.archive, writeEntry)
+        let result = archive_write_header(to.archive, writeEntry)
+        if result != ARCHIVE_OK {
+            let error = String(cString: archive_error_string(to.archive))
+            throw ArchiveError.ArchiveWriteError(archive: "", error: error)
+        }
+
+        return writeEntry
     }
 
     public func loadArchive() async throws(ArchiveError) -> sending Archive {
@@ -445,8 +453,19 @@ actor libarchiveWrapper {
         var wsize: size_t = size_t()
 
         // First, examine the existing archive to find entries we need to copy over
-        while archive_read_next_header(readArchiveFD.archive, &readEntry) == ARCHIVE_OK && result != ARCHIVE_EOF
-        {
+        writeLoop: while true {
+            result = archive_read_next_header(readArchiveFD.archive, &readEntry)
+            switch (result) {
+            case ARCHIVE_OK:
+                break
+            case ARCHIVE_EOF:
+                break writeLoop
+            case ARCHIVE_FATAL:
+                throw ArchiveError.ArchiveWriteError(archive: to.path, error: "Unable to read archive")
+            default:
+                break writeLoop
+            }
+
             guard let readEntryPath = entryPath(readEntry) else { continue }
 
             // Find every entry in the tree that started out as this path, and in the archive
@@ -465,7 +484,8 @@ actor libarchiveWrapper {
                 guard let header = headerMap[mapEntryKey]?.header else { continue }
 
                 // Read from archive and write to new archive
-                try writeArchiveEntryHeader(to: writeArchiveFD, headers: header)
+                let writeEntry = try writeArchiveEntryHeader(to: writeArchiveFD, headers: header)
+                defer { archive_entry_free(writeEntry) }
 
                 while true {
                     rsize = archive_read_data(readArchiveFD.archive, rbuf, 524288)
@@ -484,12 +504,6 @@ actor libarchiveWrapper {
                     }
                 }
 
-                result = archive_write_finish_entry(writeArchiveFD.archive)
-                if result != ARCHIVE_OK {
-                    let error = String(cString: archive_error_string(writeArchiveFD.archive))
-                    throw ArchiveError.ArchiveWriteError(archive: to.path, error: error)
-                }
-
                 await Task.unsafeProgress?.progressed()
 
                 // Remove the headerMap value now we've processed it
@@ -500,7 +514,8 @@ actor libarchiveWrapper {
         // Second, process any filesystem-sourced entries that have been added to the archive
         for filePath in headerMap.keys.filter({ headerMap[$0]?.header.source.type == .Filesystem })
         {
-            try writeArchiveEntryHeader(to: writeArchiveFD, headers: headerMap[filePath]!.header)
+            let writeEntry = try writeArchiveEntryHeader(to: writeArchiveFD, headers: headerMap[filePath]!.header)
+            defer { archive_entry_free(writeEntry) }
 
             let fileURL = URL(fileURLWithPath: filePath)
             guard let fileHandle = try? FileHandle(forReadingFrom: fileURL) else {
@@ -526,12 +541,6 @@ actor libarchiveWrapper {
                         )
                     }
                 }
-            }
-
-            result = archive_write_finish_entry(writeArchiveFD.archive)
-            if result != ARCHIVE_OK {
-                let error = String(cString: archive_error_string(writeArchiveFD.archive))
-                throw ArchiveError.ArchiveWriteError(archive: to.path, error: error)
             }
 
             await Task.unsafeProgress?.progressed()

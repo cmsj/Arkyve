@@ -104,6 +104,7 @@ class MainWindowViewModel {
         let filters = overrideFilter == .None ? archive.filters : [overrideFilter, .None]
 
         let headerMap = archive.entries.reduce(into: [String:ArchiveEntryFlat]()) { map, entry in
+            if entry.type == .root { return }
             map[entry.path] = entry.flatSelf()
         }
         do {
@@ -321,7 +322,7 @@ class MainWindowViewModel {
             viewModel.format = archive.format
         }
         if archive.format == .TAR || archive.format == .TAR_GNUTAR {
-            viewModel.filter = archive.filters.first ?? .GZip
+            viewModel.filter = archive.filters.first ?? .None
         }
 
         let accessoryViewHosted = FormatPicker().environment(\.formatPickerViewModel, viewModel)

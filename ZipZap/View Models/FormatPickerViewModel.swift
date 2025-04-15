@@ -14,7 +14,7 @@ final class FormatPickerViewModel: Sendable {
     @ObservationIgnored
     fileprivate let _formatStorage = Mutex<libarchiveFormat>(.ZIP)
     @ObservationIgnored
-    fileprivate let _filterStorage = Mutex<libarchiveFilter>(.GZip)
+    fileprivate let _filterStorage = Mutex<libarchiveFilter>(.None)
 
     public var format: libarchiveFormat {
         get {

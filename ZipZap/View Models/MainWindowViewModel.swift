@@ -103,8 +103,8 @@ class MainWindowViewModel {
         let format = overrideFormat == .Unknown ? archive.format : overrideFormat
         let filters = overrideFilter == .None ? archive.filters : [overrideFilter, .None]
 
-        let headerMap = archive.entries.reduce(into: [String:ArchiveEntryFlat]()) {
-            $0[$1.path] = $1.flatSelf()
+        let headerMap = archive.entries.reduce(into: [String:ArchiveEntryFlat]()) { map, entry in
+            map[entry.path] = entry.flatSelf()
         }
         do {
             try await withTaskProgression(totalUnits: archive.entries.count) { _ in
@@ -178,7 +178,7 @@ class MainWindowViewModel {
         let panel = NSOpenPanel()
         panel.allowsMultipleSelection = false
         panel.canChooseDirectories = false
-        panel.allowedContentTypes = [.archive]
+        panel.allowedContentTypes = [.archive] // FIXME: Do better content type handling
 
         if panel.runModal() == .OK {
             if let url = panel.url {
@@ -231,7 +231,7 @@ class MainWindowViewModel {
         panel.canChooseFiles = false
         panel.prompt = "Extract \(actualEntries.count) item\(actualEntries.count > 1 ? "s" : "")"
 
-        // FIXME: Refactor some of this out into an extraction method
+        // FIXME: Refactor some of this out into an extraction method?
         if panel.runModal() == .OK {
             if let destURL = panel.url, let archiveURL = archive?.URL {
                 let retainFullPath = button.state == .on
@@ -252,7 +252,9 @@ class MainWindowViewModel {
 
                     do {
                         try await withTaskProgression(totalUnits: itemCount) { _ in
-                            let _ = try await loader.extractEntries(extractableEntries, toFolder: destURL, retainFullPath: retainFullPath)
+                            let _ = try await loader.extractEntries(extractableEntries,
+                                                                    toFolder: destURL,
+                                                                    retainFullPath: retainFullPath)
                         } progress: { progression in
                             Task { @MainActor in setProgress(progression) }
                         }

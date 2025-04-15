@@ -335,7 +335,8 @@ class MainWindowViewModel {
                     #ZZTrace("Save As to \(destURL) (format: \(viewModel.format) \(viewModel.filter))")
 
                     if !archive.dirty && archive.format == viewModel.format && archive.filters.contains(viewModel.filter) {
-                        // This is a performance optimisation - the archive/format/filters haven't changed, so just copy the existing archive file
+                        // This is a performance optimisation
+                        // The archive/format/filters haven't changed, so just copy the existing file
                         copyArchive(to: destURL)
                     } else {
                         await saveArchive(to: destURL, overrideFormat: viewModel.format, overrideFilter: viewModel.filter)
@@ -370,7 +371,7 @@ class MainWindowViewModel {
                     Task { @MainActor in
                         switch result {
                         case .success(let entry):
-                            self.handleEntryDrop(at: index, on: destUUID, entry: entry)
+                            self.handleEntryDrop(at: index, on: destUUID, entryExtractable: entry)
                         case .failure(let error):
                             let error = ArchiveError.ArchiveDropError(msg: "Failed to handle drop: \(error.localizedDescription)")
                             self.showErrors.err(error)
@@ -395,11 +396,25 @@ class MainWindowViewModel {
         }
     }
 
-    func handleEntryDrop(at index: Int? = nil, on entryID: UUID? = nil, entry: ArchiveEntryExtractable) {
-        print("HANDLING ENTRY DROPPED AT \(index ?? -1) on \(entryID?.uuidString ?? "unknown"): \(entry)")
-        
+    func handleEntryDrop(at index: Int? = nil, on entryID: UUID? = nil, entryExtractable: ArchiveEntryExtractable) {
+        print("HANDLING ENTRY DROPPED AT \(index ?? -1) on \(entryID?.uuidString ?? "unknown"): \(entryExtractable)")
+
         guard let archive = archive else { return }
-        archive.reparentEntry(entryID, to: entry)
+        // 1. Find the current parent by looking up the entry in the archive's entries
+        guard let entry = archive.entryForID(entryExtractable.id) else { return }
+
+        // 2. Find the new parent
+        let newParent: ArchiveEntry
+        if let newParentEntryID = entryID, newParentEntryID != archive.root.id {
+            // If we have an entryID, find that entry in the archive
+            guard let parent = archive.entries.first(where: { $0.id == newParentEntryID }) else { return }
+            newParent = parent
+        } else {
+            // If no entryID, or the entryID was the root, use the root
+            newParent = archive.root
+        }
+
+        archive.reparentEntry(entry, to: newParent)
     }
 
     func handleFileURLDrop(at index: Int? = nil, on entryID: UUID? = nil, fileURL: URL) {
@@ -428,8 +443,8 @@ class MainWindowViewModel {
     func handleManyDrops(on entryID: UUID? = nil, items: [DropItem]) {
         for item in items {
             switch (item) {
-            case .entry(let entry):
-                handleEntryDrop(on: entryID, entry: entry)
+            case .entry(let entryExtractable):
+                handleEntryDrop(on: entryID, entryExtractable: entryExtractable)
             case .file(let url):
                 handleFileURLDrop(on: entryID, fileURL: url)
             default:

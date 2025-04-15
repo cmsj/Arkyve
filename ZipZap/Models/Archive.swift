@@ -168,22 +168,7 @@ class Archive {
         self.setDirty()
     }
 
-    func reparentEntry(_ entryID: UUID? = nil, to entry: ArchiveEntryExtractable) {
-        // 1. Find the current parent by looking up the entry in the archive's entries
-        let currentEntry = entries.first { $0.id == entry.id }
-        guard let currentEntry = currentEntry else { return }
-
-        // 2. Find the new parent
-        let newParent: ArchiveEntry
-        if let entryID = entryID, entryID != root.id {
-            // If we have an entryID, find that entry in the archive
-            guard let parent = entries.first(where: { $0.id == entryID }) else { return }
-            newParent = parent
-        } else {
-            // If no entryID, or the entryID was the root, use the root
-            newParent = root
-        }
-
+    func reparentEntry(_ entry: ArchiveEntry, to newParent: ArchiveEntry) {
         // 3. Remove from current parent
         func removeFromParent(_ entry: ArchiveEntry) {
             // Find the parent in the archive's entries
@@ -193,18 +178,22 @@ class Archive {
                 parent.children?.removeAll { $0.id == entry.id }
             }
         }
-        removeFromParent(currentEntry)
+        removeFromParent(entry)
 
         // 4. Update pathComponents to the new parent + name
-        let newPathComponents = newParent.pathComponents + [currentEntry.name]
-        currentEntry.pathComponents = newPathComponents
-        currentEntry.path = newPathComponents.joined(separator: "/")
+        let newPathComponents = newParent.pathComponents + [entry.name]
+        entry.pathComponents = newPathComponents
+        entry.path = newPathComponents.joined(separator: "/")
 
         // 5. Add to new parent
-        newParent.children?.append(currentEntry)
+        newParent.children?.append(entry)
 
         // Mark the archive as dirty since we've made changes
         setDirty()
+    }
+
+    func entryForID(_ id: UUID) -> ArchiveEntry? {
+        return entries.first { $0.id == id }
     }
 
     func processEntryRename(_ entry: ArchiveEntry) {

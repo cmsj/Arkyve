@@ -140,20 +140,23 @@ class MainWindowViewModel {
 
             var itemCount = extractableEntries.count
             for entry in chosenEntries {
-                let extractableEntry = entry.asExtractable(for: archive)
-                itemCount += extractableEntry.entries.count
-                extractableEntries.append(extractableEntry)
+                if entry.source.type == .Filesystem {
+                    // This is an entry that isn't in the archive yet, so we can skip marking it as extractable and just capture the URL
+                    quickLookItems.append(URL(filePath: entry.source.path))
+                } else {
+                    let extractableEntry = entry.asExtractable(for: archive)
+                    itemCount += extractableEntry.entries.count
+                    extractableEntries.append(extractableEntry)
+                }
             }
 
             do {
                 try await withTaskProgression(totalUnits: itemCount) { _ in
-                    let writtenURLs = try await loader.extractEntries(extractableEntries, toFolder: cacheURL)
-                    if writtenURLs.count > 0 {
-                        quickLookItems = writtenURLs
-                        quickLookURL = writtenURLs.first
-                    }                } progress: { progression in
-                        Task { @MainActor in setProgress(progression) }
-                    }
+                    quickLookItems += try await loader.extractEntries(extractableEntries, toFolder: cacheURL)
+                    quickLookURL = quickLookItems.first
+                } progress: { progression in
+                    Task { @MainActor in setProgress(progression) }
+                }
             } catch let error as ArchiveError {
                 showErrors.err(error)
             } catch {

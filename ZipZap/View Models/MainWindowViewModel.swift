@@ -109,7 +109,7 @@ class MainWindowViewModel {
         do {
             try await withTaskProgression(totalUnits: archive.entries.count) { _ in
                 try await loader.writeArchive(headerMap: headerMap, to: to, format: format, filters: filters)
-                archive.setDirty(false)
+                archive.setClean()
             } progress: { progression in
                 Task { @MainActor in setProgress(progression) }
             }
@@ -346,8 +346,8 @@ class MainWindowViewModel {
     }
 
     func deleteButton(_ entries: Set<ArchiveEntry.ID>? = nil) {
-        // TODO: WRITE
-        self.archive?.setDirty()
+        guard let entries else { return }
+        self.archive?.removeEntries(entries)
     }
 
     // MARK: - Other handlers
@@ -399,46 +399,7 @@ class MainWindowViewModel {
         print("HANDLING ENTRY DROPPED AT \(index ?? -1) on \(entryID?.uuidString ?? "unknown"): \(entry)")
         
         guard let archive = archive else { return }
-        
-        // 1. Find the current parent by looking up the entry in the archive's entries
-        let currentEntry = archive.entries.first { $0.id == entry.id }
-        guard let currentEntry = currentEntry else { return }
-        
-        // 2. Find the new parent
-        let newParent: ArchiveEntry
-        if let entryID = entryID, entryID != archive.root.id {
-            // If we have an entryID, find that entry in the archive
-            guard let parent = archive.entries.first(where: { $0.id == entryID }) else { return }
-            newParent = parent
-        } else {
-            // If no entryID, or the entryID was the root, use the root
-            newParent = archive.root
-        }
-        
-        // 3. Remove from current parent
-        func removeFromParent(_ entry: ArchiveEntry) {
-            // Find the parent in the archive's entries
-            if let parent = archive.entries.first(where: { parent in
-                parent.children?.contains(where: { $0.id == entry.id }) ?? false
-            }) {
-                parent.children?.removeAll { $0.id == entry.id }
-            }
-        }
-        removeFromParent(currentEntry)
-        
-        // 4. Update pathComponents to the new parent + name
-        let newPathComponents = newParent.pathComponents + [currentEntry.name]
-        currentEntry.pathComponents = newPathComponents
-        currentEntry.path = newPathComponents.joined(separator: "/")
-        
-        // 5. Add to new parent
-        newParent.children?.append(currentEntry)
-        
-        // 6. Update path and pathComponents in Archive.entries (ie the flat list)
-        // The entry in Archive.entries is already updated since we modified the same object
-        
-        // Mark the archive as dirty since we've made changes
-        archive.setDirty()
+        archive.reparentEntry(entryID, to: entry)
     }
 
     func handleFileURLDrop(at index: Int? = nil, on entryID: UUID? = nil, fileURL: URL) {

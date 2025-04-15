@@ -456,6 +456,7 @@ actor libarchiveWrapper {
             }
 
             guard !mapEntryKeys.isEmpty else {
+                // We no longer hold a reference to this entry, which means it's been deleted and we should discard its data
                 archive_read_data_skip(readArchiveFD.archive)
                 continue
             }

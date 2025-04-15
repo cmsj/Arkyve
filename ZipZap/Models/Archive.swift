@@ -52,7 +52,7 @@ class Archive {
     var format: libarchiveFormat = SettingsManager.shared.newArchiveFormat
     var filters: [libarchiveFilter] = [] // FIXME: libarchiveFilter should really give us default values for a given libarchiveFormat
     var cacheURL: URL
-    var dirty: Bool = false
+    private(set) var dirty: Bool = false
 
     var existsOnDisk: Bool {
         // FIXME: Should this actually be using FileManager.default.fileExists?
@@ -75,7 +75,7 @@ class Archive {
     // Create a new, empty archive
     convenience init() {
         self.init(URL: Foundation.URL(fileURLWithPath: Archive.newFilePath))
-        self.dirty = true
+        self.setDirty()
     }
 
     deinit {
@@ -97,9 +97,13 @@ class Archive {
         self.filters = filters
     }
 
-    func setDirty(_ dirty: Bool = true) {
-        #ZZTrace("Marking archive dirty")
+    private func setDirty(_ dirty: Bool = true) {
+        #ZZTrace("Marking archive \(dirty ? "dirty" : "clean")")
         self.dirty = dirty
+    }
+
+    func setClean() {
+        setDirty(false)
     }
 
     func addFiles(from urls: [URL], pwd: URL?, parent: ArchiveEntry? = nil) throws (ArchiveError) {
@@ -162,6 +166,45 @@ class Archive {
         
         // Mark the archive as dirty since we've made changes
         self.setDirty()
+    }
+
+    func reparentEntry(_ entryID: UUID? = nil, to entry: ArchiveEntryExtractable) {
+        // 1. Find the current parent by looking up the entry in the archive's entries
+        let currentEntry = entries.first { $0.id == entry.id }
+        guard let currentEntry = currentEntry else { return }
+
+        // 2. Find the new parent
+        let newParent: ArchiveEntry
+        if let entryID = entryID, entryID != root.id {
+            // If we have an entryID, find that entry in the archive
+            guard let parent = entries.first(where: { $0.id == entryID }) else { return }
+            newParent = parent
+        } else {
+            // If no entryID, or the entryID was the root, use the root
+            newParent = root
+        }
+
+        // 3. Remove from current parent
+        func removeFromParent(_ entry: ArchiveEntry) {
+            // Find the parent in the archive's entries
+            if let parent = entries.first(where: { parent in
+                parent.children?.contains(where: { $0.id == entry.id }) ?? false
+            }) {
+                parent.children?.removeAll { $0.id == entry.id }
+            }
+        }
+        removeFromParent(currentEntry)
+
+        // 4. Update pathComponents to the new parent + name
+        let newPathComponents = newParent.pathComponents + [currentEntry.name]
+        currentEntry.pathComponents = newPathComponents
+        currentEntry.path = newPathComponents.joined(separator: "/")
+
+        // 5. Add to new parent
+        newParent.children?.append(currentEntry)
+
+        // Mark the archive as dirty since we've made changes
+        setDirty()
     }
 
     func processEntryRename(_ entry: ArchiveEntry) {

@@ -401,7 +401,7 @@ class MainWindowViewModel {
         print("HANDLING ENTRY DROPPED AT \(index ?? -1) on \(entryID?.uuidString ?? "unknown"): \(entryExtractable)")
 
         guard let archive = archive else { return }
-        // 1. Find the current parent by looking up the entry in the archive's entries
+        // 1. Find the current entry from the supplied extractable
         guard let entry = archive.entryForID(entryExtractable.id) else { return }
 
         // 2. Find the new parent

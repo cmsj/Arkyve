@@ -171,11 +171,19 @@ class Archive {
     func reparentEntry(_ entry: ArchiveEntry, to newParent: ArchiveEntry) {
         // 3. Remove from current parent
         func removeFromParent(_ entry: ArchiveEntry) {
-            // Find the parent in the archive's entries
-            if let parent = entries.first(where: { parent in
+            // Find the parent in the archive's entries. We don't need to walk the tree, we can iterate archive.entries
+            let parent = entries.first(where: { parent in
                 parent.children?.contains(where: { $0.id == entry.id }) ?? false
-            }) {
+            })
+            if let parent {
                 parent.children?.removeAll { $0.id == entry.id }
+                return
+            }
+
+            // Except in the case of root level items, because archive.root isn't in archive.entries
+            if root.children?.first(where: { $0.id == entry.id }) != nil {
+                // We didn't find the parent in entries, which suggests it's a root item
+                root.children?.removeAll { $0.id == entry.id }
             }
         }
         removeFromParent(entry)

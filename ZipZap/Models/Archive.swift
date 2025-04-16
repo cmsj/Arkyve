@@ -54,6 +54,7 @@ class Archive {
     var cacheURL: URL
     private(set) var dirty: Bool = false
 
+    var isNew: Bool = false
     var existsOnDisk: Bool {
         // FIXME: Should this actually be using FileManager.default.fileExists?
         URL.path != Archive.newFilePath
@@ -75,6 +76,7 @@ class Archive {
     // Create a new, empty archive
     convenience init() {
         self.init(URL: Foundation.URL(fileURLWithPath: Archive.newFilePath))
+        self.isNew = true
         self.setDirty()
     }
 

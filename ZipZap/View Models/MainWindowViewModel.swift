@@ -109,7 +109,7 @@ class MainWindowViewModel {
         }
         do {
             try await withTaskProgression(totalUnits: archive.entries.count) { _ in
-                try await loader.writeArchive(headerMap: headerMap, to: to, format: format, filters: filters)
+                try await loader.writeArchive(headerMap: headerMap, to: to, format: format, filters: filters, skipRead: archive.isNew)
 
                 // Having written the archive, we should no longer have any entries of source type .Filesystem
                 // So we'll update our entries to switch them to .Archive
@@ -120,6 +120,7 @@ class MainWindowViewModel {
                 }
 
                 archive.setClean()
+                archive.isNew = false
             } progress: { progression in
                 Task { @MainActor in setProgress(progression) }
             }

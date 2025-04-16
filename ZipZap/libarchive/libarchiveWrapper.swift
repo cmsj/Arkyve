@@ -434,11 +434,14 @@ actor libarchiveWrapper {
     public func writeArchive(headerMap: [String: ArchiveEntryFlat],
                              to: URL,
                              format: libarchiveFormat,
-                             filters: [libarchiveFilter]) async throws {
+                             filters: [libarchiveFilter],
+                             skipRead: Bool = false) async throws {
         var headerMap = headerMap
         var result: Int32 = ARCHIVE_OK
 
-        try readArchiveFD.openRead(path: path)
+        if !skipRead {
+            try readArchiveFD.openRead(path: path)
+        }
         defer { readArchiveFD.close() }
 
         var writeArchiveFD = libarchiveFD(type: .write)
@@ -453,7 +456,8 @@ actor libarchiveWrapper {
         var wsize: size_t = size_t()
 
         // First, examine the existing archive to find entries we need to copy over
-        writeLoop: while true {
+        // (Except if skipRead is set)
+        writeLoop: while (!skipRead && true) {
             result = archive_read_next_header(readArchiveFD.archive, &readEntry)
             switch (result) {
             case ARCHIVE_OK:

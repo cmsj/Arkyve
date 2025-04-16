@@ -161,35 +161,41 @@ class ArchiveEntry: Identifiable {
 
         let source = ArchiveEntrySource(type: .Filesystem, path: url.path)
 
+        guard let fileSize  = (stat[FileAttributeKey.size] as? NSNumber)?.int64Value,
+              let fileBtime = stat[FileAttributeKey.creationDate] as? NSDate,
+              let fileMtime = stat[FileAttributeKey.modificationDate] as? NSDate,
+              let fileUID   = (stat[FileAttributeKey.ownerAccountID] as? NSNumber)?.int64Value,
+              let fileGID   = (stat[FileAttributeKey.groupOwnerAccountID] as? NSNumber)?.int64Value,
+              var filePerms = (stat[FileAttributeKey.posixPermissions] as? NSNumber)?.uint16Value
+        else { return nil }
+
         guard let rawType = stat[FileAttributeKey.type] as? String else { return nil }
         let fileType = FileAttributeType(rawValue: rawType)
         let entryType: ArchiveEntryType
         switch fileType {
         case .typeSocket:
             entryType = .socket
+            filePerms |= S_IFSOCK
         case .typeRegular:
             entryType = .file
+            filePerms |= S_IFREG
         case .typeDirectory:
             entryType = .directory
+            filePerms |= S_IFDIR
         case .typeSymbolicLink:
             entryType = .symlink
+            filePerms |= S_IFLNK
         case .typeCharacterSpecial:
             entryType = .chardev
+            filePerms |= S_IFCHR
         case .typeBlockSpecial:
             entryType = .blockdev
+            filePerms |= S_IFBLK
         case .typeUnknown:
             entryType = .unknown
         default:
             entryType = .unknown
         }
-
-        guard let fileSize = stat[FileAttributeKey.size] as? NSNumber,
-              let fileBtime = stat[FileAttributeKey.creationDate] as? NSDate,
-              let fileMtime = stat[FileAttributeKey.modificationDate] as? NSDate,
-              let fileUID = stat[FileAttributeKey.ownerAccountID] as? NSNumber,
-              let fileGID = stat[FileAttributeKey.groupOwnerAccountID] as? NSNumber,
-              let filePerms = stat[FileAttributeKey.posixPermissions] as? NSNumber
-        else { return nil }
 
         let archivePathComponents = archivePath.components(separatedBy: "/")
         let name = archivePathComponents.last ?? archivePath // Pretty sure this will always hit the optional default case, but just in case
@@ -198,13 +204,13 @@ class ArchiveEntry: Identifiable {
                                       path: archivePath,
                                       name: name,
                                       pathComponents: archivePathComponents,
-                                      size: fileSize.int64Value,
+                                      size: fileSize,
                                       atime: Date(timeIntervalSince1970: 0),
                                       ctime: Date(timeIntervalSince1970: 0),
                                       mtime: fileMtime as Date,
                                       btime: fileBtime as Date,
-                                      uid: fileUID.int64Value, gid: fileGID.int64Value,
-                                      perms: filePerms.uint16Value)
+                                      uid: fileUID, gid: fileGID,
+                                      perms: filePerms)
 
         self.init(header)
     }

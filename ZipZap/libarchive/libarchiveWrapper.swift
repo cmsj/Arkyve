@@ -514,16 +514,29 @@ actor libarchiveWrapper {
         // Second, process any filesystem-sourced entries that have been added to the archive
         for filePath in headerMap.keys.filter({ headerMap[$0]?.header.source.type == .Filesystem })
         {
-            let writeEntry = try writeArchiveEntryHeader(to: writeArchiveFD, headers: headerMap[filePath]!.header)
+            guard let flatEntry = headerMap[filePath] else {
+                throw ArchiveError.ArchiveWriteError(archive: to.path, error: "Inconsistency in writeArchive header map")
+            }
+
+            // FIXME: Files are being written to archives, but their internal path is not being preserved
+
+            // Write a header to the archive for this file
+            let writeEntry = try writeArchiveEntryHeader(to: writeArchiveFD, headers: flatEntry.header)
             defer { archive_entry_free(writeEntry) }
 
-            let fileURL = URL(fileURLWithPath: filePath)
-            guard let fileHandle = try? FileHandle(forReadingFrom: fileURL) else {
-                throw ArchiveError.ArchiveWriteError(archive: to.path,
-                                                     error: "Failed to open file for reading: \(filePath)")
+            // Open the file from the filesystem if we can
+            let fileHandle: FileHandle?
+            do {
+                fileHandle = try FileHandle(forReadingFrom: URL(fileURLWithPath: flatEntry.header.source.path))
+            } catch {
+                throw ArchiveError.ArchiveWriteError(archive: to.path, error: "Failed to open file for reading: \(filePath): \(error.localizedDescription)")
+            }
+            guard let fileHandle else {
+                throw ArchiveError.ArchiveWriteError(archive: to.path, error: "Failed to open file for reading: \(filePath)")
             }
             defer { try? fileHandle.close() }
 
+            // Read the file's data and write it to the archive
             while true {
                 let data = try fileHandle.read(upToCount: 524288)
                 guard let data = data, !data.isEmpty else { break }

@@ -15,6 +15,7 @@ final class FormatPickerViewModel: Sendable {
     fileprivate let _formatStorage = Mutex<libarchiveFormat>(.ZIP)
     @ObservationIgnored
     fileprivate let _filterStorage = Mutex<libarchiveFilter>(.None)
+    // FIXME: Do we actually want to care about filters here? Are we really going to let users choose them ever?
 
     public var format: libarchiveFormat {
         get {

@@ -333,6 +333,7 @@ class MainWindowViewModel {
             viewModel.format = archive.format
         }
         if archive.format == .TAR || archive.format == .TAR_GNUTAR {
+            // FIXME: I've forgotten why we're doing this
             viewModel.filter = archive.filters.first ?? .None
         }
 

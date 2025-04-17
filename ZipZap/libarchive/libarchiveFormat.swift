@@ -46,11 +46,27 @@ enum libarchiveFormat: Int32, CaseIterable, Identifiable {
         get {
             switch (self) {
                 // NOTE: These are not the only formats libarchive can write, but they are all I care to test
-            case .TAR, .TAR_GNUTAR, .ISO9660, .ISO9660_RR, .ZIP, ._7ZIP:
+            case .TAR, .TAR_GNUTAR, .ISO9660, .ZIP, ._7ZIP:
                 true
             default:
                 false
             }
+        }
+    }
+
+    var defaultFilters: [libarchiveFilter] {
+        get {
+            var filters: [libarchiveFilter] = []
+
+            switch self {
+            case .TAR, .TAR_GNUTAR:
+                filters.append(.GZip)
+            default:
+                filters.append(.None)
+                break
+            }
+
+            return filters
         }
     }
 }

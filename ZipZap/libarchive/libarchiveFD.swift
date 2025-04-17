@@ -120,13 +120,15 @@ struct libarchiveFD {
 
         result = archive_write_set_format(archive, format.rawValue)
         if (result != ARCHIVE_OK) {
-            throw ArchiveError.ArchiveWriteError(archive: at.path, error: "Unable to set format: \(String(describing: archive_error_string(archive)))")
+            let errorString = String(cString: archive_error_string(archive))
+            throw ArchiveError.ArchiveWriteError(archive: at.path, error: "Unable to set format: \(errorString)")
         }
 
         for filter in filters {
             result = archive_write_add_filter(archive, filter.rawValue)
             if (result != ARCHIVE_OK) {
-                throw ArchiveError.ArchiveWriteError(archive: at.path, error: "Unable to add filter: \(String(describing: archive_error_string(archive)))")
+                let errorString = String(cString: archive_error_string(archive))
+                throw ArchiveError.ArchiveWriteError(archive: at.path, error: "Unable to add filter: \(errorString)")
             }
         }
 
@@ -140,7 +142,8 @@ struct libarchiveFD {
 
         result = archive_write_open_filename(archive, writeCachePath.path.cString(using: .utf8))
         if (result != ARCHIVE_OK) {
-            throw ArchiveError.ArchiveWriteError(archive: at.path, error: "Unable to open output archive: \(String(describing: archive_error_string(archive)))")
+            let errorString = String(cString: archive_error_string(archive))
+            throw ArchiveError.ArchiveWriteError(archive: at.path, error: "Unable to open output archive: \(errorString)")
         }
     }
 }

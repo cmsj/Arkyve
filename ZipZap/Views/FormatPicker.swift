@@ -9,8 +9,6 @@ import SwiftUI
 
 struct FormatPicker: View {
     @Environment(\.formatPickerViewModel) var viewModel: FormatPickerViewModel
-    private var filteredFormats: [libarchiveFormat] = [.TAR, .TAR_GNUTAR]
-    private var filters: [libarchiveFilter] = [.GZip, .BZip2]
 
     var body: some View {
         @Bindable var viewModel = viewModel
@@ -23,18 +21,6 @@ struct FormatPicker: View {
                 }
             }
             .padding()
-
-            if (filteredFormats.contains(viewModel.format)) {
-                Picker(selection: $viewModel.filter, label: Text("Compression")) {
-                    ForEach(filters) { filter in
-                        Text(filter.description)
-                            .tag(filter)
-                    }
-                }
-            }
         }
-//        .onChange(of: viewModel.selectedFormat, initial: true) {
-//            print("\(viewModel.selectedFormat.rawValue):: \(viewModel.selectedFormat)")
-//        }
     }
 }

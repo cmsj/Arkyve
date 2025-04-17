@@ -497,8 +497,9 @@ actor libarchiveWrapper {
 
                     wsize = archive_write_data(writeArchiveFD.archive, rbuf, rsize)
                     if wsize < 0 {
+                        let errorString = String(cString: archive_error_string(writeArchiveFD.archive))
                         throw ArchiveError.ArchiveWriteError(archive: to.path,
-                                                             error: "Failed to write data: \(String(describing: archive_error_string(writeArchiveFD.archive)))."
+                                                             error: "Failed to write data: \(errorString)."
                         )
                     }
 
@@ -548,8 +549,9 @@ actor libarchiveWrapper {
                 try? data.withUnsafeBytes { ptr in
                     let wsize = archive_write_data(writeArchiveFD.archive, ptr.baseAddress, data.count)
                     if wsize < 0 {
+                        let errorString = String(cString: archive_error_string(writeArchiveFD.archive))
                         throw ArchiveError.ArchiveWriteError(archive: to.path,
-                                                             error: "Failed to write data: \(String(describing: archive_error_string(writeArchiveFD.archive)))"
+                                                             error: "Failed to write data: \(errorString)"
                         )
                     }
                     if wsize != data.count {

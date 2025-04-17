@@ -13,9 +13,6 @@ import SwiftUI
 final class FormatPickerViewModel: Sendable {
     @ObservationIgnored
     fileprivate let _formatStorage = Mutex<libarchiveFormat>(.ZIP)
-    @ObservationIgnored
-    fileprivate let _filterStorage = Mutex<libarchiveFilter>(.None)
-    // FIXME: Do we actually want to care about filters here? Are we really going to let users choose them ever?
 
     public var format: libarchiveFormat {
         get {
@@ -27,22 +24,6 @@ final class FormatPickerViewModel: Sendable {
         set {
             self.withMutation(keyPath: \.format) {
                 _formatStorage.withLock { value in
-                    value = newValue
-                }
-            }
-        }
-    }
-
-    public var filter: libarchiveFilter {
-        get {
-            return _filterStorage.withLock { value in
-                self.access(keyPath: \.filter)
-                return value
-            }
-        }
-        set {
-            self.withMutation(keyPath: \.filter) {
-                _filterStorage.withLock { value in
                     value = newValue
                 }
             }

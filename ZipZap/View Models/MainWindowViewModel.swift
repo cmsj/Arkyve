@@ -94,14 +94,14 @@ class MainWindowViewModel {
         showErrors.clear()
     }
 
-    func saveArchive(to: URL, overrideFormat: libarchiveFormat = .Unknown, overrideFilter: libarchiveFilter = .None) async {
+    func saveArchive(to: URL, overrideFormat: libarchiveFormat = .Unknown, overrideFilters: [libarchiveFilter] = [.None]) async {
         guard let archive = archive else { return }
         let loader = libarchiveWrapper(url: archive.URL)
         self.disableUI = true
         defer { self.disableUI = false }
 
         let format = overrideFormat == .Unknown ? archive.format : overrideFormat
-        let filters = overrideFilter == .None ? archive.filters : [overrideFilter, .None]
+        let filters = overrideFilters == [.None] ? archive.filters : overrideFilters
 
         let headerMap = archive.entries.reduce(into: [String:ArchiveEntryFlat]()) { map, entry in
             if entry.type == .root { return }
@@ -332,10 +332,6 @@ class MainWindowViewModel {
         if archive.format != .Unknown {
             viewModel.format = archive.format
         }
-        if archive.format == .TAR || archive.format == .TAR_GNUTAR {
-            // FIXME: I've forgotten why we're doing this
-            viewModel.filter = archive.filters.first ?? .None
-        }
 
         let accessoryViewHosted = FormatPicker().environment(\.formatPickerViewModel, viewModel)
         let hostingController = NSHostingController(rootView: accessoryViewHosted)
@@ -345,14 +341,16 @@ class MainWindowViewModel {
             if let destURL = panel.url {
                 archive.name = destURL.lastPathComponent
                 Task {
-                    #ZZTrace("Save As to \(destURL) (format: \(viewModel.format) \(viewModel.filter))")
+                    #ZZTrace("Save As to \(destURL) (format: \(viewModel.format))")
 
-                    if !archive.dirty && archive.format == viewModel.format && archive.filters.contains(viewModel.filter) {
+                    if !archive.dirty && archive.format == viewModel.format {
                         // This is a performance optimisation
                         // The archive/format/filters haven't changed, so just copy the existing file
                         copyArchive(to: destURL)
                     } else {
-                        await saveArchive(to: destURL, overrideFormat: viewModel.format, overrideFilter: viewModel.filter)
+                        archive.format = viewModel.format
+                        archive.filters = viewModel.format.defaultFilters
+                        await saveArchive(to: destURL)
                     }
                 }
             }

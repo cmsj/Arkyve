@@ -16,4 +16,8 @@ extension String {
         guard self.hasPrefix(prefix) else { return self }
         return String(self.dropFirst(prefix.count))
     }
+
+    var deletingPathExtension: String {
+        return (self as NSString).deletingPathExtension
+    }
 }

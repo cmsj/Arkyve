@@ -46,7 +46,7 @@ enum libarchiveFormat: Int32, CaseIterable, Identifiable {
         get {
             switch (self) {
                 // NOTE: These are not the only formats libarchive can write, but they are all I care to test
-            case .TAR, .TAR_GNUTAR, .ISO9660, .ZIP, ._7ZIP:
+            case .TAR_GNUTAR, .ISO9660, .ZIP, ._7ZIP:
                 true
             default:
                 false
@@ -54,12 +54,38 @@ enum libarchiveFormat: Int32, CaseIterable, Identifiable {
         }
     }
 
+    var writeExtension: String {
+        get {
+            switch (self) {
+            case .TAR_GNUTAR:
+                return "tgz"
+            case .ISO9660:
+                return "iso"
+            case .ZIP:
+                return "zip"
+            case ._7ZIP:
+                return "7z"
+            default:
+                // No other extensions can be written, so we should never encounter this
+                return ""
+            }
+        }
+    }
+
+//    var allWriteExtensions: [String] {
+//        var extensions: [String] = []
+//        for format in Self.allCases where format.canWrite {
+//            extensions.append(format.writeExtension)
+//        }
+//        return extensions
+//    }
+
     var defaultFilters: [libarchiveFilter] {
         get {
             var filters: [libarchiveFilter] = []
 
             switch self {
-            case .TAR, .TAR_GNUTAR:
+            case .TAR_GNUTAR:
                 filters.append(.GZip)
             default:
                 filters.append(.None)
@@ -97,7 +123,7 @@ extension libarchiveFormat: CustomStringConvertible {
             case .TAR_USTAR: return "TAR_USTAR"
             case .TAR_PAX_INTERCHANGE: return "TAR_PAX_INTERCHANGE"
             case .TAR_PAX_RESTRICTED: return "TAR_PAX_RESTRICTED"
-            case .TAR_GNUTAR: return "GNU tar"
+            case .TAR_GNUTAR: return "tar"
             case .ISO9660: return "ISO9660"
             case .ISO9660_RR: return "ISO9660 Rock Ridge"
             case .ZIP: return "Zip"

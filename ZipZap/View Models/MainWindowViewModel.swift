@@ -327,7 +327,7 @@ class MainWindowViewModel {
         panel.isExtensionHidden = false
         panel.nameFieldStringValue = archive.name // FIXME: This doesn't respect the currently selected suffix
 
-        let viewModel = FormatPickerViewModel()
+        let viewModel = FormatPickerViewModel(panel: panel)
 
         if archive.format != .Unknown {
             viewModel.format = archive.format

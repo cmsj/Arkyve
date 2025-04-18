@@ -5,6 +5,7 @@
 //  Created by Chris Jones on 16/01/2025.
 //
 
+import Foundation
 import Synchronization
 import SwiftUI
 
@@ -13,6 +14,12 @@ import SwiftUI
 final class FormatPickerViewModel: Sendable {
     @ObservationIgnored
     fileprivate let _formatStorage = Mutex<libarchiveFormat>(.ZIP)
+    @ObservationIgnored
+    let panel: NSSavePanel?
+
+    init(panel: NSSavePanel? = nil) {
+        self.panel = panel
+    }
 
     public var format: libarchiveFormat {
         get {
@@ -25,6 +32,15 @@ final class FormatPickerViewModel: Sendable {
             self.withMutation(keyPath: \.format) {
                 _formatStorage.withLock { value in
                     value = newValue
+
+                    Task { @MainActor in
+                        if let panel {
+                            let baseName = panel.nameFieldStringValue.deletingPathExtension
+                            let ext = newValue.writeExtension
+                            let newName = "\(baseName).\(ext)"
+                            panel.nameFieldStringValue = newName
+                        }
+                    }
                 }
             }
         }

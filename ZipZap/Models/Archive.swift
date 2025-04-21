@@ -230,6 +230,7 @@ class Archive {
                                                perms: mode_t.directory)
             let entry = ArchiveEntry(entryHeader)
             parentEntry.children?.append(entry)
+            entries.append(entry)
             return entry.id
         }
 

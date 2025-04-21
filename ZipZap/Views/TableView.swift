@@ -82,25 +82,7 @@ struct TableView: View {
             TableRowTreeContent(node: viewModel.archive?.root, viewModel: viewModel)
         }
         .contextMenu(forSelectionType: ArchiveEntry.ID.self) { items in
-            Button {
-                viewModel.renameButton(renameEntryFocus: renameEntryFocus, entries: items)
-            } label: {
-                Text("Rename...")
-            }
-            .keyboardShortcut("r")
-            Button {
-                viewModel.extractButton(items)
-            } label: {
-                Text("Extract")
-            }
-            .keyboardShortcut("e")
-            Divider()
-            Button {
-                viewModel.deleteButton(items)
-            } label: {
-                Text("Delete")
-            }
-            .keyboardShortcut("d")
+            EntryContextMenu(viewModel: viewModel, items: items, renameEntryFocus: renameEntryFocus)
         }
         .onKeyPress(.space, action: {
             if viewModel.selectedEntries.count > 0 {

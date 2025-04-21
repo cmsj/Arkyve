@@ -33,13 +33,13 @@ final class FormatPickerViewModel: Sendable {
                 _formatStorage.withLock { value in
                     value = newValue
 
+                    guard let panel = panel else { return }
                     Task { @MainActor in
-                        if let panel {
-                            let baseName = panel.nameFieldStringValue.deletingPathExtension
-                            let ext = newValue.writeExtension
-                            let newName = "\(baseName).\(ext)"
-                            panel.nameFieldStringValue = newName
-                        }
+                        let baseName = panel.nameFieldStringValue.deletingPathExtension
+                        let ext = newValue.writeExtension
+                        let newName = "\(baseName).\(ext)"
+                        // FIXME: For some reason, if we sent foo.tar.gz it appears as foo.gz
+                        panel.nameFieldStringValue = newName
                     }
                 }
             }

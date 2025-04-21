@@ -38,7 +38,7 @@ final class FormatPickerViewModel: Sendable {
                         let baseName = panel.nameFieldStringValue.deletingPathExtension
                         let ext = newValue.writeExtension
                         let newName = "\(baseName).\(ext)"
-                        // FIXME: For some reason, if we sent foo.tar.gz it appears as foo.gz
+                        // FIXME: For some reason, if we sent foo.tar.gz it appears as foo.gz (see https://bugzilla.mozilla.org/show_bug.cgi?id=1321321 )
                         panel.nameFieldStringValue = newName
                     }
                 }

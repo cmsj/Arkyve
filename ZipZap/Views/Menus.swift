@@ -26,7 +26,9 @@ struct MenuCommands: Commands {
                 activeViewModel?.revertButton()
             }
             .disabled(activeViewModel?.disableRevert ?? true)
+
             Divider()
+
             Button("Save") {
                 activeViewModel?.saveButton()
             }
@@ -38,7 +40,20 @@ struct MenuCommands: Commands {
                 }
                 .disabled(activeViewModel?.disableSaveAs ?? true)
             }
+
             Divider()
+
+            Button("Add Files/Folders...") {
+                activeViewModel?.addButton()
+            }
+            .disabled(activeViewModel?.disableAdd ?? true)
+            Button("Extract...") {
+                activeViewModel?.extractButton()
+            }
+            .disabled(activeViewModel?.disableExtract ?? true)
+
+            Divider()
+
             Button("Close Archive") {
                 activeViewModel?.closeButton()
             }

@@ -13,6 +13,11 @@ struct EntryContextMenu: View {
     var renameEntryFocus: FocusState<UUID?>.Binding
 
     var body: some View {
+        Button("New Folder") {
+            viewModel.newFolderButton(renameEntryFocus: renameEntryFocus, entries: items)
+        }
+        .disabled(viewModel.disableNewFolder)
+
         Button {
             viewModel.renameButton(renameEntryFocus: renameEntryFocus, entries: items)
         } label: {

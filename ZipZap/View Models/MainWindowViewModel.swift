@@ -39,6 +39,7 @@ class MainWindowViewModel {
     var disableExtract: Bool { get { disableUI == true || selectedEntries.isEmpty }}
     var disableRename: Bool { get { disableUI == true || selectedEntries.count != 1 }}
     var disableDelete: Bool { get { disableUI == true || selectedEntries.isEmpty }}
+    var disableNewFolder: Bool { get { disableUI == true || archive == nil }}
     var disableUI: Bool = false
 
     // MARK: - Dynamic UI text
@@ -363,6 +364,37 @@ class MainWindowViewModel {
 
         // Curiously, the selection binding doesn't clear automatically when we remove items from the table
         selectedEntries.removeAll()
+    }
+
+    func newFolderButton(renameEntryFocus: FocusState<UUID?>.Binding, entries: Set<ArchiveEntry.ID>? = nil) {
+        guard archive != nil else { return }
+
+        let actualEntries = entries ?? selectedEntries
+        var parentEntryID: UUID = archive!.root.id
+
+        // See if we can be more specific than the root entry being the parent
+        if actualEntries.first != nil {
+            if let tmpParentEntry = archive?.entryForID(actualEntries.first!) {
+                if tmpParentEntry.type == .directory {
+                    // We have a selected entry and it's a directory, we can parent directly to it
+                    parentEntryID = actualEntries.first!
+                } else {
+                    // We have a selected entry, but it's not a directory, so let's find its parent
+                    if let tmpGrandParentEntry = archive?.parentForEntry(tmpParentEntry) {
+                        parentEntryID = tmpGrandParentEntry.id
+                    }
+                }
+            }
+        }
+
+        if let newFolderID = self.archive?.newFolder(at: parentEntryID) {
+            Task { @MainActor in
+                selectedEntries = [newFolderID]
+                Task { @MainActor in
+                    renameEntryFocus.wrappedValue = newFolderID
+                }
+            }
+        }
     }
 
     // MARK: - Other handlers

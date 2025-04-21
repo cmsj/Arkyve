@@ -174,9 +174,10 @@ class Archive {
         // 3. Remove from current parent
         func removeFromParent(_ entry: ArchiveEntry) {
             // Find the parent in the archive's entries. We don't need to walk the tree, we can iterate archive.entries
-            let parent = entries.first(where: { parent in
-                parent.children?.contains(where: { $0.id == entry.id }) ?? false
-            })
+            let parent = parentForEntry(entry)
+//            entries.first(where: { parent in
+//                parent.children?.contains(where: { $0.id == entry.id }) ?? false
+//            })
             if let parent {
                 parent.children?.removeAll { $0.id == entry.id }
                 return
@@ -203,7 +204,36 @@ class Archive {
     }
 
     func entryForID(_ id: UUID) -> ArchiveEntry? {
+        if id == root.id { return root }
         return entries.first { $0.id == id }
+    }
+
+    func parentForEntry(_ entry: ArchiveEntry) -> ArchiveEntry? {
+        return entries.first(where: { item in
+            item.children?.contains { $0.id == entry.id } ?? false
+        })
+    }
+
+    func newFolder(at parentID: UUID) -> UUID? {
+        if let parentEntry = self.entryForID(parentID), parentEntry.children != nil {
+            let name = "Untitled Folder"
+            let pathComponents = parentEntry.pathComponents + [name]
+            let path = pathComponents.joined(separator: "/")
+            let entryHeader = libarchiveHeader(source: ArchiveEntrySource(type: .InMemory, path: path),
+                                               type: .directory,
+                                               path: path,
+                                               name: name,
+                                               pathComponents: pathComponents,
+                                               size: 0,
+                                               atime: Date.now, ctime: Date.now, mtime: Date.now, btime: Date.now,
+                                               uid: Int64(getuid()), gid: Int64(getgid()),
+                                               perms: mode_t.directory)
+            let entry = ArchiveEntry(entryHeader)
+            parentEntry.children?.append(entry)
+            return entry.id
+        }
+
+        return nil
     }
 
     func processEntryRename(_ entry: ArchiveEntry) {

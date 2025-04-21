@@ -8,6 +8,8 @@
 enum ArchiveEntrySourceType: Codable, CustomStringConvertible {
     case Archive
     case Filesystem
+    case InMemory // FIXME: We don't have write support for these yet
+    // FIXME: Dragging into InMemory folders also doesn't seem to work
     case Root
     case Synthetic
 
@@ -17,6 +19,7 @@ enum ArchiveEntrySourceType: Codable, CustomStringConvertible {
         case .Filesystem: return "Filesystem"
         case .Root: return "Root"
         case .Synthetic: return "Synthetic"
+        case .InMemory: return "In Memory"
         }
     }
 }

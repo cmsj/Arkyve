@@ -87,8 +87,7 @@ struct ToolbarContentView: CustomizableToolbarContent {
         }
         ToolbarItem(id: "Delete") {
             Button {
-                // TODO: WRITE
-                //                viewModel.deleteButton()
+                viewModel.deleteButton()
             } label: {
                 Label("Delete", systemImage: "trash")
                     .symbolRenderingMode(.hierarchical)

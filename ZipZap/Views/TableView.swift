@@ -84,6 +84,10 @@ struct TableView: View {
         .contextMenu(forSelectionType: ArchiveEntry.ID.self) { items in
             EntryContextMenu(viewModel: viewModel, items: items, renameEntryFocus: renameEntryFocus)
         }
+        .contextMenu() {
+            EntryContextMenu(viewModel: viewModel, items: Set(), renameEntryFocus: renameEntryFocus)
+//            TableContextMenu(viewModel: viewModel, renameEntryFocus: renameEntryFocus)
+        }
         .onKeyPress(.space, action: {
             if viewModel.selectedEntries.count > 0 {
                 viewModel.extractForQuicklook()

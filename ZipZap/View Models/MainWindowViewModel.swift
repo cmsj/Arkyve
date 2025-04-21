@@ -358,8 +358,11 @@ class MainWindowViewModel {
     }
 
     func deleteButton(_ entries: Set<ArchiveEntry.ID>? = nil) {
-        guard let entries else { return }
-        self.archive?.removeEntries(entries)
+        let actualEntries = entries ?? selectedEntries
+        self.archive?.removeEntries(actualEntries)
+
+        // Curiously, the selection binding doesn't clear automatically when we remove items from the table
+        selectedEntries.removeAll()
     }
 
     // MARK: - Other handlers

@@ -148,24 +148,24 @@ class Archive {
     }
 
     func removeEntries(_ entries: Set<ArchiveEntry.ID>) {
-        // Remove entries from the entries array
-        self.entries.removeAll { entries.contains($0.id) }
-        
         // Remove entries from the root tree structure by traversing the tree
         func removeFromTree(_ node: ArchiveEntry) {
-            guard var children = node.children else { return }
-            
-            // Remove any direct children that match
-            children.removeAll { entries.contains($0.id) }
-            
-            // Recursively check remaining children
-            for child in children {
-                removeFromTree(child)
+            if node.children != nil {
+                // Remove any direct children that match
+                node.children?.removeAll { entries.contains($0.id) }
+
+                // Recursively check remaining children
+                for child in node.children ?? [] {
+                    removeFromTree(child)
+                }
             }
         }
         
         removeFromTree(self.root)
-        
+
+        // Remove entries from the entries array
+        self.entries.removeAll { entries.contains($0.id) }
+
         // Mark the archive as dirty since we've made changes
         self.setDirty()
     }

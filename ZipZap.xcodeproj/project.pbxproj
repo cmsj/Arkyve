@@ -51,6 +51,7 @@
 		4FA020492D2DD6A000E1CE58 /* withTaskProgression.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FA020482D2DD69D00E1CE58 /* withTaskProgression.swift */; };
 		4FA0204A2D2DD6A000E1CE58 /* withTaskProgression.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FA020482D2DD69D00E1CE58 /* withTaskProgression.swift */; };
 		4FB275582DB2FD350037BD44 /* EntryContextMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FB275572DB2FD320037BD44 /* EntryContextMenu.swift */; };
+		4FB2755A2DB6E56E0037BD44 /* TableContextMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FB275592DB6E56A0037BD44 /* TableContextMenu.swift */; };
 		4FCEEEDE2BEE39E7009E9E17 /* ZipZapApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FCEEEDD2BEE39E7009E9E17 /* ZipZapApp.swift */; };
 		4FCEEEE02BEE39E7009E9E17 /* MainWindowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FCEEEDF2BEE39E7009E9E17 /* MainWindowView.swift */; };
 		4FCEEEE22BEE39E9009E9E17 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4FCEEEE12BEE39E9009E9E17 /* Assets.xcassets */; };
@@ -125,6 +126,7 @@
 		4F8BD3B22D39BD870087091C /* FormatPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormatPicker.swift; sourceTree = "<group>"; };
 		4FA020482D2DD69D00E1CE58 /* withTaskProgression.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = withTaskProgression.swift; sourceTree = "<group>"; };
 		4FB275572DB2FD320037BD44 /* EntryContextMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EntryContextMenu.swift; sourceTree = "<group>"; };
+		4FB275592DB6E56A0037BD44 /* TableContextMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableContextMenu.swift; sourceTree = "<group>"; };
 		4FB498582C08A00F004DE958 /* libiconv.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libiconv.tbd; path = usr/lib/libiconv.tbd; sourceTree = SDKROOT; };
 		4FB4985A2C08A018004DE958 /* libexpat.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libexpat.tbd; path = usr/lib/libexpat.tbd; sourceTree = SDKROOT; };
 		4FB4985C2C08A020004DE958 /* libbz2.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libbz2.tbd; path = usr/lib/libbz2.tbd; sourceTree = SDKROOT; };
@@ -211,6 +213,7 @@
 			isa = PBXGroup;
 			children = (
 				4FB275572DB2FD320037BD44 /* EntryContextMenu.swift */,
+				4FB275592DB6E56A0037BD44 /* TableContextMenu.swift */,
 				4F41C4252D1EB9370011DAAB /* Menus.swift */,
 				4FCEEEDF2BEE39E7009E9E17 /* MainWindowView.swift */,
 				4F7121912C0F5DE1000EB268 /* ToolbarContent.swift */,
@@ -469,6 +472,7 @@
 				4F8BD3B12D39BD420087091C /* FormatPickerViewModel.swift in Sources */,
 				4FD4BA562C07C58E00082C13 /* Date.swift in Sources */,
 				4FED41E52D237674003BA92B /* FileManager.swift in Sources */,
+				4FB2755A2DB6E56E0037BD44 /* TableContextMenu.swift in Sources */,
 				4F04F9002D8CAF0800F0953B /* URL.swift in Sources */,
 				4F22BDCB2CAE95820079FAC0 /* libarchiveFilter.swift in Sources */,
 				4FED41E32D23752A003BA92B /* libarchiveFD.swift in Sources */,

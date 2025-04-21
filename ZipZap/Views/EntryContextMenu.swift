@@ -19,12 +19,14 @@ struct EntryContextMenu: View {
             Text("Rename...")
         }
         .keyboardShortcut("r")
+        .disabled(items.isEmpty)
         Button {
             viewModel.extractButton(items)
         } label: {
             Text("Extract")
         }
         .keyboardShortcut("e")
+        .disabled(items.isEmpty)
         Divider()
         Button {
             viewModel.deleteButton(items)
@@ -32,5 +34,6 @@ struct EntryContextMenu: View {
             Text("Delete")
         }
         .keyboardShortcut("d")
+        .disabled(items.isEmpty)
     }
 }

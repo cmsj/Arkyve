@@ -323,16 +323,15 @@ class MainWindowViewModel {
         guard let archive = archive else { return }
 
         let panel = NSSavePanel()
-
-        panel.prompt = "Save"
-        panel.isExtensionHidden = false
-        panel.nameFieldStringValue = archive.name // FIXME: This doesn't respect the currently selected suffix
-
         let viewModel = FormatPickerViewModel(panel: panel)
 
         if archive.format != .Unknown {
             viewModel.format = archive.format
         }
+
+        panel.prompt = "Save"
+        panel.isExtensionHidden = false
+        panel.nameFieldStringValue = archive.name.deletingPathExtension
 
         let accessoryViewHosted = FormatPicker().environment(\.formatPickerViewModel, viewModel)
         let hostingController = NSHostingController(rootView: accessoryViewHosted)

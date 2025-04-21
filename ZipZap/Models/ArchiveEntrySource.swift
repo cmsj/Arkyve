@@ -8,7 +8,7 @@
 enum ArchiveEntrySourceType: Codable, CustomStringConvertible {
     case Archive
     case Filesystem
-    case InMemory // FIXME: We don't have write support for these yet
+    case InMemory
     case Root
     case Synthetic
 

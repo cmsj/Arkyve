@@ -115,7 +115,7 @@ class MainWindowViewModel {
                 // Having written the archive, we should no longer have any entries of source type .Filesystem
                 // So we'll update our entries to switch them to .Archive
                 archive.entries.forEach { entry in
-                    if (entry.source.type == .Filesystem) {
+                    if (entry.source.type == .Filesystem || entry.source.type == .InMemory) {
                         entry.source = .init(type: .Archive, path: entry.path)
                     }
                 }

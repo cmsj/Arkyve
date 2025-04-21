@@ -212,6 +212,8 @@ actor libarchiveWrapper {
             throw ArchiveError.ArchiveWriteError(archive: nil, error: "Unable to create new entry")
         }
 
+        // FIXME: We seem to write a . root entry
+
 //        guard let data = headers.path.data(using: .utf8) else {
 //            throw ArchiveError.ArchiveWriteError(
 //                archive: nil, error: "Unable to convert path to Data: \(headers.path)")
@@ -566,6 +568,25 @@ actor libarchiveWrapper {
 
             headerMap.removeValue(forKey: filePath)
         }
+
+        // Third, process any InMemory-sourced folders that have been added to the archive
+        for filePath in headerMap.keys.filter({ headerMap[$0]?.header.source.type == .InMemory && headerMap[$0]?.header.type == .directory })
+        {
+            guard let flatEntry = headerMap[filePath] else {
+                throw ArchiveError.ArchiveWriteError(archive: to.path, error: "Inconsistency in writeArchive header map")
+            }
+
+            // FIXME: (Maybe?) Files are being written to archives, but their internal path is not being preserved
+
+            // Write a header to the archive for this file
+            let writeEntry = try writeArchiveEntryHeader(to: writeArchiveFD, headers: flatEntry.header)
+            defer { archive_entry_free(writeEntry) }
+
+            await Task.unsafeProgress?.progressed()
+
+            headerMap.removeValue(forKey: filePath)
+        }
+
         // FIXME: Deal with: do we have any headerMap entries left?
         if !headerMap.isEmpty {
             #ZZWarn(

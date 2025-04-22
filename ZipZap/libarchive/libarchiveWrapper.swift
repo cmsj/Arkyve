@@ -525,8 +525,6 @@ actor libarchiveWrapper {
                 throw ArchiveError.ArchiveWriteError(archive: to.path, error: "Inconsistency in writeArchive header map")
             }
 
-            // FIXME: Files are being written to archives, but their internal path is not being preserved
-
             // Write a header to the archive for this file
             let writeEntry = try writeArchiveEntryHeader(to: writeArchiveFD, headers: flatEntry.header)
             defer { archive_entry_free(writeEntry) }

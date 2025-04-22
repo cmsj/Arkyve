@@ -69,6 +69,7 @@ struct TableView: View {
                     .customizationID("synth")
                     .defaultVisibility(.hidden)
             }
+#if DEBUG
             Group {
                 TableColumn("UUID (Debug)", value: \ArchiveEntry.id.uuidString)
                     .customizationID("uuid")
@@ -77,6 +78,7 @@ struct TableView: View {
                     .customizationID("source")
                     .defaultVisibility(.hidden)
             }
+#endif
 
         } rows: {
             TableRowTreeContent(node: viewModel.archive?.root, viewModel: viewModel)

@@ -112,10 +112,15 @@ class Archive {
         guard urls.count > 0 else { return }
 
         var newEntries: [ArchiveEntry] = []
+        let targetEntry = parent ?? root
 
         for url in urls {
             let entry = ArchiveEntry(from: url, archivePath: url.relativeTo(pwd))
             guard let entry = entry else { continue }
+
+            // Fix up the path of the new entry
+            entry.pathComponents = targetEntry.pathComponents + [entry.name]
+            entry.path = entry.pathComponents.joined(separator: "/")
 
             newEntries.append(entry)
 
@@ -123,13 +128,12 @@ class Archive {
                 guard let enumerator = FileManager.default.enumerator(at: url, includingPropertiesForKeys: []) else { break }
                 for case let fileURL as URL in enumerator {
                     if let entry = ArchiveEntry(from: fileURL, archivePath: fileURL.relativeTo(pwd)) {
+                        // FIXME: We're not fixing up the path of this new entry
                         newEntries.append(entry)
                     }
                 }
             }
         }
-
-        let targetEntry = parent ?? root
 
         // Store all the new entries
         var addedEntries: [ArchiveEntry] = []

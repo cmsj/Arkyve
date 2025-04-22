@@ -53,7 +53,6 @@ struct ToolbarContentView: CustomizableToolbarContent {
 
         ToolbarItem(id: "Add") {
             Button {
-                // TODO: WRITE
                 viewModel.addButton()
             } label: {
                 Label("Add", image: "zzAdd")

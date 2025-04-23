@@ -140,8 +140,8 @@ class Archive {
 
         let (newDirs, newFiles) = newEntries.filterBothwise { entry in entry.type == .directory }
         do {
-            addedEntries += try targetEntry.addChildrenHierarchically(newDirs)
-            addedEntries += try targetEntry.addChildrenHierarchically(newFiles)
+            addedEntries += try root.addChildrenHierarchically(newDirs)
+            addedEntries += try root.addChildrenHierarchically(newFiles)
         } catch {
             throw ArchiveError.ArchiveEntriesError(archive: self.name, error: "Failed to add entries to root: \(error.localizedDescription)")
         }

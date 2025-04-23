@@ -46,7 +46,7 @@ import Foundation
 
     @Test func testArchiveRoot() async throws {
         #expect(archive.root.type == .root)
-        #expect(archive.root.path == ".")
+        #expect(archive.root.path == "")
         #expect(archive.root.source.type == .Root)
     }
 

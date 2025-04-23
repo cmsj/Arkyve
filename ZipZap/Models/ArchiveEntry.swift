@@ -146,10 +146,10 @@ class ArchiveEntry: Identifiable {
     }
 
     init(isRoot: Bool) {
-        self.source = ArchiveEntrySource(type: .Root, path: ".")
-        self.path = "."
+        self.source = ArchiveEntrySource(type: .Root, path: "")
+        self.path = ""
         self.name = "root"
-        self.pathComponents = ["."]
+        self.pathComponents = []
         self.size = -1
         self.type = .root
         self.children = []

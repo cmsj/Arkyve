@@ -76,10 +76,10 @@ struct ArchiveEntryTests {
 
         // Assert
         #expect(entry.source.type == .Root)
-        #expect(entry.source.path == ".")
-        #expect(entry.path == ".")
+        #expect(entry.source.path == "")
+        #expect(entry.path == "")
         #expect(entry.name == "root")
-        #expect(entry.pathComponents == ["."])
+        #expect(entry.pathComponents == [])
         #expect(entry.size == -1)
         #expect(entry.type == .root)
         #expect(entry.children?.isEmpty == true)
@@ -223,7 +223,7 @@ struct ArchiveEntryTests {
 
         // Assert
         #expect(flatEntries.count == 4) // root, folder, file1, file2
-        #expect(flatEntries[0].path == ".")
+        #expect(flatEntries[0].path == "")
         #expect(flatEntries[1].path == "folder")
 
         // The order of file1 and file2 might vary, so check both exist

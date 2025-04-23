@@ -73,10 +73,13 @@ struct TableView: View {
             Group {
                 TableColumn("UUID (Debug)", value: \ArchiveEntry.id.uuidString)
                     .customizationID("uuid")
-                    .defaultVisibility(.hidden)
+                    .defaultVisibility(.visible)
                 TableColumn("Source (Debug)", value: \ArchiveEntry.source.description)
                     .customizationID("source")
-                    .defaultVisibility(.hidden)
+                    .defaultVisibility(.visible)
+                TableColumn("Path (Debug)", value: \ArchiveEntry.path)
+                    .customizationID("path")
+                    .defaultVisibility(.visible)
             }
 #endif
 

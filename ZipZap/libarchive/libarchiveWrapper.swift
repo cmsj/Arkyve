@@ -212,8 +212,6 @@ actor libarchiveWrapper {
             throw ArchiveError.ArchiveWriteError(archive: nil, error: "Unable to create new entry")
         }
 
-        // FIXME: We seem to write a . root entry
-
 //        guard let data = headers.path.data(using: .utf8) else {
 //            throw ArchiveError.ArchiveWriteError(
 //                archive: nil, error: "Unable to convert path to Data: \(headers.path)")

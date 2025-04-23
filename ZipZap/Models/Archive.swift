@@ -125,11 +125,21 @@ class Archive {
             newEntries.append(entry)
 
             if entry.type == .directory {
+                // We only want to add the directory itself, so we'll need to know its full path so we can substract that later
+                let parentPath = Array(url.pathComponents.dropLast())
+
                 guard let enumerator = FileManager.default.enumerator(at: url, includingPropertiesForKeys: []) else { break }
                 for case let fileURL as URL in enumerator {
                     if let entry = ArchiveEntry(from: fileURL, archivePath: fileURL.relativeTo(pwd)) {
-                        // FIXME: We're not fixing up the path of this new entry
-                        newEntries.append(entry)
+                        // Use the parentPath we extracted earlier to determine the full internal path of this entry
+                        if let entryPath = fileURL.pathComponents.subtractPath(parentPath) {
+                            entry.pathComponents = entryPath
+                            entry.path = entry.pathComponents.joined(separator: "/")
+
+                            newEntries.append(entry)
+                        } else {
+                            throw ArchiveError.ArchiveEntriesError(archive: name, error: "Unable to add \(fileURL)")
+                        }
                     }
                 }
             }

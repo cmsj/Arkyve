@@ -529,35 +529,37 @@ actor libarchiveWrapper {
             let writeEntry = try writeArchiveEntryHeader(to: writeArchiveFD, headers: flatEntry.header)
             defer { archive_entry_free(writeEntry) }
 
-            // Open the file from the filesystem if we can
-            let fileHandle: FileHandle?
-            do {
-                fileHandle = try FileHandle(forReadingFrom: URL(fileURLWithPath: flatEntry.header.source.path))
-            } catch {
-                throw ArchiveError.ArchiveWriteError(archive: to.path, error: "Failed to open file for reading: \(filePath): \(error.localizedDescription)")
-            }
-            guard let fileHandle else {
-                throw ArchiveError.ArchiveWriteError(archive: to.path, error: "Failed to open file for reading: \(filePath)")
-            }
-            defer { try? fileHandle.close() }
+            if flatEntry.header.type != .directory {
+                // Open the file from the filesystem if we can
+                let fileHandle: FileHandle?
+                do {
+                    fileHandle = try FileHandle(forReadingFrom: URL(fileURLWithPath: flatEntry.header.source.path))
+                } catch {
+                    throw ArchiveError.ArchiveWriteError(archive: to.path, error: "Failed to open file for reading: \(filePath): \(error.localizedDescription)")
+                }
+                guard let fileHandle else {
+                    throw ArchiveError.ArchiveWriteError(archive: to.path, error: "Failed to open file for reading: \(filePath)")
+                }
+                defer { try? fileHandle.close() }
 
-            // Read the file's data and write it to the archive
-            while true {
-                let data = try fileHandle.read(upToCount: 524288)
-                guard let data = data, !data.isEmpty else { break }
+                // Read the file's data and write it to the archive
+                while true {
+                    let data = try fileHandle.read(upToCount: 524288)
+                    guard let data = data, !data.isEmpty else { break }
 
-                try? data.withUnsafeBytes { ptr in
-                    let wsize = archive_write_data(writeArchiveFD.archive, ptr.baseAddress, data.count)
-                    if wsize < 0 {
-                        let errorString = String(cString: archive_error_string(writeArchiveFD.archive))
-                        throw ArchiveError.ArchiveWriteError(archive: to.path,
-                                                             error: "Failed to write data: \(errorString)"
-                        )
-                    }
-                    if wsize != data.count {
-                        throw ArchiveError.ArchiveWriteError(archive: to.path,
-                                                             error: "Data size mismatch during write: expected \(data.count) bytes but wrote \(wsize) bytes"
-                        )
+                    try? data.withUnsafeBytes { ptr in
+                        let wsize = archive_write_data(writeArchiveFD.archive, ptr.baseAddress, data.count)
+                        if wsize < 0 {
+                            let errorString = String(cString: archive_error_string(writeArchiveFD.archive))
+                            throw ArchiveError.ArchiveWriteError(archive: to.path,
+                                                                 error: "Failed to write data: \(errorString)"
+                            )
+                        }
+                        if wsize != data.count {
+                            throw ArchiveError.ArchiveWriteError(archive: to.path,
+                                                                 error: "Data size mismatch during write: expected \(data.count) bytes but wrote \(wsize) bytes"
+                            )
+                        }
                     }
                 }
             }

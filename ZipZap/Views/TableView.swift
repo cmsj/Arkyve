@@ -91,7 +91,6 @@ struct TableView: View {
         }
         .contextMenu() {
             EntryContextMenu(viewModel: viewModel, items: Set(), renameEntryFocus: renameEntryFocus)
-//            TableContextMenu(viewModel: viewModel, renameEntryFocus: renameEntryFocus)
         }
         .onKeyPress(.space, action: {
             if viewModel.selectedEntries.count > 0 {

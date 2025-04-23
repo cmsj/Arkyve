@@ -143,37 +143,48 @@ class MainWindowViewModel {
 
     func extractForQuicklook() {
         quickLookItems = []
-        guard let archiveURL = archive?.URL else { return }
-        guard let cacheURL = archive?.cacheURL else { return }
 
-        Task {
-            let loader = libarchiveWrapper(url: archiveURL)
-            let chosenEntries = archive?.entries.filter { selectedEntries.contains($0.id) } ?? []
-            var extractableEntries: [ArchiveEntryExtractable] = []
+        let chosenEntries = archive?.entries.filter { selectedEntries.contains($0.id) } ?? []
+        var extractableEntries: [ArchiveEntryExtractable] = []
 
-            var itemCount = extractableEntries.count
-            for entry in chosenEntries {
-                if entry.source.type == .Filesystem {
-                    // This is an entry that isn't in the archive yet, so we can skip marking it as extractable and just capture the URL
-                    quickLookItems.append(URL(filePath: entry.source.path))
-                } else {
-                    let extractableEntry = entry.asExtractable(for: archive)
-                    itemCount += extractableEntry.entries.count
-                    extractableEntries.append(extractableEntry)
-                }
+        var itemCount = extractableEntries.count
+        for entry in chosenEntries {
+            switch entry.source.type {
+            case .InMemory:
+                continue
+            case .Filesystem:
+                // This is an entry that isn't in the archive yet, so we can skip marking it as extractable and just capture the URL
+                quickLookItems.append(URL(filePath: entry.source.path))
+            default:
+                let extractableEntry = entry.asExtractable(for: archive)
+                itemCount += extractableEntry.entries.count
+                extractableEntries.append(extractableEntry)
             }
+        }
 
-            do {
-                try await withTaskProgression(totalUnits: itemCount) { _ in
-                    quickLookItems += try await loader.extractEntries(extractableEntries, toFolder: cacheURL)
-                    quickLookURL = quickLookItems.first
-                } progress: { progression in
-                    Task { @MainActor in setProgress(progression) }
+        if extractableEntries.count == 0 && quickLookItems.count > 0 {
+            // Nothing coming from the archive, but we have things coming from the filesystem
+            quickLookURL = quickLookItems.first
+        } else if extractableEntries.count > 0 {
+            // At least something is coming from the archive, so process that and then show quicklook
+            guard let archiveURL = archive?.URL else { return }
+            guard let cacheURL = archive?.cacheURL else { return }
+
+            Task {
+                do {
+                    let loader = libarchiveWrapper(url: archiveURL)
+
+                    try await withTaskProgression(totalUnits: itemCount) { _ in
+                        quickLookItems += try await loader.extractEntries(extractableEntries, toFolder: cacheURL)
+                        quickLookURL = quickLookItems.first
+                    } progress: { progression in
+                        Task { @MainActor in setProgress(progression) }
+                    }
+                } catch let error as ArchiveError {
+                    showErrors.err(error)
+                } catch {
+                    showErrors.err(ArchiveError.ArchiveUnknownError(msg: error.localizedDescription))
                 }
-            } catch let error as ArchiveError {
-                showErrors.err(error)
-            } catch {
-                showErrors.err(ArchiveError.ArchiveUnknownError(msg: error.localizedDescription))
             }
         }
     }

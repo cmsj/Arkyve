@@ -115,12 +115,10 @@ class Archive {
         let targetEntry = parent ?? root
 
         for url in urls {
-            let entry = ArchiveEntry(from: url, archivePath: url.relativeTo(pwd))
-            guard let entry = entry else { continue }
+            let pathComponentsInArchive = targetEntry.pathComponents + [url.lastPathComponent]
 
-            // Fix up the path of the new entry
-            entry.pathComponents = targetEntry.pathComponents + [entry.name]
-            entry.path = entry.pathComponents.joined(separator: "/")
+            let entry = ArchiveEntry(from: url, pathInArchiveComponents: pathComponentsInArchive)
+            guard let entry = entry else { continue }
 
             newEntries.append(entry)
 
@@ -130,17 +128,15 @@ class Archive {
 
                 guard let enumerator = FileManager.default.enumerator(at: url, includingPropertiesForKeys: []) else { break }
                 for case let fileURL as URL in enumerator {
-                    if let entry = ArchiveEntry(from: fileURL, archivePath: fileURL.relativeTo(pwd)) {
-                        // Use the parentPath we extracted earlier to determine the full internal path of this entry
-                        if let entryPath = fileURL.pathComponents.subtractPath(parentPath) {
-                            entry.pathComponents = entryPath
-                            entry.path = entry.pathComponents.joined(separator: "/")
-
-                            newEntries.append(entry)
-                        } else {
-                            throw ArchiveError.ArchiveEntriesError(archive: name, error: "Unable to add \(fileURL)")
-                        }
+                    guard let dirPathComponents = fileURL.pathComponents.subtractPath(parentPath) else {
+                        throw ArchiveError.ArchiveEntriesError(archive: name, error: "Unable to determine path for \(fileURL)")
                     }
+
+                    guard let entry = ArchiveEntry(from: fileURL, pathInArchiveComponents: targetEntry.pathComponents + dirPathComponents) else {
+                        throw ArchiveError.ArchiveEntriesError(archive: name, error: "Unable to add \(fileURL)")
+                    }
+
+                    newEntries.append(entry)
                 }
             }
         }

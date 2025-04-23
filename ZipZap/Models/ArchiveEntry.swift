@@ -76,6 +76,7 @@ class ArchiveEntry: Identifiable {
     var path: String
     var name: String
     var pathComponents: [String] = []
+    // FIXME: I really don't love that we expose path and pathComponents and make our consumers worry about updating both.
     var size: Int64
 
     var sizeString: String {
@@ -156,7 +157,7 @@ class ArchiveEntry: Identifiable {
     }
 
     // Helper to create a new ArchiveEntry from a URL on the local filesystem
-    convenience init?(from url: URL, archivePath: String) {
+    convenience init?(from url: URL, pathInArchiveComponents: [String]) {
         guard let stat = try? FileManager.default.attributesOfItem(atPath: url.path) else { return nil }
 
         let source = ArchiveEntrySource(type: .Filesystem, path: url.path)
@@ -197,13 +198,13 @@ class ArchiveEntry: Identifiable {
             entryType = .unknown
         }
 
-        let archivePathComponents = archivePath.components(separatedBy: "/")
-        let name = archivePathComponents.last ?? archivePath // Pretty sure this will always hit the optional default case, but just in case
+        let name = pathInArchiveComponents.last ?? "Unknown"
+        let pathInArchive = pathInArchiveComponents.joined(separator: "/")
         let header = libarchiveHeader(source: source,
                                       type: entryType,
-                                      path: archivePath,
+                                      path: pathInArchive,
                                       name: name,
-                                      pathComponents: archivePathComponents,
+                                      pathComponents: pathInArchiveComponents,
                                       size: fileSize,
                                       atime: Date(timeIntervalSince1970: 0),
                                       ctime: Date(timeIntervalSince1970: 0),

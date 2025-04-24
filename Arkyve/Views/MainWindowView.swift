@@ -64,10 +64,9 @@ struct MainWindowView: View {
             }
             Button(role: .destructive) {
                 viewModel.closeArchive()
-                if viewModel.postSavePromptClosure != nil {
-                    viewModel.postSavePromptClosure!()
-                    viewModel.postSavePromptClosure = nil
-                }
+
+                viewModel.postSavePromptClosure?()
+                viewModel.postSavePromptClosure = nil
             } label: {
                 Text("Close Archive")
             }

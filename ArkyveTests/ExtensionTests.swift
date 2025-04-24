@@ -42,6 +42,7 @@ import Foundation
 
             // HACK: Depending on where the test is run, the output here will be different
             // (because DateFormatter() is used in this codepath and it cares about timezones)
+            print("Adjusting expected result for: \(TimeZone.current.identifier)")
             switch TimeZone.current.identifier {
             case "Europe/London":
                 expectedString = "1 Jan 1970 at 01:00"

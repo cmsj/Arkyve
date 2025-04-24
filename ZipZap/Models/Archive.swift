@@ -202,9 +202,7 @@ class Archive {
         removeFromParent(entry)
 
         // 4. Update pathComponents to the new parent + name
-        let newPathComponents = newParent.pathComponents + [entry.name]
-        entry.pathComponents = newPathComponents
-        entry.path = newPathComponents.joined(separator: "/")
+        entry.pathComponents = newParent.pathComponents + [entry.name]
 
         // 5. Add to new parent
         newParent.children?.append(entry)
@@ -251,11 +249,8 @@ class Archive {
         // Get the parent's path components (if any)
         let parentPathComponents = entry.pathComponents.dropLast()
         
-        // Update the path components with the new name
+        // Update the path with the new name
         entry.pathComponents = parentPathComponents + [entry.name]
-        
-        // Update the path by joining the components with "/"
-        entry.path = entry.pathComponents.joined(separator: "/")
         
         // Mark the archive as dirty since we've made changes
         self.setDirty()

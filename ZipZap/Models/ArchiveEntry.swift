@@ -73,9 +73,14 @@ class ArchiveEntry: Identifiable {
     var shouldFocus: Bool = false
 
     // Properties we will store for later use
-    var path: String
     var name: String
-    var pathComponents: [String] = []
+    private(set) var path: String
+    var pathComponents: [String] = [] {
+        didSet {
+            path = pathComponents.joined(separator: "/")
+            print("LOL SET PATH \(path)")
+        }
+    }
     // FIXME: I really don't love that we expose path and pathComponents and make our consumers worry about updating both.
     var size: Int64
 
@@ -111,9 +116,9 @@ class ArchiveEntry: Identifiable {
 
     init(_ entry: libarchiveHeader) {
         source = entry.source
-        path = entry.path
         name = entry.name
         pathComponents = entry.pathComponents
+        path = entry.pathComponents.joined(separator: "/")
         size = entry.size
         atime = entry.atime
         ctime = entry.ctime
@@ -137,9 +142,9 @@ class ArchiveEntry: Identifiable {
         let pathComponents = pathBits
 
         self.source = ArchiveEntrySource(type: .Synthetic, path: path)
-        self.path = path
         self.name = name
         self.pathComponents = pathComponents
+        self.path = path
         self.size = -1
         self.children = []
         self.type = .directory
@@ -148,9 +153,9 @@ class ArchiveEntry: Identifiable {
 
     init(isRoot: Bool) {
         self.source = ArchiveEntrySource(type: .Root, path: "")
-        self.path = ""
         self.name = "root"
         self.pathComponents = []
+        self.path = ""
         self.size = -1
         self.type = .root
         self.children = []

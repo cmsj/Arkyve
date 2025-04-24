@@ -77,6 +77,7 @@ class MainWindowViewModel {
         do {
             try await withTaskProgression { _ in
                 archive = try await loader.loadArchive()
+                sort()
             } progress: { progression in
                 Task { @MainActor in setProgress(progression) }
             }

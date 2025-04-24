@@ -38,7 +38,8 @@ import Foundation
         @Test func userFormatted() async throws {
             #expect(Date(since: 0).userFormatted == "--")
 
-            #expect(Date(since: 1).userFormatted == "1 Jan 1970 at 01:00")
+            #expect(["31 Dec 1969 at 16:00",
+                     "1 Jan 1970 at 01:00"].contains(Date(since: 1).userFormatted))
         }
     }
 

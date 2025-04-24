@@ -13,7 +13,7 @@ public struct ZZLogErrorMacro: ExpressionMacro {
         {
             let zzOutput = \(argument)
             _ = Task { @MainActor in
-                    ZipZapLog.shared.error(zzOutput)
+                    ArkyveLog.shared.error(zzOutput)
             }
         }()
         """
@@ -30,7 +30,7 @@ public struct ZZLogWarnMacro: ExpressionMacro {
         {
             let zzOutput = \(argument)
             _ = Task { @MainActor in
-                    ZipZapLog.shared.warn(zzOutput)
+                    ArkyveLog.shared.warn(zzOutput)
             }
         }()
         """
@@ -47,7 +47,7 @@ public struct ZZLogInfoMacro: ExpressionMacro {
         {
             let zzOutput = \(argument)
             _ = Task { @MainActor in
-                    ZipZapLog.shared.info(zzOutput)
+                    ArkyveLog.shared.info(zzOutput)
             }
         }()
         """
@@ -64,7 +64,7 @@ public struct ZZLogTraceMacro: ExpressionMacro {
         {
             let zzOutput = \(argument)
             _ = Task { @MainActor in
-                    ZipZapLog.shared.trace(zzOutput)
+                    ArkyveLog.shared.trace(zzOutput)
             }
         }()
         """

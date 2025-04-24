@@ -23,7 +23,7 @@ final class ZZLogTests: XCTestCase {
             expandedSource: """
             _ = Task {
                     await MainActor.run {
-                        ZipZapLog.shared.trace("hello")
+                        ArkyveLog.shared.trace("hello")
                     }
                 }
             """,

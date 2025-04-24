@@ -1,7 +1,7 @@
 // The Swift Programming Language
 // https://docs.swift.org/swift-book
 
-/// A macro that handles logging for ZipZap
+/// A macro that handles logging for Arkyve
 @freestanding(expression)
 public macro ZZError(_ msg: String) = #externalMacro(module: "ZZLogMacros", type: "ZZLogErrorMacro")
 

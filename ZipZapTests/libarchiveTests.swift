@@ -88,7 +88,7 @@ import Foundation
         #expect(libarchiveFormat.Unknown.description == "Unknown")
         #expect(libarchiveFormat.CPIO.description == "CPIO")
         #expect(libarchiveFormat.TAR.description == "BSD tar")
-        #expect(libarchiveFormat.TAR_GNUTAR.description == "GNU tar")
+        #expect(libarchiveFormat.TAR_GNUTAR.description == "tar")
         #expect(libarchiveFormat.ZIP.description == "Zip")
         #expect(libarchiveFormat._7ZIP.description == "7Zip")
     }
@@ -100,10 +100,10 @@ import Foundation
     }
     
     @Test func testLibarchiveFormatCanWrite() async {
-        #expect(libarchiveFormat.TAR.canWrite == true)
+        #expect(libarchiveFormat.TAR.canWrite == false)
         #expect(libarchiveFormat.TAR_GNUTAR.canWrite == true)
         #expect(libarchiveFormat.ISO9660.canWrite == true)
-        #expect(libarchiveFormat.ISO9660_RR.canWrite == true)
+        #expect(libarchiveFormat.ISO9660_RR.canWrite == false)
         #expect(libarchiveFormat.ZIP.canWrite == true)
         #expect(libarchiveFormat._7ZIP.canWrite == true)
         

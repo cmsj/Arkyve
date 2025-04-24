@@ -7,9 +7,7 @@
 import Darwin.sys
 
 extension mode_t {
-    static var directory: mode_t {
-        S_IFDIR | S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH
-    }
+    static let directory: mode_t = 0 | S_IFDIR | S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH
 
     var string: String {
         get {

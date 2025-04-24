@@ -148,7 +148,7 @@ class ArchiveEntry: Identifiable {
         self.size = -1
         self.children = []
         self.type = .directory
-        self.perms = 0 | S_IFDIR | S_IRUSR | S_IWUSR | S_IXUSR | S_IRGRP | S_IWGRP | S_IXGRP | S_IROTH | S_IXOTH
+        self.perms = mode_t.directory
     }
 
     init(isRoot: Bool) {

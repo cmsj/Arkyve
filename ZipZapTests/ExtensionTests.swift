@@ -19,6 +19,14 @@ import Foundation
         @Test func deletingPrefix() async throws {
             let testString = "/1/2/3/4"
             #expect(testString.deletingPrefix("/1/2") == "/3/4")
+            #expect(testString.deletingPrefix("nonsense") == testString)
+        }
+
+        @Test func deletingPathExtension() async throws {
+            #expect("test.txt".deletingPathExtension == "test")
+            #expect("archive.tar.gz".deletingPathExtension == "archive.tar")
+            #expect("noextension".deletingPathExtension == "noextension")
+            #expect(".hidden".deletingPathExtension == ".hidden")
         }
     }
 
@@ -61,6 +69,18 @@ import Foundation
 
             #expect(result == ["files"])
         }
+
+        @Test func subtractPathSad() async throws {
+            let path: [String] = []
+            let result = path.subtractPath(["test1"])
+
+            #expect(result == nil)
+
+            let otherPath = ["test1", "test2"]
+            let otherResult = otherPath.subtractPath(["test3"])
+
+            #expect(otherResult == nil)
+        }
     }
 
     @Suite("Data Extensions") struct DataTests {
@@ -102,6 +122,23 @@ import Foundation
         @Test(arguments: modeStringPairs)
         func testModeStringPairs(_ mode: mode_t, _ expectedString: String) async throws {
             #expect(mode.string == expectedString)
+        }
+
+        @Test func testDirectoryMode() async throws {
+            let mode = mode_t.directory
+            #expect((mode & S_IFMT) == S_IFDIR)
+
+            #expect((mode & S_IRUSR) != 0)
+            #expect((mode & S_IWUSR) != 0)
+            #expect((mode & S_IXUSR) != 0)
+
+            #expect((mode & S_IRGRP) != 0)
+            #expect((mode & S_IWGRP) != 0)
+            #expect((mode & S_IXGRP) != 0)
+
+            #expect((mode & S_IROTH) != 0)
+            #expect((mode & S_IWOTH) == 0)
+            #expect((mode & S_IXOTH) != 0)
         }
     }
 }

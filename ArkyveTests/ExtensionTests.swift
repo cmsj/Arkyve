@@ -46,7 +46,7 @@ import Foundation
             switch TimeZone.current.identifier {
             case "Europe/London":
                 expectedString = "1 Jan 1970 at 01:00"
-            case "America/Los_Angeles":
+            case "America/Pacific":
                 expectedString = "31 Dec 1969 at 16:00"
             default:
                 expectedString = "Unknown"

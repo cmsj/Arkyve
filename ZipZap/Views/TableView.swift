@@ -13,7 +13,6 @@ struct TableView: View {
     @Environment(MainWindowViewModel.self) var viewModel
 
     @SceneStorage("ArchiveEntryTableConfig") private var columnCustomization: TableColumnCustomization<ArchiveEntry>
-    @State private var sortOrder = [KeyPathComparator(\ArchiveEntry.name)]
 
     var renameEntryFocus: FocusState<UUID?>.Binding
 
@@ -21,7 +20,7 @@ struct TableView: View {
         // NOTE: This @Bindable is an ugly hack: https://www.hackingwithswift.com/books/ios-swiftui/sharing-observable-objects-through-swiftuis-environment
         @Bindable var viewModel = viewModel
 
-        Table(of: ArchiveEntry.self, selection: $viewModel.selectedEntries, sortOrder: $sortOrder, columnCustomization: $columnCustomization) {
+        Table(of: ArchiveEntry.self, selection: $viewModel.selectedEntries, sortOrder: $viewModel.sortOrder, columnCustomization: $columnCustomization) {
             Group {
                 TableColumn("Name", value: \ArchiveEntry.name) { entry in
                     @Bindable var entry = entry
@@ -102,8 +101,8 @@ struct TableView: View {
             }
         })
         .quickLookPreview($viewModel.quickLookURL, in: viewModel.quickLookItems)
-        .onChange(of: sortOrder) { _, newSortOrder in
-            viewModel.sort(using: sortOrder)
+        .onChange(of: viewModel.sortOrder) { _, _ in
+            viewModel.sort()
         }
         .onDrop(of: [.archiveEntryExtractable, .fileURL], isTargeted: nil, perform: { items, _ in
             guard viewModel.archive != nil else { return false }

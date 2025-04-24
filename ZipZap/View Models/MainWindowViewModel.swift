@@ -20,6 +20,7 @@ class MainWindowViewModel {
     var quickLookURL: URL?
     var quickLookItems: [URL] = []
     var progress = 0.0
+    var sortOrder = [KeyPathComparator(\ArchiveEntry.name)]
 
     var showErrors: ShowErrors = ShowErrors()
 
@@ -233,6 +234,7 @@ class MainWindowViewModel {
             let pwd = panel.urls.first?.deletingLastPathComponent()
             do {
                 try archive?.addFiles(from: panel.urls, pwd: pwd)
+                sort()
             } catch {
                 showErrors.err(error)
             }
@@ -411,13 +413,32 @@ class MainWindowViewModel {
     // MARK: - Other handlers
     func doRename(of entry: ArchiveEntry) {
         self.archive?.processEntryRename(entry)
+        sort()
+    }
+
+    func sort() {
+        self.archive?.sort(using: sortOrder)
     }
 
     func sort(using: [KeyPathComparator<ArchiveEntry>]) {
         self.archive?.sort(using: using)
     }
 
-    // MARK: - Drag and drop
+    // MARK: - Drag and drop (high level)
+    func handleManyDrops(on entryID: UUID? = nil, items: [DropItem]) {
+        for item in items {
+            switch (item) {
+            case .entry(let entryExtractable):
+                handleEntryDrop(on: entryID, entryExtractable: entryExtractable)
+            case .file(let url):
+                handleFileURLDrop(on: entryID, fileURL: url)
+            default:
+                showErrors.err(ArchiveError.ArchiveDropError(msg: "Unknown drop type"))
+            }
+        }
+
+    }
+
     func processDrop(at index: Int? = nil, on entry: ArchiveEntry? = nil, for providers: [NSItemProvider]) {
         let destUUID = entry?.id
 
@@ -453,6 +474,7 @@ class MainWindowViewModel {
         }
     }
 
+    // MARK: - Drag & Drop (low level)
     func handleEntryDrop(at index: Int? = nil, on entryID: UUID? = nil, entryExtractable: ArchiveEntryExtractable) {
         print("HANDLING ENTRY DROPPED AT \(index ?? -1) on \(entryID?.uuidString ?? "unknown"): \(entryExtractable)")
 
@@ -472,6 +494,7 @@ class MainWindowViewModel {
         }
 
         archive.reparentEntry(entry, to: newParent)
+        sort()
     }
 
     func handleFileURLDrop(at index: Int? = nil, on entryID: UUID? = nil, fileURL: URL) {
@@ -492,22 +515,9 @@ class MainWindowViewModel {
 
         do {
             try archive.addFiles(from: [fileURL], pwd: fileURL.deletingLastPathComponent(), parent: newParent)
+            sort()
         } catch {
             showErrors.err(error)
         }
-    }
-
-    func handleManyDrops(on entryID: UUID? = nil, items: [DropItem]) {
-        for item in items {
-            switch (item) {
-            case .entry(let entryExtractable):
-                handleEntryDrop(on: entryID, entryExtractable: entryExtractable)
-            case .file(let url):
-                handleFileURLDrop(on: entryID, fileURL: url)
-            default:
-                showErrors.err(ArchiveError.ArchiveDropError(msg: "Unknown drop type"))
-            }
-        }
-
     }
 }

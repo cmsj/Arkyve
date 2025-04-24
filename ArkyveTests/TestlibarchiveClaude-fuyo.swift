@@ -95,7 +95,6 @@ struct libarchiveTestsClaudeFuyo {
 
         // Verify the loaded archive has the expected properties
         #expect(loadedArchive.URL == archiveURL)
-        #expect(loadedArchive.root != nil)
         #expect(loadedArchive.entries.count > 0)
         #expect(loadedArchive.format != .Unknown)
         #expect(!loadedArchive.filters.isEmpty)

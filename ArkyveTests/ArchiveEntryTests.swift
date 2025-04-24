@@ -67,6 +67,12 @@ struct ArchiveEntryTests {
         #expect(entry.type == .directory)
         #expect(entry.children?.isEmpty == true)
         #expect(entry.isSynthesized == true)
+
+        let other = ArchiveEntry(syntheticDirectory: "")
+        #expect(other.name == "Unknown")
+        #expect(other.path == "")
+        #expect(other.pathComponents == [])
+        #expect(other.source.path == "")
     }
 
     @Test("Initialize root entry")
@@ -271,6 +277,35 @@ struct ArchiveEntryTests {
         #expect(folder?.children?[0].name == "a.txt")
         #expect(folder?.children?[1].name == "b.txt")
         #expect(folder?.children?[2].name == "c.txt")
+    }
+
+    @Test("Check computed string property")
+    func testStringProperties() throws {
+        let root = ArchiveEntry(isRoot: true)
+        let synth = ArchiveEntry(syntheticDirectory: "synthDir")
+        let file = createFileEntry(path: "/tmp/testfile.txt")
+
+        #expect(root.isSynthesizedString == "Yes")
+        #expect(synth.isSynthesizedString == "Yes")
+        #expect(file.isSynthesizedString == "No")
+
+        #expect(root.sizeString == "--")
+        #expect(synth.sizeString == "--")
+        #expect(file.sizeString == "100")
+
+        synth.uid = nil
+        #expect(root.uidString == "0")
+        #expect(synth.uidString == "--")
+        #expect(file.uidString == "501")
+
+        synth.gid = nil
+        #expect(root.gidString == "0")
+        #expect(synth.gidString == "--")
+        #expect(file.gidString == "20")
+
+        // We don't need to test this any deeper, mode_t provides the actual perms string and it has extensive tests
+        #expect(root.permsString == "")
+        #expect(file.permsString == "?rw-r--r--")
     }
 
     // Helper method to create file entries for testing

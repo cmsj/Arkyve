@@ -81,12 +81,13 @@ class ArchiveEntry: Identifiable {
             print("LOL SET PATH \(path)")
         }
     }
-    // FIXME: I really don't love that we expose path and pathComponents and make our consumers worry about updating both.
-    var size: Int64
 
+    var size: Int64
     var sizeString: String {
         get { size != -1 ? String(size) : "--" }
     }
+
+    var perms: mode_t = 0
     var permsString: String {
         get {
             if type == .root { return "" }
@@ -98,7 +99,6 @@ class ArchiveEntry: Identifiable {
     var ctime = Date(timeIntervalSince1970: 0)
     var mtime = Date(timeIntervalSince1970: 0)
     var btime = Date(timeIntervalSince1970: 0)
-    var perms: mode_t = 0
 
     var uid: Int64? = 0
     var gid: Int64? = 0

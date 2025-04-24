@@ -45,17 +45,17 @@ struct MainWindowView: View {
         .navigationTitle(windowTitle)
         .navigationSubtitle(viewModel.navSubtitleText)
         .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .task {
-            do {
-#if DEBUG
-                try Tips.resetDatastore()
-#endif
-                try Tips.configure()
-            }
-            catch {
-                print("Error initializing TipKit \(error.localizedDescription)")
-            }
-        }
+//        .task {
+//            do {
+//#if DEBUG
+//                try Tips.resetDatastore()
+//#endif
+//                try Tips.configure()
+//            }
+//            catch {
+//                print("Error initializing TipKit \(error.localizedDescription)")
+//            }
+//        }
         .alert("Save before closing?", isPresented: $viewModel.showSavePrompt) {
             Button(role: .cancel) {
                 viewModel.postSavePromptClosure = nil

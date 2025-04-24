@@ -38,8 +38,19 @@ import Foundation
         @Test func userFormatted() async throws {
             #expect(Date(since: 0).userFormatted == "--")
 
-            #expect(["31 Dec 1969 at 16:00",
-                     "1 Jan 1970 at 01:00"].contains(Date(since: 1).userFormatted))
+            let expectedString: String
+
+            // HACK: Depending on where the test is run, the output here will be different
+            // (because DateFormatter() is used in this codepath and it cares about timezones)
+            switch TimeZone.current.identifier {
+            case "Europe/London":
+                expectedString = "1 Jan 1970 at 01:00"
+            case "America/Los_Angeles":
+                expectedString = "31 Dec 1969 at 16:00"
+            default:
+                expectedString = "Unknown"
+            }
+            #expect(Date(since: 1).userFormatted == expectedString)
         }
     }
 

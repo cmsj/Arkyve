@@ -404,6 +404,8 @@ class MainWindowViewModel {
         if let newFolderID = self.archive?.newFolder(at: parentEntryID) {
             Task { @MainActor in
                 selectedEntries = [newFolderID]
+                self.archive?.entryForID(parentEntryID)?.isExpanded = true
+
                 Task { @MainActor in
                     renameEntryFocus.wrappedValue = newFolderID
                 }

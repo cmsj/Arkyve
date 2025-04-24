@@ -58,6 +58,7 @@
 		4FCEEEE52BEE39E9009E9E17 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4FCEEEE42BEE39E9009E9E17 /* Preview Assets.xcassets */; };
 		4FCEEF292BEE3D3E009E9E17 /* Archive.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FCEEF282BEE3D3E009E9E17 /* Archive.swift */; };
 		4FCEEF2C2BEE3D72009E9E17 /* ArchiveEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FCEEF2B2BEE3D72009E9E17 /* ArchiveEntry.swift */; };
+		4FD4508B2DBADE2F001D5420 /* FileManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FED41E42D237674003BA92B /* FileManager.swift */; };
 		4FD4BA562C07C58E00082C13 /* Date.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FD4BA552C07C58E00082C13 /* Date.swift */; };
 		4FDC674F2C19065A00A10035 /* libarchiveWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FDC674E2C19065A00A10035 /* libarchiveWrapper.swift */; };
 		4FED41E32D23752A003BA92B /* libarchiveFD.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FED41E22D23752A003BA92B /* libarchiveFD.swift */; };
@@ -441,6 +442,7 @@
 				4F41C41E2D1B5A320011DAAB /* Array.swift in Sources */,
 				4F41C41D2D1B58AA0011DAAB /* Date.swift in Sources */,
 				4F04F9012D8CAF0900F0953B /* URL.swift in Sources */,
+				4FD4508B2DBADE2F001D5420 /* FileManager.swift in Sources */,
 			);
 		};
 		4FCEEED62BEE39E7009E9E17 /* Sources */ = {

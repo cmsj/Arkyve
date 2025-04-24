@@ -5,6 +5,12 @@
 //  Created by Chris Jones on 22/12/2024.
 //
 
+extension ArchiveEntryType: CaseIterable {
+    public static var allCases: [ArchiveEntryType] {
+        [.unknown, .file, .directory, .socket, .symlink, .chardev, .blockdev, .fifo, .root]
+    }
+}
+
 enum ArchiveEntryType: String, Codable {
     case unknown = "questionmark"
     case file = "doc"

@@ -154,4 +154,83 @@ import Foundation
             #expect((mode & S_IXOTH) != 0)
         }
     }
+
+    @Suite("FileManager Extensions") struct FileManagerTests {
+        @Test func createSymbolicLinkSuccess() async throws {
+            let fm = FileManager.default
+            let tempDir = fm.temporaryDirectory
+            let sourcePath = tempDir.appendingPathComponent("source1.txt").path
+            let destPath = tempDir.appendingPathComponent("dest1.txt").path
+
+            do {
+                try fm.removeItem(atPath: sourcePath)
+                try fm.removeItem(atPath: destPath)
+            } catch {}
+
+            // Create a source file
+            try "test content".write(toFile: sourcePath, atomically: true, encoding: .utf8)
+            
+            // Create the symbolic link
+            do {
+                try fm.createSymbolicLink(atPath: destPath, withDestinationPath: sourcePath, overwrite: false)
+            } catch {
+                #expect(Bool(false), "Failed to create symbolic link: \(error)")
+            }
+
+            // Verify the link exists and points to the correct destination
+            let attributes = try fm.attributesOfItem(atPath: destPath)
+            #expect(attributes[.type] as? FileAttributeType == .typeSymbolicLink)
+            
+            // Cleanup
+            try fm.removeItem(atPath: sourcePath)
+            try fm.removeItem(atPath: destPath)
+        }
+        
+        @Test func createSymbolicLinkOverwrite() async throws {
+            let fm = FileManager.default
+            let tempDir = fm.temporaryDirectory
+            let sourcePath = tempDir.appendingPathComponent("source2.txt").path
+            let destPath = tempDir.appendingPathComponent("dest2.txt").path
+
+            do {
+                try fm.removeItem(atPath: sourcePath)
+                try fm.removeItem(atPath: destPath)
+            } catch {}
+
+            // Create initial source and destination files
+            try "test content".write(toFile: sourcePath, atomically: true, encoding: .utf8)
+            try "old content".write(toFile: destPath, atomically: true, encoding: .utf8)
+            
+            // Create the symbolic link with overwrite
+            try fm.createSymbolicLink(atPath: destPath, withDestinationPath: sourcePath, overwrite: true)
+            
+            // Verify the link exists and points to the correct destination
+            let attributes = try fm.attributesOfItem(atPath: destPath)
+            #expect(attributes[.type] as? FileAttributeType == .typeSymbolicLink)
+            
+            // Cleanup
+            try fm.removeItem(atPath: sourcePath)
+            try fm.removeItem(atPath: destPath)
+        }
+        
+        @Test func createSymbolicLinkDestinationNotFound() async throws {
+            let fm = FileManager.default
+            let tempDir = fm.temporaryDirectory
+            let sourcePath = tempDir.appendingPathComponent("nonexistent.txt").path
+            let destPath = tempDir.appendingPathComponent("dest3.txt").path
+
+            do {
+                try fm.removeItem(atPath: sourcePath)
+                try fm.removeItem(atPath: destPath)
+            } catch {}
+
+            // Attempt to create a symbolic link to a non-existent file
+            do {
+                try fm.createSymbolicLink(atPath: destPath, withDestinationPath: sourcePath, overwrite: false)
+                #expect(fm.fileExists(atPath: destPath) == false)
+            } catch {
+                #expect(true, "Error was thrown as expected")
+            }
+        }
+    }
 }

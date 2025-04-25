@@ -226,6 +226,7 @@ class ArchiveEntry: Identifiable {
 
     @discardableResult func addChildHierarchically(_ entry: ArchiveEntry) throws -> [ArchiveEntry] {
         // FIXME: If archive headers are not sorted properly, we will create synthetic directories and then duplicate them with real ones. We should detect this case by the paths matching, and swap out the synthetic directory for the real one
+        // HOW DO I REPRODUCE THAT???
         guard [.directory, .root].contains(self.type) else {
             AKError("addChildHierarchically called on something other than directory/root: \(self.type)")
             throw ArchiveError.ArchiveEntriesError(archive: self.name, error: "Attempted to add a child to a non-directory/root ArchiveEntry")

@@ -55,7 +55,6 @@ class Archive: Identifiable {
 
     var isNew: Bool = false
     var existsOnDisk: Bool {
-        // FIXME: Should this actually be using FileManager.default.fileExists?
         URL.path != Archive.newFilePath
     }
 

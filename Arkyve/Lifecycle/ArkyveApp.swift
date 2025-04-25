@@ -20,7 +20,6 @@ struct ArkyveApp: App {
         .commands {
             MenuCommands()
         }
-        .restorationBehavior(.disabled)
 
         UtilityWindow("Log viewer", id: "log-window") {
             LogWindowView()

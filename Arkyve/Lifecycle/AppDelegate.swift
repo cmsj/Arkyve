@@ -16,6 +16,11 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         SettingsManager.shared.createCacheDirectories()
     }
 
+    func applicationShouldTerminateAfterLastWindowClosed(_ sender: NSApplication) -> Bool {
+        true
+    }
+
+// We can't do this if we're also reacting to it in MainWindowView, because this one fires first and breaks saving operations
 //    func applicationWillTerminate(_ aNotification: Notification) {
 //        #ZZTrace("Removing cache directories")
 //        SettingsManager.shared.removeCacheDirectories()

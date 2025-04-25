@@ -95,6 +95,18 @@ class Archive: Identifiable {
         self.filters = filters
     }
 
+    func metadataForSaving(overrideFormat: libarchiveFormat = .Unknown, overrideFilters: [libarchiveFilter] = [.None]) -> (libarchiveFormat, [libarchiveFilter], [String:ArchiveEntryFlat]) {
+        let format = overrideFormat == .Unknown ? format : overrideFormat
+        let filters = overrideFilters == [.None] ? filters : overrideFilters
+
+        let headerMap = entries.reduce(into: [String:ArchiveEntryFlat]()) { map, entry in
+            if entry.type == .root { return }
+            map[entry.path] = entry.flatSelf()
+        }
+
+        return (format, filters, headerMap)
+    }
+
     private func setDirty(_ dirty: Bool = true) {
         #ZZTrace("Marking archive \(dirty ? "dirty" : "clean")")
         self.dirty = dirty

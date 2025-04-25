@@ -28,7 +28,8 @@ struct MenuCommands: Commands {
             .disabled(activeViewModel?.disableRevert ?? true)
 
             Divider()
-
+//        }
+//        CommandGroup(replacing: .saveItem) {
             Button("Save") {
                 activeViewModel?.saveButton()
             }
@@ -58,6 +59,11 @@ struct MenuCommands: Commands {
                 activeViewModel?.closeButton()
             }
             .disabled(activeViewModel?.disableClose ?? true)
+
+//            Button("Close Window") {
+//                activeViewModel?.shouldCloseWindow = true
+//            }
+//            .keyboardShortcut("w", modifiers: [.command])
         }
         CommandGroup(after: .sidebar) {
             Button("Quick Look") {

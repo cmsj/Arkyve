@@ -78,7 +78,6 @@ class ArchiveEntry: Identifiable {
     var pathComponents: [String] = [] {
         didSet {
             path = pathComponents.joined(separator: "/")
-            print("LOL SET PATH \(path)")
         }
     }
 

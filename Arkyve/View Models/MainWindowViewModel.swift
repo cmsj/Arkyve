@@ -27,6 +27,7 @@ class MainWindowViewModel {
     // MARK: - Save prompt
     var showSavePrompt = false
     var postSavePromptClosure: (() -> Void)? = nil
+//    var shouldCloseWindow = false
 
     // MARK: - Disable various parts of the UI
     var disableNew: Bool { get { disableUI == true }}
@@ -103,13 +104,8 @@ class MainWindowViewModel {
         self.disableUI = true
         defer { self.disableUI = false }
 
-        let format = overrideFormat == .Unknown ? archive.format : overrideFormat
-        let filters = overrideFilters == [.None] ? archive.filters : overrideFilters
+        let (format, filters, headerMap) = archive.metadataForSaving(overrideFormat: overrideFormat, overrideFilters: overrideFilters)
 
-        let headerMap = archive.entries.reduce(into: [String:ArchiveEntryFlat]()) { map, entry in
-            if entry.type == .root { return }
-            map[entry.path] = entry.flatSelf()
-        }
         do {
             try await withTaskProgression(totalUnits: archive.entries.count) { _ in
                 try await loader.writeArchive(headerMap: headerMap, to: to, format: format, filters: filters, skipRead: archive.isNew)
@@ -328,28 +324,36 @@ class MainWindowViewModel {
             return
         }
 
-        Task { @MainActor in
+        Task {
             await saveArchive(to: archive.URL)
         }
+    }
+
+    func prepareSaveAsPanel() -> (NSSavePanel, FormatPickerViewModel) {
+        precondition(archive != nil, "prepareSavePanel called without ensuring archive exists")
+
+        let panel = NSSavePanel()
+        let viewModel = FormatPickerViewModel(panel: panel)
+
+        if archive!.format != .Unknown {
+            viewModel.format = archive!.format
+        }
+
+        panel.prompt = "Save"
+        panel.isExtensionHidden = false
+        panel.nameFieldStringValue = archive!.name.deletingPathExtension
+
+        let accessoryViewHosted = FormatPicker().environment(\.formatPickerViewModel, viewModel)
+        let hostingController = NSHostingController(rootView: accessoryViewHosted)
+        panel.accessoryView = hostingController.view
+
+        return (panel, viewModel)
     }
 
     func saveAsButton() {
         guard let archive = archive else { return }
 
-        let panel = NSSavePanel()
-        let viewModel = FormatPickerViewModel(panel: panel)
-
-        if archive.format != .Unknown {
-            viewModel.format = archive.format
-        }
-
-        panel.prompt = "Save"
-        panel.isExtensionHidden = false
-        panel.nameFieldStringValue = archive.name.deletingPathExtension
-
-        let accessoryViewHosted = FormatPicker().environment(\.formatPickerViewModel, viewModel)
-        let hostingController = NSHostingController(rootView: accessoryViewHosted)
-        panel.accessoryView = hostingController.view
+        let (panel, viewModel) = prepareSaveAsPanel()
 
         if panel.runModal() == .OK {
             if let destURL = panel.url {

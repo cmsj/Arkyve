@@ -37,13 +37,6 @@ struct MainWindowView: View {
                 viewModel.showErrors.show = new != nil
             }
         }
-//        .onChange(of: viewModel.shouldCloseWindow, { oldValue, newValue in
-//            if newValue == true {
-//                viewModel.closeButton()
-//                dismissWindow()
-//                viewModel.shouldCloseWindow = false
-//            }
-//        })
         .toolbar(id: "Main") {
             ToolbarContentView(viewModel: viewModel, renameEntry: $renameEntry)
         }
@@ -67,13 +60,10 @@ struct MainWindowView: View {
         } message: {
             Text("This archive has unsaved changes, do you want to close it without saving?")
         }
-//        .onReceive(NotificationCenter.default.publisher(for: NSWindow.willCloseNotification)) { _ in
-//            viewModel.postSavePromptClosure = {
-//                dismissWindow()
-//            }
-//            viewModel.closeButton()
-//        }
-        .onReceive(NotificationCenter.default.publisher(for: NSApplication.willTerminateNotification)) { _ in
+        .onReceive(NotificationCenter.default.publisher(for: NSWindow.willCloseNotification)) { value in
+            guard let window = value.object as? NSWindow, window.title == viewModel.navTitleText else { return }
+
+            AKTrace("Window close event, checking if the archive is unsaved")
             // FIXME: This is pretty disgusting, we're replicating various parts of the view model's closeButton/saveButton
 
             defer { SettingsManager.shared.removeCacheDirectories() }
@@ -91,10 +81,11 @@ struct MainWindowView: View {
 
             // runModal() has various return values, we are going to ignore any that aren't specific button presses
             switch response {
-            case .alertFirstButtonReturn, .alertSecondButtonReturn, .alertThirdButtonReturn:
+            case .alertFirstButtonReturn, .alertSecondButtonReturn:
+                // We only want to proceed if the Save or Save As buttons are chosen. Quit call fall through to the default
                 break
             default:
-                print("IGNORING: \(response)")
+                AKTrace("User chose to quit without saving")
                 return
             }
 
@@ -107,16 +98,22 @@ struct MainWindowView: View {
                 // We need a filename and location from the user
                 let (panel, pickerViewModel) = viewModel.prepareSaveAsPanel()
 
-                if panel.runModal() == .OK {
+                let innerResponse = panel.runModal()
+                if innerResponse == .OK {
                     if let destURL = panel.url {
                         to = destURL
                         archive.name = destURL.lastPathComponent
                         archive.format = pickerViewModel.format
                         archive.filters = pickerViewModel.format.defaultFilters
                     }
+                } else {
+                    return
                 }
             }
 
+            // We have a semaphore here because the main thread is trying to quit, but we have to wait for writeArchive()
+            // to complete on a background thread. This allows us to dispatch the detached task and then wait for the
+            // semaphore to be signalled after the archive has been written.
             let semaphore = DispatchSemaphore(value: 0)
 
             Task.detached(priority: .userInitiated) {
@@ -127,6 +124,7 @@ struct MainWindowView: View {
                 do {
                     try await loader.writeArchive(headerMap: headerMap, to: to, format: format, filters: filters, skipRead: isNew)
                 } catch {
+                    // NOTE: This cannot use AKError() because the main thread is currently blocked on us, and will be dead before any further runloop ticks
                     print("FAILED TO SAVE ARCHIVE: \(error.localizedDescription)")
                 }
             }

@@ -26,7 +26,6 @@ class MainWindowViewModel {
     // MARK: - Save prompt
     var showSavePrompt = false
     var postSavePromptClosure: (() -> Void)? = nil
-//    var shouldCloseWindow = false
 
     // MARK: - Disable various parts of the UI
     var disableNew: Bool { get { disableUI == true }}
@@ -49,6 +48,7 @@ class MainWindowViewModel {
         return "\(archive.entries.count) items"
     }
 
+    let navTitleText = "Arkyve"
     var navSubtitleText: String {
         guard let archive else { return "" }
         return "\(archive.name) \(archive.dirty ? "(Unsaved)" : "")"

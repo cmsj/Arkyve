@@ -14,7 +14,7 @@ struct ArkyveApp: App {
     @FocusedValue(\.activeViewModel) var activeViewModel
 
     var body: some Scene {
-        Window("Arkyve", id: "main") {
+        Window(activeViewModel?.navTitleText ?? "Arkyve", id: "main") {
             MainWindowView()
         }
         .commands {

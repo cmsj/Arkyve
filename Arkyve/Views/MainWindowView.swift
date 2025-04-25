@@ -6,7 +6,6 @@
 //
 
 import SwiftUI
-import TipKit
 
 struct MainWindowView: View {
     @State var viewModel: MainWindowViewModel = MainWindowViewModel()
@@ -14,8 +13,6 @@ struct MainWindowView: View {
     @FocusState private var renameEntry: UUID?
 
     @Environment(\.dismissWindow) private var dismissWindow
-
-    var tableViewTip = TableViewTip()
 
     var body: some View {
         // NOTE: This @Bindable is an ugly hack: https://www.hackingwithswift.com/books/ios-swiftui/sharing-observable-objects-through-swiftuis-environment
@@ -26,7 +23,6 @@ struct MainWindowView: View {
                 .environment(viewModel)
             TableView(renameEntryFocus: $renameEntry)
                 .environment(viewModel)
-                .popoverTip(tableViewTip, arrowEdge: .leading)
                 .disabled(viewModel.archive == nil || viewModel.disableUI == true)
                 .hide(if: viewModel.archive == nil)
             StatusbarView()
@@ -54,17 +50,6 @@ struct MainWindowView: View {
         .navigationTitle(windowTitle)
         .navigationSubtitle(viewModel.navSubtitleText)
         .frame(maxWidth: .infinity, maxHeight: .infinity)
-//        .task {
-//            do {
-//#if DEBUG
-//                try Tips.resetDatastore()
-//#endif
-//                try Tips.configure()
-//            }
-//            catch {
-//                print("Error initializing TipKit \(error.localizedDescription)")
-//            }
-//        }
         .alert("Close without saving?", isPresented: $viewModel.showSavePrompt) {
             Button(role: .cancel) {
                 viewModel.postSavePromptClosure = nil

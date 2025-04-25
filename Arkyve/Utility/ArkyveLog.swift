@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import Synchronization
 import os
 
 enum ArkyveLogType: Int, CaseIterable, Identifiable {
@@ -27,6 +28,18 @@ enum ArkyveLogType: Int, CaseIterable, Identifiable {
             return "Error"
         }
     }
+    var osLogType: OSLogType {
+        switch (self) {
+        case .Trace:
+                .debug
+        case .Error:
+                .error
+        case .Warning:
+                .error
+        case .Info:
+                .info
+        }
+    }
 }
 
 struct ArkyveLogEntry: Identifiable {
@@ -43,15 +56,17 @@ struct ArkyveLogEntry: Identifiable {
 
 @Observable
 @MainActor
-class ArkyveLog {
+final class ArkyveLog: Sendable {
     static let shared = ArkyveLog()
 
-    var entries: [ArkyveLogEntry] = []
-    let logger = Logger(subsystem: Bundle.main.bundleIdentifier!, category: "ArkyveLog")
+    @ObservationIgnored
+    private let logger = Logger(subsystem: Bundle.main.bundleIdentifier!, category: "ArkyveLog")
 
-    private init() {}
+    var entries: [ArkyveLogEntry] = []
 
     func log(_ level: ArkyveLogType, _ msg: String) {
+        logger.log(level: level.osLogType, "\(msg)")
+
         entries.append(ArkyveLogEntry(logType: level, msg: msg))
         if entries.count > 100 {
             entries.removeFirst()
@@ -61,21 +76,22 @@ class ArkyveLog {
     func clear() {
         entries.removeAll()
     }
+}
 
-    func info(_ msg: String) {
-        log(.Info, msg)
-        logger.info("\(msg)")
-    }
-    func warning(_ msg: String) {
-        log(.Warning, msg)
-        logger.warning("\(msg)")
-    }
-    func error(_ msg: String) {
-        log(.Error, msg)
-        logger.error("\(msg)")
-    }
-    func trace(_ msg: String) {
-        log(.Trace, msg)
-        logger.trace("\(msg)")
+func AKLog(_ level: ArkyveLogType, _ msg: String) {
+    Task { @MainActor in
+        ArkyveLog.shared.log(level, msg)
     }
 }
+func AKInfo(_ msg: String) {
+    AKLog(.Info, msg)
+}
+func AKWarning(_ msg: String) {
+    AKLog(.Warning, msg)
+}
+func AKError(_ msg: String) {
+    AKLog(.Error, msg)
+}
+func AKTrace(_ msg: String) {
+    AKLog(.Trace, msg)
+    }

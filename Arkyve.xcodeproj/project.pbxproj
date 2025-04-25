@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		4F10848B2C261BB7007DCC39 /* ZZLog in Frameworks */ = {isa = PBXBuildFile; productRef = 4F10848A2C261BB7007DCC39 /* ZZLog */; };
 		4F10848E2C262396007DCC39 /* ArkyveLog.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F10848D2C262393007DCC39 /* ArkyveLog.swift */; };
 		4F1084922C262D5D007DCC39 /* LogWindowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F1084912C262D5D007DCC39 /* LogWindowView.swift */; };
 		4F14DAF32D78A8070080D7AA /* mode_t.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F688A5B2D7666FE003B5D60 /* mode_t.swift */; };
@@ -29,7 +28,6 @@
 		4F41C4262D1EB93E0011DAAB /* Menus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F41C4252D1EB9370011DAAB /* Menus.swift */; };
 		4F41C4292D1EBAC60011DAAB /* Credits.rtf in Resources */ = {isa = PBXBuildFile; fileRef = 4F41C4282D1EBAC60011DAAB /* Credits.rtf */; };
 		4F41C42A2D1EBAC60011DAAB /* Credits.rtf in Resources */ = {isa = PBXBuildFile; fileRef = 4F41C4282D1EBAC60011DAAB /* Credits.rtf */; };
-		4F5124072CA71BE800FB9AC6 /* Tips.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F5124062CA71BE800FB9AC6 /* Tips.swift */; };
 		4F688A5A2D734551003B5D60 /* DropItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F688A592D734551003B5D60 /* DropItem.swift */; };
 		4F688A5C2D7666FE003B5D60 /* mode_t.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F688A5B2D7666FE003B5D60 /* mode_t.swift */; };
 		4F7121872C0F48EB000EB268 /* Array.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F7121862C0F48EB000EB268 /* Array.swift */; };
@@ -81,7 +79,6 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		4F1084872C26189A007DCC39 /* ZZLog */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = ZZLog; sourceTree = SOURCE_ROOT; };
 		4F10848D2C262393007DCC39 /* ArkyveLog.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArkyveLog.swift; sourceTree = "<group>"; };
 		4F1084912C262D5D007DCC39 /* LogWindowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogWindowView.swift; sourceTree = "<group>"; };
 		4F22BDC82CAE95490079FAC0 /* libarchiveFormat.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = libarchiveFormat.swift; sourceTree = "<group>"; };
@@ -99,7 +96,6 @@
 		4F41C4232D1DE6F10011DAAB /* ArchiveEntrySource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArchiveEntrySource.swift; sourceTree = "<group>"; };
 		4F41C4252D1EB9370011DAAB /* Menus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Menus.swift; sourceTree = "<group>"; };
 		4F41C4282D1EBAC60011DAAB /* Credits.rtf */ = {isa = PBXFileReference; lastKnownFileType = text.rtf; path = Credits.rtf; sourceTree = "<group>"; };
-		4F5124062CA71BE800FB9AC6 /* Tips.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tips.swift; sourceTree = "<group>"; };
 		4F688A592D734551003B5D60 /* DropItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DropItem.swift; sourceTree = "<group>"; };
 		4F688A5B2D7666FE003B5D60 /* mode_t.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = mode_t.swift; sourceTree = "<group>"; };
 		4F7121862C0F48EB000EB268 /* Array.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Array.swift; sourceTree = "<group>"; };
@@ -153,20 +149,11 @@
 		4FCEEED72BEE39E7009E9E17 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			files = (
-				4F10848B2C261BB7007DCC39 /* ZZLog in Frameworks */,
 			);
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		4F1084862C261871007DCC39 /* Modules */ = {
-			isa = PBXGroup;
-			children = (
-				4F1084872C26189A007DCC39 /* ZZLog */,
-			);
-			path = Modules;
-			sourceTree = "<group>";
-		};
 		4F10848C2C26238A007DCC39 /* Utility */ = {
 			isa = PBXGroup;
 			children = (
@@ -209,7 +196,6 @@
 				4F71218D2C0F4DE7000EB268 /* TableView.swift */,
 				4F7121932C0F6938000EB268 /* TableRowTreeContent.swift */,
 				4F71218B2C0F4CCA000EB268 /* StatusbarView.swift */,
-				4F5124062CA71BE800FB9AC6 /* Tips.swift */,
 				4F1084912C262D5D007DCC39 /* LogWindowView.swift */,
 				4F8BD3B22D39BD870087091C /* FormatPicker.swift */,
 			);
@@ -229,7 +215,6 @@
 			isa = PBXGroup;
 			children = (
 				4F41C4282D1EBAC60011DAAB /* Credits.rtf */,
-				4F1084862C261871007DCC39 /* Modules */,
 				4FCEEEDC2BEE39E7009E9E17 /* Arkyve */,
 				4F41C4132D1B0C900011DAAB /* ArkyveTests */,
 				4FCEEEDB2BEE39E7009E9E17 /* Products */,
@@ -350,13 +335,7 @@
 			);
 			buildRules = (
 			);
-			dependencies = (
-				4F1084892C261BAE007DCC39 /* PBXTargetDependency */,
-			);
 			name = Arkyve;
-			packageProductDependencies = (
-				4F10848A2C261BB7007DCC39 /* ZZLog */,
-			);
 			productName = ZipZap;
 			productReference = 4FCEEEDA2BEE39E7009E9E17 /* Arkyve.app */;
 			productType = "com.apple.product-type.application";
@@ -464,7 +443,6 @@
 				4F7121942C0F6938000EB268 /* TableRowTreeContent.swift in Sources */,
 				4F41C4242D1DE6F70011DAAB /* ArchiveEntrySource.swift in Sources */,
 				4FCEEEDE2BEE39E7009E9E17 /* ArkyveApp.swift in Sources */,
-				4F5124072CA71BE800FB9AC6 /* Tips.swift in Sources */,
 				4F22BDC92CAE95750079FAC0 /* libarchiveFormat.swift in Sources */,
 				4FDC674F2C19065A00A10035 /* libarchiveWrapper.swift in Sources */,
 				4F71219D2C10BB1D000EB268 /* ErrorView.swift in Sources */,
@@ -475,10 +453,6 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		4F1084892C261BAE007DCC39 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			productRef = 4F1084882C261BAE007DCC39 /* ZZLog */;
-		};
 		4F41C4172D1B0C900011DAAB /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 4FCEEED92BEE39E7009E9E17 /* Arkyve */;
@@ -776,17 +750,6 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
-
-/* Begin XCSwiftPackageProductDependency section */
-		4F1084882C261BAE007DCC39 /* ZZLog */ = {
-			isa = XCSwiftPackageProductDependency;
-			productName = ZZLog;
-		};
-		4F10848A2C261BB7007DCC39 /* ZZLog */ = {
-			isa = XCSwiftPackageProductDependency;
-			productName = ZZLog;
-		};
-/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 4FCEEED22BEE39E7009E9E17 /* Project object */;
 }

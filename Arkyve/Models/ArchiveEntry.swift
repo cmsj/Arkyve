@@ -9,7 +9,6 @@ import Foundation
 import Synchronization
 import UniformTypeIdentifiers
 import SwiftUI
-import ZZLog
 
 //extension Array where Element == ArchiveEntry {
 //    func entryForPath(_ path: String) -> (Int, ArchiveEntry)? {
@@ -228,11 +227,11 @@ class ArchiveEntry: Identifiable {
     @discardableResult func addChildHierarchically(_ entry: ArchiveEntry) throws -> [ArchiveEntry] {
         // FIXME: If archive headers are not sorted properly, we will create synthetic directories and then duplicate them with real ones. We should detect this case by the paths matching, and swap out the synthetic directory for the real one
         guard [.directory, .root].contains(self.type) else {
-            #ZZError("addChildHierarchically called on something other than directory/root: \(self.type)")
+            AKError("addChildHierarchically called on something other than directory/root: \(self.type)")
             throw ArchiveError.ArchiveEntriesError(archive: self.name, error: "Attempted to add a child to a non-directory/root ArchiveEntry")
         }
         guard self.children != nil else {
-            #ZZError("addCH found an uninitialised children array")
+            AKError("addCH found an uninitialised children array")
             throw ArchiveError.ArchiveEntriesError(archive: self.name, error: "Attempted to add children to an ArchiveEntry which can not possess children")
         }
 
@@ -246,7 +245,7 @@ class ArchiveEntry: Identifiable {
             } else {
                 // We do not currently have a child that contains the next part of the item's path, so create a synthetic one
                 let synthPath = entry.pathComponents.first!
-                #ZZTrace("Creating synthetic directory \(synthPath)")
+                AKTrace("Creating synthetic directory \(synthPath)")
 
                 let tmpEntry = ArchiveEntry(syntheticDirectory: synthPath)
                 syntheticEntries.append(tmpEntry)
@@ -273,7 +272,7 @@ class ArchiveEntry: Identifiable {
             syntheticEntries += try children?[dispatchIndex].addChildHierarchically(entry) ?? []
         } else {
             let synthPath = (self.pathComponents + [relativePath!.first!]).joined(separator: "/")
-            #ZZTrace("Creating synthetic subdirectory \(synthPath)")
+            AKTrace("Creating synthetic subdirectory \(synthPath)")
 
             let tmpEntry = ArchiveEntry(syntheticDirectory: synthPath)
             syntheticEntries.append(tmpEntry)
@@ -336,7 +335,7 @@ class ArchiveEntry: Identifiable {
     //        guard let children = children else { return }
     //
     //        if let idx = children.firstIndex(of: entry) {
-    //            #ZZTrace("Removing \(entry.name) from \(self.name)")
+    //            AKTrace("Removing \(entry.name) from \(self.name)")
     //            self.lock.withLock { _ in
     //                _ = self.children?.remove(at: idx)
     //            }

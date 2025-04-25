@@ -7,7 +7,6 @@
 
 import Foundation
 import SwiftUI
-import ZZLog
 
 /// Wrapper for all libarchive activities
 actor libarchiveWrapper {
@@ -108,10 +107,10 @@ actor libarchiveWrapper {
                                                     error: String(cString: archive_error_string(readArchiveFD.archive))
                 )
             case ARCHIVE_EOF:
-                #ZZTrace("Reached end of archive")
+                AKTrace("Reached end of archive")
                 break readLoop
             default:
-                #ZZError("Unknown result \(result)")
+                AKError("Unknown result \(result)")
                 break readLoop
             }
 
@@ -248,7 +247,7 @@ actor libarchiveWrapper {
     }
 
     func loadArchive() async throws(ArchiveError) -> sending Archive {
-        #ZZTrace("loadArchive() for \(path)")
+        AKTrace("loadArchive() for \(path)")
         let archive = Archive(URL: self.url)
         let archiveFormat: libarchiveFormat
         let archiveFilters: [libarchiveFilter]
@@ -260,7 +259,7 @@ actor libarchiveWrapper {
             (archiveFormat, archiveFilters, archiveEntries) = try readEntriesFormatFilters()
 
             let entries = archiveEntries.map { ArchiveEntry($0) }
-            #ZZTrace("loadArchive() found \(entries.count) entries")
+            AKTrace("loadArchive() found \(entries.count) entries")
             let (rootItems, remainingAll) = entries.filterBothwise {
                 $0.path.countOccurrences(of: "/") == 0
             }
@@ -284,7 +283,7 @@ actor libarchiveWrapper {
             throw error
         }
 
-        #ZZTrace("Loaded archive with format \(archiveFormat) and filters \(archiveFilters)")
+        AKTrace("Loaded archive with format \(archiveFormat) and filters \(archiveFilters)")
         return archive
     }
 
@@ -327,7 +326,7 @@ actor libarchiveWrapper {
             }
         }
 
-        #ZZTrace("Extracting \(pathMap.count) entries to \(toFolder.path)")
+        AKTrace("Extracting \(pathMap.count) entries to \(toFolder.path)")
 
         while archive_read_next_header(readArchiveFD.archive, &entryPtr) == ARCHIVE_OK {
             if let path = entryPath(entryPtr) {
@@ -360,7 +359,7 @@ actor libarchiveWrapper {
                             let error = "Unable to write to \(outputURL.path)"
                             throw ArchiveError.ArchiveExtractError(archive: path, error: error)
                         }
-                        #ZZTrace("  Wrote \(outputURL.path(percentEncoded: false))")
+                        AKTrace("  Wrote \(outputURL.path(percentEncoded: false))")
 
                         writtenURLs.append(outputURL)
                     case .directory:
@@ -372,7 +371,7 @@ actor libarchiveWrapper {
                                                                    error: error.localizedDescription)
                         }
                         archive_read_data_skip(readArchiveFD.archive)
-                        #ZZTrace("  Created \(outputURL.path(percentEncoded: false))")
+                        AKTrace("  Created \(outputURL.path(percentEncoded: false))")
 
                         writtenURLs.append(outputURL)
                     case .symlink:
@@ -386,9 +385,9 @@ actor libarchiveWrapper {
                             throw ArchiveError.ArchiveExtractError(archive: outputURL.path,
                                                                    error: error.localizedDescription)
                         }
-                        #ZZTrace("  Linked \(outputURL.path) to \(linkDest)")
+                        AKTrace("  Linked \(outputURL.path) to \(linkDest)")
                     default:
-                        #ZZWarn(
+                        AKWarning(
                             "Skipping archive entry \(path) of type \(entryType.rawValue), it is an unsupported type"
                         )
                     }
@@ -412,7 +411,7 @@ actor libarchiveWrapper {
                                 attributes, ofItemAtPath: outputURL.path)
                         }
                     } catch {
-                        #ZZWarn("Unable to read/set file attributes for \(outputURL.path)")
+                        AKWarning("Unable to read/set file attributes for \(outputURL.path)")
                     }
 
                     await Task.unsafeProgress?.progressed()
@@ -587,7 +586,7 @@ actor libarchiveWrapper {
 
         // FIXME: Deal with: do we have any headerMap entries left?
         if !headerMap.isEmpty {
-            #ZZWarn(
+            AKWarning(
                 "Some entries were not processed during archive write: \(headerMap.keys.joined(separator: ", "))"
             )
         }
@@ -595,7 +594,7 @@ actor libarchiveWrapper {
         writeArchiveFD.close()
 
         if let writeCacheURL = writeArchiveFD.writeCacheURL {
-            #ZZTrace("Moving archive cache to final destination: \(writeCacheURL) -> \(to)")
+            AKTrace("Moving archive cache to final destination: \(writeCacheURL) -> \(to)")
             do {
                 _ = try FileManager.default.replaceItemAt(to, withItemAt: writeCacheURL, options: [.usingNewMetadataOnly])
             } catch {

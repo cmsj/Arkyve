@@ -6,7 +6,6 @@
 //
 
 import SwiftUI
-import ZZLog
 
 @Observable
 @MainActor
@@ -16,12 +15,12 @@ class ShowErrors {
 
     func err(_ error: ArchiveError) {
         self.error = error
-        #ZZError("ShowErrors::err: \(error.localizedDescription)")
+        AKError("ShowErrors::err: \(error.localizedDescription)")
     }
 
     func clear() {
         self.error = nil
-        #ZZError("ShoeErrors::clear")
+        AKError("ShowErrors::clear")
     }
 }
 

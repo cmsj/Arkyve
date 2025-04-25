@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import os
 
 struct LogWindowView: View {
     @State private var logs = ArkyveLog.shared
@@ -20,7 +21,7 @@ struct LogWindowView: View {
             }
             Spacer()
             Button("Clear") {
-                logs.clear()
+                ArkyveLog.shared.clear()
             }
         }
         .padding()

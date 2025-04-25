@@ -7,22 +7,22 @@
 
 import Foundation
 import SwiftUI
-import ZZLog
 
 class AppDelegate: NSObject, NSApplicationDelegate {
     func applicationWillFinishLaunching(_ notification: Notification) {
-        #ZZTrace("Creating cache directories")
+        AKTrace("Creating cache directories")
         SettingsManager.shared.removeCacheDirectories()
         SettingsManager.shared.createCacheDirectories()
     }
 
+    // For now we're a one-window app and managing window lifecycles is not really a great fit for the way we work, so we'll quit if our window is closed
     func applicationShouldTerminateAfterLastWindowClosed(_ sender: NSApplication) -> Bool {
         true
     }
 
 // We can't do this if we're also reacting to it in MainWindowView, because this one fires first and breaks saving operations
 //    func applicationWillTerminate(_ aNotification: Notification) {
-//        #ZZTrace("Removing cache directories")
+//        AKTrace("Removing cache directories")
 //        SettingsManager.shared.removeCacheDirectories()
 //    }
 }

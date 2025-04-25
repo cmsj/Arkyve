@@ -24,7 +24,6 @@ struct ToolbarContentView: CustomizableToolbarContent {
             }
             .help("Start a new, empty archive")
             .disabled(viewModel.disableNew)
-            .popoverTip(NewButtonTip(), arrowEdge: .top)
         }
         ToolbarItem(id: "Open") {
             Button {
@@ -36,7 +35,6 @@ struct ToolbarContentView: CustomizableToolbarContent {
             }
             .help("Open an archive")
             .disabled(viewModel.disableOpen)
-            .popoverTip(OpenButtonTip(), arrowEdge: .top)
         }
         ToolbarItem(id: "Close") {
             Button {
@@ -48,7 +46,6 @@ struct ToolbarContentView: CustomizableToolbarContent {
             }
             .help("Close this archive")
             .disabled(viewModel.disableClose)
-            .popoverTip(CloseButtonTip(), arrowEdge: .bottom)
         }
 
         ToolbarItem(id: "Add") {

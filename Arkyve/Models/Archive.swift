@@ -9,7 +9,6 @@ import Foundation
 import SwiftUI
 import Synchronization
 import UniformTypeIdentifiers
-import ZZLog
 
 // MARK: Sorting
 extension Archive {
@@ -66,7 +65,7 @@ class Archive: Identifiable {
         self.name = URL.lastPathComponent
         self.cacheURL = SettingsManager.shared.readCacheURL.appendingPathComponent(_name)
 
-        #ZZTrace("Initialised for \(URL)")
+        AKTrace("Initialised for \(URL)")
     }
 
     // Create a new, empty archive
@@ -77,14 +76,14 @@ class Archive: Identifiable {
     }
 
     deinit {
-        #ZZTrace("Archive::deinit() on \(self.name)")
+        AKTrace("Archive::deinit() on \(self.name)")
         // Exit early if cacheURL doesn't exist
         guard FileManager.default.fileExists(atPath: self.cacheURL.path(percentEncoded: false)) else { return }
 
         do {
             try FileManager.default.removeItem(at: self.cacheURL)
         } catch {
-            #ZZError("Unable to remove cache directory at: \(self.cacheURL)")
+            AKError("Unable to remove cache directory at: \(self.cacheURL)")
         }
     }
 
@@ -108,7 +107,7 @@ class Archive: Identifiable {
     }
 
     private func setDirty(_ dirty: Bool = true) {
-        #ZZTrace("Marking archive \(dirty ? "dirty" : "clean")")
+        AKTrace("Marking archive \(dirty ? "dirty" : "clean")")
         self.dirty = dirty
     }
 

@@ -9,7 +9,6 @@ import SwiftUI
 import AppKit
 import System
 import UniformTypeIdentifiers
-import ZZLog
 
 @Observable
 @MainActor
@@ -359,7 +358,7 @@ class MainWindowViewModel {
             if let destURL = panel.url {
                 archive.name = destURL.lastPathComponent
                 Task {
-                    #ZZTrace("Save As to \(destURL) (format: \(viewModel.format))")
+                    AKTrace("Save As to \(destURL) (format: \(viewModel.format))")
 
                     if !archive.dirty && archive.format == viewModel.format {
                         // This is a performance optimisation

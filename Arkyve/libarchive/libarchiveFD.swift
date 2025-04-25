@@ -5,8 +5,6 @@
 //  Created by Chris Jones on 31/12/2024.
 //
 
-import ZZLog
-
 /// Represents the type of file descriptor operation for libarchive.
 enum libarchiveFDType {
     /// Indicates a read operation on the archive.
@@ -138,7 +136,7 @@ struct libarchiveFD {
             throw ArchiveError.ArchiveWriteError(archive: at.path, error: "Unable to create cache path")
         }
 
-        #ZZTrace("Archive write cache: \(writeCachePath.path)")
+        AKTrace("Archive write cache: \(writeCachePath.path)")
 
         result = archive_write_open_filename(archive, writeCachePath.path.cString(using: .utf8))
         if (result != ARCHIVE_OK) {

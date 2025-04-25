@@ -6,7 +6,6 @@
 //
 
 import Foundation
-import ZZLog
 
 struct SettingsManager {
     static let shared = SettingsManager()
@@ -46,7 +45,7 @@ struct SettingsManager {
 
     private init() {
         let msg = "Cache directories: \(readCacheURL) \(writeCacheURL)"
-        #ZZTrace(msg)
+        AKTrace(msg)
     }
 
     func removeCacheDirectories() {

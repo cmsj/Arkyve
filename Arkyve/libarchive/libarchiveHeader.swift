@@ -26,18 +26,6 @@ struct libarchiveHeader: Identifiable, Codable {
 
     let perms: mode_t
 
-    var sizeString: String {
-        get { size != -1 ? String(size) : "--" }
-    }
-    var finalDirName: String? {
-        get {
-            if type == .directory {
-                return name
-            }
-            return pathComponents.dropLast().last
-        }
-    }
-
     init(id: UUID = UUID(), source: ArchiveEntrySource, type: ArchiveEntryType, path: String, name: String, pathComponents: [String], size: Int64, atime: Date, ctime: Date, mtime: Date, btime: Date, uid: Int64?, gid: Int64?, perms: mode_t) {
         self.id = id
         self.source = source

@@ -68,14 +68,6 @@ import Foundation
             #expect(exc.isEmpty)
         }
 
-        @Test func remove() async throws {
-            var testArray = [1,2,3,4]
-            let result = testArray.remove { $0.isMultiple(of: 2) }
-
-            #expect(result == true)
-            #expect(testArray == [1,3])
-        }
-
         @Test func subtractPathHappy() async throws {
             let path = ["user", "documents", "files"]
             let result = path.subtractPath(["user", "documents"])
@@ -93,24 +85,6 @@ import Foundation
             let otherResult = otherPath.subtractPath(["test3"])
 
             #expect(otherResult == nil)
-        }
-    }
-
-    @Suite("Data Extensions") struct DataTests {
-        @Test func bytesEmpty() async throws {
-            let data = Data()
-            #expect(data.isEmpty)
-            #expect(data.bytes.isEmpty)
-        }
-
-        @Test func bytesIntegrity() async throws {
-            let data = Data([1,2,3,4])
-            #expect(data.bytes == [UInt8]([1,2,3,4]))
-        }
-
-        @Test func bytesString() async throws {
-            let string = "Hello"
-            #expect(Data(string.utf8).bytes == [UInt8](string.utf8))
         }
     }
 

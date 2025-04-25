@@ -6,7 +6,6 @@
 //
 
 import SwiftUI
-import ZZLog
 import UniformTypeIdentifiers
 
 struct TableRowTreeContent: TableRowContent {

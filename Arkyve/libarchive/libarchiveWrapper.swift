@@ -19,10 +19,12 @@ actor libarchiveWrapper {
     }
 
 #if DEBUG
+    // periphery:ignore
     func testURL() -> URL {
         return url
     }
 
+    // periphery:ignore
     func testPath() -> String {
         return path
     }
@@ -245,7 +247,7 @@ actor libarchiveWrapper {
         return writeEntry
     }
 
-    public func loadArchive() async throws(ArchiveError) -> sending Archive {
+    func loadArchive() async throws(ArchiveError) -> sending Archive {
         #ZZTrace("loadArchive() for \(path)")
         let archive = Archive(URL: self.url)
         let archiveFormat: libarchiveFormat
@@ -286,7 +288,7 @@ actor libarchiveWrapper {
         return archive
     }
 
-    public func extractEntries(_ extractableEntries: [ArchiveEntryExtractable],
+    func extractEntries(_ extractableEntries: [ArchiveEntryExtractable],
                                toFolder: URL,
                                retainFullPath: Bool = false) async throws(ArchiveError) -> [URL] {
         var pathMap: [String: URL] = [:]
@@ -431,7 +433,7 @@ actor libarchiveWrapper {
     ///   - to: A URL describing the filesystem location to write the archive to
     ///   - format: A libarchiveFormat describing the type of archive to write
     ///   - filters: An array of libarchiveFilter, describing which filters to apply to the archive
-    public func writeArchive(headerMap: [String: ArchiveEntryFlat],
+    func writeArchive(headerMap: [String: ArchiveEntryFlat],
                              to: URL,
                              format: libarchiveFormat,
                              filters: [libarchiveFilter],

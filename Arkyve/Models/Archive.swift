@@ -38,7 +38,7 @@ extension Archive {
 }
 
 @Observable
-class Archive {
+class Archive: Identifiable {
     let id: UUID = UUID()
     static var newFilePath: String {
         SettingsManager.shared.newFolderURL.appending(path: SettingsManager.shared.newArchiveName).path
@@ -58,10 +58,6 @@ class Archive {
     var existsOnDisk: Bool {
         // FIXME: Should this actually be using FileManager.default.fileExists?
         URL.path != Archive.newFilePath
-    }
-
-    var canWrite: Bool {
-        format.canWrite
     }
 
     init(URL: URL) {
@@ -108,7 +104,7 @@ class Archive {
         setDirty(false)
     }
 
-    func addFiles(from urls: [URL], pwd: URL?, parent: ArchiveEntry? = nil) throws (ArchiveError) {
+    func addFiles(from urls: [URL], parent: ArchiveEntry? = nil) throws (ArchiveError) {
         guard urls.count > 0 else { return }
 
         var newEntries: [ArchiveEntry] = []

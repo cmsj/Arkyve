@@ -21,7 +21,7 @@ final class FormatPickerViewModel: Sendable {
         self.panel = panel
     }
 
-    public var format: libarchiveFormat {
+    var format: libarchiveFormat {
         get {
             return _formatStorage.withLock { value in
                 self.access(keyPath: \.format)

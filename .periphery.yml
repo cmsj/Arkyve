@@ -1,5 +1,4 @@
-project: ZipZap.xcodeproj
+project: Arkyve.xcodeproj
+retain_assign_only_properties: true
 schemes:
-- ZipZap
-targets:
-- ZipZap
+- Arkyve

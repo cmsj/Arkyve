@@ -7,7 +7,6 @@
 
 import SwiftUI
 import os
-import ZZLog
 
 @main
 struct ArkyveApp: App {

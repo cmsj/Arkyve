@@ -1,3 +1,4 @@
+// periphery:ignore:all
 // Taken from https://forums.swift.org/t/reporting-progress-on-an-async-function/74174/14
 /// Gathers progression information of all computations within the `operation` block.
 ///

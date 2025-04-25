@@ -232,9 +232,8 @@ class MainWindowViewModel {
         panel.prompt = "Select files/folders to add"
 
         if panel.runModal() == .OK {
-            let pwd = panel.urls.first?.deletingLastPathComponent()
             do {
-                try archive?.addFiles(from: panel.urls, pwd: pwd)
+                try archive?.addFiles(from: panel.urls)
                 sort()
             } catch {
                 showErrors.err(error)
@@ -423,10 +422,6 @@ class MainWindowViewModel {
         self.archive?.sort(using: sortOrder)
     }
 
-    func sort(using: [KeyPathComparator<ArchiveEntry>]) {
-        self.archive?.sort(using: using)
-    }
-
     // MARK: - Drag and drop (high level)
     func handleManyDrops(on entryID: UUID? = nil, items: [DropItem]) {
         for item in items {
@@ -517,7 +512,7 @@ class MainWindowViewModel {
         }
 
         do {
-            try archive.addFiles(from: [fileURL], pwd: fileURL.deletingLastPathComponent(), parent: newParent)
+            try archive.addFiles(from: [fileURL], parent: newParent)
             sort()
         } catch {
             showErrors.err(error)

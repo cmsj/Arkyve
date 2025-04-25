@@ -32,7 +32,6 @@ import Foundation
         #expect(archive.format == .ZIP)
         #expect(archive.filters == [.None])
         #expect(archive.entries.count == 4)
-        #expect(archive.canWrite == true)
     }
 
 //    @Test func testArchiveDirtyFlag() async throws {
@@ -156,85 +155,6 @@ import Foundation
         #expect(header.uid == 501)
         #expect(header.gid == 20)
         #expect(header.perms == 0o644)
-    }
-    
-    @Test func testLibarchiveHeaderSizeString() async {
-        let source = ArchiveEntrySource(type: .Archive, path: "/test")
-        let header = libarchiveHeader(
-            source: source,
-            type: .file,
-            path: "/test/file.txt",
-            name: "file.txt",
-            pathComponents: ["test", "file.txt"],
-            size: 1024,
-            atime: Date(),
-            ctime: Date(),
-            mtime: Date(),
-            btime: Date(),
-            uid: nil,
-            gid: nil,
-            perms: 0o644
-        )
-        
-        #expect(header.sizeString == "1024")
-        
-        let unknownSizeHeader = libarchiveHeader(
-            source: source,
-            type: .file,
-            path: "/test/file.txt",
-            name: "file.txt",
-            pathComponents: ["test", "file.txt"],
-            size: -1,
-            atime: Date(),
-            ctime: Date(),
-            mtime: Date(),
-            btime: Date(),
-            uid: nil,
-            gid: nil,
-            perms: 0o644
-        )
-        
-        #expect(unknownSizeHeader.sizeString == "--")
-    }
-    
-    @Test func testLibarchiveHeaderFinalDirName() async {
-        let source = ArchiveEntrySource(type: .Archive, path: "/test")
-        
-        // Test directory type
-        let dirHeader = libarchiveHeader(
-            source: source,
-            type: .directory,
-            path: "/test/dir",
-            name: "dir",
-            pathComponents: ["test", "dir"],
-            size: 0,
-            atime: Date(),
-            ctime: Date(),
-            mtime: Date(),
-            btime: Date(),
-            uid: nil,
-            gid: nil,
-            perms: 0o755
-        )
-        #expect(dirHeader.finalDirName == "dir")
-        
-        // Test file type
-        let fileHeader = libarchiveHeader(
-            source: source,
-            type: .file,
-            path: "/test/dir/file.txt",
-            name: "file.txt",
-            pathComponents: ["test", "dir", "file.txt"],
-            size: 1024,
-            atime: Date(),
-            ctime: Date(),
-            mtime: Date(),
-            btime: Date(),
-            uid: nil,
-            gid: nil,
-            perms: 0o644
-        )
-        #expect(fileHeader.finalDirName == "dir")
     }
     
     // MARK: - libarchiveFD Tests

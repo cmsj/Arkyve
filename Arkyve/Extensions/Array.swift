@@ -31,20 +31,6 @@ extension Array {
 
         return (included, excluded)
     }
-
-    /// Removes elements from the array that satisfy the given predicate.
-    ///
-    /// This function removes all elements that satisfy the given predicate and returns a Boolean indicating whether any elements were removed.
-    ///
-    /// - Parameter test: A closure that takes an element and returns a Boolean value indicating whether the element should be removed.
-    /// - Returns: `true` if any elements were removed, `false` otherwise.
-    @discardableResult
-    mutating func remove(where test: (Self.Element) -> Bool) -> Bool {
-        let beforeCount = self.count
-        self = self.filter { !test($0) }
-
-        return beforeCount != self.count
-    }
 }
 
 extension Array where Element == String {

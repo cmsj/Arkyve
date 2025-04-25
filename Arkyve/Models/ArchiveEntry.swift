@@ -151,6 +151,7 @@ class ArchiveEntry: Identifiable {
         self.perms = mode_t.directory
     }
 
+    // periphery:ignore:parameters isRoot
     init(isRoot: Bool) {
         self.source = ArchiveEntrySource(type: .Root, path: "")
         self.name = "root"

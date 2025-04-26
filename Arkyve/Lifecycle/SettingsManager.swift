@@ -43,6 +43,12 @@ struct SettingsManager {
         }
     }
 
+    var newArchiveFilters: [libarchiveFilter] {
+        get {
+            ArkyveFormats.initFromlibarchiveFormat(newArchiveFormat).libarchiveFilters
+        }
+    }
+
     private init() {
         let msg = "Cache directories: \(readCacheURL) \(writeCacheURL)"
         AKTrace(msg)

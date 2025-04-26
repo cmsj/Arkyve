@@ -11,9 +11,9 @@ import SwiftUI
 
 // The structure of this model class is taken from: https://forums.swift.org/t/do-update-to-observable-properties-have-to-be-done-on-the-main-thread/74954/5
 @Observable
-final class FormatPickerViewModel: Sendable {
+final class FormatPickerViewModel: NSObject, Sendable, NSOpenSavePanelDelegate {
     @ObservationIgnored
-    fileprivate let _formatStorage = Mutex<libarchiveFormat>(.ZIP)
+    fileprivate let _formatStorage = Mutex<ArkyveFormats>(.zip)
     @ObservationIgnored
     let panel: NSSavePanel?
 
@@ -21,7 +21,7 @@ final class FormatPickerViewModel: Sendable {
         self.panel = panel
     }
 
-    var format: libarchiveFormat {
+    var format: ArkyveFormats {
         get {
             return _formatStorage.withLock { value in
                 self.access(keyPath: \.format)
@@ -35,15 +35,18 @@ final class FormatPickerViewModel: Sendable {
 
                     guard let panel = panel else { return }
                     Task { @MainActor in
-                        let baseName = panel.nameFieldStringValue.deletingPathExtension
-                        let ext = newValue.writeExtension
-                        let newName = "\(baseName).\(ext)"
-                        // FIXME: For some reason, if we sent foo.tar.gz it appears as foo.gz (see https://bugzilla.mozilla.org/show_bug.cgi?id=1321321 )
+                        let newName = panel.nameFieldStringValue.deletingPathExtension// + ".\(newValue.ext)"
+                        print("Updating panel name to \(newName)")
                         panel.nameFieldStringValue = newName
                     }
                 }
             }
         }
+    }
+
+    func panel(_ sender: Any, userEnteredFilename filename: String, confirmed okFlag: Bool) -> String? {
+        print("User entered filename: \(filename)")
+        return filename + ".\(format.ext)"
     }
 }
 

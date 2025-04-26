@@ -49,7 +49,7 @@ class Archive: Identifiable {
     var entries: [ArchiveEntry] = []
     var root: ArchiveEntry = ArchiveEntry(isRoot: true)
     var format: libarchiveFormat = SettingsManager.shared.newArchiveFormat
-    var filters: [libarchiveFilter] = [] // FIXME: libarchiveFilter should really give us default values for a given libarchiveFormat
+    var filters: [libarchiveFilter] = SettingsManager.shared.newArchiveFilters
     var cacheURL: URL
     private(set) var dirty: Bool = false
 
@@ -93,7 +93,10 @@ class Archive: Identifiable {
         self.filters = filters
     }
 
-    func metadataForSaving(overrideFormat: libarchiveFormat = .Unknown, overrideFilters: [libarchiveFilter] = [.None]) -> (libarchiveFormat, [libarchiveFilter], [String:ArchiveEntryFlat]) {
+    func metadataForSaving(overrideFormat: libarchiveFormat = .Unknown,
+                           overrideFilters: [libarchiveFilter] = [.None]) -> (libarchiveFormat,
+                                                                              [libarchiveFilter],
+                                                                              [String:ArchiveEntryFlat]) {
         let format = overrideFormat == .Unknown ? format : overrideFormat
         let filters = overrideFilters == [.None] ? filters : overrideFilters
 

@@ -35,7 +35,7 @@ enum libarchiveFormat: Int32, CaseIterable, Identifiable {
     case AR_GNU = 0x70001
     case AR_BSD = 0x70002
     case MTREE = 0x80000
-    case RAW = 0x90000
+    case RAW = 0x90000 // FIXME: We can probably use this for like somefile.gz?
     case XAR = 0xA0000
     case LHA = 0xB0000
     case CAB = 0xC0000
@@ -91,7 +91,7 @@ enum libarchiveFormat: Int32, CaseIterable, Identifiable {
         get {
             switch (self) {
             case .TAR_GNUTAR:
-                return "tgz"
+                return "tar.gz"
             case .ISO9660:
                 return "iso"
             case .ZIP:

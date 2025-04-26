@@ -104,8 +104,8 @@ struct MainWindowView: View {
                     if let destURL = panel.url {
                         to = destURL
                         archive.name = destURL.lastPathComponent
-                        archive.format = pickerViewModel.format
-                        archive.filters = pickerViewModel.format.defaultFilters
+                        archive.format = pickerViewModel.format.libarchiveFormat
+                        archive.filters = pickerViewModel.format.libarchiveFilters
                     }
                 } else {
                     return
@@ -132,6 +132,12 @@ struct MainWindowView: View {
 
             semaphore.wait()
 
+        }
+        .onOpenURL { url in
+            AKTrace("System opened URL: \(url)")
+            Task {
+                await viewModel.openArchive(url: url)
+            }
         }
     }
 }

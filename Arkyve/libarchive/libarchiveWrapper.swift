@@ -192,6 +192,9 @@ actor libarchiveWrapper {
             }
         }
 
+        if filters.count == 0 {
+            filters.append(.None)
+        }
         return filters
     }
 

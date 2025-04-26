@@ -134,6 +134,7 @@ class MainWindowViewModel {
         guard let archive else { return }
 
         do {
+            AKTrace("Copying \(archive.URL) to \(to)")
             try FileManager.default.copyItem(at: archive.URL, to: to)
         } catch {
             showErrors.err(ArchiveError.ArchiveWriteError(archive: archive.name, error: error.localizedDescription))
@@ -203,7 +204,7 @@ class MainWindowViewModel {
         let panel = NSOpenPanel()
         panel.allowsMultipleSelection = false
         panel.canChooseDirectories = false
-        panel.allowedContentTypes = libarchiveFormat.allUTTypes() + [.archive]
+        panel.allowedContentTypes = ArkyveFormats.utTypes + [.archive] // Adding .archive is a hack to get .tar.gz and .tar.bz2 to work
 
         if panel.runModal() == .OK {
             if let url = panel.url {
@@ -339,16 +340,19 @@ class MainWindowViewModel {
         let viewModel = FormatPickerViewModel(panel: panel)
 
         if archive!.format != .Unknown {
-            viewModel.format = archive!.format
+            viewModel.format = .initFromlibarchiveFormat(archive!.format, withFilters: archive!.filters)
         }
 
         panel.prompt = "Save"
         panel.isExtensionHidden = false
         panel.nameFieldStringValue = archive!.name.deletingPathExtension
+        panel.allowedContentTypes = ArkyveFormats.writeableUTTypes
+        panel.showsContentTypes = true
+        panel.delegate = viewModel
 
-        let accessoryViewHosted = FormatPicker().environment(\.formatPickerViewModel, viewModel)
-        let hostingController = NSHostingController(rootView: accessoryViewHosted)
-        panel.accessoryView = hostingController.view
+//        let accessoryViewHosted = FormatPicker().environment(\.formatPickerViewModel, viewModel)
+//        let hostingController = NSHostingController(rootView: accessoryViewHosted)
+//        panel.accessoryView = hostingController.view
 
         return (panel, viewModel)
     }
@@ -359,18 +363,31 @@ class MainWindowViewModel {
         let (panel, viewModel) = prepareSaveAsPanel()
 
         if panel.runModal() == .OK {
-            if let destURL = panel.url {
+            if var destURL = panel.url {
+                let fileName = destURL.lastPathComponent.deletingPathExtension
+                let destFolder = destURL.deletingLastPathComponent()
+                let fullName = fileName + ".\(viewModel.format.ext)"
+
+                destURL = destFolder.appending(path: fullName)
+
                 archive.name = destURL.lastPathComponent
                 Task {
                     AKTrace("Save As to \(destURL) (format: \(viewModel.format))")
 
-                    if !archive.dirty && archive.format == viewModel.format {
+                    if !destURL.startAccessingSecurityScopedResource() {
+                        AKError("Unable to access security scope for \(destURL)")
+                    }
+                    defer { destURL.stopAccessingSecurityScopedResource() }
+
+                    if !archive.dirty &&
+                        archive.format == viewModel.format.libarchiveFormat &&
+                        archive.filters == viewModel.format.libarchiveFilters {
                         // This is a performance optimisation
                         // The archive/format/filters haven't changed, so just copy the existing file
                         copyArchive(to: destURL)
                     } else {
-                        archive.format = viewModel.format
-                        archive.filters = viewModel.format.defaultFilters
+                        archive.format = viewModel.format.libarchiveFormat
+                        archive.filters = viewModel.format.libarchiveFilters
                         await saveArchive(to: destURL)
                     }
                 }

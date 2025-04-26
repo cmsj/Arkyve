@@ -20,6 +20,9 @@ rm -rf include/* lib/*
 mkdir -p include
 mkdir -p lib/Debug
 mkdir -p lib/Release
+mkdir -p logs
+
+brew bundle install
 
 function repo_enter() {
   pushd "$1"
@@ -77,8 +80,10 @@ function fatten_lib() {
 function buildZSTD() {
     repo_enter src/zstd
 
-    cmake -B build-cmake-debug -S build/cmake -G Ninja -DCMAKE_OSX_ARCHITECTURES="x86_64;x86_64h;arm64" -DCMAKE_BUILD_TYPE="Debug"
-    cmake -B build-cmake-release -S build/cmake -G Ninja -DCMAKE_OSX_ARCHITECTURES="x86_64;x86_64h;arm64" -DCMAKE_BUILD_TYPE="Release"
+    rm -rf build-cmake-debug build-cmake-release
+
+    cmake -B build-cmake-debug -S build/cmake -G Ninja -DCMAKE_OSX_ARCHITECTURES="x86_64;x86_64h;arm64" -DCMAKE_BUILD_TYPE="Debug" -DCMAKE_OSX_SYSROOT=macosx
+    cmake -B build-cmake-release -S build/cmake -G Ninja -DCMAKE_OSX_ARCHITECTURES="x86_64;x86_64h;arm64" -DCMAKE_BUILD_TYPE="Release" -DCMAKE_OSX_SYSROOT=macosx
 
     pushd build-cmake-debug
     ninja
@@ -87,11 +92,11 @@ function buildZSTD() {
 
     pushd build-cmake-release
     ninja
-    cp lib/libzstd.a ../../../lib/Release/
+    cp -v lib/libzstd.a ../../../lib/Release/
     popd
 
     # Copy headers
-    cp lib/*.h ../../include/
+    cp -v lib/*.h ../../include/
 
     repo_exit
 }
@@ -110,14 +115,14 @@ function buildLZMA() {
         make clean
         ${MAKE}
 
-        cp .libs/liblzma.a "../../../../lib/${CONFIGURATION}/liblzma-${PLATFORM}.a"
+        cp -v .libs/liblzma.a "../../../../lib/${CONFIGURATION}/liblzma-${PLATFORM}.a"
         make clean
         popd
     done
 
     # Copy headers
-    cp src/liblzma/api/lzma.h ../../include/
-    cp -r src/liblzma/api/lzma ../../include/
+    cp -v src/liblzma/api/lzma.h ../../include/
+    cp -v -r src/liblzma/api/lzma ../../include/
 
     repo_exit
     fatten_lib lzma
@@ -127,7 +132,6 @@ function buildLZ4() {
     repo_enter src/lz4/lib
     set_release $1
 
-set -x
     for arch in arm x86_64 ; do
         set_arch "${arch}"
 
@@ -144,7 +148,7 @@ set -x
     done
 
     # Copy headers
-    cp *.h ../../../include/
+    cp -v *.h ../../../include/
 
     repo_exit
     fatten_lib lz4
@@ -164,12 +168,12 @@ function buildB2() {
         ${MAKE}
         make install
 
-        cp build/lib/libb2.a "../../lib/${CONFIGURATION}/libb2-${PLATFORM}.a"
+        cp -v build/lib/libb2.a "../../lib/${CONFIGURATION}/libb2-${PLATFORM}.a"
         make clean
     done
 
     # Copy headers
-    cp build/include/* ../../include/
+    cp -v build/include/* ../../include/
 
     repo_exit
     fatten_lib b2
@@ -185,7 +189,7 @@ function buildARCHIVE() {
         set_arch "${arch}"
 
         /bin/sh build/autogen.sh
-        ./configure ${CONFIGURE_FLAGS} --prefix="${PWD}/output/" --enable-static --disable-shared --host="${CHOST}" --disable-shared --disable-bsdtar --disable-bsdcat --disable-bsdcpio --disable-bsdunzip
+        ./configure ${CONFIGURE_FLAGS} --prefix="${PWD}/output/" --enable-static --disable-shared --host="${CHOST}" --disable-shared --disable-bsdtar --disable-bsdcat --disable-bsdcpio --disable-bsdunzip --include="${PWD}../../include"
         make clean
 
         export CFLAGS="-I${PWD}../../include/ ${CFLAGS}"
@@ -193,12 +197,12 @@ function buildARCHIVE() {
         ${MAKE}
         make install
 
-        cp output/lib/libarchive.a "../../lib/${CONFIGURATION}/libarchive-${PLATFORM}.a"
+        cp -v output/lib/libarchive.a "../../lib/${CONFIGURATION}/libarchive-${PLATFORM}.a"
         make clean
     done
 
     # Copy headers
-    cp output/include/* ../../include/
+    cp -v output/include/* ../../include/
 
     repo_exit
     fatten_lib archive
@@ -207,23 +211,24 @@ function buildARCHIVE() {
 # Call our builder functions
 
 echo "Building libzstd..."
-buildZSTD # Builds both Debug and Release
+# Builds both Debug and Release
+buildZSTD >logs/zstd.log 2>&1
 
-echo "Building livlzma..."
-buildLZMA Debug
-buildLZMA Release
+echo "Building liblzma..."
+buildLZMA Debug >logs/lzma-debug.log 2>&1
+buildLZMA Release >logs/lzma-release.log 2>&1
 
-echo "Building livlz4..."
-buildLZ4 Debug
-buildLZ4 Release
+echo "Building liblz4..."
+buildLZ4 Debug >logs/lz4-debug.log 2>&1
+buildLZ4 Release >logs/lz4-release.log 2>&1
 
 echo "Building libb2..."
-buildB2 Debug
-buildB2 Release
+buildB2 Debug >logs/b2-debug.log 2>&1
+buildB2 Release >logs/b2-release.log 2>&1
 
 echo "Building libarchive..."
-buildARCHIVE Debug
-buildARCHIVE Release
+buildARCHIVE Debug >logs/libarchive-debug.log 2>&1
+buildARCHIVE Release >logs/libarchive-release.log 2>&1
 
 echo "Library results:"
 find lib -type f -exec lipo -info {} \;
@@ -231,3 +236,4 @@ find lib -type f -exec lipo -info {} \;
 echo "Include results:"
 find include -type f
 
+echo "Build complete"

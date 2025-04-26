@@ -1,5 +1,6 @@
 libarchive*/build
 libarchive-*/libarchive/Debug
+vendor/logs/*
 .DS_Store
 xcuserdata
 .vscode

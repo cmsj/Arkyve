@@ -132,9 +132,22 @@
 		4FED41E42D237674003BA92B /* FileManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileManager.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		4FD96DDC2DBD4A2400194E95 /* Exceptions for "ArkyveTests" folder in "ArkyveTests" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				TestData/archives/helloworld.a,
+			);
+			target = 4F41C4112D1B0C900011DAAB /* ArkyveTests */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		4F41C4132D1B0C900011DAAB /* ArkyveTests */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				4FD96DDC2DBD4A2400194E95 /* Exceptions for "ArkyveTests" folder in "ArkyveTests" target */,
+			);
 			path = ArkyveTests;
 			sourceTree = "<group>";
 		};

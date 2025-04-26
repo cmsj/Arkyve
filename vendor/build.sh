@@ -206,17 +206,22 @@ function buildARCHIVE() {
 
 # Call our builder functions
 
+echo "Building libzstd..."
 buildZSTD # Builds both Debug and Release
 
+echo "Building livlzma..."
 buildLZMA Debug
 buildLZMA Release
 
+echo "Building livlz4..."
 buildLZ4 Debug
 buildLZ4 Release
 
+echo "Building libb2..."
 buildB2 Debug
 buildB2 Release
 
+echo "Building libarchive..."
 buildARCHIVE Debug
 buildARCHIVE Release
 

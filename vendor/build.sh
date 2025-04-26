@@ -7,6 +7,7 @@ if [ $(basename ${PWD}) != "vendor" ]; then
   exit 1
 fi
 
+export VENDOR_DIR="${PWD}"
 export MAKE="make -j12"
 export MACOSX_DEPLOYMENT_TARGET="14.0"
 export SDK="macosx"
@@ -16,7 +17,7 @@ export CXX=$(xcrun --find --sdk ${SDK} clang++)
 export CPP=$(xcrun --find --sdk ${SDK} cpp)
 export AR=$(xcrun --find --sdk ${SDK} ar)
 
-rm -rf include/* lib/*
+rm -rf include lib logs
 mkdir -p include
 mkdir -p lib/Debug
 mkdir -p lib/Release
@@ -56,7 +57,7 @@ function set_arch() {
         export CHOST="arm-apple-darwin"
         export CFLAGS="${HOST_FLAGS} ${OPT_FLAGS}"
         export CXXFLAGS="${HOST_FLAGS} ${OPT_FLAGS}"
-        export LD_FLAGS="${HOST_FLAGS}"
+        export LDFLAGS="${HOST_FLAGS}"
     elif [ "$1" == "x86_64" ]; then
         export ARCH_FLAGS="-arch x86_64"
         export HOST_FLAGS="${ARCH_FLAGS} -isysroot $(xcrun --sdk ${SDK} --show-sdk-path)"
@@ -64,7 +65,7 @@ function set_arch() {
         export CHOST="x86_64-apple-darwin"
         export CFLAGS="${HOST_FLAGS} ${OPT_FLAGS}"
         export CXXFLAGS="${CFLAGS}"
-        export LD_FLAGS="${HOST_FLAGS}"
+        export LDFLAGS="${HOST_FLAGS}"
     else
         echo "ERROR: Unknown arch: $1"
         exit 1
@@ -87,16 +88,16 @@ function buildZSTD() {
 
     pushd build-cmake-debug
     ninja
-    cp lib/libzstd.a ../../../lib/Debug/
+    cp lib/libzstd.a "${VENDOR_DIR}/lib/Debug/"
     popd
 
     pushd build-cmake-release
     ninja
-    cp -v lib/libzstd.a ../../../lib/Release/
+    cp -v lib/libzstd.a "${VENDOR_DIR}/lib/Release/"
     popd
 
     # Copy headers
-    cp -v lib/*.h ../../include/
+    cp -v lib/*.h "${VENDOR_DIR}/include/"
 
     repo_exit
 }
@@ -115,14 +116,14 @@ function buildLZMA() {
         make clean
         ${MAKE}
 
-        cp -v .libs/liblzma.a "../../../../lib/${CONFIGURATION}/liblzma-${PLATFORM}.a"
+        cp -v .libs/liblzma.a "${VENDOR_DIR}/lib/${CONFIGURATION}/liblzma-${PLATFORM}.a"
         make clean
         popd
     done
 
     # Copy headers
-    cp -v src/liblzma/api/lzma.h ../../include/
-    cp -v -r src/liblzma/api/lzma ../../include/
+    cp -v src/liblzma/api/lzma.h "${VENDOR_DIR}/include/"
+    cp -v -r src/liblzma/api/lzma "${VENDOR_DIR}/include/"
 
     repo_exit
     fatten_lib lzma
@@ -144,11 +145,11 @@ function buildLZ4() {
         ${CC} ${CFLAGS} -c -o xxhash.o xxhash.c
 
         ${AR} rcs liblz4-${PLATFORM}.a *.o
-        cp liblz4-${PLATFORM}.a ../../../lib/${CONFIGURATION}/liblz4-${PLATFORM}.a
+        cp liblz4-${PLATFORM}.a "${VENDOR_DIR}/lib/${CONFIGURATION}/liblz4-${PLATFORM}.a"
     done
 
     # Copy headers
-    cp -v *.h ../../../include/
+    cp -v *.h "${VENDOR_DIR}/include/"
 
     repo_exit
     fatten_lib lz4
@@ -168,12 +169,12 @@ function buildB2() {
         ${MAKE}
         make install
 
-        cp -v build/lib/libb2.a "../../lib/${CONFIGURATION}/libb2-${PLATFORM}.a"
+        cp -v build/lib/libb2.a "${VENDOR_DIR}/lib/${CONFIGURATION}/libb2-${PLATFORM}.a"
         make clean
     done
 
     # Copy headers
-    cp -v build/include/* ../../include/
+    cp -v build/include/* "${VENDOR_DIR}/include/"
 
     repo_exit
     fatten_lib b2
@@ -188,21 +189,22 @@ function buildARCHIVE() {
     for arch in arm x86_64; do
         set_arch "${arch}"
 
+        export CFLAGS="-I${VENDOR_DIR}/include/ ${CFLAGS}"
+        export LDFLAGS="-L${VENDOR_DIR}/lib/ ${LDFLAGS}"
+
         /bin/sh build/autogen.sh
-        ./configure ${CONFIGURE_FLAGS} --prefix="${PWD}/output/" --enable-static --disable-shared --host="${CHOST}" --disable-shared --disable-bsdtar --disable-bsdcat --disable-bsdcpio --disable-bsdunzip --include="${PWD}../../include"
+        ./configure ${CONFIGURE_FLAGS} --prefix="${PWD}/output/" --enable-static --disable-shared --host="${CHOST}" --disable-shared --disable-bsdtar --disable-bsdcat --disable-bsdcpio --disable-bsdunzip
         make clean
 
-        export CFLAGS="-I${PWD}../../include/ ${CFLAGS}"
-        export LD_FLAGS="-L${PWD}../../lib/ ${LD_FLAGS}"
         ${MAKE}
         make install
 
-        cp -v output/lib/libarchive.a "../../lib/${CONFIGURATION}/libarchive-${PLATFORM}.a"
+        cp -v output/lib/libarchive.a "${VENDOR_DIR}/lib/${CONFIGURATION}/libarchive-${PLATFORM}.a"
         make clean
     done
 
     # Copy headers
-    cp -v output/include/* ../../include/
+    cp -v output/include/* "${VENDOR_DIR}/include/"
 
     repo_exit
     fatten_lib archive

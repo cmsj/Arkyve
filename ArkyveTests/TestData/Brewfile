@@ -1,0 +1,4 @@
+brew "7zip"
+brew "lha"
+cask"rar"
+

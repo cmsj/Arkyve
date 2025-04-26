@@ -59,12 +59,10 @@ enum libarchiveFormat: Int32, CaseIterable, Identifiable {
     var extensions: [String] {
         get {
             switch (self) {
-            case .Unknown, .Empty, .MTREE, .RAW:
+            case .Unknown, .Empty, .MTREE, .RAW, .SHAR, .SHAR_BASE, .SHAR_DUMP:
                 []
             case .CPIO, .CPIO_POSIX, .CPIO_BIN_LE, .CPIO_BIN_BE, .CPIO_SVR4_CRC, .CPIO_SVR4_NOCRC, .CPIO_AFIO_LARGE, .CPIO_PWB:
                 ["cpio"]
-            case .SHAR, .SHAR_BASE, .SHAR_DUMP:
-                ["shar"]
             case .TAR, .TAR_USTAR, .TAR_GNUTAR, .TAR_PAX_RESTRICTED, .TAR_PAX_INTERCHANGE:
                 ["tar", "tar.gz", "tar.bz2", "tgz"]
             case .ISO9660, .ISO9660_RR:
@@ -84,7 +82,7 @@ enum libarchiveFormat: Int32, CaseIterable, Identifiable {
             case ._7ZIP:
                 ["7z"]
             case .WARC:
-                ["warc", "warc.gz"]
+                ["webarchive"]
             }
         }
     }

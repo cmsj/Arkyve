@@ -1,4 +1,5 @@
 brew "7zip"
 brew "lha"
-cask"rar"
+brew "dvdrtools"
+cask "rar"
 

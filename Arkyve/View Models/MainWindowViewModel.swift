@@ -70,6 +70,8 @@ class MainWindowViewModel {
     // MARK: - Archive operations
 
     func openArchive(url: URL) async {
+        showErrors.clear()
+
         let loader = libarchiveWrapper(url: url)
         self.disableUI = true
         defer { self.disableUI = false }
@@ -194,13 +196,14 @@ class MainWindowViewModel {
             }
             closeButton()
             return
+        } else if archive != nil {
+            closeButton()
         }
 
         let panel = NSOpenPanel()
         panel.allowsMultipleSelection = false
         panel.canChooseDirectories = false
-        panel.allowedContentTypes = libarchiveFormat.allUTTypes()
-//        panel.allowedContentTypes = [.archive] // FIXME: Do better content type handling
+        panel.allowedContentTypes = libarchiveFormat.allUTTypes() + [.archive]
 
         if panel.runModal() == .OK {
             if let url = panel.url {

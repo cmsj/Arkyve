@@ -5,6 +5,8 @@
 //  Created by Chris Jones on 03/10/2024.
 //
 
+import UniformTypeIdentifiers
+
 enum libarchiveFormat: Int32, CaseIterable, Identifiable {
     var id: RawValue { rawValue }
 
@@ -70,6 +72,10 @@ enum libarchiveFormat: Int32, CaseIterable, Identifiable {
                 return ""
             }
         }
+    }
+
+    var utType: UTType? {
+        UTType(filenameExtension: writeExtension)
     }
 
 //    var allWriteExtensions: [String] {

@@ -199,7 +199,8 @@ class MainWindowViewModel {
         let panel = NSOpenPanel()
         panel.allowsMultipleSelection = false
         panel.canChooseDirectories = false
-        panel.allowedContentTypes = [.archive] // FIXME: Do better content type handling
+        panel.allowedContentTypes = libarchiveFormat.allUTTypes()
+//        panel.allowedContentTypes = [.archive] // FIXME: Do better content type handling
 
         if panel.runModal() == .OK {
             if let url = panel.url {

@@ -56,6 +56,39 @@ enum libarchiveFormat: Int32, CaseIterable, Identifiable {
         }
     }
 
+    var extensions: [String] {
+        get {
+            switch (self) {
+            case .Unknown, .Empty, .MTREE, .RAW:
+                []
+            case .CPIO, .CPIO_POSIX, .CPIO_BIN_LE, .CPIO_BIN_BE, .CPIO_SVR4_CRC, .CPIO_SVR4_NOCRC, .CPIO_AFIO_LARGE, .CPIO_PWB:
+                ["cpio"]
+            case .SHAR, .SHAR_BASE, .SHAR_DUMP:
+                ["shar"]
+            case .TAR, .TAR_USTAR, .TAR_GNUTAR, .TAR_PAX_RESTRICTED, .TAR_PAX_INTERCHANGE:
+                ["tar", "tar.gz", "tar.bz2", "tgz"]
+            case .ISO9660, .ISO9660_RR:
+                ["iso"]
+            case .ZIP:
+                ["zip"]
+            case .AR, .AR_GNU, .AR_BSD:
+                ["a"]
+            case .XAR:
+                ["xar", "pkg", "xip"]
+            case .LHA:
+                ["lha", "lzh"]
+            case .CAB:
+                ["cab"]
+            case .RAR, .RAR_V5:
+                ["rar"]
+            case ._7ZIP:
+                ["7z"]
+            case .WARC:
+                ["warc", "warc.gz"]
+            }
+        }
+    }
+
     var writeExtension: String {
         get {
             switch (self) {
@@ -74,17 +107,9 @@ enum libarchiveFormat: Int32, CaseIterable, Identifiable {
         }
     }
 
-    var utType: UTType? {
-        UTType(filenameExtension: writeExtension)
+    var utTypes: [UTType] {
+        return self.extensions.compactMap { UTType(filenameExtension: $0)}
     }
-
-//    var allWriteExtensions: [String] {
-//        var extensions: [String] = []
-//        for format in Self.allCases where format.canWrite {
-//            extensions.append(format.writeExtension)
-//        }
-//        return extensions
-//    }
 
     var defaultFilters: [libarchiveFilter] {
         get {
@@ -100,6 +125,10 @@ enum libarchiveFormat: Int32, CaseIterable, Identifiable {
 
             return filters
         }
+    }
+
+    static func allUTTypes() -> [UTType] {
+        libarchiveFormat.allCases.flatMap { $0.utTypes }
     }
 }
 

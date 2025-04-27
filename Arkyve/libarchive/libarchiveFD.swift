@@ -46,12 +46,12 @@ struct libarchiveFD {
     ///
     /// This method handles the cleanup of read-specific resources including
     /// the libarchive read structures and file descriptor.
-    mutating private func closeRead() {
+    mutating private func closeRead(closeFD: Bool = true) {
         if archive != nil {
             archive_read_close(archive)
             archive_read_free(archive)
         }
-        if fd >= 0 {
+        if fd >= 0 && closeFD {
             Darwin.close(fd)
         }
     }
@@ -94,6 +94,30 @@ struct libarchiveFD {
 
         let ptr = archive_read_open_fd(archive, fd, 10240)
         if ptr != ARCHIVE_OK {
+            // Before we give up entirely, we'll check if this is a RAW file with .gz/.bz2
+            if [ArkyveFormats.bz2.ext, ArkyveFormats.gz.ext].contains(path.pathExtension) {
+                // Release the existing archive, but keep the file descriptor alive
+                self.closeRead(closeFD: false)
+
+                // Allocate a new archive
+                archive = archive_read_new()
+                if archive == nil {
+                    throw ArchiveError.ArchiveOpenError(archive: path, error: "Memory allocation failed")
+                }
+
+                // Explicitly add support only for raw format, since that's not included by _all() above
+                archive_read_support_format_raw(archive)
+                archive_read_support_filter_all(archive)
+
+                lseek(fd, 0, SEEK_SET)
+                let ptr = archive_read_open_fd(archive, fd, 10240)
+                if ptr == ARCHIVE_OK {
+                    // Success!
+                    // FIXME: Notable problems at this point - we will read one header with the name "data" and no size. We need to figure out how to propagate the filename at least. Size is probably a no-go.
+                    return
+                }
+                // Fall through to failure
+            }
             let errStr = String(cString: archive_error_string(archive))
             self.close()
             throw ArchiveError.ArchiveOpenError(archive: path, error:errStr)

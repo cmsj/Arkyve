@@ -20,4 +20,8 @@ extension String {
     var deletingPathExtension: String {
         return (self as NSString).deletingPathExtension
     }
+
+    var pathExtension: String {
+        return (self as NSString).pathExtension
+    }
 }

@@ -204,7 +204,7 @@ class MainWindowViewModel {
         let panel = NSOpenPanel()
         panel.allowsMultipleSelection = false
         panel.canChooseDirectories = false
-        panel.allowedContentTypes = ArkyveFormats.utTypes + [.archive] // Adding .archive is a hack to get .tar.gz and .tar.bz2 to work
+        panel.allowedContentTypes = ArkyveFormats.utTypes// + [.archive] // Adding .archive is a hack to get .tar.gz and .tar.bz2 to work
 
         if panel.runModal() == .OK {
             if let url = panel.url {

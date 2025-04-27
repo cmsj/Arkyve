@@ -208,25 +208,6 @@ actor libarchiveWrapper {
         let format = readFormat()
         let filters = readFilters()
 
-        // FIXME: This causes inconsistencies in the way extraction works, because the name and paths no longer match up
-//        if format == .RAW && headers.count == 1 {
-//            // This is a raw file, which means something like foo.gz
-//            // We need to fix up the header a little
-//            if let header = headers.first {
-//                let filename = url.lastPathComponent.deletingPathExtension
-//                let newHeader = libarchiveHeader(id: header.id, source: header.source,
-//                                                 type: header.type, path: header.path,
-//                                                 name: filename,
-//                                                 pathComponents: header.pathComponents,
-//                                                 size: header.size, atime: header.atime,
-//                                                 ctime: header.ctime, mtime: header.mtime,
-//                                                 btime: header.btime, uid: header.uid,
-//                                                 gid: header.gid, perms: header.perms)
-//                headers.removeAll()
-//                headers.append(newHeader)
-//            }
-//        }
-
         return (format, filters, headers)
     }
 

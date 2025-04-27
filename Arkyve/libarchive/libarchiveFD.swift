@@ -113,7 +113,7 @@ struct libarchiveFD {
                 let ptr = archive_read_open_fd(archive, fd, 10240)
                 if ptr == ARCHIVE_OK {
                     // Success!
-                    // FIXME: Notable problems at this point - we will read one header with the name "data" and no size. We need to figure out how to propagate the filename at least. Size is probably a no-go.
+                    // NOTE: Notable problems at this point - we may read one header with the name "data" and no size. This is sub-optimal, but currently we have no choice but to roll with it, otherwise we're displaying what isn't true about the archive, and that goes against our entire data model.
                     return
                 }
                 // Fall through to failure

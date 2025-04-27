@@ -84,9 +84,9 @@ enum ArkyveFormats: Int32, Identifiable, CaseIterable {
         case .tar:
             "tar"
         case .targz:
-            "tgz" // FIXME: No
+            "tgz"
         case .tarbz2:
-            "tbz2" // FIXME: No
+            "tbz2"
         case .zip:
             "zip"
         case ._7z:
@@ -126,7 +126,6 @@ enum ArkyveFormats: Int32, Identifiable, CaseIterable {
 
     var canWrite: Bool {
         switch self {
-            // FIXME: Can we enable write support for more formats?
         case .tar, .targz, .tarbz2, .zip, ._7z, .iso, .cpio, .xar:
             true
         default:
@@ -246,15 +245,17 @@ enum ArkyveFormats: Int32, Identifiable, CaseIterable {
         }
     }
 
-    static func initFromlibarchiveFormat(_ format: libarchiveFormat, withFilters filters: [libarchiveFilter] = []) -> ArkyveFormats {
+    static func initFromlibarchiveFormatForSaving(_ format: libarchiveFormat, withFilters filters: [libarchiveFilter] = []) -> ArkyveFormats {
+        // NOTE: It's important this handles all of our writable formats
         switch format {
-        case .TAR_GNUTAR:
+        case .TAR_GNUTAR, .TAR_USTAR, .TAR_PAX_RESTRICTED, .TAR_PAX_INTERCHANGE:
             if filters.first == .BZip2 {
                 return .tarbz2
-            } else if filters.isEmpty || filters == [.None] {
+            } else if filters.first == .GZip {
+                return .targz
+            } else {
                 return .tar
             }
-            return .targz
         case .RAW:
             switch (filters.first) {
             case .BZip2:
@@ -270,6 +271,10 @@ enum ArkyveFormats: Int32, Identifiable, CaseIterable {
             return ._7z
         case .ISO9660:
             return .iso
+        case .CPIO_SVR4_CRC, .CPIO_SVR4_NOCRC, .CPIO, .CPIO_PWB, .CPIO_POSIX, .CPIO_BIN_BE, .CPIO_BIN_LE, .CPIO_AFIO_LARGE:
+            return .cpio
+        case .XAR:
+            return .xar
         default:
             return .zip
         }

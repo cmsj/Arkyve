@@ -45,7 +45,7 @@ struct SettingsManager {
 
     var newArchiveFilters: [libarchiveFilter] {
         get {
-            ArkyveFormats.initFromlibarchiveFormat(newArchiveFormat).libarchiveFilters
+            ArkyveFormats.initFromlibarchiveFormatForSaving(newArchiveFormat).libarchiveFilters
         }
     }
 

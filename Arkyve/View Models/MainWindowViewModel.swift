@@ -342,8 +342,10 @@ class MainWindowViewModel {
         panel.isExtensionHidden = false
         panel.nameFieldStringValue = archive!.name.deletingPathExtension
         panel.allowedContentTypes = ArkyveFormats.writeableUTTypes
-        panel.currentContentType = ArkyveFormats.initFromlibarchiveFormat(archive!.format).utType // FIXME: This isn't working
         panel.showsContentTypes = true
+
+        let currentFormat = ArkyveFormats.initFromlibarchiveFormatForSaving(archive!.format, withFilters: archive!.filters)
+        panel.currentContentType = currentFormat.utType
 
         return panel
     }

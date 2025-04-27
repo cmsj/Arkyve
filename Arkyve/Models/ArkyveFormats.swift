@@ -8,35 +8,31 @@
 
 import UniformTypeIdentifiers
 
-// FIXME: Finish adding Document types in Info.plist
-// FIXME: Remove FormatPicker
-// FIXME: Audit libarchiveFormat for simplification now ArkyveFormats exists
-// FIXME: Audit FormatPicketViewModel - it's now just a delgate for NSSavePanel?
-
 enum ArkyveFormats: Int32, Identifiable, CaseIterable {
     var id: RawValue { rawValue }
 
-    case tar
+    // Order matters here, because NSSavePanel will show the order we select here (after filtering it to saveable formats)
     case zip
     case _7z
     case iso
+    case targz
+    case tarbz2
+    case tar
+
     case cpio
     case warc
     case xar
     case xip
     case pkg
     case cab
-    case gz
-    case bz2
-
     case shar
     case ar
-    case targz
-    case tarbz2
     case lha
     case lzh
     case rar
     case raw
+    case gz
+    case bz2
 
     var description: String {
         switch self {
@@ -88,9 +84,9 @@ enum ArkyveFormats: Int32, Identifiable, CaseIterable {
         case .tar:
             "tar"
         case .targz:
-            "tar.gz"
+            "tgz" // FIXME: No
         case .tarbz2:
-            "tar.bz2"
+            "tbz2" // FIXME: No
         case .zip:
             "zip"
         case ._7z:
@@ -192,17 +188,17 @@ enum ArkyveFormats: Int32, Identifiable, CaseIterable {
         case .bz2:
                 .bz2
         case ._7z:
-            UTType("org.7-zip.7-zip-archive")
+                ._7z
         case .iso:
-            UTType("public.iso-image")
+                .iso
         case .cpio:
-            UTType("public.cpio-archive")
+                .cpio
         case .xar:
-            UTType("com.apple.xar-archive")
+                .xar
         case .xip:
-            UTType("com.apple.xip-archive")
+                .xip
         case .pkg:
-            UTType("com.apple.installer-package-archive")
+                .pkg
         case .cab:
                 .cab
         case .targz:
@@ -276,6 +272,46 @@ enum ArkyveFormats: Int32, Identifiable, CaseIterable {
             return .iso
         default:
             return .zip
+        }
+    }
+
+    static func initFromUTType(_ type: UTType?) -> ArkyveFormats? {
+        guard type != nil else { return nil }
+
+        switch (type) {
+        case .ar:
+            return .ar
+        case .zip:
+            return .zip
+        case ._7z:
+            return ._7z
+        case .tarArchive:
+            return .tar
+        case .targz:
+            return .targz
+        case .tarbz2:
+            return .tarbz2
+        case .iso:
+            return .iso
+        case .lha:
+            return .lha
+        case .lzh:
+            return .lzh
+        case .rar:
+            return .rar
+        case .cab:
+            return .cab
+        case .cpio:
+            return .cpio
+        case .xar:
+            return .xar
+        case .xip:
+            return .xip
+        case .pkg:
+            return .pkg
+
+        default:
+            return nil
         }
     }
 }

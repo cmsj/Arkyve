@@ -39,8 +39,6 @@
 		4F7121972C0F6B4C000EB268 /* MainWindowViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F7121962C0F6B4C000EB268 /* MainWindowViewModel.swift */; };
 		4F71219B2C10864F000EB268 /* HideViewModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F71219A2C10864F000EB268 /* HideViewModifier.swift */; };
 		4F71219D2C10BB1D000EB268 /* ErrorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F71219C2C10BB1D000EB268 /* ErrorView.swift */; };
-		4F8BD3B12D39BD420087091C /* FormatPickerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F8BD3B02D39BD3D0087091C /* FormatPickerViewModel.swift */; };
-		4F8BD3B32D39BD8E0087091C /* FormatPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F8BD3B22D39BD870087091C /* FormatPicker.swift */; };
 		4FA020492D2DD6A000E1CE58 /* withTaskProgression.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FA020482D2DD69D00E1CE58 /* withTaskProgression.swift */; };
 		4FA0204A2D2DD6A000E1CE58 /* withTaskProgression.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FA020482D2DD69D00E1CE58 /* withTaskProgression.swift */; };
 		4FB275582DB2FD350037BD44 /* EntryContextMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FB275572DB2FD320037BD44 /* EntryContextMenu.swift */; };
@@ -110,8 +108,6 @@
 		4F71219A2C10864F000EB268 /* HideViewModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HideViewModifier.swift; sourceTree = "<group>"; };
 		4F71219C2C10BB1D000EB268 /* ErrorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorView.swift; sourceTree = "<group>"; };
 		4F71219E2C110C67000EB268 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		4F8BD3B02D39BD3D0087091C /* FormatPickerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormatPickerViewModel.swift; sourceTree = "<group>"; };
-		4F8BD3B22D39BD870087091C /* FormatPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormatPicker.swift; sourceTree = "<group>"; };
 		4FA020482D2DD69D00E1CE58 /* withTaskProgression.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = withTaskProgression.swift; sourceTree = "<group>"; };
 		4FB275572DB2FD320037BD44 /* EntryContextMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EntryContextMenu.swift; sourceTree = "<group>"; };
 		4FB498582C08A00F004DE958 /* libiconv.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libiconv.tbd; path = usr/lib/libiconv.tbd; sourceTree = SDKROOT; };
@@ -214,7 +210,6 @@
 				4F7121932C0F6938000EB268 /* TableRowTreeContent.swift */,
 				4F71218B2C0F4CCA000EB268 /* StatusbarView.swift */,
 				4F1084912C262D5D007DCC39 /* LogWindowView.swift */,
-				4F8BD3B22D39BD870087091C /* FormatPicker.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -222,7 +217,6 @@
 		4F7121952C0F6B38000EB268 /* View Models */ = {
 			isa = PBXGroup;
 			children = (
-				4F8BD3B02D39BD3D0087091C /* FormatPickerViewModel.swift */,
 				4F7121962C0F6B4C000EB268 /* MainWindowViewModel.swift */,
 			);
 			path = "View Models";
@@ -442,7 +436,6 @@
 				4F688A5C2D7666FE003B5D60 /* mode_t.swift in Sources */,
 				4FD96DF02DBE5C8A00194E95 /* UTType.swift in Sources */,
 				4F344ED22C335273006E1D9F /* FocusedValues.swift in Sources */,
-				4F8BD3B12D39BD420087091C /* FormatPickerViewModel.swift in Sources */,
 				4FD4BA562C07C58E00082C13 /* Date.swift in Sources */,
 				4FED41E52D237674003BA92B /* FileManager.swift in Sources */,
 				4F22BDCB2CAE95820079FAC0 /* libarchiveFilter.swift in Sources */,
@@ -454,7 +447,6 @@
 				4F7121872C0F48EB000EB268 /* Array.swift in Sources */,
 				4F1084922C262D5D007DCC39 /* LogWindowView.swift in Sources */,
 				4FCEEF292BEE3D3E009E9E17 /* Archive.swift in Sources */,
-				4F8BD3B32D39BD8E0087091C /* FormatPicker.swift in Sources */,
 				4F71219B2C10864F000EB268 /* HideViewModifier.swift in Sources */,
 				4F41C4052D18A7440011DAAB /* ArchiveEntryExtractable.swift in Sources */,
 				4F71218C2C0F4CCA000EB268 /* StatusbarView.swift in Sources */,

@@ -204,7 +204,7 @@ class MainWindowViewModel {
         let panel = NSOpenPanel()
         panel.allowsMultipleSelection = false
         panel.canChooseDirectories = false
-        panel.allowedContentTypes = ArkyveFormats.utTypes// + [.archive] // Adding .archive is a hack to get .tar.gz and .tar.bz2 to work
+        panel.allowedContentTypes = ArkyveFormats.utTypes
 
         if panel.runModal() == .OK {
             if let url = panel.url {
@@ -333,61 +333,53 @@ class MainWindowViewModel {
         }
     }
 
-    func prepareSaveAsPanel() -> (NSSavePanel, FormatPickerViewModel) {
+    func prepareSaveAsPanel() -> NSSavePanel {
         precondition(archive != nil, "prepareSavePanel called without ensuring archive exists")
 
         let panel = NSSavePanel()
-        let viewModel = FormatPickerViewModel(panel: panel)
-
-        if archive!.format != .Unknown {
-            viewModel.format = .initFromlibarchiveFormat(archive!.format, withFilters: archive!.filters)
-        }
 
         panel.prompt = "Save"
         panel.isExtensionHidden = false
         panel.nameFieldStringValue = archive!.name.deletingPathExtension
         panel.allowedContentTypes = ArkyveFormats.writeableUTTypes
+        panel.currentContentType = ArkyveFormats.initFromlibarchiveFormat(archive!.format).utType // FIXME: This isn't working
         panel.showsContentTypes = true
-        panel.delegate = viewModel
 
-//        let accessoryViewHosted = FormatPicker().environment(\.formatPickerViewModel, viewModel)
-//        let hostingController = NSHostingController(rootView: accessoryViewHosted)
-//        panel.accessoryView = hostingController.view
-
-        return (panel, viewModel)
+        return panel
     }
 
     func saveAsButton() {
         guard let archive = archive else { return }
 
-        let (panel, viewModel) = prepareSaveAsPanel()
+        let panel = prepareSaveAsPanel()
 
         if panel.runModal() == .OK {
-            if var destURL = panel.url {
-                let fileName = destURL.lastPathComponent.deletingPathExtension
-                let destFolder = destURL.deletingLastPathComponent()
-                let fullName = fileName + ".\(viewModel.format.ext)"
-
-                destURL = destFolder.appending(path: fullName)
+            if let destURL = panel.url {
+                guard let selectedArkyveFormat = ArkyveFormats.initFromUTType(panel.currentContentType) else {
+                    AKError("Unable to determine which archive format the user selected")
+                    return
+                }
+                let selectedFormat = selectedArkyveFormat.libarchiveFormat
+                let selectedFilters = selectedArkyveFormat.libarchiveFilters
 
                 archive.name = destURL.lastPathComponent
+
                 Task {
-                    AKTrace("Save As to \(destURL) (format: \(viewModel.format))")
+                    AKTrace("Save As to \(destURL) (format: \(selectedArkyveFormat))")
 
                     if !destURL.startAccessingSecurityScopedResource() {
                         AKError("Unable to access security scope for \(destURL)")
+                        return
                     }
                     defer { destURL.stopAccessingSecurityScopedResource() }
 
-                    if !archive.dirty &&
-                        archive.format == viewModel.format.libarchiveFormat &&
-                        archive.filters == viewModel.format.libarchiveFilters {
+                    if !archive.dirty && archive.format == selectedFormat && archive.filters == selectedFilters {
                         // This is a performance optimisation
                         // The archive/format/filters haven't changed, so just copy the existing file
                         copyArchive(to: destURL)
                     } else {
-                        archive.format = viewModel.format.libarchiveFormat
-                        archive.filters = viewModel.format.libarchiveFilters
+                        archive.format = selectedFormat
+                        archive.filters = selectedFilters
                         await saveArchive(to: destURL)
                     }
                 }

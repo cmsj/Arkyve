@@ -95,22 +95,22 @@ struct MainWindowView: View {
             let (format, filters, headerMap) = archive.metadataForSaving()
             let isNew = archive.isNew
 
-            if response == .alertFirstButtonReturn && !archive.existsOnDisk || response == .alertSecondButtonReturn {
-                // We need a filename and location from the user
-                let (panel, pickerViewModel) = viewModel.prepareSaveAsPanel()
-
-                let innerResponse = panel.runModal()
-                if innerResponse == .OK {
-                    if let destURL = panel.url {
-                        to = destURL
-                        archive.name = destURL.lastPathComponent
-                        archive.format = pickerViewModel.format.libarchiveFormat
-                        archive.filters = pickerViewModel.format.libarchiveFilters
-                    }
-                } else {
-                    return
-                }
-            }
+//            if response == .alertFirstButtonReturn && !archive.existsOnDisk || response == .alertSecondButtonReturn {
+//                // We need a filename and location from the user
+//                let (panel, pickerViewModel) = viewModel.prepareSaveAsPanel()
+//
+//                let innerResponse = panel.runModal()
+//                if innerResponse == .OK {
+//                    if let destURL = panel.url {
+//                        to = destURL
+//                        archive.name = destURL.lastPathComponent
+//                        archive.format = pickerViewModel.format.libarchiveFormat
+//                        archive.filters = pickerViewModel.format.libarchiveFilters
+//                    }
+//                } else {
+//                    return
+//                }
+//            }
 
             // We have a semaphore here because the main thread is trying to quit, but we have to wait for writeArchive()
             // to complete on a background thread. This allows us to dispatch the detached task and then wait for the

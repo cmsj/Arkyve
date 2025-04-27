@@ -204,7 +204,7 @@ actor libarchiveWrapper {
         try readArchiveFD.openRead(path: path)
         defer { readArchiveFD.close() }
 
-        var headers = try readHeaders()
+        let headers = try readHeaders()
         let format = readFormat()
         let filters = readFilters()
 

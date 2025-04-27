@@ -256,20 +256,20 @@ enum ArkyveFormats: Int32, Identifiable, CaseIterable {
             } else {
                 return .tar
             }
-        case .RAW:
-            switch (filters.first) {
-            case .BZip2:
-                return .bz2
-            case .GZip:
-                return .gz
-            default:
-                return .raw
-            }
+//        case .RAW:
+//            switch (filters.first) {
+//            case .BZip2:
+//                return .bz2
+//            case .GZip:
+//                return .gz
+//            default:
+//                return .raw
+//            }
         case .ZIP:
             return .zip
         case ._7ZIP:
             return ._7z
-        case .ISO9660:
+        case .ISO9660, .ISO9660_RR:
             return .iso
         case .CPIO_SVR4_CRC, .CPIO_SVR4_NOCRC, .CPIO, .CPIO_PWB, .CPIO_POSIX, .CPIO_BIN_BE, .CPIO_BIN_LE, .CPIO_AFIO_LARGE:
             return .cpio

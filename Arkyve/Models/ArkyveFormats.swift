@@ -127,7 +127,7 @@ enum ArkyveFormats: Int32, Identifiable, CaseIterable {
     var canWrite: Bool {
         switch self {
             // FIXME: Can we enable write support for more formats?
-        case .tar, .targz, .tarbz2, .zip, ._7z, .iso:
+        case .tar, .targz, .tarbz2, .zip, ._7z, .iso, .cpio, .xar:
             true
         default:
             false

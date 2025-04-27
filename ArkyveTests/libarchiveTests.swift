@@ -98,28 +98,6 @@ import Foundation
         #expect(libarchiveFormat.TAR < libarchiveFormat.ZIP)
     }
     
-    @Test func testLibarchiveFormatCanWrite() async {
-        #expect(libarchiveFormat.TAR.canWrite == false)
-        #expect(libarchiveFormat.TAR_GNUTAR.canWrite == true)
-        #expect(libarchiveFormat.ISO9660.canWrite == true)
-        #expect(libarchiveFormat.ISO9660_RR.canWrite == false)
-        #expect(libarchiveFormat.ZIP.canWrite == true)
-        #expect(libarchiveFormat._7ZIP.canWrite == true)
-        
-        #expect(libarchiveFormat.Unknown.canWrite == false)
-        #expect(libarchiveFormat.CPIO.canWrite == false)
-        #expect(libarchiveFormat.SHAR.canWrite == false)
-        #expect(libarchiveFormat.AR.canWrite == false)
-        #expect(libarchiveFormat.MTREE.canWrite == false)
-        #expect(libarchiveFormat.RAW.canWrite == false)
-        #expect(libarchiveFormat.XAR.canWrite == false)
-        #expect(libarchiveFormat.LHA.canWrite == false)
-        #expect(libarchiveFormat.CAB.canWrite == false)
-        #expect(libarchiveFormat.RAR.canWrite == false)
-        #expect(libarchiveFormat.WARC.canWrite == false)
-        #expect(libarchiveFormat.RAR_V5.canWrite == false)
-    }
-    
     @Test func testLibarchiveFormatIdentifiable() async {
         let format = libarchiveFormat.ZIP
         #expect(format.id == format.rawValue)

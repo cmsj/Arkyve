@@ -95,6 +95,7 @@ struct MainWindowView: View {
             let (format, filters, headerMap) = archive.metadataForSaving()
             let isNew = archive.isNew
 
+            // FIXME: Re-work this to work the same way we now do save panels in SaveAs()
 //            if response == .alertFirstButtonReturn && !archive.existsOnDisk || response == .alertSecondButtonReturn {
 //                // We need a filename and location from the user
 //                let (panel, pickerViewModel) = viewModel.prepareSaveAsPanel()

@@ -11,6 +11,7 @@ import UniformTypeIdentifiers
 
 struct TableView: View {
     @Environment(MainWindowViewModel.self) var viewModel
+    @Environment(\.isEnabled) var isEnabled
 
     @SceneStorage("ArchiveEntryTableConfig") private var columnCustomization: TableColumnCustomization<ArchiveEntry>
 
@@ -85,6 +86,7 @@ struct TableView: View {
         } rows: {
             TableRowTreeContent(node: viewModel.archive?.root, viewModel: viewModel)
         }
+        .opacity(isEnabled ? 1.0 : 0.5)
         .contextMenu(forSelectionType: ArchiveEntry.ID.self) { items in
             EntryContextMenu(viewModel: viewModel, items: items, renameEntryFocus: renameEntryFocus)
         }

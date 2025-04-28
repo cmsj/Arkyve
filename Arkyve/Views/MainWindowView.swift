@@ -24,7 +24,7 @@ struct MainWindowView: View {
             TableView(renameEntryFocus: $renameEntry)
                 .environment(viewModel)
                 .disabled(viewModel.archive == nil || viewModel.disableUI == true)
-                .hide(if: viewModel.archive == nil)
+//                .hide(if: viewModel.archive == nil)
             Spacer(minLength: 0)
             StatusbarView()
                 .environment(viewModel)
@@ -64,7 +64,7 @@ struct MainWindowView: View {
         .onReceive(NotificationCenter.default.publisher(for: NSWindow.willCloseNotification)) { value in
             guard let window = value.object as? NSWindow, window.title == viewModel.navTitleText else { return }
 
-            AKTrace("Window close event, checking if the archive is unsaved")
+            print("Window close event, checking if the archive is unsaved")
             // FIXME: This is pretty disgusting, we're replicating various parts of the view model's closeButton/saveButton
 
             defer { SettingsManager.shared.removeCacheDirectories() }
@@ -92,26 +92,30 @@ struct MainWindowView: View {
 
             let url = archive.URL
             var to = archive.URL
-            let (format, filters, headerMap) = archive.metadataForSaving()
+            var (format, filters, headerMap) = archive.metadataForSaving()
             let isNew = archive.isNew
 
             // FIXME: Re-work this to work the same way we now do save panels in SaveAs()
-//            if response == .alertFirstButtonReturn && !archive.existsOnDisk || response == .alertSecondButtonReturn {
-//                // We need a filename and location from the user
-//                let (panel, pickerViewModel) = viewModel.prepareSaveAsPanel()
-//
-//                let innerResponse = panel.runModal()
-//                if innerResponse == .OK {
-//                    if let destURL = panel.url {
-//                        to = destURL
-//                        archive.name = destURL.lastPathComponent
-//                        archive.format = pickerViewModel.format.libarchiveFormat
-//                        archive.filters = pickerViewModel.format.libarchiveFilters
-//                    }
-//                } else {
-//                    return
-//                }
-//            }
+            // FIXME: In theory this is done, but it's untested
+            if response == .alertFirstButtonReturn && !archive.existsOnDisk || response == .alertSecondButtonReturn {
+                // We need a filename and location from the user
+                let panel = viewModel.prepareSaveAsPanel()
+
+                let innerResponse = panel.runModal()
+                if innerResponse == .OK {
+                    if let destURL = panel.url {
+                        guard let selectedArkyveFormat = ArkyveFormats.initFromUTType(panel.currentContentType) else {
+                            return
+                        }
+                        to = destURL
+                        archive.name = destURL.lastPathComponent // FIXME: Why?
+                        format = selectedArkyveFormat.libarchiveFormat
+                        filters = selectedArkyveFormat.libarchiveFilters
+                    }
+                } else {
+                    return
+                }
+            }
 
             // We have a semaphore here because the main thread is trying to quit, but we have to wait for writeArchive()
             // to complete on a background thread. This allows us to dispatch the detached task and then wait for the
@@ -121,6 +125,10 @@ struct MainWindowView: View {
             Task.detached(priority: .userInitiated) {
                 defer { semaphore.signal() }
 
+                if !to.startAccessingSecurityScopedResource() {
+                    return
+                }
+                defer { to.stopAccessingSecurityScopedResource() }
                 let loader = libarchiveWrapper(url: url)
 
                 do {

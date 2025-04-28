@@ -59,6 +59,7 @@ struct MainWindowView: View {
             if innerResponse == .OK {
                 if let destURL = panel.url {
                     guard let selectedArkyveFormat = ArkyveFormats.initFromUTType(panel.currentContentType) else {
+                        print("Unable to detect which UTType the user selected in shutdownSaveRequest()")
                         return
                     }
                     to = destURL

@@ -89,18 +89,17 @@ class MainWindowViewModel {
     }
 
     func closeArchive() {
+        showErrors.clear()
         guard archive != nil else { return }
 
         archive = nil
         selectedEntries = []
         quickLookURL = nil
         quickLookItems = []
-
-        showErrors.clear()
     }
 
     func saveArchive(to: URL, overrideFormat: libarchiveFormat = .Unknown, overrideFilters: [libarchiveFilter] = [.None]) async {
-        guard let archive = archive else { return }
+        guard let archive else { return }
         let loader = libarchiveWrapper(url: archive.URL)
         self.disableUI = true
         defer { self.disableUI = false }
@@ -111,17 +110,7 @@ class MainWindowViewModel {
             try await withTaskProgression(totalUnits: archive.entries.count) { _ in
                 try await loader.writeArchive(headerMap: headerMap, to: to, format: format, filters: filters, skipRead: archive.isNew)
 
-                // Having written the archive, we should no longer have any entries of source type .Filesystem
-                // So we'll update our entries to switch them to .Archive
-                // Same for .InMemory directories
-                archive.entries.forEach { entry in
-                    if (entry.source.type == .Filesystem || entry.source.type == .InMemory) {
-                        entry.source = .init(type: .Archive, path: entry.path)
-                    }
-                }
-
-                archive.setClean()
-                archive.isNew = false
+                archive.didSave(to: to)
             } progress: { progression in
                 Task { @MainActor in setProgress(progression) }
             }

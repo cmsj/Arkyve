@@ -26,14 +26,20 @@ extension ArchiveEntryExtractable: Transferable {
         CodableRepresentation(contentType: .archiveEntryExtractable)
         
         DataRepresentation(exportedContentType: .fileURL) { entryDraggable in
-            guard let archiveURL = entryDraggable.archiveURL else { return Data() }
-            guard let cacheURL = entryDraggable.cacheURL else { return Data() }
+            guard let archiveURL = entryDraggable.archiveURL else {
+                throw ArchiveError.ArchiveDropError(msg: "Unable to retrieve archive URL")
+            }
+            guard let cacheURL = entryDraggable.cacheURL else {
+                throw ArchiveError.ArchiveDropError(msg: "Unable to retrieve cache URL")
+            }
 
             let loader = libarchiveWrapper(url: archiveURL)
 
             do {
                 let writtenURLs = try await loader.extractEntries([entryDraggable], toFolder: cacheURL)
-                guard writtenURLs.count > 0 else { throw ArchiveError.ArchiveExtractError(archive: archiveURL.path, error: "Zero entries extracted")}
+                guard writtenURLs.count > 0 else {
+                    throw ArchiveError.ArchiveExtractError(archive: archiveURL.path, error: "Zero entries extracted")
+                }
                 AKTrace("Wrote \(writtenURLs.count) entries.")
 
                 guard let firstURL = writtenURLs.first else {

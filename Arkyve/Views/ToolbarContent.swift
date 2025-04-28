@@ -18,11 +18,11 @@ struct ToolbarContentView: CustomizableToolbarContent {
             Button {
                 viewModel.newButton()
             } label: {
-                Label("New archive", systemImage: "plus.rectangle.on.folder")
+                Label("New", systemImage: "plus.rectangle.on.folder")
                     .symbolRenderingMode(.hierarchical)
                     .padding()
             }
-            .help("Start a new, empty archive")
+            .help("Create a new archive")
             .disabled(viewModel.disableNew)
         }
         ToolbarItem(id: "Open") {

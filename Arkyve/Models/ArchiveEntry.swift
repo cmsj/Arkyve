@@ -10,49 +10,6 @@ import Synchronization
 import UniformTypeIdentifiers
 import SwiftUI
 
-//extension Array where Element == ArchiveEntry {
-//    func entryForPath(_ path: String) -> (Int, ArchiveEntry)? {
-//        var path = path
-//        if path.last == "/" {
-//            path = String(path.dropLast())
-//        }
-//        if let index = self.firstIndex(where: { path == $0.path }) {
-//            return (index, self[index])
-//        }
-//        return nil
-//    }
-//}
-//
-//extension ArchiveEntry: Equatable {
-//    static func == (lhs: ArchiveEntry, rhs: ArchiveEntry) -> Bool {
-//        lhs.path == rhs.path
-//    }
-//}
-
-//extension ArchiveEntry: Comparable {
-//    static func < (lhs: ArchiveEntry, rhs: ArchiveEntry) -> Bool {
-//        lhs.path < rhs.path
-//    }
-//}
-
-//extension ArchiveEntry: Hashable {
-//    func hash(into hasher: inout Hasher) {
-//        hasher.combine(path)
-//    }
-//}
-
-// Array behaviour for inspecting first level children
-// TODO: WRITE
-//extension ArchiveEntry {
-//    subscript(_ name: String) -> ArchiveEntry? {
-//        return self.children?.first(where: { $0.name == name })
-//    }
-//
-//    func firstIndexOf(_ name: String) -> Int? {
-//        return self.children?.firstIndex(where: { $0.name == name })
-//    }
-//}
-
 @Observable
 class ArchiveEntry: Identifiable {
     let id = UUID()
@@ -326,26 +283,4 @@ class ArchiveEntry: Identifiable {
             child.sort(using: sortDetails)
         }
     }
-
-    // TODO: WRITE
-    //    func removeChildren(_ entries: [ArchiveEntry]) {
-    //        entries.forEach { self.removeChild($0) }
-    //    }
-    //
-    //    func removeChild(_ entry: ArchiveEntry) {
-    //        guard let children = children else { return }
-    //
-    //        if let idx = children.firstIndex(of: entry) {
-    //            AKTrace("Removing \(entry.name) from \(self.name)")
-    //            self.lock.withLock { _ in
-    //                _ = self.children?.remove(at: idx)
-    //            }
-    //        } else {
-    //            for child in children {
-    //                if child.children != nil {
-    //                    child.removeChild(entry)
-    //                }
-    //            }
-    //        }
-    //    }
 }

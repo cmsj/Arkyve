@@ -216,11 +216,7 @@ actor libarchiveWrapper {
             throw ArchiveError.ArchiveWriteError(archive: nil, error: "Unable to create new entry")
         }
 
-//        guard let data = headers.path.data(using: .utf8) else {
-//            throw ArchiveError.ArchiveWriteError(
-//                archive: nil, error: "Unable to convert path to Data: \(headers.path)")
-//        }
-        archive_entry_set_pathname(writeEntry, headers.path.cString(using: .utf8)) //data.bytes)
+        archive_entry_set_pathname(writeEntry, headers.path.cString(using: .utf8))
 
         if headers.size != -1 {
             archive_entry_set_size(writeEntry, headers.size)
@@ -474,7 +470,9 @@ actor libarchiveWrapper {
                 break writeLoop
             }
 
-            guard let readEntryPath = entryPath(readEntry) else { continue }
+            guard let readEntryPath = entryPath(readEntry) else {
+                throw ArchiveError.ArchiveEntriesError(archive: path, error: "Unable to read archive entry path")
+            }
 
             // Find every entry in the tree that started out as this path, and in the archive
             // NOTE: We're not expecting to find multiple values here, but in the future we might want to offer the ability to duplicate a file within an archive
@@ -489,7 +487,9 @@ actor libarchiveWrapper {
             }
 
             for mapEntryKey in mapEntryKeys {
-                guard let header = headerMap[mapEntryKey]?.header else { continue }
+                guard let header = headerMap[mapEntryKey]?.header else {
+                    throw ArchiveError.ArchiveEntriesError(archive: path, error: "Error fetching entry header")
+                }
 
                 // Read from archive and write to new archive
                 let writeEntry = try writeArchiveEntryHeader(to: writeArchiveFD, headers: header)

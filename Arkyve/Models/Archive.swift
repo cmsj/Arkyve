@@ -108,6 +108,21 @@ class Archive: Identifiable {
         return (format, filters, headerMap)
     }
 
+    func didSave(to: URL) {
+        // Having written the archive, we should no longer have any entries of source type .Filesystem
+        // So we'll update our entries to switch them to .Archive
+        // Same for .InMemory directories
+        entries.forEach { entry in
+            if (entry.source.type == .Filesystem || entry.source.type == .InMemory) {
+                entry.source = .init(type: .Archive, path: entry.path)
+            }
+        }
+
+        setClean()
+        isNew = false
+        URL = to  // FIXME: We only just added this, can we really have missed that? Is it being done elsewhere?
+    }
+
     private func setDirty(_ dirty: Bool = true) {
         AKTrace("Marking archive \(dirty ? "dirty" : "clean")")
         self.dirty = dirty
@@ -126,8 +141,9 @@ class Archive: Identifiable {
         for url in urls {
             let pathComponentsInArchive = targetEntry.pathComponents + [url.lastPathComponent]
 
-            let entry = ArchiveEntry(from: url, pathInArchiveComponents: pathComponentsInArchive)
-            guard let entry = entry else { continue }
+            guard let entry = ArchiveEntry(from: url, pathInArchiveComponents: pathComponentsInArchive) else {
+                throw ArchiveError.ArchiveEntriesError(archive: path, error: "Unable to add \(url.path)")
+            }
 
             newEntries.append(entry)
 
@@ -138,11 +154,11 @@ class Archive: Identifiable {
                 guard let enumerator = FileManager.default.enumerator(at: url, includingPropertiesForKeys: []) else { break }
                 for case let fileURL as URL in enumerator {
                     guard let dirPathComponents = fileURL.pathComponents.subtractPath(parentPath) else {
-                        throw ArchiveError.ArchiveEntriesError(archive: name, error: "Unable to determine path for \(fileURL)")
+                        throw ArchiveError.ArchiveEntriesError(archive: name, error: "Unable to determine path for \(fileURL.path)")
                     }
 
                     guard let entry = ArchiveEntry(from: fileURL, pathInArchiveComponents: targetEntry.pathComponents + dirPathComponents) else {
-                        throw ArchiveError.ArchiveEntriesError(archive: name, error: "Unable to add \(fileURL)")
+                        throw ArchiveError.ArchiveEntriesError(archive: name, error: "Unable to add \(fileURL.path)")
                     }
 
                     newEntries.append(entry)

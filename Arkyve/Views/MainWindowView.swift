@@ -13,6 +13,89 @@ struct MainWindowView: View {
     @FocusState private var renameEntry: UUID?
 
     @Environment(\.dismissWindow) private var dismissWindow
+    
+    func shutdownSaveRequest() {
+        // FIXME: This is pretty disgusting, we're replicating various parts of the view model's closeButton/saveButton
+        print("shutdownSaveRequest")
+
+        defer { SettingsManager.shared.removeCacheDirectories() }
+
+        guard let archive = viewModel.archive, archive.dirty == true else {
+            print("Archive not dirty, or not open, skipping.")
+            return
+        }
+
+        let alert = NSAlert.init()
+        alert.addButton(withTitle: "Save")
+        alert.addButton(withTitle: "Save As")
+        alert.addButton(withTitle: "Quit")
+        alert.buttons.last?.hasDestructiveAction = true
+        alert.informativeText = "This archive has unsaved changes, do you want to save them before quitting?"
+        let response = alert.runModal()
+
+        // runModal() has various return values, we are going to ignore any that aren't specific button presses
+        switch response {
+        case .alertFirstButtonReturn, .alertSecondButtonReturn:
+            // We only want to proceed if the Save or Save As buttons are chosen. Quit call fall through to the default
+            break
+        default:
+            print("User chose to quit without saving, discarding archive")
+            viewModel.closeArchive() // This is so we can call this method more than once and it's idempotent. We're quitting anyway
+            return
+        }
+
+        let url = archive.URL
+        var to = archive.URL
+        var (format, filters, headerMap) = archive.metadataForSaving()
+        let isNew = archive.isNew
+
+        // FIXME: Re-work this to work the same way we now do save panels in SaveAs()
+        // FIXME: In theory this is done, but it's untested
+        if response == .alertFirstButtonReturn && !archive.existsOnDisk || response == .alertSecondButtonReturn {
+            // User selected Save As, or they selected Save on an archive that we've never written to disk, so we will do a Save As
+            let panel = viewModel.prepareSaveAsPanel()
+
+            let innerResponse = panel.runModal()
+            if innerResponse == .OK {
+                if let destURL = panel.url {
+                    guard let selectedArkyveFormat = ArkyveFormats.initFromUTType(panel.currentContentType) else {
+                        return
+                    }
+                    to = destURL
+                    archive.name = destURL.lastPathComponent // FIXME: Why?
+                    format = selectedArkyveFormat.libarchiveFormat
+                    filters = selectedArkyveFormat.libarchiveFilters
+                }
+            } else {
+                return
+            }
+        }
+
+        // We have a semaphore here because the main thread is trying to quit, but we have to wait for writeArchive()
+        // to complete on a background thread. This allows us to dispatch the detached task and then wait for the
+        // semaphore to be signalled after the archive has been written.
+        let semaphore = DispatchSemaphore(value: 0)
+
+        Task.detached(priority: .userInitiated) {
+            defer { semaphore.signal() }
+
+            if !to.startAccessingSecurityScopedResource() {
+                return
+            }
+            defer { to.stopAccessingSecurityScopedResource() }
+            let loader = libarchiveWrapper(url: url)
+
+            do {
+                try await loader.writeArchive(headerMap: headerMap, to: to, format: format, filters: filters, skipRead: isNew)
+            } catch {
+                // NOTE: This cannot use AKError() because the main thread is currently blocked on us, and will be dead before any further runloop ticks
+                print("FAILED TO SAVE ARCHIVE: \(error.localizedDescription)")
+            }
+        }
+
+        archive.setClean() // We need to do this regardless of the save outcome, or we'll double-prompt on exit
+        semaphore.wait()
+    }
 
     var body: some View {
         // NOTE: This @Bindable is an ugly hack: https://www.hackingwithswift.com/books/ios-swiftui/sharing-observable-objects-through-swiftuis-environment
@@ -61,86 +144,19 @@ struct MainWindowView: View {
         } message: {
             Text("This archive has unsaved changes, do you want to close it without saving?")
         }
+        // We need to react to both willTerminate and willClose because depending on whether the user closes
+        // the window or quits the app, these will be called in different orders and the second iteration
+        // typically doesn't work properly
+        .onReceive(NotificationCenter.default.publisher(for: NSApplication.willTerminateNotification)) { value in
+            print("applicationWillTerminate (SwiftUI)")
+            shutdownSaveRequest()
+        }
         .onReceive(NotificationCenter.default.publisher(for: NSWindow.willCloseNotification)) { value in
+            // This gets called for each of our windows whether they are open or now, so we need to discard things like Log Viewer
             guard let window = value.object as? NSWindow, window.title == viewModel.navTitleText else { return }
 
-            print("Window close event, checking if the archive is unsaved")
-            // FIXME: This is pretty disgusting, we're replicating various parts of the view model's closeButton/saveButton
-
-            defer { SettingsManager.shared.removeCacheDirectories() }
-
-            guard let archive = viewModel.archive else { return }
-            if !archive.dirty { return }
-
-            let alert = NSAlert.init()
-            alert.addButton(withTitle: "Save")
-            alert.addButton(withTitle: "Save As")
-            alert.addButton(withTitle: "Quit")
-            alert.buttons.last?.hasDestructiveAction = true
-            alert.informativeText = "This archive has unsaved changes, do you want to save them before quitting?"
-            let response = alert.runModal()
-
-            // runModal() has various return values, we are going to ignore any that aren't specific button presses
-            switch response {
-            case .alertFirstButtonReturn, .alertSecondButtonReturn:
-                // We only want to proceed if the Save or Save As buttons are chosen. Quit call fall through to the default
-                break
-            default:
-                AKTrace("User chose to quit without saving")
-                return
-            }
-
-            let url = archive.URL
-            var to = archive.URL
-            var (format, filters, headerMap) = archive.metadataForSaving()
-            let isNew = archive.isNew
-
-            // FIXME: Re-work this to work the same way we now do save panels in SaveAs()
-            // FIXME: In theory this is done, but it's untested
-            if response == .alertFirstButtonReturn && !archive.existsOnDisk || response == .alertSecondButtonReturn {
-                // We need a filename and location from the user
-                let panel = viewModel.prepareSaveAsPanel()
-
-                let innerResponse = panel.runModal()
-                if innerResponse == .OK {
-                    if let destURL = panel.url {
-                        guard let selectedArkyveFormat = ArkyveFormats.initFromUTType(panel.currentContentType) else {
-                            return
-                        }
-                        to = destURL
-                        archive.name = destURL.lastPathComponent // FIXME: Why?
-                        format = selectedArkyveFormat.libarchiveFormat
-                        filters = selectedArkyveFormat.libarchiveFilters
-                    }
-                } else {
-                    return
-                }
-            }
-
-            // We have a semaphore here because the main thread is trying to quit, but we have to wait for writeArchive()
-            // to complete on a background thread. This allows us to dispatch the detached task and then wait for the
-            // semaphore to be signalled after the archive has been written.
-            let semaphore = DispatchSemaphore(value: 0)
-
-            Task.detached(priority: .userInitiated) {
-                defer { semaphore.signal() }
-
-                if !to.startAccessingSecurityScopedResource() {
-                    return
-                }
-                defer { to.stopAccessingSecurityScopedResource() }
-                let loader = libarchiveWrapper(url: url)
-
-                do {
-                    try await loader.writeArchive(headerMap: headerMap, to: to, format: format, filters: filters, skipRead: isNew)
-                } catch {
-                    // NOTE: This cannot use AKError() because the main thread is currently blocked on us, and will be dead before any further runloop ticks
-                    print("FAILED TO SAVE ARCHIVE: \(error.localizedDescription)")
-                }
-            }
-
-            semaphore.wait()
-
+            print("NSWindow willCloseNotification")
+            shutdownSaveRequest()
         }
         .onOpenURL { url in
             AKTrace("System opened URL: \(url)")

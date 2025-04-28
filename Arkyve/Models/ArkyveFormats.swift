@@ -256,15 +256,6 @@ enum ArkyveFormats: Int32, Identifiable, CaseIterable {
             } else {
                 return .tar
             }
-//        case .RAW:
-//            switch (filters.first) {
-//            case .BZip2:
-//                return .bz2
-//            case .GZip:
-//                return .gz
-//            default:
-//                return .raw
-//            }
         case .ZIP:
             return .zip
         case ._7ZIP:

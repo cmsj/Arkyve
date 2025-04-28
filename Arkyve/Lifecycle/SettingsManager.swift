@@ -55,11 +55,13 @@ struct SettingsManager {
     }
 
     func removeCacheDirectories() {
+        print("Removing cache directories")
         try? FileManager.default.removeItem(at: SettingsManager.shared.readCacheURL)
         try? FileManager.default.removeItem(at: SettingsManager.shared.writeCacheURL)
     }
 
     func createCacheDirectories() {
+        print("Creating cache directories")
         do {
             try FileManager.default.createDirectory(at: SettingsManager.shared.readCacheURL, withIntermediateDirectories: true)
             try FileManager.default.createDirectory(at: SettingsManager.shared.writeCacheURL, withIntermediateDirectories: true)

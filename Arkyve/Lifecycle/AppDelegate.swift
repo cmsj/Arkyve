@@ -10,7 +10,6 @@ import SwiftUI
 
 class AppDelegate: NSObject, NSApplicationDelegate {
     func applicationWillFinishLaunching(_ notification: Notification) {
-        AKTrace("Creating cache directories")
         SettingsManager.shared.removeCacheDirectories()
         SettingsManager.shared.createCacheDirectories()
     }
@@ -19,12 +18,4 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     func applicationShouldTerminateAfterLastWindowClosed(_ sender: NSApplication) -> Bool {
         true
     }
-
-    // FIXME: Implement the delegate method required for when we've been opened with a file. Actually this is a SwiftUI thing
-
-// We can't do this if we're also reacting to it in MainWindowView, because this one fires first and breaks saving operations
-//    func applicationWillTerminate(_ aNotification: Notification) {
-//        AKTrace("Removing cache directories")
-//        SettingsManager.shared.removeCacheDirectories()
-//    }
 }

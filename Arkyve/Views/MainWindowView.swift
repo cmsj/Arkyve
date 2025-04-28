@@ -15,7 +15,7 @@ struct MainWindowView: View {
     @Environment(\.dismissWindow) private var dismissWindow
     
     func shutdownSaveRequest() {
-        // FIXME: This is pretty disgusting, we're replicating various parts of the view model's closeButton/saveButton
+        // FIXME: This is pretty disgusting, we're replicating various parts of the view model's closeButton/saveButton. Can we refactor all of them to be more wholistic?
         print("shutdownSaveRequest")
 
         defer { SettingsManager.shared.removeCacheDirectories() }
@@ -49,8 +49,6 @@ struct MainWindowView: View {
         var (format, filters, headerMap) = archive.metadataForSaving()
         let isNew = archive.isNew
 
-        // FIXME: Re-work this to work the same way we now do save panels in SaveAs()
-        // FIXME: In theory this is done, but it's untested
         if response == .alertFirstButtonReturn && !archive.existsOnDisk || response == .alertSecondButtonReturn {
             // User selected Save As, or they selected Save on an archive that we've never written to disk, so we will do a Save As
             let panel = viewModel.prepareSaveAsPanel()

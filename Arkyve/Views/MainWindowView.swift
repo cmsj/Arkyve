@@ -61,11 +61,11 @@ struct MainWindowView: View {
                         return
                     }
                     to = destURL
-                    archive.name = destURL.lastPathComponent // FIXME: Why?
                     format = selectedArkyveFormat.libarchiveFormat
                     filters = selectedArkyveFormat.libarchiveFilters
                 }
             } else {
+                print("User cancelled Save As requester")
                 return
             }
         }
@@ -79,12 +79,14 @@ struct MainWindowView: View {
             defer { semaphore.signal() }
 
             if !to.startAccessingSecurityScopedResource() {
+                print("Security Scoped Resource rejected")
                 return
             }
             defer { to.stopAccessingSecurityScopedResource() }
             let loader = libarchiveWrapper(url: url)
 
             do {
+                print("Saving archive")
                 try await loader.writeArchive(headerMap: headerMap, to: to, format: format, filters: filters, skipRead: isNew)
             } catch {
                 // NOTE: This cannot use AKError() because the main thread is currently blocked on us, and will be dead before any further runloop ticks
@@ -92,8 +94,8 @@ struct MainWindowView: View {
             }
         }
 
-        archive.setClean() // We need to do this regardless of the save outcome, or we'll double-prompt on exit
         semaphore.wait()
+        archive.setClean() // We need to do this regardless of the save outcome, or we'll double-prompt on exit
     }
 
     var body: some View {

@@ -129,6 +129,7 @@ class Archive: Identifiable {
     }
 
     func setClean() {
+        print("Marking archive as clean")
         setDirty(false)
     }
 

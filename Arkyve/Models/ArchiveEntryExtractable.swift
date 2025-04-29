@@ -7,11 +7,7 @@
 import SwiftUI
 import UniformTypeIdentifiers
 
-extension UTType {
-    static var archiveEntryExtractable: UTType { UTType(exportedAs: "net.tenshu.Arkyve.ArchiveEntryExtractable")}
-}
-
-struct ArchiveEntryExtractable: Codable {
+struct ArchiveEntryExtractable: Codable, Transferable {
     let archiveURL: URL?
     let cacheURL: URL?
     let selectedPath: String
@@ -19,9 +15,7 @@ struct ArchiveEntryExtractable: Codable {
     let entries: [ArchiveEntryFlat]
 
     var basePath: String { selectedPath.split(separator: "/").dropLast().joined(separator: "/") }
-}
 
-extension ArchiveEntryExtractable: Transferable {
     static var transferRepresentation: some TransferRepresentation {
         CodableRepresentation(contentType: .archiveEntryExtractable)
         

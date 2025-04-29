@@ -319,7 +319,7 @@ struct libarchiveTestsClaudeFuyo {
             _ = try await archive.readEntriesFormatFilters()
             #expect(Bool(false), "Expected an error but none was thrown")
         } catch {
-            #expect(error is ArchiveError)
+            #expect(error is ArkyveError)
         }
 
         // Attempt to load a non-existent archive should throw an error
@@ -344,7 +344,7 @@ struct libarchiveTestsClaudeFuyo {
             _ = try await archive.readEntriesFormatFilters()
             #expect(Bool(false), "Expected an error but none was thrown")
         } catch {
-            #expect(error is ArchiveError)
+            #expect(error is ArkyveError)
         }
 
         // Attempt to load an invalid archive should throw an error

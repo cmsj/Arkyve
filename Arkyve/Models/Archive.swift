@@ -133,7 +133,7 @@ class Archive: Identifiable {
         setDirty(false)
     }
 
-    func addFiles(from urls: [URL], parent: ArchiveEntry? = nil) throws (ArchiveError) {
+    func addFiles(from urls: [URL], parent: ArchiveEntry? = nil) throws (ArkyveError) {
         guard urls.count > 0 else { return }
 
         var newEntries: [ArchiveEntry] = []
@@ -143,7 +143,7 @@ class Archive: Identifiable {
             let pathComponentsInArchive = targetEntry.pathComponents + [url.lastPathComponent]
 
             guard let entry = ArchiveEntry(from: url, pathInArchiveComponents: pathComponentsInArchive) else {
-                throw ArchiveError.ArchiveEntriesError(archive: path, error: "Unable to add \(url.path)")
+                throw .init(.entries, msg: "Unable to add \(url.path)")
             }
 
             newEntries.append(entry)
@@ -155,11 +155,11 @@ class Archive: Identifiable {
                 guard let enumerator = FileManager.default.enumerator(at: url, includingPropertiesForKeys: []) else { break }
                 for case let fileURL as URL in enumerator {
                     guard let dirPathComponents = fileURL.pathComponents.subtractPath(parentPath) else {
-                        throw ArchiveError.ArchiveEntriesError(archive: name, error: "Unable to determine path for \(fileURL.path)")
+                        throw .init(.entries, msg: "Unable to determine file path for \(fileURL.path)")
                     }
 
                     guard let entry = ArchiveEntry(from: fileURL, pathInArchiveComponents: targetEntry.pathComponents + dirPathComponents) else {
-                        throw ArchiveError.ArchiveEntriesError(archive: name, error: "Unable to add \(fileURL.path)")
+                        throw .init(.entries, msg: "Unable to add \(fileURL.path)")
                     }
 
                     newEntries.append(entry)
@@ -175,7 +175,7 @@ class Archive: Identifiable {
             addedEntries += try root.addChildrenHierarchically(newDirs)
             addedEntries += try root.addChildrenHierarchically(newFiles)
         } catch {
-            throw ArchiveError.ArchiveEntriesError(archive: self.name, error: "Failed to add entries to root: \(error.localizedDescription)")
+            throw .init(.entries, msg: "Failed to add entries: \(error.localizedDescription)")
         }
 
         entries += newEntries

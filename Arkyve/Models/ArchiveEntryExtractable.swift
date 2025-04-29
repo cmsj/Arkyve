@@ -21,10 +21,10 @@ struct ArchiveEntryExtractable: Codable, Transferable {
         
         DataRepresentation(exportedContentType: .fileURL) { entryDraggable in
             guard let archiveURL = entryDraggable.archiveURL else {
-                throw ArchiveError.ArchiveDropError(msg: "Unable to retrieve archive URL")
+                throw ArkyveError(.drop, msg: "Unable to retrieve archive URL")
             }
             guard let cacheURL = entryDraggable.cacheURL else {
-                throw ArchiveError.ArchiveDropError(msg: "Unable to retrieve cache URL")
+                throw ArkyveError(.drop, msg: "Unable to retrieve cache URL")
             }
 
             let loader = libarchiveWrapper(url: archiveURL)
@@ -32,16 +32,16 @@ struct ArchiveEntryExtractable: Codable, Transferable {
             do {
                 let writtenURLs = try await loader.extractEntries([entryDraggable], toFolder: cacheURL)
                 guard writtenURLs.count > 0 else {
-                    throw ArchiveError.ArchiveExtractError(archive: archiveURL.path, error: "Zero entries extracted")
+                    throw ArkyveError(.extract, msg: "Zero entries extracted")
                 }
                 AKTrace("Wrote \(writtenURLs.count) entries.")
 
                 guard let firstURL = writtenURLs.first else {
-                    throw ArchiveError.ArchiveEntriesError(archive: archiveURL.path, error: "Unable to retrieve written URLs")
+                    throw ArkyveError(.entries, msg: "Unable to retrieve written URLs")
                 }
                 return firstURL.dataRepresentation
             } catch {
-                throw ArchiveError.ArchiveDropError(msg: error.localizedDescription)
+                throw ArkyveError(.drop, msg: error.localizedDescription)
             }
         }
     }

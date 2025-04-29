@@ -51,7 +51,7 @@ import Foundation
 
     @Test func testArchiveOpenFail() async throws {
         let loader = libarchiveWrapper(url: URL(filePath: "smb://lol")!)
-        await #expect(throws: ArchiveError.self) {
+        await #expect(throws: ArkyveError.self) {
             _ = try await loader.loadArchive()
         }
     }

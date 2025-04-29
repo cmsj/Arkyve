@@ -95,7 +95,7 @@ struct ToolbarContentView: CustomizableToolbarContent {
 #if DEBUG
         ToolbarItem(id: "ShowError") {
             Button {
-                viewModel.showErrors.err(ArchiveError.ArchiveOpenError(archive: "test1", error: "test2"))
+                viewModel.showErrors.err(.init(.openArchive, msg: "test2"))
             } label: {
                 Label("DEBUG ERROR", systemImage: "ant.circle")
                     .symbolRenderingMode(.hierarchical)

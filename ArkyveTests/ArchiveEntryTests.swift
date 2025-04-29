@@ -115,7 +115,7 @@ struct ArchiveEntryTests {
         let item = createFileEntry(path: "item.txt")
 
         // Act & Assert
-        #expect(throws: ArchiveError.self) {
+        #expect(throws: ArkyveError.self) {
             try file.addChildrenHierarchically([item])
         }
     }
@@ -186,7 +186,7 @@ struct ArchiveEntryTests {
         let childFile = createFileEntry(path: "child.txt")
 
         // Act & Assert
-        #expect(throws: ArchiveError.self) {
+        #expect(throws: ArkyveError.self) {
             try file.addChildHierarchically(childFile)
         }
     }

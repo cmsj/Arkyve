@@ -84,7 +84,7 @@ class MainWindowViewModel {
                 Task { @MainActor in setProgress(progression) }
             }
         } catch {
-            showErrors.err(ArchiveError.ArchiveOpenError(archive: url.path, error: error.localizedDescription))
+            showErrors.err(.init(.openArchive, msg:error.localizedDescription))
         }
     }
 
@@ -115,7 +115,7 @@ class MainWindowViewModel {
                 Task { @MainActor in setProgress(progression) }
             }
         } catch {
-            showErrors.err(ArchiveError.ArchiveWriteError(archive: archive.name, error: error.localizedDescription))
+            showErrors.err(.init(.writeArchive, msg: error.localizedDescription))
         }
     }
 
@@ -127,7 +127,7 @@ class MainWindowViewModel {
             try FileManager.default.copyItem(at: archive.URL, to: to)
             archive.didSave(to: to)
         } catch {
-            showErrors.err(ArchiveError.ArchiveWriteError(archive: archive.name, error: error.localizedDescription))
+            showErrors.err(.init(.writeArchive, msg: error.localizedDescription))
         }
     }
 
@@ -170,10 +170,10 @@ class MainWindowViewModel {
                     } progress: { progression in
                         Task { @MainActor in setProgress(progression) }
                     }
-                } catch let error as ArchiveError {
+                } catch let error as ArkyveError {
                     showErrors.err(error)
                 } catch {
-                    showErrors.err(ArchiveError.ArchiveUnknownError(msg: error.localizedDescription))
+                    showErrors.err(.init(.unknown, msg: error.localizedDescription))
                 }
             }
         }
@@ -274,7 +274,7 @@ class MainWindowViewModel {
                         } progress: { progression in
                             Task { @MainActor in setProgress(progression) }
                         }
-                    } catch let error as ArchiveError {
+                    } catch let error as ArkyveError {
                         showErrors.err(error)
                     }
                 }
@@ -439,7 +439,7 @@ class MainWindowViewModel {
             case .file(let url):
                 handleFileURLDrop(on: entryID, fileURL: url)
             default:
-                showErrors.err(ArchiveError.ArchiveDropError(msg: "Unknown drop type"))
+                showErrors.err(.init(.drop, msg: "Unknown drop type"))
             }
         }
 
@@ -457,8 +457,7 @@ class MainWindowViewModel {
                         case .success(let entry):
                             self.handleEntryDrop(at: index, on: destUUID, entryExtractable: entry)
                         case .failure(let error):
-                            let error = ArchiveError.ArchiveDropError(msg: "Failed to handle drop: \(error.localizedDescription)")
-                            self.showErrors.err(error)
+                            self.showErrors.err(.init(.drop, msg: "Failed to handle drop: \(error.localizedDescription)"))
                         }
                     }
                 }
@@ -469,13 +468,12 @@ class MainWindowViewModel {
                         case .success(let url):
                             self.handleFileURLDrop(at: index, on: destUUID, fileURL: url)
                         case .failure(let error):
-                            let error = ArchiveError.ArchiveDropError(msg: "Failed to handle drop: \(error.localizedDescription)")
-                                self.showErrors.err(error)
+                            self.showErrors.err(.init(.drop, msg: "Failed to handle drop: \(error.localizedDescription)"))
                         }
                     }
                 }
             } else {
-                showErrors.err(ArchiveError.ArchiveDropError(msg: "Unsupported item type: \(provider.registeredTypeIdentifiers.joined(separator: ","))"))
+                showErrors.err(.init(.drop, msg: "Unsupported item type: \(provider.registeredTypeIdentifiers.joined(separator: ","))"))
             }
         }
     }

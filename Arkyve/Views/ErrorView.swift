@@ -11,9 +11,9 @@ import SwiftUI
 @MainActor
 class ShowErrors {
     var show: Bool = false
-    var error: ArchiveError? = nil
+    var error: ArkyveError? = nil
 
-    func err(_ error: ArchiveError) {
+    func err(_ error: ArkyveError) {
         self.error = error
         AKError("ShowErrors::err: \(error.localizedDescription)")
     }

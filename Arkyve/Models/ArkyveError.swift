@@ -1,0 +1,32 @@
+//
+//  ArkyveError.swift
+//  Arkyve
+//
+//  Created by Chris Jones on 23/12/2024.
+//
+
+struct ArkyveError: Error, Equatable {
+    enum ErrorKind: String {
+        case openArchive = "Open"
+        case readArchive = "Read"
+        case writeArchive = "Write"
+        case addFiles = "Add Files"
+        case extract = "Extract"
+        case quicklook = "Quicklook"
+        case drop = "Drop"
+        case entries = "Entries"
+        case unknown = "Unknown"
+    }
+
+    let kind: ErrorKind
+    let msg: String
+
+    var localizedDescription: String {
+        "\(kind.rawValue): \(msg)"
+    }
+
+    init(_ kind: ErrorKind, msg: String) {
+        self.kind = kind
+        self.msg = msg
+    }
+}

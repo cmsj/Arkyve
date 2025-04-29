@@ -107,6 +107,7 @@ struct TableView: View {
             viewModel.sort()
         }
         .onDrop(of: [.archiveEntryExtractable, .fileURL], isTargeted: nil, perform: { items, _ in
+            print("Table: onDrop")
             guard viewModel.archive != nil else { return false }
             viewModel.processDrop(for: items)
 

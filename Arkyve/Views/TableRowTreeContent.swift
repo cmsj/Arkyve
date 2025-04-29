@@ -21,6 +21,7 @@ struct TableRowTreeContent: TableRowContent {
                 }
                 .draggable(child.asExtractable(for: viewModel.archive))
                 .dropDestination(for: DropItem.self) { items in
+                    print("DisclosureTableRow: dropDestination")
                     viewModel.handleManyDrops(on: child.id, items: items)
                 }
             } else {
@@ -29,6 +30,7 @@ struct TableRowTreeContent: TableRowContent {
             }
         }
         .onInsert(of: [.archiveEntryExtractable, .fileURL]) { index, providers in
+            print("TableRowTreeContent: onInsert")
             viewModel.processDrop(at: index, on: node, for: providers)
         }
     }

@@ -15,6 +15,9 @@ struct StatusbarView: View {
             HStack {
                 Spacer()
                 Text(viewModel.statusBarText)
+#if DEBUG
+                Text(viewModel.archive?.URL.absoluteString ?? "")
+#endif
                 Spacer()
             }
             HStack {

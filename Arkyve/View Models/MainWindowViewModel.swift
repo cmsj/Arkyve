@@ -125,6 +125,7 @@ class MainWindowViewModel {
         do {
             AKTrace("Copying \(archive.URL) to \(to)")
             try FileManager.default.copyItem(at: archive.URL, to: to)
+            archive.didSave(to: to)
         } catch {
             showErrors.err(ArchiveError.ArchiveWriteError(archive: archive.name, error: error.localizedDescription))
         }

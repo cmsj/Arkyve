@@ -108,7 +108,6 @@ struct MainWindowView: View {
             TableView(renameEntryFocus: $renameEntry)
                 .environment(viewModel)
                 .disabled(viewModel.archive == nil || viewModel.disableUI == true)
-//                .hide(if: viewModel.archive == nil)
             Spacer(minLength: 0)
             StatusbarView()
                 .environment(viewModel)

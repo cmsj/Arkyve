@@ -117,6 +117,14 @@ struct TableView: View {
 
 #Preview {
     @FocusState var renameEntry: UUID?
-    TableView(renameEntryFocus: $renameEntry)
-        .environment(MainWindowViewModel())
+    let viewModel = MainWindowViewModel()
+
+    VStack {
+        TableView(renameEntryFocus: $renameEntry)
+            .environment(viewModel)
+    }
+    .toolbar(id: "Preview") {
+        ToolbarContentView(viewModel: viewModel, renameEntry: $renameEntry)
+    }
+    .task { viewModel.newButton() }
 }

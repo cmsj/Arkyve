@@ -15,29 +15,38 @@ struct EntryContextMenu: View {
         Button("New Folder") {
             viewModel.newFolderButton(entries: items)
         }
+        .keyboardShortcut("n", modifiers: [.command, .shift])
         .disabled(viewModel.disableNewFolder)
 
-        Button {
+        Button("Add Files/Folders...") {
+            viewModel.addButton()
+        }
+        .disabled(viewModel.disableAdd)
+
+        Button("Rename...") {
             viewModel.renameButton(entries: items)
-        } label: {
-            Text("Rename...")
         }
-        .keyboardShortcut("r")
+        .keyboardShortcut("r", modifiers:[.command])
         .disabled(items.isEmpty)
-        Button {
+
+        Button ("Extract..."){
             viewModel.extractButton(items)
-        } label: {
-            Text("Extract")
         }
-        .keyboardShortcut("e")
+        .keyboardShortcut("e", modifiers:[.command])
         .disabled(items.isEmpty)
+
         Divider()
-        Button {
+
+        Button("Delete") {
             viewModel.deleteButton(items)
-        } label: {
-            Text("Delete")
         }
         .keyboardShortcut(.delete, modifiers: [])
         .disabled(items.isEmpty)
+
+        Button("Quick Look") {
+            viewModel.extractForQuicklook()
+        }
+        .keyboardShortcut(.space, modifiers: [])
+        .disabled(viewModel.disableQuicklook)
     }
 }

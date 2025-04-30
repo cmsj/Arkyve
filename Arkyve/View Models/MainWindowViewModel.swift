@@ -390,20 +390,20 @@ class MainWindowViewModel {
     }
 
     func newFolderButton(entries: Set<ArchiveEntry.ID>? = nil) {
-        guard archive != nil else { return }
+        guard let archive else { return }
 
         let actualEntries = entries ?? selectedEntries
-        var parentEntryID: UUID = archive!.root.id
+        var parentEntryID: UUID = archive.root.id
 
         // See if we can be more specific than the root entry being the parent
         if actualEntries.first != nil {
-            if let tmpParentEntry = archive?.entryForID(actualEntries.first!) {
+            if let tmpParentEntry = archive.entryForID(actualEntries.first!) {
                 if tmpParentEntry.type == .directory {
                     // We have a selected entry and it's a directory, we can parent directly to it
                     parentEntryID = actualEntries.first!
                 } else {
                     // We have a selected entry, but it's not a directory, so let's find its parent
-                    if let tmpGrandParentEntry = archive?.parentForEntry(tmpParentEntry) {
+                    if let tmpGrandParentEntry = archive.parentForEntry(tmpParentEntry) {
                         parentEntryID = tmpGrandParentEntry.id
                     }
                 }

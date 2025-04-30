@@ -27,8 +27,7 @@ struct MenuCommands: Commands {
             .disabled(viewModel.disableRevert)
 
             Divider()
-//        }
-//        CommandGroup(replacing: .saveItem) {
+
             Button("Save") {
                 viewModel.saveButton()
             }
@@ -47,31 +46,44 @@ struct MenuCommands: Commands {
                 viewModel.closeButton()
             }
             .disabled(viewModel.disableClose)
-
-//            Button("Close Window") {
-//                viewModel.shouldCloseWindow = true
-//            }
-//            .keyboardShortcut("w", modifiers: [.command])
-        }
-        CommandGroup(after: .sidebar) {
-            Button("Quick Look") {
-                viewModel.extractForQuicklook()
-            }
-            .keyboardShortcut("y", modifiers: [.command])
-            .disabled(viewModel.disableQuicklook)
-            Divider()
         }
         CommandMenu("Items") {
+            Button("New Folder") {
+                viewModel.newFolderButton()
+            }
+            .keyboardShortcut("n", modifiers:[.command, .shift])
+            .disabled(viewModel.disableNewFolder)
+
             Button("Add Files/Folders...") {
                 viewModel.addButton()
             }
             .disabled(viewModel.disableAdd)
+
+            Button("Rename") {
+                viewModel.renameButton()
+            }
+            .keyboardShortcut("r", modifiers: [.command])
+            .disabled(viewModel.disableRename)
+
             Button("Extract...") {
                 viewModel.extractButton()
             }
+            .keyboardShortcut("e", modifiers: [.command])
             .disabled(viewModel.disableExtract)
 
             Divider()
+
+            Button("Delete") {
+                viewModel.deleteButton()
+            }
+            .keyboardShortcut(.delete, modifiers: [])
+            .disabled(viewModel.disableDelete)
+
+            Button("Quick Look") {
+                viewModel.extractForQuicklook()
+            }
+            .keyboardShortcut(.space, modifiers: [])
+            .disabled(viewModel.disableQuicklook)
         }
     }
 }

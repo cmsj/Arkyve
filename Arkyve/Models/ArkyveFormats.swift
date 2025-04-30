@@ -136,11 +136,11 @@ enum ArkyveFormats: Int32, Identifiable, CaseIterable {
     var libarchiveFormat: libarchiveFormat {
         switch self {
         case .tar:
-            .TAR_GNUTAR
+            .TAR_PAX_RESTRICTED
         case .targz:
-            .TAR_GNUTAR
+            .TAR_PAX_RESTRICTED
         case .tarbz2:
-            .TAR_GNUTAR
+            .TAR_PAX_RESTRICTED
         case .zip:
             .ZIP
         case ._7z:

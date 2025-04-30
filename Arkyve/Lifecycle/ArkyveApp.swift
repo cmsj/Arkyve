@@ -11,14 +11,14 @@ import os
 @main
 struct ArkyveApp: App {
     @NSApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
-    @FocusedValue(\.activeViewModel) var activeViewModel
+    @State var viewModel = MainWindowViewModel()
 
     var body: some Scene {
-        Window(activeViewModel?.navTitleText ?? "Arkyve", id: "main") {
-            MainWindowView()
+        Window(viewModel.navTitleText, id: "main") {
+            MainWindowView(viewModel: viewModel)
         }
         .commands {
-            MenuCommands()
+            MenuCommands(viewModel: viewModel)
         }
 
         UtilityWindow("Log viewer", id: "log-window") {

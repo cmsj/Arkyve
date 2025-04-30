@@ -8,69 +8,68 @@
 import SwiftUI
 
 struct MenuCommands: Commands {
-    @FocusedValue(\.activeViewModel) var activeViewModel
+    @State var viewModel: MainWindowViewModel
 
     var body: some Commands {
         CommandGroup(replacing: .undoRedo) {}
         CommandGroup(after: .newItem) {
             Button("New") {
-                activeViewModel?.newButton()
+                viewModel.newButton()
             }
             .keyboardShortcut("n", modifiers: [.command])
             Button("Open...") {
-                activeViewModel?.openButton()
+                viewModel.openButton()
             }
             .keyboardShortcut("o", modifiers: [.command])
-            .disabled(activeViewModel == nil)
             Button("Revert") {
-                activeViewModel?.revertButton()
+                viewModel.revertButton()
             }
-            .disabled(activeViewModel?.disableRevert ?? true)
+            .disabled(viewModel.disableRevert)
 
             Divider()
 //        }
 //        CommandGroup(replacing: .saveItem) {
             Button("Save") {
-                activeViewModel?.saveButton()
+                viewModel.saveButton()
             }
             .keyboardShortcut("s", modifiers: [.command])
-            .disabled(activeViewModel?.disableSave ?? true)
+            .disabled(viewModel.disableSave)
             .modifierKeyAlternate(.option) {
                 Button("Save As...") {
-                    activeViewModel?.saveAsButton()
+                    viewModel.saveAsButton()
                 }
-                .disabled(activeViewModel?.disableSaveAs ?? true)
+                .disabled(viewModel.disableSaveAs)
             }
 
             Divider()
 
             Button("Add Files/Folders...") {
-                activeViewModel?.addButton()
+                viewModel.addButton()
             }
-            .disabled(activeViewModel?.disableAdd ?? true)
+            .disabled(viewModel.disableAdd)
             Button("Extract...") {
-                activeViewModel?.extractButton()
+                viewModel.extractButton()
             }
-            .disabled(activeViewModel?.disableExtract ?? true)
+            .disabled(viewModel.disableExtract)
 
             Divider()
 
             Button("Close Archive") {
-                activeViewModel?.closeButton()
+                viewModel.closeButton()
             }
-            .disabled(activeViewModel?.disableClose ?? true)
+            .disabled(viewModel.disableClose)
 
 //            Button("Close Window") {
-//                activeViewModel?.shouldCloseWindow = true
+//                viewModel.shouldCloseWindow = true
 //            }
 //            .keyboardShortcut("w", modifiers: [.command])
         }
         CommandGroup(after: .sidebar) {
             Button("Quick Look") {
-                activeViewModel?.extractForQuicklook()
+                viewModel.extractForQuicklook()
             }
             .keyboardShortcut("y", modifiers: [.command])
-            .disabled(activeViewModel?.disableQuicklook ?? true)
+            .disabled(viewModel.disableQuicklook)
             Divider()
         }
     }

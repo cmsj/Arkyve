@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct MainWindowView: View {
-    @State var viewModel: MainWindowViewModel = MainWindowViewModel()
+    @State var viewModel: MainWindowViewModel
     @State var windowTitle = "Arkyve"
     @FocusState private var renameEntry: UUID?
 
@@ -112,7 +112,6 @@ struct MainWindowView: View {
             StatusbarView()
                 .environment(viewModel)
         }
-        .focusedSceneValue(\.activeViewModel, viewModel)
         .focusable()
         .focusEffectDisabled()
         .onChange(of: viewModel.showErrors.error, initial: true) { old, new in
@@ -168,5 +167,5 @@ struct MainWindowView: View {
 }
 
 #Preview {
-    MainWindowView()
+    MainWindowView(viewModel: MainWindowViewModel())
 }

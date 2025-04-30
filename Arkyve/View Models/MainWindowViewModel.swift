@@ -45,15 +45,14 @@ class MainWindowViewModel {
     var disableUI: Bool = false
 
     // MARK: - Dynamic UI text
-    var statusBarText: String {
-        guard let archive else { return "No archive open" }
-        return "\(archive.entries.count) items"
-    }
-
     let navTitleText = "Arkyve"
     var navSubtitleText: String {
         guard let archive else { return "" }
         return "\(archive.name) \(archive.dirty ? "(Unsaved)" : "")"
+    }
+    var statusBarText: String {
+        guard let archive else { return "No archive open" }
+        return "\(archive.entries.count) items"
     }
 
     // MARK: - Progress indicator
@@ -70,7 +69,6 @@ class MainWindowViewModel {
     }
 
     // MARK: - Archive operations
-
     func openArchive(url: URL) async {
         showErrors.clear()
 
@@ -181,6 +179,21 @@ class MainWindowViewModel {
     }
 
     // MARK: - Button handlers
+    func newButton() {
+        if archive != nil && archive?.dirty == true {
+            postSavePromptClosure = {
+                self.newButton()
+            }
+            closeButton()
+            return
+        }
+
+        archive = Archive()
+        selectedEntries = []
+        quickLookURL = nil
+        quickLookItems = []
+    }
+
     func openButton() {
         if archive != nil && archive?.dirty == true {
             postSavePromptClosure = {
@@ -213,6 +226,15 @@ class MainWindowViewModel {
             showSavePrompt = true
         } else {
             closeArchive()
+        }
+    }
+
+    func revertButton() {
+        guard let archive else { return }
+
+        let url = archive.URL
+        Task { @MainActor in
+            await openArchive(url: url)
         }
     }
 
@@ -286,30 +308,6 @@ class MainWindowViewModel {
                     }
                 }
             }
-        }
-    }
-
-    func newButton() {
-        if archive != nil && archive?.dirty == true {
-            postSavePromptClosure = {
-                self.newButton()
-            }
-            closeButton()
-            return
-        }
-
-        archive = Archive()
-        selectedEntries = []
-        quickLookURL = nil
-        quickLookItems = []
-    }
-
-    func revertButton() {
-        guard let archive else { return }
-
-        let url = archive.URL
-        Task { @MainActor in
-            await openArchive(url: url)
         }
     }
 

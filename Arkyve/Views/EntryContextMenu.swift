@@ -10,16 +10,15 @@ import SwiftUI
 struct EntryContextMenu: View {
     @State var viewModel: MainWindowViewModel
     let items: Set<ArchiveEntry.ID>
-    var renameEntryFocus: FocusState<UUID?>.Binding
 
     var body: some View {
         Button("New Folder") {
-            viewModel.newFolderButton(renameEntryFocus: renameEntryFocus, entries: items)
+            viewModel.newFolderButton(entries: items)
         }
         .disabled(viewModel.disableNewFolder)
 
         Button {
-            viewModel.renameButton(renameEntryFocus: renameEntryFocus, entries: items)
+            viewModel.renameButton(entries: items)
         } label: {
             Text("Rename...")
         }
@@ -38,7 +37,7 @@ struct EntryContextMenu: View {
         } label: {
             Text("Delete")
         }
-        .keyboardShortcut("d")
+        .keyboardShortcut(.delete, modifiers: [])
         .disabled(items.isEmpty)
     }
 }

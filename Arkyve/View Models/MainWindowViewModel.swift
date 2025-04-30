@@ -16,6 +16,7 @@ class MainWindowViewModel {
     private(set) var archive: Archive? = nil
 
     var selectedEntries = Set<ArchiveEntry.ID>()
+    var focusedEntry: UUID? = nil
     var quickLookURL: URL?
     var quickLookItems: [URL] = []
     var progress = 0.0
@@ -306,9 +307,9 @@ class MainWindowViewModel {
         }
     }
 
-    func renameButton(renameEntryFocus: FocusState<UUID?>.Binding, entries: Set<ArchiveEntry.ID>? = nil) {
+    func renameButton(entries: Set<ArchiveEntry.ID>? = nil) {
         let actualEntries = entries ?? selectedEntries
-        renameEntryFocus.wrappedValue = actualEntries.first
+        focusedEntry = actualEntries.first
     }
 
     func saveButton() {
@@ -387,7 +388,7 @@ class MainWindowViewModel {
         selectedEntries.removeAll()
     }
 
-    func newFolderButton(renameEntryFocus: FocusState<UUID?>.Binding, entries: Set<ArchiveEntry.ID>? = nil) {
+    func newFolderButton(entries: Set<ArchiveEntry.ID>? = nil) {
         guard archive != nil else { return }
 
         let actualEntries = entries ?? selectedEntries
@@ -414,7 +415,7 @@ class MainWindowViewModel {
                 self.archive?.entryForID(parentEntryID)?.isExpanded = true
 
                 Task { @MainActor in
-                    renameEntryFocus.wrappedValue = newFolderID
+                    focusedEntry = newFolderID
                 }
             }
         }

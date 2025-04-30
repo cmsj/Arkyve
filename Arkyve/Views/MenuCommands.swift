@@ -43,17 +43,6 @@ struct MenuCommands: Commands {
 
             Divider()
 
-            Button("Add Files/Folders...") {
-                viewModel.addButton()
-            }
-            .disabled(viewModel.disableAdd)
-            Button("Extract...") {
-                viewModel.extractButton()
-            }
-            .disabled(viewModel.disableExtract)
-
-            Divider()
-
             Button("Close Archive") {
                 viewModel.closeButton()
             }
@@ -70,6 +59,18 @@ struct MenuCommands: Commands {
             }
             .keyboardShortcut("y", modifiers: [.command])
             .disabled(viewModel.disableQuicklook)
+            Divider()
+        }
+        CommandMenu("Items") {
+            Button("Add Files/Folders...") {
+                viewModel.addButton()
+            }
+            .disabled(viewModel.disableAdd)
+            Button("Extract...") {
+                viewModel.extractButton()
+            }
+            .disabled(viewModel.disableExtract)
+
             Divider()
         }
     }

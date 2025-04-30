@@ -8,10 +8,7 @@
 import SwiftUI
 
 struct MainWindowView: View {
-    @State var viewModel: MainWindowViewModel
-    @State var windowTitle = "Arkyve"
-    @FocusState private var renameEntry: UUID?
-
+    @Environment(MainWindowViewModel.self) var viewModel
     @Environment(\.dismissWindow) private var dismissWindow
     
     func shutdownSaveRequest() {
@@ -105,7 +102,7 @@ struct MainWindowView: View {
         VStack(spacing: 0) {
             ErrorView()
                 .environment(viewModel)
-            TableView(renameEntryFocus: $renameEntry)
+            TableView()
                 .environment(viewModel)
                 .disabled(viewModel.archive == nil || viewModel.disableUI == true)
             Spacer(minLength: 0)
@@ -121,9 +118,9 @@ struct MainWindowView: View {
             }
         }
         .toolbar(id: "Main") {
-            ToolbarContentView(viewModel: viewModel, renameEntry: $renameEntry)
+            ToolbarContentView(viewModel: viewModel)
         }
-        .navigationTitle(windowTitle)
+        .navigationTitle(viewModel.navTitleText)
         .navigationSubtitle(viewModel.navSubtitleText)
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .alert("Close without saving?", isPresented: $viewModel.showSavePrompt) {
@@ -167,5 +164,6 @@ struct MainWindowView: View {
 }
 
 #Preview {
-    MainWindowView(viewModel: MainWindowViewModel())
+    MainWindowView()
+        .environment(MainWindowViewModel())
 }

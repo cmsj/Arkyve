@@ -15,7 +15,7 @@ struct TableView: View {
 
     @SceneStorage("ArchiveEntryTableConfig") private var columnCustomization: TableColumnCustomization<ArchiveEntry>
 
-    var renameEntryFocus: FocusState<UUID?>.Binding
+    @FocusState var renameEntryFocus: UUID?
 
     var body: some View {
         // NOTE: This @Bindable is an ugly hack: https://www.hackingwithswift.com/books/ios-swiftui/sharing-observable-objects-through-swiftuis-environment
@@ -28,7 +28,7 @@ struct TableView: View {
                     HStack {
                         Image(systemName: entry.type.rawValue)
                         TextField(entry.name, text: $entry.name)
-                            .focused(renameEntryFocus, equals: entry.id)
+                            .focused($renameEntryFocus, equals: entry.id)
                             .onSubmit {
                                 viewModel.doRename(of: entry)
                             }
@@ -88,10 +88,10 @@ struct TableView: View {
         }
         .opacity(isEnabled ? 1.0 : 0.5)
         .contextMenu(forSelectionType: ArchiveEntry.ID.self) { items in
-            EntryContextMenu(viewModel: viewModel, items: items, renameEntryFocus: renameEntryFocus)
+            EntryContextMenu(viewModel: viewModel, items: items)
         }
         .contextMenu() {
-            EntryContextMenu(viewModel: viewModel, items: Set(), renameEntryFocus: renameEntryFocus)
+            EntryContextMenu(viewModel: viewModel, items: Set())
         }
         .onKeyPress(.space, action: {
             if viewModel.selectedEntries.count > 0 {
@@ -106,6 +106,12 @@ struct TableView: View {
         .onChange(of: viewModel.sortOrder) { _, _ in
             viewModel.sort()
         }
+        .onChange(of: viewModel.focusedEntry) { _, newValue in
+            renameEntryFocus = newValue
+        }
+        .onChange(of: renameEntryFocus) { _, newValue in
+            viewModel.focusedEntry = newValue
+        }
         .onDrop(of: [.archiveEntryExtractable, .fileURL], isTargeted: nil, perform: { items, _ in
             print("Table: onDrop")
             guard viewModel.archive != nil else { return false }
@@ -117,15 +123,14 @@ struct TableView: View {
 }
 
 #Preview {
-    @FocusState var renameEntry: UUID?
     let viewModel = MainWindowViewModel()
 
     VStack {
-        TableView(renameEntryFocus: $renameEntry)
+        TableView()
             .environment(viewModel)
     }
     .toolbar(id: "Preview") {
-        ToolbarContentView(viewModel: viewModel, renameEntry: $renameEntry)
+        ToolbarContentView(viewModel: viewModel)
     }
     .task { viewModel.newButton() }
 }

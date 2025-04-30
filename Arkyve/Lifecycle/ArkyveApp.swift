@@ -15,7 +15,8 @@ struct ArkyveApp: App {
 
     var body: some Scene {
         Window(viewModel.navTitleText, id: "main") {
-            MainWindowView(viewModel: viewModel)
+            MainWindowView()
+                .environment(viewModel)
         }
         .commands {
             MenuCommands(viewModel: viewModel)

@@ -11,8 +11,6 @@ import TipKit
 struct ToolbarContentView: CustomizableToolbarContent {
     var viewModel: MainWindowViewModel
 
-    var renameEntry: FocusState<UUID?>.Binding
-
     var body: some CustomizableToolbarContent {
         ToolbarItem(id: "New") {
             Button {
@@ -72,7 +70,7 @@ struct ToolbarContentView: CustomizableToolbarContent {
         }
         ToolbarItem(id: "Rename") {
             Button {
-                viewModel.renameButton(renameEntryFocus: renameEntry)
+                viewModel.renameButton()
             } label: {
                 Label("Rename", systemImage: "character.cursor.ibeam")
                     .symbolRenderingMode(.hierarchical)
@@ -108,7 +106,6 @@ struct ToolbarContentView: CustomizableToolbarContent {
 }
 
 #Preview {
-    @FocusState var renameEntry: UUID?
 
     VStack {
         Spacer()
@@ -121,6 +118,6 @@ struct ToolbarContentView: CustomizableToolbarContent {
         Spacer()
     }
     .toolbar(id: "Preview") {
-        ToolbarContentView(viewModel: MainWindowViewModel(), renameEntry: $renameEntry)
+        ToolbarContentView(viewModel: MainWindowViewModel())
     }
 }

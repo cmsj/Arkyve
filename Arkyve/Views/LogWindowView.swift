@@ -10,11 +10,11 @@ import os
 
 struct LogWindowView: View {
     @State private var logs = ArkyveLog.shared
-    @State private var minimumLevel: ArkyveLogType = .Info
+    @AppStorage("minimumLogLevel") private var minimumLogLevel: ArkyveLogType = .Info
 
     var body: some View {
         HStack {
-            Picker("Minimum level", selection: $minimumLevel) {
+            Picker("Minimum level", selection: $minimumLogLevel) {
                 ForEach(ArkyveLogType.allCases) { option in
                     Text(option.asString)
                 }
@@ -30,7 +30,7 @@ struct LogWindowView: View {
                 .width(100)
             TableColumn("Message", value: \.msg)
         } rows: {
-            ForEach(logs.entries.filter { $0.logType.rawValue >= minimumLevel.rawValue }) {
+            ForEach(logs.entries.filter { $0.logType.rawValue >= minimumLogLevel.rawValue }) {
                 TableRow($0)
             }
         }

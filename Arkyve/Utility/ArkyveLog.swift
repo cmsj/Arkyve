@@ -83,15 +83,19 @@ func AKLog(_ level: ArkyveLogType, _ msg: String) {
         ArkyveLog.shared.log(level, msg)
     }
 }
+
 func AKInfo(_ msg: String) {
     AKLog(.Info, msg)
 }
+
 func AKWarning(_ msg: String) {
     AKLog(.Warning, msg)
 }
+
 func AKError(_ msg: String) {
     AKLog(.Error, msg)
 }
+
 func AKTrace(_ msg: String) {
     AKLog(.Trace, msg)
-    }
+}

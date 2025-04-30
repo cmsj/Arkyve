@@ -25,7 +25,6 @@ struct ArkyveApp: App {
         UtilityWindow("Log viewer", id: "log-window") {
             LogWindowView()
         }
-        .restorationBehavior(.disabled)
         .defaultLaunchBehavior(.suppressed)
     }
 }

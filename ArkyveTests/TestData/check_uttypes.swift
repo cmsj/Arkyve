@@ -30,6 +30,16 @@ let extensions = [
 
 for ext in extensions {
     let utType = UTType(tag: ext, tagClass: .filenameExtension, conformingTo: nil)?.description ?? "*** UNKNOWN ***"
+
     let extName = ext.padding(toLength: 10, withPad: " ", startingAt: 0)
-    print("\(extName) -> \(utType)")
+    let utTypePadded = utType.padding(toLength: 40, withPad: " ", startingAt: 0)
+    var handlers: [String] = []
+
+    if let handlersCFArray = LSCopyAllRoleHandlersForContentType(utType as CFString, LSRolesMask.all) {
+        let handlersArray = handlersCFArray.takeUnretainedValue() as Array
+        for handler in handlersArray {
+            handlers.append(String(describing: handler))
+        }
+    }
+    print("\(extName) -> \(utTypePadded) :: \(handlers.joined(separator: ", "))")
 }

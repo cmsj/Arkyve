@@ -134,9 +134,11 @@ class MainWindowViewModel {
     }
 
     func extractForQuicklook() {
+        guard let archive else { return }
+
         quickLookItems = []
 
-        let chosenEntries = archive?.entries.filter { selectedEntries.contains($0.id) } ?? []
+        let chosenEntries = archive.entries.filter { selectedEntries.contains($0.id) }
         var extractableEntries: [ArchiveEntryExtractable] = []
 
         var itemCount = extractableEntries.count
@@ -159,15 +161,12 @@ class MainWindowViewModel {
             quickLookURL = quickLookItems.first
         } else if extractableEntries.count > 0 {
             // At least something is coming from the archive, so process that and then show quicklook
-            guard let archiveURL = archive?.URL else { return }
-            guard let cacheURL = archive?.cacheURL else { return }
-
             Task {
                 do {
-                    let loader = libarchiveWrapper(url: archiveURL)
+                    let loader = libarchiveWrapper(url: archive.URL)
 
                     try await withTaskProgression(totalUnits: itemCount) { _ in
-                        quickLookItems += try await loader.extractEntries(extractableEntries, toFolder: cacheURL)
+                        quickLookItems += try await loader.extractEntries(extractableEntries, toFolder: archive.cacheURL)
                         quickLookURL = quickLookItems.first
                     } progress: { progression in
                         Task { @MainActor in setProgress(progression) }
@@ -208,7 +207,9 @@ class MainWindowViewModel {
     }
 
     func closeButton(force: Bool = false) {
-        if archive?.dirty == true && !force {
+        guard let archive else { return }
+
+        if archive.dirty == true && !force {
             showSavePrompt = true
         } else {
             closeArchive()
@@ -216,6 +217,8 @@ class MainWindowViewModel {
     }
 
     func addButton() {
+        guard let archive else { return }
+
         let panel = NSOpenPanel()
 
         panel.allowsMultipleSelection = true
@@ -225,7 +228,7 @@ class MainWindowViewModel {
 
         if panel.runModal() == .OK {
             do {
-                try archive?.addFiles(from: panel.urls)
+                try archive.addFiles(from: panel.urls)
                 sort()
             } catch {
                 showErrors.err(error)
@@ -234,6 +237,8 @@ class MainWindowViewModel {
     }
 
     func extractButton(_ entries: Set<ArchiveEntry.ID>? = nil) {
+        guard let archive else { return }
+
         let actualEntries = entries ?? selectedEntries
         let panel = NSOpenPanel()
 
@@ -251,10 +256,10 @@ class MainWindowViewModel {
 
         // FIXME: Refactor some of this out into an extraction method?
         if panel.runModal() == .OK {
-            if let destURL = panel.url, let archiveURL = archive?.URL {
+            if let destURL = panel.url {
                 let retainFullPath = button.state == .on
                 var extractableEntries: [ArchiveEntryExtractable] = []
-                let chosenEntries = archive?.entries.filter { actualEntries.contains($0.id) } ?? []
+                let chosenEntries = archive.entries.filter { actualEntries.contains($0.id) }
 
                 var itemCount = 0
                 for entry in chosenEntries {
@@ -264,7 +269,7 @@ class MainWindowViewModel {
                 }
 
                 Task {
-                    let loader = libarchiveWrapper(url: archiveURL)
+                    let loader = libarchiveWrapper(url: archive.URL)
                     self.disableUI = true
                     defer { self.disableUI = false }
 
@@ -300,11 +305,11 @@ class MainWindowViewModel {
     }
 
     func revertButton() {
-        guard archive != nil else { return }
-        if let url = archive?.URL {
-            Task { @MainActor in
-                await openArchive(url: url)
-            }
+        guard let archive else { return }
+
+        let url = archive.URL
+        Task { @MainActor in
+            await openArchive(url: url)
         }
     }
 
@@ -382,8 +387,10 @@ class MainWindowViewModel {
     }
 
     func deleteButton(_ entries: Set<ArchiveEntry.ID>? = nil) {
+        guard let archive else { return }
+
         let actualEntries = entries ?? selectedEntries
-        self.archive?.removeEntries(actualEntries)
+        archive.removeEntries(actualEntries)
 
         // Curiously, the selection binding doesn't clear automatically when we remove items from the table
         selectedEntries.removeAll()
@@ -410,10 +417,10 @@ class MainWindowViewModel {
             }
         }
 
-        if let newFolderID = self.archive?.newFolder(at: parentEntryID) {
+        if let newFolderID = archive.newFolder(at: parentEntryID) {
             Task { @MainActor in
                 selectedEntries = [newFolderID]
-                self.archive?.entryForID(parentEntryID)?.isExpanded = true
+                archive.entryForID(parentEntryID)?.isExpanded = true
 
                 Task { @MainActor in
                     focusedEntry = newFolderID
@@ -424,12 +431,16 @@ class MainWindowViewModel {
 
     // MARK: - Other handlers
     func doRename(of entry: ArchiveEntry) {
-        self.archive?.processEntryRename(entry)
+        guard let archive else { return }
+
+        archive.processEntryRename(entry)
         sort()
     }
 
     func sort() {
-        self.archive?.sort(using: sortOrder)
+        guard let archive else { return }
+
+        archive.sort(using: sortOrder)
     }
 
     // MARK: - Drag and drop (high level)

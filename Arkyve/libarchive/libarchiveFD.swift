@@ -95,7 +95,7 @@ struct libarchiveFD {
         let ptr = archive_read_open_fd(archive, fd, 10240)
         if ptr != ARCHIVE_OK {
             // Before we give up entirely, we'll check if this is a RAW file with .gz/.bz2
-            if [ArkyveFormats.bz2.ext, ArkyveFormats.gz.ext].contains(path.pathExtension) {
+            if [ArkyveFormats.bz2.ext, ArkyveFormats.gz.ext, ArkyveFormats.xz.ext].contains(path.pathExtension) {
                 // Release the existing archive, but keep the file descriptor alive
                 self.closeRead(closeFD: false)
 

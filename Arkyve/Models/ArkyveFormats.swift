@@ -17,6 +17,7 @@ enum ArkyveFormats: Int32, Identifiable, CaseIterable {
     case iso
     case targz
     case tarbz2
+    case tarxz
     case tar
 
     case cpio
@@ -33,6 +34,7 @@ enum ArkyveFormats: Int32, Identifiable, CaseIterable {
     case raw
     case gz
     case bz2
+    case xz
 
     var description: String {
         switch self {
@@ -42,6 +44,8 @@ enum ArkyveFormats: Int32, Identifiable, CaseIterable {
             "tar Archive (GZip)"
         case .tarbz2:
             "tar Archive (BZip2)"
+        case .tarxz:
+            "tar Archive (xz)"
         case .zip:
             "Zip Archive"
         case ._7z:
@@ -74,6 +78,8 @@ enum ArkyveFormats: Int32, Identifiable, CaseIterable {
             "GZip Archive"
         case .bz2:
             "BZip2 Archive"
+        case .xz:
+            "XZ Archive"
         case .raw:
             "Raw File"
         }
@@ -87,6 +93,8 @@ enum ArkyveFormats: Int32, Identifiable, CaseIterable {
             "tgz"
         case .tarbz2:
             "tbz2"
+        case .tarxz:
+            "txz"
         case .zip:
             "zip"
         case ._7z:
@@ -119,6 +127,8 @@ enum ArkyveFormats: Int32, Identifiable, CaseIterable {
             "gz"
         case .bz2:
             "bz2"
+        case .xz:
+            "xz"
         case .raw:
             ""
         }
@@ -126,7 +136,7 @@ enum ArkyveFormats: Int32, Identifiable, CaseIterable {
 
     var canWrite: Bool {
         switch self {
-        case .tar, .targz, .tarbz2, .zip, ._7z, .iso, .cpio, .xar:
+        case .tar, .targz, .tarbz2, .tarxz, .zip, ._7z, .iso, .cpio, .xar:
             true
         default:
             false
@@ -140,6 +150,8 @@ enum ArkyveFormats: Int32, Identifiable, CaseIterable {
         case .targz:
             .TAR_PAX_RESTRICTED
         case .tarbz2:
+            .TAR_PAX_RESTRICTED
+        case .tarxz:
             .TAR_PAX_RESTRICTED
         case .zip:
             .ZIP
@@ -169,7 +181,7 @@ enum ArkyveFormats: Int32, Identifiable, CaseIterable {
             .RAR
         case .warc:
             .WARC
-        case .gz, .bz2, .raw:
+        case .gz, .bz2, .xz, .raw:
             .RAW
         }
     }
@@ -186,6 +198,8 @@ enum ArkyveFormats: Int32, Identifiable, CaseIterable {
                 .gzip
         case .bz2:
                 .bz2
+        case .xz:
+                .xz
         case ._7z:
                 ._7z
         case .iso:
@@ -222,6 +236,8 @@ enum ArkyveFormats: Int32, Identifiable, CaseIterable {
             [.GZip]
         case .tarbz2, .bz2:
             [.BZip2]
+        case .tarxz, .xz:
+            [.XZ]
         default:
             [.None]
         }
@@ -253,6 +269,8 @@ enum ArkyveFormats: Int32, Identifiable, CaseIterable {
                 return .tarbz2
             } else if filters.first == .GZip {
                 return .targz
+            } else if filters.first == .XZ {
+                return .tarxz
             } else {
                 return .tar
             }
@@ -287,6 +305,8 @@ enum ArkyveFormats: Int32, Identifiable, CaseIterable {
             return .targz
         case .tarbz2:
             return .tarbz2
+        case .tarxz:
+            return .tarxz
         case .iso:
             return .iso
         case .lha:

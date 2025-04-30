@@ -135,6 +135,7 @@
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				TestData/archives/helloworld.a,
+				TestData/check_uttypes.swift,
 			);
 			target = 4F41C4112D1B0C900011DAAB /* ArkyveTests */;
 		};

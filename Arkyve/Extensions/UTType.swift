@@ -20,6 +20,8 @@ extension UTType {
     static var rar:     UTType { UTType(importedAs: "com.rarlab.rar-archive") }
     static var cab:     UTType { UTType(importedAs: "com.microsoft.cab") }
     static var targz:   UTType { UTType(importedAs: "org.gnu.gnu-zip-tar-archive") }
+    static var tarxz:   UTType { UTType(importedAs: "org.tukaani.tar-xz-archive") }
+    static var xz:      UTType { UTType(importedAs: "org.tukaani.xz-archive") }
     static var _7z:     UTType { UTType(importedAs: "org.7-zip.7-zip-archive") }
 
     // In theory we shouldn't need to import these, yet here we are

@@ -69,6 +69,15 @@ class MainWindowViewModel {
     }
 
     // MARK: - Archive operations
+    func newArchive() {
+        showErrors.clear()
+
+        archive = Archive()
+        selectedEntries = []
+        quickLookURL = nil
+        quickLookItems = []
+    }
+
     func openArchive(url: URL) async {
         showErrors.clear()
 
@@ -188,10 +197,7 @@ class MainWindowViewModel {
             return
         }
 
-        archive = Archive()
-        selectedEntries = []
-        quickLookURL = nil
-        quickLookItems = []
+        newArchive()
     }
 
     func openButton() {

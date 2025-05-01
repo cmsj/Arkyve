@@ -120,7 +120,7 @@ class Archive: Identifiable {
 
         setClean()
         isNew = false
-        URL = to  // FIXME: We only just added this, can we really have missed that? Is it being done elsewhere?
+        URL = to
     }
 
     private func setDirty(_ dirty: Bool = true) {

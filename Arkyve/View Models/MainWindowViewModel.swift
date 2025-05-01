@@ -29,20 +29,22 @@ class MainWindowViewModel {
     var postSavePromptClosure: (() -> Void)? = nil
 
     // MARK: - Disable various parts of the UI
-    var disableNew: Bool { get { disableUI == true }}
-    var disableOpen: Bool { get { disableUI == true }}
-    var disableAdd: Bool { get { disableUI == true || archive == nil }}
-    var disableRevert: Bool { get { disableUI == true || archive?.dirty != true || archive?.existsOnDisk != true }}
-    var disableClose: Bool { get { disableUI == true || archive == nil }}
-    // FIXME: If the archive's format is one we can't write, should we disable this?
-    var disableSave: Bool { get { disableUI == true || archive?.dirty != true || archive?.format.canWrite == false || archive?.existsOnDisk == false }}
-    var disableSaveAs: Bool { get { disableUI == true || archive == nil }}
-    var disableQuicklook: Bool { get { disableUI == true || selectedEntries.isEmpty }}
-    var disableExtract: Bool { get { disableUI == true || selectedEntries.isEmpty }}
-    var disableRename: Bool { get { disableUI == true || selectedEntries.count != 1 }}
-    var disableDelete: Bool { get { disableUI == true || selectedEntries.isEmpty }}
-    var disableNewFolder: Bool { get { disableUI == true || archive == nil }}
     var disableUI: Bool = false
+
+    var disableNew: Bool { get { disableUI }}
+    var disableOpen: Bool { get { disableUI }}
+    var disableAdd: Bool { get { disableUI || archive == nil }}
+    var disableRevert: Bool { get { disableUI || archive?.dirty != true || archive?.existsOnDisk != true }}
+    var disableClose: Bool { get { disableUI || archive == nil }}
+    var disableSave: Bool { get { disableUI ||
+        archive?.dirty != true || archive?.format.canWrite == false || archive?.existsOnDisk == false
+    }}
+    var disableSaveAs: Bool { get { disableUI || archive == nil }}
+    var disableQuicklook: Bool { get { disableUI || selectedEntries.isEmpty }}
+    var disableExtract: Bool { get { disableUI || selectedEntries.isEmpty }}
+    var disableRename: Bool { get { disableUI || selectedEntries.count != 1 }}
+    var disableDelete: Bool { get { disableUI || selectedEntries.isEmpty }}
+    var disableNewFolder: Bool { get { disableUI || archive == nil }}
 
     // MARK: - Dynamic UI text
     let navTitleText = "Arkyve"

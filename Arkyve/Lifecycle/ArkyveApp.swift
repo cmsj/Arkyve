@@ -29,6 +29,7 @@ struct ArkyveApp: App {
         }
         .commands {
             MenuCommands(viewModel: viewModel)
+            ToolbarCommands()
         }
 
         UtilityWindow("Log viewer", id: "log-window") {

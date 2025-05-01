@@ -9,7 +9,6 @@ import SwiftUI
 
 struct MainWindowView: View {
     @Environment(MainWindowViewModel.self) var viewModel
-    @Environment(\.dismissWindow) private var dismissWindow
     
     func shutdownSaveRequest() {
         // FIXME: This is pretty disgusting, we're replicating various parts of the view model's closeButton/saveButton. Can we refactor all of them to be more wholistic?

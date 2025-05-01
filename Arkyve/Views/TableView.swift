@@ -86,6 +86,13 @@ struct TableView: View {
         } rows: {
             TableRowTreeContent(node: viewModel.archive?.root, viewModel: viewModel)
         }
+        .copyable(viewModel.buildCopyable())
+        .cuttable(action: {
+            viewModel.buildCuttable()
+        })
+        .onPasteCommand(of: [.fileURL], perform: { providers in
+            viewModel.processDrop(for: providers)
+        })
         .opacity(isEnabled ? 1.0 : 0.5)
         .contextMenu(forSelectionType: ArchiveEntry.ID.self) { items in
             EntryContextMenu(viewModel: viewModel, items: items)

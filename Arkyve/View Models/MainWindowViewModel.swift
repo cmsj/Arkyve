@@ -463,6 +463,25 @@ class MainWindowViewModel {
         archive.sort(using: sortOrder)
     }
 
+    func buildCopyable() -> [ArchiveEntryExtractable] {
+        guard let archive else { return [] }
+
+        let items = archive.entries.filter { selectedEntries.contains($0.id) }.map { $0.asExtractable(for: archive) }
+        return items
+    }
+
+    func buildCuttable() -> [ArchiveEntryExtractable] {
+        guard let archive else { return [] }
+
+        let items = buildCopyable()
+        archive.removeEntries(selectedEntries)
+
+        // Curiously, the selection binding doesn't clear automatically when we remove items from the table
+        selectedEntries.removeAll()
+
+        return items
+    }
+
     // MARK: - Drag and drop (high level)
     func handleManyDrops(on entryID: UUID? = nil, items: [DropItem]) {
         for item in items {

@@ -286,6 +286,7 @@ actor libarchiveWrapper {
         return archive
     }
 
+    // FIXME: I think there's a bug here - if we are passed information about entries that have been moved without saving, we don't extract them
     func extractEntries(_ extractableEntries: [ArchiveEntryExtractable],
                                toFolder: URL,
                                retainFullPath: Bool = false) async throws(ArkyveError) -> [URL] {
@@ -391,6 +392,7 @@ actor libarchiveWrapper {
                     let mtime = readDate(.mtime, for: entryPtr)
 
                     do {
+                        // FIXME: Can we set permissions here?
                         var attributes: [FileAttributeKey: Any] = [:]
 
                         if btime != Date(since: 0) {
@@ -413,7 +415,7 @@ actor libarchiveWrapper {
             }
         }
 
-        return writtenURLs
+        return writtenURLs.sorted { $0.path < $1.path }
     }
 
     //    func createArchive(to: URL, format: libarchiveFormat, filters: [libarchiveFilter], entries: [libarchiveHeader]) throws {

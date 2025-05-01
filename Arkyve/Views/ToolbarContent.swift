@@ -12,6 +12,23 @@ struct ToolbarContentView: CustomizableToolbarContent {
     var viewModel: MainWindowViewModel
 
     var body: some CustomizableToolbarContent {
+        ToolbarItem(id: "progress") {
+            ZStack {
+                ProgressView()
+                    .progressViewStyle(.circular)
+                    .controlSize(.small)
+                    .padding([.trailing])
+                    .opacity(viewModel.progress == 1.0 ? 1.0 : 0.0) // Only show if progress == 1.0 (meaning indeterminate progress)
+                ProgressView(value: viewModel.progress)
+                    .progressViewStyle(.circular)
+                    .controlSize(.small)
+                    .padding([.trailing])
+                    .opacity(viewModel.progress > 0.0 && viewModel.progress < 1.0 ? 1.0 : 0.0) // Only show if progress is between 0.0 and 1.0 (meaning determinate progress)
+            }
+
+        }
+        .hidden(viewModel.progress == 0.0)
+
         ToolbarItem(id: "New") {
             Button {
                 viewModel.newButton()
@@ -90,6 +107,7 @@ struct ToolbarContentView: CustomizableToolbarContent {
             .help("Delete selected files/folders")
             .disabled(viewModel.disableDelete)
         }
+
 #if DEBUG
         ToolbarItem(id: "ShowError") {
             Button {

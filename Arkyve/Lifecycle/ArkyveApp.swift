@@ -6,12 +6,21 @@
 //
 
 import SwiftUI
+import TipKit
 import os
 
 @main
 struct ArkyveApp: App {
     @NSApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
     @State var viewModel = MainWindowViewModel()
+
+    init() {
+#if DEBUG
+        try? Tips.resetDatastore()
+#endif
+
+        try? Tips.configure()
+    }
 
     var body: some Scene {
         Window(viewModel.navTitleText, id: "main") {

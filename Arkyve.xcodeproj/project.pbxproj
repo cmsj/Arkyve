@@ -41,6 +41,7 @@
 		4FA020492D2DD6A000E1CE58 /* withTaskProgression.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FA020482D2DD69D00E1CE58 /* withTaskProgression.swift */; };
 		4FA0204A2D2DD6A000E1CE58 /* withTaskProgression.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FA020482D2DD69D00E1CE58 /* withTaskProgression.swift */; };
 		4FB275582DB2FD350037BD44 /* EntryContextMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FB275572DB2FD320037BD44 /* EntryContextMenu.swift */; };
+		4FBB814D2DC3C33D00EC2C83 /* ReadOnlyStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FBB814C2DC3C33A00EC2C83 /* ReadOnlyStatus.swift */; };
 		4FCEEEDE2BEE39E7009E9E17 /* ArkyveApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FCEEEDD2BEE39E7009E9E17 /* ArkyveApp.swift */; };
 		4FCEEEE02BEE39E7009E9E17 /* MainWindowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FCEEEDF2BEE39E7009E9E17 /* MainWindowView.swift */; };
 		4FCEEEE22BEE39E9009E9E17 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4FCEEEE12BEE39E9009E9E17 /* Assets.xcassets */; };
@@ -113,6 +114,7 @@
 		4FB4985C2C08A020004DE958 /* libbz2.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libbz2.tbd; path = usr/lib/libbz2.tbd; sourceTree = SDKROOT; };
 		4FB4985E2C08A02D004DE958 /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
 		4FB498612C090B79004DE958 /* vendor */ = {isa = PBXFileReference; lastKnownFileType = folder; path = vendor; sourceTree = SOURCE_ROOT; };
+		4FBB814C2DC3C33A00EC2C83 /* ReadOnlyStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReadOnlyStatus.swift; sourceTree = "<group>"; };
 		4FCEEEDA2BEE39E7009E9E17 /* Arkyve.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Arkyve.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4FCEEEDD2BEE39E7009E9E17 /* ArkyveApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArkyveApp.swift; sourceTree = "<group>"; };
 		4FCEEEDF2BEE39E7009E9E17 /* MainWindowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainWindowView.swift; sourceTree = "<group>"; };
@@ -221,6 +223,14 @@
 			path = "View Models";
 			sourceTree = "<group>";
 		};
+		4FBB814B2DC3C32B00EC2C83 /* Tips */ = {
+			isa = PBXGroup;
+			children = (
+				4FBB814C2DC3C33A00EC2C83 /* ReadOnlyStatus.swift */,
+			);
+			path = Tips;
+			sourceTree = "<group>";
+		};
 		4FCEEED12BEE39E7009E9E17 = {
 			isa = PBXGroup;
 			children = (
@@ -255,6 +265,7 @@
 				4F7121952C0F6B38000EB268 /* View Models */,
 				4F344ECC2C3351E2006E1D9F /* Lifecycle */,
 				4F71218A2C0F4B03000EB268 /* Views */,
+				4FBB814B2DC3C32B00EC2C83 /* Tips */,
 				4F10848C2C26238A007DCC39 /* Utility */,
 				4FCEEEE32BEE39E9009E9E17 /* Preview Content */,
 			);
@@ -454,6 +465,7 @@
 				4FCEEEDE2BEE39E7009E9E17 /* ArkyveApp.swift in Sources */,
 				4F22BDC92CAE95750079FAC0 /* libarchiveFormat.swift in Sources */,
 				4FDC674F2C19065A00A10035 /* libarchiveWrapper.swift in Sources */,
+				4FBB814D2DC3C33D00EC2C83 /* ReadOnlyStatus.swift in Sources */,
 				4F71219D2C10BB1D000EB268 /* ErrorView.swift in Sources */,
 				4F688A5A2D734551003B5D60 /* DropItem.swift in Sources */,
 				4FD96DEE2DBE5C6400194E95 /* ArkyveFormats.swift in Sources */,

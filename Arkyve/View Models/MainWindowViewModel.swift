@@ -8,6 +8,7 @@
 import SwiftUI
 import AppKit
 import System
+import TipKit
 import UniformTypeIdentifiers
 
 @Observable
@@ -72,6 +73,13 @@ class MainWindowViewModel {
         }
     }
 
+    // MARK: - Tips
+    struct TipsStore {
+        var readOnlyStatus = ReadOnlyStatus()
+    }
+    static let didOpenReadOnlyEvent = Tips.Event(id: "didOpenReadOnly")
+    let tips = TipsStore()
+
     // MARK: - Archive operations
     func newArchive() {
         showErrors.clear()
@@ -93,6 +101,10 @@ class MainWindowViewModel {
             try await withTaskProgression { _ in
                 archive = try await loader.loadArchive()
                 sort()
+
+                if archive?.format.asArkyveFormat?.canWrite == false {
+                    Self.didOpenReadOnlyEvent.sendDonation()
+                }
             } progress: { progression in
                 Task { @MainActor in setProgress(progression) }
             }

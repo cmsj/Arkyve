@@ -265,7 +265,7 @@ actor libarchiveWrapper {
             let root = ArchiveEntry(isRoot: true)
 
             var syntheticEntries: [ArchiveEntry] = []
-//            try root.addRootItems(rootItems)
+
             try root.addChildrenHierarchically(rootItems)
             syntheticEntries += try root.addChildrenHierarchically(remainingDirs)
             syntheticEntries += try root.addChildrenHierarchically(remainingFiles)
@@ -273,6 +273,11 @@ actor libarchiveWrapper {
             let combinedEntries = entries + syntheticEntries
             archive.populate(root: root, entries: combinedEntries,
                              format: archiveFormat, filters: archiveFilters)
+
+
+//#if DEBUG
+//            try await Task.sleep(nanoseconds: 2000000000)
+//#endif
         } catch {
             throw ArkyveError(.openArchive, msg: error.localizedDescription)
         }
@@ -505,6 +510,10 @@ actor libarchiveWrapper {
                 // Remove the headerMap value now we've processed it
                 headerMap.removeValue(forKey: mapEntryKey)
             }
+
+//#if DEBUG
+//            try await Task.sleep(nanoseconds: 2000000000)
+//#endif
         }
 
         // Second, process any filesystem-sourced entries that have been added to the archive

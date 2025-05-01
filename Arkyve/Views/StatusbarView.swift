@@ -15,27 +15,13 @@ struct StatusbarView: View {
             HStack {
                 Spacer()
                 Text(viewModel.statusBarText)
+                    .popoverTip(viewModel.tips.readOnlyStatus)
+                    .tipImageStyle(.red)
 #if DEBUG
                 Text(viewModel.archive?.URL.absoluteString ?? "")
 #endif
                 Spacer()
             }
-            HStack {
-                Spacer()
-                ZStack {
-                    ProgressView()
-                        .progressViewStyle(.circular)
-                        .controlSize(.small)
-                        .padding([.trailing])
-                        .opacity(viewModel.progress == 1.0 ? 1.0 : 0.0) // Only show if progress == 1.0 (meaning indeterminate progress)
-                    ProgressView(value: viewModel.progress)
-                        .progressViewStyle(.circular)
-                        .controlSize(.small)
-                        .padding([.trailing])
-                        .opacity(viewModel.progress > 0.0 && viewModel.progress < 1.0 ? 1.0 : 0.0) // Only show if progress is between 0.0 and 1.0 (meaning determinate progress)
-                }
-            }
-            .padding([.top, .bottom], 5)
         }
     }
 }

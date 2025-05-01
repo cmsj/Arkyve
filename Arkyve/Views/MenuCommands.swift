@@ -33,12 +33,12 @@ struct MenuCommands: Commands {
             }
             .keyboardShortcut("s", modifiers: [.command])
             .disabled(viewModel.disableSave)
-            .modifierKeyAlternate(.option) {
-                Button("Save As...") {
-                    viewModel.saveAsButton()
-                }
-                .disabled(viewModel.disableSaveAs)
+
+            Button("Save As...") {
+                viewModel.saveAsButton()
             }
+            .keyboardShortcut("s", modifiers: [.command, .option])
+            .disabled(viewModel.disableSaveAs)
 
             Divider()
 

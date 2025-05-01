@@ -22,11 +22,16 @@ struct MainWindowView: View {
         }
 
         let alert = NSAlert.init()
-        alert.addButton(withTitle: "Save")
+        let saveButton = alert.addButton(withTitle: "Save")
         alert.addButton(withTitle: "Save As")
         alert.addButton(withTitle: "Quit")
         alert.buttons.last?.hasDestructiveAction = true
         alert.informativeText = "This archive has unsaved changes, do you want to save them before quitting?"
+
+        if !archive.format.canWrite {
+            // We have to force the user to choose Save As since the archive is in a read-only format
+            saveButton.isEnabled = false
+        }
         let response = alert.runModal()
 
         // runModal() has various return values, we are going to ignore any that aren't specific button presses

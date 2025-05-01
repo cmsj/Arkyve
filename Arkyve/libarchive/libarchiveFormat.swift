@@ -43,6 +43,46 @@ enum libarchiveFormat: Int32, CaseIterable, Identifiable {
     case _7ZIP = 0xE0000
     case WARC = 0xF0000
     case RAR_V5 = 0x100000
+
+    var asArkyveFormat: ArkyveFormats? {
+        switch self {
+        case .Unknown, .Empty, .MTREE:
+            nil
+        case .CPIO, .CPIO_POSIX, .CPIO_BIN_LE, .CPIO_BIN_BE, .CPIO_SVR4_NOCRC, .CPIO_SVR4_CRC, .CPIO_AFIO_LARGE, .CPIO_PWB:
+                .cpio
+        case .SHAR, .SHAR_BASE, .SHAR_DUMP:
+                .shar
+        case .TAR, .TAR_USTAR, .TAR_PAX_INTERCHANGE, .TAR_PAX_RESTRICTED, .TAR_GNUTAR:
+                .tar
+        case .ISO9660, .ISO9660_RR:
+                .iso
+        case .ZIP:
+                .zip
+        case .AR, .AR_GNU, .AR_BSD:
+                .ar
+        case .RAW:
+                .raw
+        case .XAR:
+                .xar
+        case .LHA:
+                .lha
+        case .CAB:
+                .cab
+        case .RAR, .RAR_V5:
+                .rar
+        case ._7ZIP:
+                ._7z
+        case .WARC:
+                .warc
+        }
+    }
+
+    var canWrite: Bool {
+        if let arkyveFormat = self.asArkyveFormat {
+            return arkyveFormat.canWrite
+        }
+        return false
+    }
 }
 
 extension libarchiveFormat: Comparable {

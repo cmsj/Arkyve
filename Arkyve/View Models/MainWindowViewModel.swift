@@ -35,7 +35,7 @@ class MainWindowViewModel {
     var disableRevert: Bool { get { disableUI == true || archive?.dirty != true || archive?.existsOnDisk != true }}
     var disableClose: Bool { get { disableUI == true || archive == nil }}
     // FIXME: If the archive's format is one we can't write, should we disable this?
-    var disableSave: Bool { get { disableUI == true || archive?.dirty != true }}
+    var disableSave: Bool { get { disableUI == true || archive?.dirty != true || archive?.format.canWrite == false || archive?.existsOnDisk == false }}
     var disableSaveAs: Bool { get { disableUI == true || archive == nil }}
     var disableQuicklook: Bool { get { disableUI == true || selectedEntries.isEmpty }}
     var disableExtract: Bool { get { disableUI == true || selectedEntries.isEmpty }}
@@ -52,7 +52,9 @@ class MainWindowViewModel {
     }
     var statusBarText: String {
         guard let archive else { return "No archive open" }
-        return "\(archive.entries.count) items"
+        var text = "\(archive.entries.count) items"
+        if !archive.format.canWrite { text += " (read-only)" }
+        return text
     }
 
     // MARK: - Progress indicator

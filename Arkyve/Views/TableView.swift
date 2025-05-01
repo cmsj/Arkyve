@@ -86,9 +86,9 @@ struct TableView: View {
         } rows: {
             TableRowTreeContent(node: viewModel.archive?.root, viewModel: viewModel)
         }
-        .copyable(viewModel.buildCopyable())
+        .copyable(viewModel.buildCopyable(entries: viewModel.selectedEntries))
         .cuttable(action: {
-            viewModel.buildCuttable()
+            viewModel.buildCuttable(entries: viewModel.selectedEntries)
         })
         .onPasteCommand(of: [.fileURL], perform: { providers in
             viewModel.processDrop(for: providers)

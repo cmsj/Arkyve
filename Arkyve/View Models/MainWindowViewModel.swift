@@ -463,18 +463,18 @@ class MainWindowViewModel {
         archive.sort(using: sortOrder)
     }
 
-    func buildCopyable() -> [ArchiveEntryExtractable] {
+    func buildCopyable(entries: Set<ArchiveEntry.ID>) -> [ArchiveEntryExtractable] {
         guard let archive else { return [] }
 
-        let items = archive.entries.filter { selectedEntries.contains($0.id) }.map { $0.asExtractable(for: archive) }
+        let items = archive.entries.filter { entries.contains($0.id) }.map { $0.asExtractable(for: archive) }
         return items
     }
 
-    func buildCuttable() -> [ArchiveEntryExtractable] {
+    func buildCuttable(entries: Set<ArchiveEntry.ID>) -> [ArchiveEntryExtractable] {
         guard let archive else { return [] }
 
-        let items = buildCopyable()
-        archive.removeEntries(selectedEntries)
+        let items = buildCopyable(entries: entries)
+        archive.removeEntries(entries)
 
         // Curiously, the selection binding doesn't clear automatically when we remove items from the table
         selectedEntries.removeAll()

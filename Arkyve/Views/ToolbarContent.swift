@@ -27,6 +27,7 @@ struct ToolbarContentView: CustomizableToolbarContent {
             }
 
         }
+        .customizationBehavior(.reorderable)
         .hidden(viewModel.progress == 0.0)
 
         ToolbarItem(id: "New") {

@@ -108,8 +108,10 @@ class MainWindowViewModel {
             } progress: { progression in
                 Task { @MainActor in setProgress(progression) }
             }
+        } catch let error as ArkyveError {
+            showErrors.err(error)
         } catch {
-            showErrors.err(.init(.openArchive, msg:error.localizedDescription))
+            showErrors.err(ArkyveError.init(.openArchive, msg: error.localizedDescription))
         }
     }
 
@@ -125,6 +127,8 @@ class MainWindowViewModel {
 
     func saveArchive(to: URL, overrideFormat: libarchiveFormat = .Unknown, overrideFilters: [libarchiveFilter] = [.None]) async {
         guard let archive else { return }
+        showErrors.clear()
+
         let loader = libarchiveWrapper(url: archive.URL)
         self.disableUI = true
         defer { self.disableUI = false }
@@ -139,8 +143,10 @@ class MainWindowViewModel {
             } progress: { progression in
                 Task { @MainActor in setProgress(progression) }
             }
+        } catch let error as ArkyveError {
+            showErrors.err(error)
         } catch {
-            showErrors.err(.init(.writeArchive, msg: error.localizedDescription))
+            showErrors.err(ArkyveError(.writeArchive, msg: error.localizedDescription))
         }
     }
 

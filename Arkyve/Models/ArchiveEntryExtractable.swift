@@ -41,7 +41,7 @@ struct ArchiveEntryExtractable: Codable, Transferable {
                 }
                 return firstURL.dataRepresentation
             } catch {
-                throw ArkyveError(.drop, msg: error.localizedDescription)
+                throw error
             }
         }
     }

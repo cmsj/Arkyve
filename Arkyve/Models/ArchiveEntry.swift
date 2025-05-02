@@ -177,8 +177,14 @@ class ArchiveEntry: Identifiable {
         self.init(header)
     }
 
-    @discardableResult func addChildrenHierarchically(_ entries: [ArchiveEntry]) throws -> [ArchiveEntry] {
-        return try entries.flatMap { try self.addChildHierarchically($0) }
+    @discardableResult func addChildrenHierarchically(_ entries: [ArchiveEntry]) throws(ArkyveError) -> [ArchiveEntry] {
+        do {
+            return try entries.flatMap { try self.addChildHierarchically($0) }
+        } catch let error as ArkyveError {
+            throw error
+        } catch {
+            throw .init(.entries, msg: "Unexpected error adding children hierarchically: \(error.localizedDescription)")
+        }
     }
 
     @discardableResult func addChildHierarchically(_ entry: ArchiveEntry) throws(ArkyveError) -> [ArchiveEntry] {

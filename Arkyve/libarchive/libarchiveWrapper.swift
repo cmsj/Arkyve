@@ -196,7 +196,7 @@ actor libarchiveWrapper {
         return filters
     }
 
-    func readEntriesFormatFilters() throws -> (libarchiveFormat,
+    func readEntriesFormatFilters() throws(ArkyveError) -> (libarchiveFormat,
                                                [libarchiveFilter],
                                                [libarchiveHeader]) {
         try readArchiveFD.openRead(path: path)
@@ -210,6 +210,7 @@ actor libarchiveWrapper {
     }
 
     private func writeArchiveEntryHeader(to: libarchiveFD, headers: libarchiveHeader) throws(ArkyveError) -> OpaquePointer {
+        // FIXME: symlinks seem to break this
         guard let writeEntry = archive_entry_new() else {
             throw .init(.writeArchive, msg: "Unable to create new entry")
         }
@@ -279,7 +280,7 @@ actor libarchiveWrapper {
 //            try await Task.sleep(nanoseconds: 2000000000)
 //#endif
         } catch {
-            throw ArkyveError(.openArchive, msg: error.localizedDescription)
+            throw error
         }
 
         AKTrace("Loaded archive with format \(archiveFormat) and filters \(archiveFilters)")
@@ -418,10 +419,6 @@ actor libarchiveWrapper {
         return writtenURLs.sorted { $0.path < $1.path }
     }
 
-    //    func createArchive(to: URL, format: libarchiveFormat, filters: [libarchiveFilter], entries: [libarchiveHeader]) throws {
-    //        try saveArchive(from: nil, to: to, format: format, filters: filters, entries: entries)
-    //    }
-
     /// Write the archive to a URL
     /// - Parameters:
     ///   - headerMap: A dictionary containing path to ArchiveEntryFlat mappings. This determines the entries that will be written to the new archive
@@ -432,7 +429,7 @@ actor libarchiveWrapper {
                              to: URL,
                              format: libarchiveFormat,
                              filters: [libarchiveFilter],
-                             skipRead: Bool = false) async throws {
+                             skipRead: Bool = false) async throws(ArkyveError) {
         var headerMap = headerMap
         var result: Int32 = ARCHIVE_OK
 
@@ -544,7 +541,12 @@ actor libarchiveWrapper {
 
                 // Read the file's data and write it to the archive
                 while true {
-                    let data = try fileHandle.read(upToCount: 524288)
+                    let data: Data?
+                    do {
+                        data = try fileHandle.read(upToCount: 524288)
+                    } catch {
+                        throw .init(.writeArchive, msg: error.localizedDescription)
+                    }
                     guard let data = data, !data.isEmpty else { break }
 
                     try? data.withUnsafeBytes { ptr in
@@ -595,7 +597,11 @@ actor libarchiveWrapper {
             do {
                 _ = try FileManager.default.replaceItemAt(to, withItemAt: writeCacheURL, options: [.usingNewMetadataOnly])
             } catch {
-                try FileManager.default.moveItem(at: writeCacheURL, to: to)
+                do {
+                    try FileManager.default.moveItem(at: writeCacheURL, to: to)
+                } catch {
+                    throw .init(.writeArchive, msg: error.localizedDescription)
+                }
             }
         }
     }

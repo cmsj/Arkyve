@@ -175,7 +175,7 @@ class Archive: Identifiable {
             addedEntries += try root.addChildrenHierarchically(newDirs)
             addedEntries += try root.addChildrenHierarchically(newFiles)
         } catch {
-            throw .init(.entries, msg: "Failed to add entries: \(error.localizedDescription)")
+            throw error
         }
 
         entries += newEntries

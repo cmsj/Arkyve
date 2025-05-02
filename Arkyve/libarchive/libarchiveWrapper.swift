@@ -165,11 +165,31 @@ actor libarchiveWrapper {
 
             type = ArchiveEntryType(rawValue: archive_entry_filetype(entry))
 
-            headers.append(
-                libarchiveHeader(
-                    source: source, type: type, path: path, name: name,
-                    pathComponents: pathComponents, size: size, atime: atime, ctime: ctime,
-                    mtime: mtime, btime: btime, uid: uid, gid: gid, perms: perms))
+            var symlinkTarget: String? = nil
+            var rdev: dev_t? = nil
+
+            switch type {
+            case .directory, .file:
+                // No further info required
+                break
+            case .symlink:
+                symlinkTarget = String(cString: archive_entry_symlink_utf8(entry))
+            case .blockdev, .chardev:
+                if archive_entry_rdev_is_set(entry) != 0 {
+                    rdev = archive_entry_rdev(entry)
+                } else {
+                    let major = archive_entry_rdevmajor(entry)
+                    let minor = archive_entry_rdevminor(entry)
+                    rdev = minor | major << 24
+                }
+            case .socket, .fifo, .root, .unknown:
+                AKWarning("Discarding header for \(path) because it is not a supported type: \(type.userString)")
+            }
+
+            headers.append(libarchiveHeader(
+                source: source, type: type, path: path, name: name,
+                pathComponents: pathComponents, size: size, atime: atime, ctime: ctime,
+                mtime: mtime, btime: btime, uid: uid, gid: gid, perms: perms, symlinkTarget: symlinkTarget, rdev: rdev))
 
             if Task.isCancelled {
                 throw .init(.cancelled, msg: "")
@@ -239,6 +259,20 @@ actor libarchiveWrapper {
         }
 
         archive_entry_set_mode(writeEntry, headers.perms)
+
+        switch headers.type {
+        case .symlink:
+            if let symlinkTarget = headers.symlinkTarget {
+                archive_entry_set_symlink(writeEntry, symlinkTarget.cString(using: .utf8))
+            }
+        case .blockdev, .chardev:
+            if let rdev = headers.rdev {
+                archive_entry_set_rdev(writeEntry, rdev)
+            }
+        default:
+            break
+        }
+
 
         let result = archive_write_header(to.archive, writeEntry)
         if result != ARCHIVE_OK {
@@ -382,11 +416,11 @@ actor libarchiveWrapper {
                         do {
                             try FileManager.default.createSymbolicLink(atPath: outputURL.path,
                                                                        withDestinationPath: linkDest,
-                                                                       overwrite: true)
+                                                                       overwrite: false) // FIXME: Probably set this to true?
+                            AKTrace("  Linked \(outputURL.path) to \(linkDest)")
                         } catch {
                             throw .init(.extract, msg: error.localizedDescription)
                         }
-                        AKTrace("  Linked \(outputURL.path) to \(linkDest)")
                     default:
                         AKWarning(
                             "Skipping archive entry \(path) of type \(entryType.rawValue), it is an unsupported type"
@@ -536,16 +570,26 @@ actor libarchiveWrapper {
             let writeEntry = try writeArchiveEntryHeader(to: writeArchiveFD, headers: flatEntry.header)
             defer { archive_entry_free(writeEntry) }
 
-            if flatEntry.header.type != .directory {
+            switch flatEntry.header.type {
+            case .directory, .symlink, .blockdev, .chardev:
+                // Nothing to do here, the header above is sufficient
+                break
+            case .socket, .fifo:
+                // FIXME: Figure out what to do here
+                break
+            case .unknown, .root:
+                // FIXME: Pretty sure just skip these?
+                break
+            case .file:
                 // Open the file from the filesystem if we can
                 let fileHandle: FileHandle?
                 do {
                     fileHandle = try FileHandle(forReadingFrom: URL(fileURLWithPath: flatEntry.header.source.path))
                 } catch {
-                    throw ArkyveError(.writeArchive, msg: "Unable to open file: \(error.localizedDescription)")
+                    throw .init(.writeArchive, msg: "Unable to open file: \(error.localizedDescription)")
                 }
                 guard let fileHandle else {
-                    throw ArkyveError(.writeArchive, msg: "Failed to open file for reading: \(filePath)")
+                    throw .init(.writeArchive, msg: "Failed to open file for reading: \(filePath)")
                 }
                 defer { try? fileHandle.close() }
 

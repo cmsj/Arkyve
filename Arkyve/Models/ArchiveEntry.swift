@@ -67,6 +67,9 @@ class ArchiveEntry: Identifiable {
 
     var type: ArchiveEntryType
 
+    var symlinkTarget: String? = nil
+    var rdev: dev_t? = nil
+
     let lock = Mutex(true)
 
     init(_ entry: libarchiveHeader) {
@@ -83,6 +86,8 @@ class ArchiveEntry: Identifiable {
         uid = entry.uid
         gid = entry.gid
         type = entry.type
+        symlinkTarget = entry.symlinkTarget
+        rdev = entry.rdev
 
         if self.type == .directory {
             // If we're a directory, we have at least zero children
@@ -119,21 +124,25 @@ class ArchiveEntry: Identifiable {
 
     // Helper to create a new ArchiveEntry from a URL on the local filesystem
     convenience init?(from url: URL, pathInArchiveComponents: [String]) {
-        guard let stat = try? FileManager.default.attributesOfItem(atPath: url.path) else { return nil }
+        guard let attrs = try? FileManager.default.attributesOfItem(atPath: url.path) else { return nil }
 
         let source = ArchiveEntrySource(type: .Filesystem, path: url.path)
 
-        guard var fileSize  = (stat[FileAttributeKey.size] as? NSNumber)?.int64Value,
-              let fileBtime = stat[FileAttributeKey.creationDate] as? NSDate,
-              let fileMtime = stat[FileAttributeKey.modificationDate] as? NSDate,
-              let fileUID   = (stat[FileAttributeKey.ownerAccountID] as? NSNumber)?.int64Value,
-              let fileGID   = (stat[FileAttributeKey.groupOwnerAccountID] as? NSNumber)?.int64Value,
-              var filePerms = (stat[FileAttributeKey.posixPermissions] as? NSNumber)?.uint16Value
+        guard var fileSize  = (attrs[FileAttributeKey.size] as? NSNumber)?.int64Value,
+              let fileBtime = attrs[FileAttributeKey.creationDate] as? NSDate,
+              let fileMtime = attrs[FileAttributeKey.modificationDate] as? NSDate,
+              let fileUID   = (attrs[FileAttributeKey.ownerAccountID] as? NSNumber)?.int64Value,
+              let fileGID   = (attrs[FileAttributeKey.groupOwnerAccountID] as? NSNumber)?.int64Value,
+              var filePerms = (attrs[FileAttributeKey.posixPermissions] as? NSNumber)?.uint16Value
         else { return nil }
 
-        guard let rawType = stat[FileAttributeKey.type] as? String else { return nil }
+        var symlinkTarget: String? = nil
+        var rdev: dev_t? = nil
+
+        guard let rawType = attrs[FileAttributeKey.type] as? String else { return nil }
         let fileType = FileAttributeType(rawValue: rawType)
         let entryType: ArchiveEntryType
+
         switch fileType {
         case .typeSocket:
             entryType = .socket
@@ -147,12 +156,21 @@ class ArchiveEntry: Identifiable {
         case .typeSymbolicLink:
             entryType = .symlink
             filePerms |= S_IFLNK
+            symlinkTarget = try? FileManager.default.destinationOfSymbolicLink(atPath: url.path)
         case .typeCharacterSpecial:
             entryType = .chardev
             filePerms |= S_IFCHR
+            // FIXME: Check if this works
+            var buf = stat()
+            stat(url.path.cString(using: .utf8)!, &buf)
+            rdev = buf.st_rdev
         case .typeBlockSpecial:
             entryType = .blockdev
             filePerms |= S_IFBLK
+            // FIXME: Check if this works
+            var buf = stat()
+            stat(url.path.cString(using: .utf8)!, &buf)
+            rdev = buf.st_rdev
         case .typeUnknown:
             entryType = .unknown
         default:
@@ -176,7 +194,9 @@ class ArchiveEntry: Identifiable {
                                       mtime: fileMtime as Date,
                                       btime: fileBtime as Date,
                                       uid: fileUID, gid: fileGID,
-                                      perms: filePerms)
+                                      perms: filePerms,
+                                      symlinkTarget: symlinkTarget,
+                                      rdev: rdev)
 
         self.init(header)
     }
@@ -272,7 +292,7 @@ class ArchiveEntry: Identifiable {
     }
 
     func asHeader() -> libarchiveHeader {
-        return libarchiveHeader(source: source, type: type, path: path, name: name, pathComponents: pathComponents, size: size, atime: atime, ctime: ctime, mtime: mtime, btime: btime, uid: uid, gid: gid, perms: perms)
+        return libarchiveHeader(source: source, type: type, path: path, name: name, pathComponents: pathComponents, size: size, atime: atime, ctime: ctime, mtime: mtime, btime: btime, uid: uid, gid: gid, perms: perms, symlinkTarget: symlinkTarget, rdev: rdev)
     }
 
     func asExtractable(for archive: Archive?) -> ArchiveEntryExtractable {

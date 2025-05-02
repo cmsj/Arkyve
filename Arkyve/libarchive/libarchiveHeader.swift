@@ -26,7 +26,10 @@ struct libarchiveHeader: Identifiable, Codable {
 
     let perms: mode_t
 
-    init(id: UUID = UUID(), source: ArchiveEntrySource, type: ArchiveEntryType, path: String, name: String, pathComponents: [String], size: Int64, atime: Date, ctime: Date, mtime: Date, btime: Date, uid: Int64?, gid: Int64?, perms: mode_t) {
+    var symlinkTarget: String? = nil
+    var rdev: dev_t? = nil
+
+    init(id: UUID = UUID(), source: ArchiveEntrySource, type: ArchiveEntryType, path: String, name: String, pathComponents: [String], size: Int64, atime: Date, ctime: Date, mtime: Date, btime: Date, uid: Int64?, gid: Int64?, perms: mode_t, symlinkTarget: String? = nil, rdev: dev_t? = nil) {
         self.id = id
         self.source = source
         self.type = type
@@ -41,5 +44,7 @@ struct libarchiveHeader: Identifiable, Codable {
         self.uid = uid
         self.gid = gid
         self.perms = perms
+        self.symlinkTarget = symlinkTarget
+        self.rdev = rdev
     }
 }

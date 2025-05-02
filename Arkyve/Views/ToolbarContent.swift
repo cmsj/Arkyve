@@ -13,19 +13,11 @@ struct ToolbarContentView: CustomizableToolbarContent {
 
     var body: some CustomizableToolbarContent {
         ToolbarItem(id: "progress") {
-            ZStack {
-                ProgressView()
+            // FIXME: Can we make this clickable to cancel long-running archive tasks?
+            ProgressView(value: viewModel.progress)
                     .progressViewStyle(.circular)
                     .controlSize(.small)
-                    .padding([.trailing])
-                    .opacity(viewModel.progress == 1.0 ? 1.0 : 0.0) // Only show if progress == 1.0 (meaning indeterminate progress)
-                ProgressView(value: viewModel.progress)
-                    .progressViewStyle(.circular)
-                    .controlSize(.small)
-                    .padding([.trailing])
-                    .opacity(viewModel.progress > 0.0 && viewModel.progress < 1.0 ? 1.0 : 0.0) // Only show if progress is between 0.0 and 1.0 (meaning determinate progress)
-            }
-
+                    .help("Progress: \(viewModel.progressString)")
         }
         .customizationBehavior(.reorderable)
         .hidden(viewModel.progress == 0.0)

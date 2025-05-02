@@ -20,7 +20,19 @@ class MainWindowViewModel {
     var focusedEntry: UUID? = nil
     var quickLookURL: URL?
     var quickLookItems: [URL] = []
-    var progress = 0.0
+    var progress: Double? = 0.0
+    var progressString: String {
+        get {
+            switch progress {
+            case nil:
+                return "Working..."
+            case 0.0:
+                return "Idle"
+            default:
+                return "\(Int(progress! * 100))%"
+            }
+        }
+    }
     var sortOrder = [KeyPathComparator(\ArchiveEntry.name)]
 
     var showErrors: ShowErrors = ShowErrors()
@@ -38,6 +50,7 @@ class MainWindowViewModel {
     var disableRevert: Bool { get { disableUI || archive?.dirty != true || archive?.existsOnDisk != true }}
     var disableClose: Bool { get { disableUI || archive == nil }}
     var disableSave: Bool { get { disableUI ||
+        // FIXME: Adding existsOnDisk was a mistake, now we can't Save for new archives, we have to Save As which is dumb
         archive?.dirty != true || archive?.format.canWrite == false || archive?.existsOnDisk == false
     }}
     var disableSaveAs: Bool { get { disableUI || archive == nil }}
@@ -65,11 +78,15 @@ class MainWindowViewModel {
         switch tp.status {
         case .running(let units):
             if let total = units.total {
+                // Determinate progress, set a value
                 progress = Double(units.completed) / Double(total)
             } else {
-                progress = 1.0
+                // Indeterminate progress, set nil
+                progress = nil
             }
-        case .finished, .failed(_): progress = 0.0
+        case .finished, .failed(_):
+            // Special value we can use to hide the progress view
+            progress = 0.0
         }
     }
 
@@ -97,6 +114,8 @@ class MainWindowViewModel {
         self.disableUI = true
         defer { self.disableUI = false }
 
+        // This is an indeterminate-progress operation
+        progress = nil
         do {
             try await withTaskProgression { _ in
                 archive = try await loader.loadArchive()
@@ -136,7 +155,7 @@ class MainWindowViewModel {
         let (format, filters, headerMap) = archive.metadataForSaving(overrideFormat: overrideFormat, overrideFilters: overrideFilters)
 
         do {
-            try await withTaskProgression(totalUnits: archive.entries.count) { _ in
+            try await withTaskProgression(totalUnits: archive.entries.count) { progression in
                 try await loader.writeArchive(headerMap: headerMap, to: to, format: format, filters: filters, skipRead: archive.isNew)
 
                 archive.didSave(to: to)
@@ -162,6 +181,7 @@ class MainWindowViewModel {
         }
     }
 
+    // FIXME: Quicklooking a symlink produces an error
     func extractForQuicklook() {
         guard let archive else { return }
 

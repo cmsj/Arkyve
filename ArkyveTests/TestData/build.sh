@@ -30,4 +30,5 @@ xar -c -f "${ARCHIVES}/${NAME}.xar" "${SRC}"
 rar a "${ARCHIVES}/${NAME}.rar" "${SRC}"
 gzip -c "${SRC}/hello.txt" >"${ARCHIVES}/${NAME}.gz"
 bzip2 -c "${SRC}/hello.txt" >"${ARCHIVES}/${NAME}.bz2"
-xz -z -c "${SRC}/hello.txt" >"${ARCHIVES/${NAME}.xz"
+xz -z -c "${SRC}/hello.txt" >"${ARCHIVES}/${NAME}.xz"
+

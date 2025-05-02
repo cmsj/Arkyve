@@ -277,7 +277,7 @@ actor libarchiveWrapper {
 
 
 //#if DEBUG
-//            try await Task.sleep(nanoseconds: 2000000000)
+//            await Task.sleep(2000000000)
 //#endif
         } catch {
             throw error

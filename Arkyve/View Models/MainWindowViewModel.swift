@@ -11,14 +11,7 @@ import System
 import TipKit
 import UniformTypeIdentifiers
 
-//struct ArkyveProgress {
-//    enum ProgressState {
-//        case idle
-//        case indeterminate
-//        case determinate(Double)
-//    }
-//    var state: ProgressState
-//}
+
 
 @Observable
 @MainActor
@@ -30,19 +23,8 @@ class MainWindowViewModel {
     var quickLookURL: URL?
     var quickLookItems: [URL] = []
     var progressTask: Task<Void, Never>? = nil
-    var progress: Double? = 0.0
-    var progressString: String {
-        get {
-            switch progress {
-            case nil:
-                return "Working..."
-            case 0.0:
-                return "Idle"
-            default:
-                return "\(Int(progress! * 100))%"
-            }
-        }
-    }
+    var progress: ArkyveProgressState = .idle
+
     var sortOrder = [KeyPathComparator(\ArchiveEntry.name)]
 
     var showErrors: ShowErrors = ShowErrors()
@@ -90,15 +72,13 @@ class MainWindowViewModel {
         switch tp.status {
         case .running(let units):
             if let total = units.total {
-                // Determinate progress, set a value
-                progress = Double(units.completed) / Double(total)
+                progress = .determinate(Double(units.completed) / Double(total))
             } else {
-                // Indeterminate progress, set nil
-                progress = nil
+                progress = .indeterminate
             }
         case .finished, .failed(_):
             // Special value we can use to hide the progress view
-            progress = 0.0
+            progress = .idle
         }
     }
 
@@ -130,7 +110,7 @@ class MainWindowViewModel {
             defer { progressTask = nil }
 
             // This is an indeterminate-progress operation
-            progress = nil
+            progress = .idle
             do {
                 try await withTaskProgression { _ in
                     archive = try await loader.loadArchive()

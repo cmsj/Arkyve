@@ -68,7 +68,10 @@ struct TableView: View {
                 TableColumn("Synthetic", value: \ArchiveEntry.isSynthesizedString)
                     .customizationID("synth")
                     .defaultVisibility(.hidden)
-                // FIXME: Add columns for symlinkTarget and rdev
+                TableColumn("Symlink Target", value: \ArchiveEntry.symlinkTargetString)
+                    .customizationID("symlinkTarget")
+                    .defaultVisibility(.hidden)
+                // FIXME: Add column for rdev
             }
 #if DEBUG
             Group {

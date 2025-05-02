@@ -70,6 +70,10 @@ class ArchiveEntry: Identifiable {
     var symlinkTarget: String? = nil
     var rdev: dev_t? = nil
 
+    var symlinkTargetString: String {
+        get { symlinkTarget != nil ? "\(symlinkTarget!)" : "--"}
+    }
+
     let lock = Mutex(true)
 
     init(_ entry: libarchiveHeader) {

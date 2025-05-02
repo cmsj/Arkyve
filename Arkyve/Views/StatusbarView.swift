@@ -11,17 +11,20 @@ struct StatusbarView: View {
     @Environment(MainWindowViewModel.self) var viewModel
 
     var body: some View {
-        ZStack {
+        VStack {
             HStack {
                 Spacer()
                 Text(viewModel.statusBarText)
+                    .padding(.vertical, 5)
                     .popoverTip(viewModel.tips.readOnlyStatus)
                     .tipImageStyle(.red)
-#if DEBUG
-                Text(viewModel.archive?.URL.absoluteString ?? "")
-#endif
                 Spacer()
             }
+#if DEBUG
+            Text(viewModel.archive?.URL.absoluteString ?? "")
+                .padding([.bottom], 5)
+                .hide(if: viewModel.archive == nil)
+#endif
         }
     }
 }

@@ -11,6 +11,15 @@ import System
 import TipKit
 import UniformTypeIdentifiers
 
+//struct ArkyveProgress {
+//    enum ProgressState {
+//        case idle
+//        case indeterminate
+//        case determinate(Double)
+//    }
+//    var state: ProgressState
+//}
+
 @Observable
 @MainActor
 class MainWindowViewModel {
@@ -20,6 +29,7 @@ class MainWindowViewModel {
     var focusedEntry: UUID? = nil
     var quickLookURL: URL?
     var quickLookItems: [URL] = []
+    var progressTask: Task<Void, Never>? = nil
     var progress: Double? = 0.0
     var progressString: String {
         get {
@@ -67,6 +77,8 @@ class MainWindowViewModel {
         return "\(archive.name) \(archive.dirty ? "(Unsaved)" : "")"
     }
     var statusBarText: String {
+        if progressTask != nil { return "Working..." }
+
         guard let archive else { return "No archive open" }
         var text = "\(archive.entries.count) items"
         if !archive.format.canWrite { text += " (read-only)" }
@@ -114,23 +126,27 @@ class MainWindowViewModel {
         self.disableUI = true
         defer { self.disableUI = false }
 
-        // This is an indeterminate-progress operation
-        progress = nil
-        do {
-            try await withTaskProgression { _ in
-                archive = try await loader.loadArchive()
-                sort()
+        progressTask = Task {
+            defer { progressTask = nil }
 
-                if archive?.format.asArkyveFormat?.canWrite == false {
-                    Self.didOpenReadOnlyEvent.sendDonation()
+            // This is an indeterminate-progress operation
+            progress = nil
+            do {
+                try await withTaskProgression { _ in
+                    archive = try await loader.loadArchive()
+                    sort()
+
+                    if archive?.format.asArkyveFormat?.canWrite == false {
+                        Self.didOpenReadOnlyEvent.sendDonation()
+                    }
+                } progress: { progression in
+                    Task { @MainActor in setProgress(progression) }
                 }
-            } progress: { progression in
-                Task { @MainActor in setProgress(progression) }
+            } catch let error as ArkyveError {
+                showErrors.err(error)
+            } catch {
+                showErrors.err(ArkyveError.init(.openArchive, msg: error.localizedDescription))
             }
-        } catch let error as ArkyveError {
-            showErrors.err(error)
-        } catch {
-            showErrors.err(ArkyveError.init(.openArchive, msg: error.localizedDescription))
         }
     }
 

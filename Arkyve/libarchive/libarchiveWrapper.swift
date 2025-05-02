@@ -88,7 +88,7 @@ actor libarchiveWrapper {
         return string
     }
 
-    private func readHeaders() throws(ArkyveError) -> [libarchiveHeader] {
+    private func readHeaders() async throws(ArkyveError) -> [libarchiveHeader] {
         guard readArchiveFD.archive != nil else {
             throw .init(.entries, msg: "readHeaders() called with no archive")
         }
@@ -170,6 +170,13 @@ actor libarchiveWrapper {
                     source: source, type: type, path: path, name: name,
                     pathComponents: pathComponents, size: size, atime: atime, ctime: ctime,
                     mtime: mtime, btime: btime, uid: uid, gid: gid, perms: perms))
+
+            if Task.isCancelled {
+                throw .init(.cancelled, msg: "")
+            }
+
+            await Task.unsafeProgress?.progressed()
+            await Task.yield()
         }
 
         return headers
@@ -196,13 +203,13 @@ actor libarchiveWrapper {
         return filters
     }
 
-    func readEntriesFormatFilters() throws(ArkyveError) -> (libarchiveFormat,
+    func readEntriesFormatFilters() async throws(ArkyveError) -> (libarchiveFormat,
                                                [libarchiveFilter],
                                                [libarchiveHeader]) {
         try readArchiveFD.openRead(path: path)
         defer { readArchiveFD.close() }
 
-        let headers = try readHeaders()
+        let headers = try await readHeaders()
         let format = readFormat()
         let filters = readFilters()
 
@@ -253,7 +260,7 @@ actor libarchiveWrapper {
         await Task.unsafeProgress?.progressed()
 
         do {
-            (archiveFormat, archiveFilters, archiveEntries) = try readEntriesFormatFilters()
+            (archiveFormat, archiveFilters, archiveEntries) = try await readEntriesFormatFilters()
 
             let entries = archiveEntries.map { ArchiveEntry($0) }
             AKTrace("loadArchive() found \(entries.count) entries")

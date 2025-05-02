@@ -13,13 +13,41 @@ struct ToolbarContentView: CustomizableToolbarContent {
 
     var body: some CustomizableToolbarContent {
         ToolbarItem(id: "progress") {
-            // FIXME: Can we make this clickable to cancel long-running archive tasks?
-            ProgressView(value: viewModel.progress)
+            ZStack {
+                ProgressView(value: viewModel.progress)
                     .progressViewStyle(.circular)
                     .controlSize(.small)
-                    .help("Progress: \(viewModel.progressString)")
+                    .opacity({
+                        guard let progress = viewModel.progress else { return 0.0 }
+                        if progress > 0.0 { return 1.0 }
+                        return 0.0
+                    }())
+                ProgressView()
+                    .controlSize(.small)
+                    .opacity(viewModel.progress == nil ? 1.0 : 0.0)
+            }
+            .help("Progress: \(viewModel.progressString)")
+
         }
         .customizationBehavior(.reorderable)
+        .hidden(viewModel.progress == 0.0)
+        ToolbarItem(id: "cancel") {
+            Button {
+                viewModel.progressTask?.cancel()
+            } label: {
+                Label("Stop", systemImage: "stop.circle")
+                    .symbolRenderingMode(.hierarchical)
+                    .padding()
+            }
+            .help("Stop the current archive task")
+        }
+        .customizationBehavior(.reorderable)
+        .hidden(viewModel.progressTask == nil)
+        ToolbarItem(id: "divider") {
+            HStack {
+                Divider()
+            }
+        }
         .hidden(viewModel.progress == 0.0)
 
         ToolbarItem(id: "New") {
@@ -101,18 +129,18 @@ struct ToolbarContentView: CustomizableToolbarContent {
             .disabled(viewModel.disableDelete)
         }
 
-#if DEBUG
-        ToolbarItem(id: "ShowError") {
-            Button {
-                viewModel.showErrors.err(.init(.openArchive, msg: "test2"))
-            } label: {
-                Label("DEBUG ERROR", systemImage: "ant.circle")
-                    .symbolRenderingMode(.hierarchical)
-                    .padding()
-            }
-            .help("Force an error to appear")
-        }
-#endif
+//#if DEBUG
+//        ToolbarItem(id: "ShowError") {
+//            Button {
+//                viewModel.showErrors.err(.init(.openArchive, msg: "test2"))
+//            } label: {
+//                Label("DEBUG ERROR", systemImage: "ant.circle")
+//                    .symbolRenderingMode(.hierarchical)
+//                    .padding()
+//            }
+//            .help("Force an error to appear")
+//        }
+//#endif
     }
 }
 

@@ -15,6 +15,7 @@ struct ArkyveError: Error, Equatable {
         case quicklook = "Quicklook"
         case drop = "Drop"
         case entries = "Entries"
+        case cancelled = "Cancelled"
         case unknown = "Unknown"
     }
 
@@ -27,6 +28,11 @@ struct ArkyveError: Error, Equatable {
 
     init(_ kind: ErrorKind, msg: String) {
         self.kind = kind
-        self.msg = msg
+
+        if kind == .cancelled && msg == "" {
+            self.msg = "User cancelled operation."
+        } else {
+            self.msg = msg
+        }
     }
 }

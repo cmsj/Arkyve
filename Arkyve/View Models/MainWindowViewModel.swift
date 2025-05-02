@@ -77,7 +77,6 @@ class MainWindowViewModel {
                 progress = .indeterminate
             }
         case .finished, .failed(_):
-            // Special value we can use to hide the progress view
             progress = .idle
         }
     }
@@ -109,8 +108,7 @@ class MainWindowViewModel {
         progressTask = Task {
             defer { progressTask = nil }
 
-            // This is an indeterminate-progress operation
-            progress = .idle
+            progress = .indeterminate
             do {
                 try await withTaskProgression { _ in
                     archive = try await loader.loadArchive()
@@ -148,20 +146,25 @@ class MainWindowViewModel {
         self.disableUI = true
         defer { self.disableUI = false }
 
-        let (format, filters, headerMap) = archive.metadataForSaving(overrideFormat: overrideFormat, overrideFilters: overrideFilters)
+        progressTask = Task {
+            defer { progressTask = nil }
 
-        do {
-            try await withTaskProgression(totalUnits: archive.entries.count) { progression in
-                try await loader.writeArchive(headerMap: headerMap, to: to, format: format, filters: filters, skipRead: archive.isNew)
+            progress = .indeterminate
+            let (format, filters, headerMap) = archive.metadataForSaving(overrideFormat: overrideFormat, overrideFilters: overrideFilters)
 
-                archive.didSave(to: to)
-            } progress: { progression in
-                Task { @MainActor in setProgress(progression) }
+            do {
+                try await withTaskProgression(totalUnits: archive.entries.count) { progression in
+                    try await loader.writeArchive(headerMap: headerMap, to: to, format: format, filters: filters, skipRead: archive.isNew)
+
+                    archive.didSave(to: to)
+                } progress: { progression in
+                    Task { @MainActor in setProgress(progression) }
+                }
+            } catch let error as ArkyveError {
+                showErrors.err(error)
+            } catch {
+                showErrors.err(ArkyveError(.writeArchive, msg: error.localizedDescription))
             }
-        } catch let error as ArkyveError {
-            showErrors.err(error)
-        } catch {
-            showErrors.err(ArkyveError(.writeArchive, msg: error.localizedDescription))
         }
     }
 

@@ -511,7 +511,11 @@ actor libarchiveWrapper {
                     }
                 }
 
+                if Task.isCancelled {
+                    throw .init(.cancelled, msg: "")
+                }
                 await Task.unsafeProgress?.progressed()
+                await Task.yield()
 
                 // Remove the headerMap value now we've processed it
                 headerMap.removeValue(forKey: mapEntryKey)
@@ -569,7 +573,11 @@ actor libarchiveWrapper {
                 }
             }
 
+            if Task.isCancelled {
+                throw .init(.cancelled, msg: "")
+            }
             await Task.unsafeProgress?.progressed()
+            await Task.yield()
 
             headerMap.removeValue(forKey: filePath)
         }
@@ -585,7 +593,11 @@ actor libarchiveWrapper {
             let writeEntry = try writeArchiveEntryHeader(to: writeArchiveFD, headers: flatEntry.header)
             defer { archive_entry_free(writeEntry) }
 
+            if Task.isCancelled {
+                throw .init(.cancelled, msg: "")
+            }
             await Task.unsafeProgress?.progressed()
+            await Task.yield()
 
             headerMap.removeValue(forKey: filePath)
         }

@@ -212,10 +212,6 @@ class ArchiveEntry: Identifiable {
     }
 
     @discardableResult func addChildHierarchically(_ entry: ArchiveEntry) throws(ArkyveError) -> [ArchiveEntry] {
-        // FIXME: If archive headers are not sorted properly, we will create synthetic directories and then duplicate them with real ones. We should detect this case by the paths matching, and swap out the synthetic directory for the real one
-        // HOW DO I REPRODUCE THAT???
-        // Adding kiryair:~/hacking/scratch/openstack-operator appears to trigger it.
-        // Actually, it seems non-deterministic. Suck.
         guard [.directory, .root].contains(self.type) else {
             AKError("addChildHierarchically called on something other than directory/root: \(self.type)")
             throw .init(.entries, msg: "Internal error, adding entry to non-directory")
@@ -250,6 +246,16 @@ class ArchiveEntry: Identifiable {
 
         // This entry belongs directly to us, so subsume it into our children
         if pathComponents == entry.pathComponents.dropLast() || entry.pathComponents.count == 1 {
+            // First we need to check if this entry is a directory because we might already have created a synthetic one.
+            // If we have, we'll need to reparent its children to us and remove it.
+            if let dispatchIndex = children?.firstIndex(where: { $0.name == entry.name && $0.type == .directory && $0.source.type == .Synthetic }) {
+                AKTrace("Replacing synthetic subdirectory \(entry.path)")
+                guard let duplicate = children?[dispatchIndex] else { throw .init(.readArchive, msg: "Internal error: Duplicate synthetic directory")}
+                entry.children = duplicate.children
+                self.lock.withLock { _ in
+                    _ = self.children?.remove(at: dispatchIndex)
+                }
+            }
             self.lock.withLock { _ in
                 children?.append(entry)
             }

@@ -176,7 +176,6 @@ actor libarchiveWrapper {
             }
 
             await Task.unsafeProgress?.progressed()
-            await Task.yield()
         }
 
         return headers
@@ -515,7 +514,6 @@ actor libarchiveWrapper {
                     throw .init(.cancelled, msg: "")
                 }
                 await Task.unsafeProgress?.progressed()
-                await Task.yield()
 
                 // Remove the headerMap value now we've processed it
                 headerMap.removeValue(forKey: mapEntryKey)
@@ -577,7 +575,6 @@ actor libarchiveWrapper {
                 throw .init(.cancelled, msg: "")
             }
             await Task.unsafeProgress?.progressed()
-            await Task.yield()
 
             headerMap.removeValue(forKey: filePath)
         }
@@ -597,7 +594,6 @@ actor libarchiveWrapper {
                 throw .init(.cancelled, msg: "")
             }
             await Task.unsafeProgress?.progressed()
-            await Task.yield()
 
             headerMap.removeValue(forKey: filePath)
         }

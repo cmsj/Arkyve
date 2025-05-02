@@ -298,14 +298,14 @@
 			children = (
 				4FCEEF282BEE3D3E009E9E17 /* Archive.swift */,
 				4FCEEF2B2BEE3D72009E9E17 /* ArchiveEntry.swift */,
-				4F41C4062D18A86D0011DAAB /* ArchiveEntryType.swift */,
-				4F41C4232D1DE6F10011DAAB /* ArchiveEntrySource.swift */,
-				4F41C4082D19B19D0011DAAB /* ArchiveEntryFlat.swift */,
 				4F41C4042D18A7440011DAAB /* ArchiveEntryExtractable.swift */,
+				4F41C4082D19B19D0011DAAB /* ArchiveEntryFlat.swift */,
+				4F41C4232D1DE6F10011DAAB /* ArchiveEntrySource.swift */,
+				4F41C4062D18A86D0011DAAB /* ArchiveEntryType.swift */,
 				4F41C40C2D1A171E0011DAAB /* ArkyveError.swift */,
-				4F688A592D734551003B5D60 /* DropItem.swift */,
 				4FD96DED2DBE5C6400194E95 /* ArkyveFormats.swift */,
 				4FBB81502DC4F40800EC2C83 /* ArkyveProgressState.swift */,
+				4F688A592D734551003B5D60 /* DropItem.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";

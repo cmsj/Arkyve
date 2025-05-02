@@ -123,7 +123,7 @@ class ArchiveEntry: Identifiable {
 
         let source = ArchiveEntrySource(type: .Filesystem, path: url.path)
 
-        guard let fileSize  = (stat[FileAttributeKey.size] as? NSNumber)?.int64Value,
+        guard var fileSize  = (stat[FileAttributeKey.size] as? NSNumber)?.int64Value,
               let fileBtime = stat[FileAttributeKey.creationDate] as? NSDate,
               let fileMtime = stat[FileAttributeKey.modificationDate] as? NSDate,
               let fileUID   = (stat[FileAttributeKey.ownerAccountID] as? NSNumber)?.int64Value,
@@ -157,6 +157,10 @@ class ArchiveEntry: Identifiable {
             entryType = .unknown
         default:
             entryType = .unknown
+        }
+
+        if fileType != .typeRegular {
+            fileSize = 0
         }
 
         let name = pathInArchiveComponents.last ?? "Unknown"

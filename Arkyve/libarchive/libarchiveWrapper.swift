@@ -216,7 +216,6 @@ actor libarchiveWrapper {
     }
 
     private func writeArchiveEntryHeader(to: libarchiveFD, headers: libarchiveHeader) throws(ArkyveError) -> OpaquePointer {
-        // FIXME: symlinks seem to break this
         guard let writeEntry = archive_entry_new() else {
             throw .init(.writeArchive, msg: "Unable to create new entry")
         }
@@ -436,6 +435,8 @@ actor libarchiveWrapper {
                              format: libarchiveFormat,
                              filters: [libarchiveFilter],
                              skipRead: Bool = false) async throws(ArkyveError) {
+        // FIXME: symlinks seem to break this
+
         var headerMap = headerMap
         var result: Int32 = ARCHIVE_OK
 

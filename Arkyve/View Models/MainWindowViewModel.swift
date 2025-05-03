@@ -181,28 +181,50 @@ class MainWindowViewModel {
     func extractEntries(_ chosenEntries: [ArchiveEntry], archive: Archive, destURL: URL, retainFullPath: Bool) {
         var extractableEntries: [ArchiveEntryExtractable] = []
         var itemCount = 0
-        for entry in chosenEntries {
-            let extractableEntry = entry.asExtractable(for: archive)
-            itemCount += extractableEntry.entries.count
-            extractableEntries.append(extractableEntry)
+
+        do {
+            for entry in chosenEntries {
+                let fullDestURL = destURL.appending(path: retainFullPath ? entry.path : entry.name)
+
+                switch entry.source.type {
+                case .InMemory:
+                    // FIXME: There's a version of this call that can take a FileAttributes array - we should add API to ArchiveEntry to produce one of those
+                    try FileManager.default.createDirectory(at: fullDestURL, withIntermediateDirectories: true)
+                case .Filesystem:
+                    try FileManager.default.createDirectory(at: fullDestURL.deletingLastPathComponent(), withIntermediateDirectories: true)
+                    try FileManager.default.copyItem(atPath: entry.source.path, toPath: fullDestURL.path)
+                default:
+                    let extractableEntry = entry.asExtractable(for: archive)
+                    itemCount += extractableEntry.entries.count
+                    extractableEntries.append(extractableEntry)
+                }
+            }
+        } catch {
+            showErrors.err(.init(.extract, msg: error.localizedDescription))
         }
 
-        // FIXME: This needs to borrow a lot from extractForQuicklook in terms of how it handles InMemory/Filesystem items. Then they can be unified
-        Task {
-            let loader = libarchiveWrapper(url: archive.URL)
-            self.disableUI = true
-            defer { self.disableUI = false }
+        if extractableEntries.count == 0 {
+            // We have nothing left to do
+            return
+        } else {
+            Task {
+                let loader = libarchiveWrapper(url: archive.URL)
+                self.disableUI = true
+                defer { self.disableUI = false }
 
-            do {
-                try await withTaskProgression(totalUnits: itemCount) { _ in
-                    let _ = try await loader.extractEntries(extractableEntries,
-                                                            toFolder: destURL,
-                                                            retainFullPath: retainFullPath)
-                } progress: { progression in
-                    Task { @MainActor in setProgress(progression) }
+                do {
+                    try await withTaskProgression(totalUnits: itemCount) { _ in
+                        let _ = try await loader.extractEntries(extractableEntries,
+                                                                toFolder: destURL,
+                                                                retainFullPath: retainFullPath)
+                    } progress: { progression in
+                        Task { @MainActor in setProgress(progression) }
+                    }
+                } catch let error as ArkyveError {
+                    showErrors.err(error)
+                } catch {
+                    showErrors.err(.init(.extract, msg: error.localizedDescription))
                 }
-            } catch let error as ArkyveError {
-                showErrors.err(error)
             }
         }
     }
@@ -215,10 +237,11 @@ class MainWindowViewModel {
         let chosenEntries = archive.entries.filter { selectedEntries.contains($0.id) }
         var extractableEntries: [ArchiveEntryExtractable] = []
 
-        var itemCount = extractableEntries.count
+        var itemCount = 0
         for entry in chosenEntries {
             switch entry.source.type {
             case .InMemory:
+                // FIXME: We really should just make the directory in cache and quicklook it
                 continue
             case .Filesystem:
                 // This is an entry that isn't in the archive yet, so we can skip marking it as extractable and just capture the URL
@@ -236,9 +259,11 @@ class MainWindowViewModel {
         } else if extractableEntries.count > 0 {
             // At least something is coming from the archive, so process that and then show quicklook
             Task {
-                do {
-                    let loader = libarchiveWrapper(url: archive.URL)
+                let loader = libarchiveWrapper(url: archive.URL)
+                self.disableUI = true
+                defer { self.disableUI = false }
 
+                do {
                     try await withTaskProgression(totalUnits: itemCount) { _ in
                         quickLookItems += try await loader.extractEntries(extractableEntries, toFolder: archive.cacheURL)
                         quickLookURL = quickLookItems.first
@@ -248,7 +273,7 @@ class MainWindowViewModel {
                 } catch let error as ArkyveError {
                     showErrors.err(error)
                 } catch {
-                    showErrors.err(.init(.unknown, msg: error.localizedDescription))
+                    showErrors.err(.init(.extract, msg: error.localizedDescription))
                 }
             }
         }

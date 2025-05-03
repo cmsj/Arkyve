@@ -27,6 +27,8 @@
 		4F41C4262D1EB93E0011DAAB /* MenuCommands.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F41C4252D1EB9370011DAAB /* MenuCommands.swift */; };
 		4F41C4292D1EBAC60011DAAB /* Credits.rtf in Resources */ = {isa = PBXBuildFile; fileRef = 4F41C4282D1EBAC60011DAAB /* Credits.rtf */; };
 		4F41C42A2D1EBAC60011DAAB /* Credits.rtf in Resources */ = {isa = PBXBuildFile; fileRef = 4F41C4282D1EBAC60011DAAB /* Credits.rtf */; };
+		4F545DFD2DC61C6200B435DD /* PermsEditorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F545DFC2DC61C6200B435DD /* PermsEditorView.swift */; };
+		4F545E362DC65EF000B435DD /* DateEditorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F545E352DC65EF000B435DD /* DateEditorView.swift */; };
 		4F688A5A2D734551003B5D60 /* DropItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F688A592D734551003B5D60 /* DropItem.swift */; };
 		4F688A5C2D7666FE003B5D60 /* mode_t.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F688A5B2D7666FE003B5D60 /* mode_t.swift */; };
 		4F6E856D2DC53DFB001FB62F /* dev_t.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F6E856C2DC53DF9001FB62F /* dev_t.swift */; };
@@ -98,6 +100,8 @@
 		4F41C4232D1DE6F10011DAAB /* ArchiveEntrySource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArchiveEntrySource.swift; sourceTree = "<group>"; };
 		4F41C4252D1EB9370011DAAB /* MenuCommands.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuCommands.swift; sourceTree = "<group>"; };
 		4F41C4282D1EBAC60011DAAB /* Credits.rtf */ = {isa = PBXFileReference; lastKnownFileType = text.rtf; path = Credits.rtf; sourceTree = "<group>"; };
+		4F545DFC2DC61C6200B435DD /* PermsEditorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PermsEditorView.swift; sourceTree = "<group>"; };
+		4F545E352DC65EF000B435DD /* DateEditorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateEditorView.swift; sourceTree = "<group>"; };
 		4F688A592D734551003B5D60 /* DropItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DropItem.swift; sourceTree = "<group>"; };
 		4F688A5B2D7666FE003B5D60 /* mode_t.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = mode_t.swift; sourceTree = "<group>"; };
 		4F6E856C2DC53DF9001FB62F /* dev_t.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = dev_t.swift; sourceTree = "<group>"; };
@@ -216,6 +220,8 @@
 				4F7121932C0F6938000EB268 /* TableRowTreeContent.swift */,
 				4F71218B2C0F4CCA000EB268 /* StatusbarView.swift */,
 				4F1084912C262D5D007DCC39 /* LogWindowView.swift */,
+				4F545DFC2DC61C6200B435DD /* PermsEditorView.swift */,
+				4F545E352DC65EF000B435DD /* DateEditorView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -446,6 +452,7 @@
 				4F41C4072D18A86D0011DAAB /* ArchiveEntryType.swift in Sources */,
 				4FCEEEE02BEE39E7009E9E17 /* MainWindowView.swift in Sources */,
 				4F6E856D2DC53DFB001FB62F /* dev_t.swift in Sources */,
+				4F545E362DC65EF000B435DD /* DateEditorView.swift in Sources */,
 				4F41C4032D1891230011DAAB /* libarchiveHeader.swift in Sources */,
 				4F10848E2C262396007DCC39 /* ArkyveLog.swift in Sources */,
 				4FA020492D2DD6A000E1CE58 /* withTaskProgression.swift in Sources */,
@@ -474,6 +481,7 @@
 				4F41C4242D1DE6F70011DAAB /* ArchiveEntrySource.swift in Sources */,
 				4FCEEEDE2BEE39E7009E9E17 /* ArkyveApp.swift in Sources */,
 				4F22BDC92CAE95750079FAC0 /* libarchiveFormat.swift in Sources */,
+				4F545DFD2DC61C6200B435DD /* PermsEditorView.swift in Sources */,
 				4FDC674F2C19065A00A10035 /* libarchiveWrapper.swift in Sources */,
 				4FBB814D2DC3C33D00EC2C83 /* ReadOnlyStatus.swift in Sources */,
 				4F71219D2C10BB1D000EB268 /* ErrorView.swift in Sources */,

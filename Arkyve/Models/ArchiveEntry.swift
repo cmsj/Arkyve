@@ -27,6 +27,11 @@ class ArchiveEntry: Identifiable {
 
     var isExpanded: Bool = false
     var shouldFocus: Bool = false
+    var permsPopoverShowing: Bool = false
+    var mtimePopoverShowing: Bool = false
+    var ctimePopoverShowing: Bool = false
+    var atimePopoverShowing: Bool = false
+    var btimePopoverShowing: Bool = false
 
     // Properties we will store for later use
     var name: String

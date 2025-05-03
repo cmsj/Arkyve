@@ -43,20 +43,80 @@ struct TableView: View {
                     .defaultVisibility(.hidden)
             }
             Group {
-                TableColumn("Date Modified", value: \ArchiveEntry.mtime.userFormatted)
+                TableColumn("Date Modified", value: \ArchiveEntry.mtime.userFormatted) { entry in
+                    @Bindable var entry = entry
+                    Text(entry.mtime.description)
+                        .popover(isPresented: $entry.mtimePopoverShowing, arrowEdge: .bottom) {
+                            DateEditorView(selection: $entry.mtime, label: "Date Modified")
+                        }
+                        .onTapGesture(count: 2) {
+                            entry.mtimePopoverShowing = true
+                        }
+                        .onChange(of: entry.mtime) {
+                            viewModel.archive?.setDirty()
+                        }
+                }
                     .customizationID("mtime")
-                TableColumn("Date Changed", value: \ArchiveEntry.ctime.userFormatted)
+
+                TableColumn("Date Changed", value: \ArchiveEntry.ctime.userFormatted) { entry in
+                    @Bindable var entry = entry
+                    Text(entry.ctime.description)
+                        .popover(isPresented: $entry.ctimePopoverShowing, arrowEdge: .bottom) {
+                            DateEditorView(selection: $entry.ctime, label: "Date Changed")
+                        }
+                        .onTapGesture(count: 2) {
+                            entry.ctimePopoverShowing = true
+                        }
+                        .onChange(of: entry.ctime) {
+                            viewModel.archive?.setDirty()
+                        }
+                }
                     .customizationID("ctime")
                     .defaultVisibility(.hidden)
-                TableColumn("Date Accessed", value: \ArchiveEntry.atime.userFormatted)
+
+                TableColumn("Date Accessed", value: \ArchiveEntry.atime.userFormatted) { entry in
+                    @Bindable var entry = entry
+                    Text(entry.atime.description)
+                        .popover(isPresented: $entry.atimePopoverShowing, arrowEdge: .bottom) {
+                            DateEditorView(selection: $entry.atime, label: "Date Access")
+                        }
+                        .onTapGesture(count: 2) {
+                            entry.atimePopoverShowing = true
+                        }
+                        .onChange(of: entry.atime) {
+                            viewModel.archive?.setDirty()
+                        }
+                }
                     .customizationID("atime")
                     .defaultVisibility(.hidden)
-                TableColumn("Date Created", value: \ArchiveEntry.btime.userFormatted)
+
+                TableColumn("Date Created", value: \ArchiveEntry.btime.userFormatted) { entry in
+                    @Bindable var entry = entry
+                    Text(entry.btime.description)
+                        .popover(isPresented: $entry.btimePopoverShowing, arrowEdge: .bottom) {
+                            DateEditorView(selection: $entry.btime, label: "Date Changed")
+                        }
+                        .onTapGesture(count: 2) {
+                            entry.btimePopoverShowing = true
+                        }
+                        .onChange(of: entry.btime) {
+                            viewModel.archive?.setDirty()
+                        }
+                }
                     .customizationID("btime")
                     .defaultVisibility(.hidden)
             }
             Group {
-                TableColumn("Permissions", value: \ArchiveEntry.permsString)
+                TableColumn("Permissions", value: \ArchiveEntry.permsString) { entry in
+                    @Bindable var entry = entry
+                    Text(entry.perms.string)
+                        .popover(isPresented: $entry.permsPopoverShowing, arrowEdge: .bottom) {
+                            PermsEditorView(entry: entry)
+                        }
+                        .onTapGesture(count: 2) {
+                            entry.permsPopoverShowing = true
+                        }
+                }
                     .customizationID("perms")
                     .defaultVisibility(.hidden)
                 TableColumn("UID", value: \ArchiveEntry.uidString)

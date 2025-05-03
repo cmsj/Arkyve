@@ -123,7 +123,7 @@ class Archive: Identifiable {
         URL = to
     }
 
-    private func setDirty(_ dirty: Bool = true) {
+    func setDirty(_ dirty: Bool = true) {
         AKTrace("Marking archive \(dirty ? "dirty" : "clean")")
         self.dirty = dirty
     }

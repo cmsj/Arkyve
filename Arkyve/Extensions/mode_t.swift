@@ -108,4 +108,64 @@ extension mode_t {
             return output
         }
     }
+
+    func getFlag(_ flag: mode_t) -> Bool {
+        (self & flag != 0)
+    }
+
+    mutating func setFlag(_ flag: mode_t, _ value: Bool) {
+        self = value ? self | flag : self & ~flag
+    }
+
+    var IRUSR: Bool {
+        get { self.getFlag(S_IRUSR) }
+        set { self.setFlag(S_IRUSR, newValue) }
+    }
+    var IWUSR: Bool {
+        get { self.getFlag(S_IWUSR) }
+        set { self.setFlag(S_IWUSR, newValue) }
+    }
+    var IXUSR: Bool {
+        get { self.getFlag(S_IXUSR) }
+        set { self.setFlag(S_IXUSR, newValue) }
+    }
+    var ISUSR: Bool {
+        get { self.getFlag(S_ISUID) }
+        set { self.setFlag(S_ISUID, newValue) }
+    }
+
+    var IRGRP: Bool {
+        get { self.getFlag(S_IRGRP) }
+        set { self.setFlag(S_IRGRP, newValue) }
+    }
+    var IWGRP: Bool {
+        get { self.getFlag(S_IWGRP) }
+        set { self.setFlag(S_IWGRP, newValue) }
+    }
+    var IXGRP: Bool {
+        get { self.getFlag(S_IXGRP) }
+        set { self.setFlag(S_IXGRP, newValue) }
+    }
+    var ISGRP: Bool {
+        get { self.getFlag(S_ISGID) }
+        set { self.setFlag(S_ISGID, newValue) }
+    }
+
+    var IROTH: Bool {
+        get { self.getFlag(S_IROTH) }
+        set { self.setFlag(S_IROTH, newValue) }
+    }
+    var IWOTH: Bool {
+        get { self.getFlag(S_IWOTH) }
+        set { self.setFlag(S_IWOTH, newValue) }
+    }
+    var IXOTH: Bool {
+        get { self.getFlag(S_IXOTH) }
+        set { self.setFlag(S_IXOTH, newValue) }
+    }
+
+    var ISVTX: Bool {
+        get { self.getFlag(S_ISVTX) }
+        set { self.setFlag(S_ISVTX, newValue) }
+    }
 }

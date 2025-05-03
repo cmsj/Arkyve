@@ -313,6 +313,7 @@ class MainWindowViewModel {
         button.state = .off
 
         panel.accessoryView = button
+        panel.isAccessoryViewDisclosed = true
 
         panel.allowsMultipleSelection = false
         panel.canChooseDirectories = true

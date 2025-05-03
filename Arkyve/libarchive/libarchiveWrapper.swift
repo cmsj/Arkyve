@@ -432,7 +432,6 @@ actor libarchiveWrapper {
                     let mtime = readDate(.mtime, for: entryPtr)
 
                     do {
-                        // FIXME: Can we set permissions here?
                         var attributes: [FileAttributeKey: Any] = [:]
 
                         if btime != Date(since: 0) {
@@ -441,13 +440,32 @@ actor libarchiveWrapper {
                         if mtime != Date(since: 0) {
                             attributes[.modificationDate] = mtime
                         }
+                        if attributes.count > 0 {
+                            try FileManager.default.setAttributes(attributes,
+                                                                  ofItemAtPath: outputURL.path)
+                        }
+                        attributes = [:]
+
+                        if archive_entry_perm_is_set(entryPtr) != 0 {
+                            // We're doing this separately from the above attributes because this
+                            // is more likely to fail (e.g. on a setuid file that needs root)
+                            let perms = archive_entry_perm(entryPtr)
+                            attributes[.posixPermissions] = perms
+                        }
+                        // FIXME: Pretty sure we can't do these, because you have to be root
+//                        if archive_entry_uid_is_set(entryPtr) != 0 {
+//                            attributes[.ownerAccountID] = archive_entry_uid(entryPtr)
+//                        }
+//                        if archive_entry_gid_is_set(entryPtr) != 0 {
+//                            attributes[.groupOwnerAccountID] = archive_entry_gid(entryPtr)
+//                        }
 
                         if attributes.count > 0 {
-                            try FileManager.default.setAttributes(
-                                attributes, ofItemAtPath: outputURL.path)
+                            try FileManager.default.setAttributes(attributes,
+                                                                  ofItemAtPath: outputURL.path)
                         }
                     } catch {
-                        AKWarning("Unable to read/set file attributes for \(outputURL.path)")
+                        AKWarning("Unable to set attributes on \(outputURL.path)")
                     }
 
                     await Task.unsafeProgress?.progressed()
@@ -469,8 +487,6 @@ actor libarchiveWrapper {
                              format: libarchiveFormat,
                              filters: [libarchiveFilter],
                              skipRead: Bool = false) async throws(ArkyveError) {
-        // FIXME: symlinks seem to break this
-
         var headerMap = headerMap
         var result: Int32 = ARCHIVE_OK
 

@@ -372,16 +372,17 @@ actor libarchiveWrapper {
                 if pathMap.keys.contains(path) {
                     guard let outputURL = pathMap[path] else { continue }
                     let entryType = ArchiveEntryType(rawValue: archive_entry_filetype(entryPtr))
+
+                    // Ensure all intermediate directories exist, incase we're extracting multiple levels of files that may not arrive in an order that guarantees their parent folder (synthetic or otherwise) is created first
+                    do {
+                        try FileManager.default.createDirectory(at: outputURL.deletingLastPathComponent(),
+                                                                withIntermediateDirectories: true)
+                    } catch {
+                        throw .init(.extract, msg: error.localizedDescription)
+                    }
+
                     switch entryType {
                     case .file:
-                        // Ensure all intermediate directories exist, incase we're extracting multiple levels of files that may not arrive in an order that guarantees their parent folder (synthetic or otherwise) is created first
-                        do {
-                            try FileManager.default.createDirectory(at: outputURL.deletingLastPathComponent(),
-                                                                    withIntermediateDirectories: true)
-                        } catch {
-                            throw .init(.extract, msg: error.localizedDescription)
-                        }
-
                         // Ensure our file exists
                         let handle: FileHandle
                         do {
@@ -400,12 +401,6 @@ actor libarchiveWrapper {
 
                         writtenURLs.append(outputURL)
                     case .directory:
-                        do {
-                            try FileManager.default.createDirectory(at: outputURL,
-                                                                    withIntermediateDirectories: true)
-                        } catch {
-                            throw .init(.extract, msg: error.localizedDescription)
-                        }
                         archive_read_data_skip(readArchiveFD.archive)
                         AKTrace("  Created \(outputURL.path(percentEncoded: false))")
 
@@ -414,13 +409,27 @@ actor libarchiveWrapper {
                         let linkDest = String(cString: archive_entry_symlink(entryPtr))
 
                         do {
-                            try FileManager.default.createSymbolicLink(atPath: outputURL.path,
-                                                                       withDestinationPath: linkDest,
-                                                                       overwrite: false) // FIXME: Probably set this to true?
+                            // Unlike Filemanager's createSymlink, symlink() can't auto-handle
+                            // pre-existing files, so we will need to remove whatever exists at the
+                            // path we want to write.
+                            let linkExists = try? outputURL.checkResourceIsReachable()
+                            if linkExists == true  {
+                                try FileManager.default.removeItem(at: outputURL)
+                            }
+
+                            // NOTE: We can't use FileManager to create the symlink because it will fail when
+                            // the target doesn't exist. We don't care if we're extracting a dangling symlink.
+                            let res = symlink(linkDest.cString(using: .utf8), outputURL.path.cString(using: .utf8))
+                            if res != 0 {
+                                throw ArkyveError(.extract, msg: String(cString: strerror(errno)))
+                            }
+
                             AKTrace("  Linked \(outputURL.path) to \(linkDest)")
                         } catch {
                             throw .init(.extract, msg: error.localizedDescription)
                         }
+
+                        writtenURLs.append(outputURL)
                     default:
                         AKWarning(
                             "Skipping archive entry \(path) of type \(entryType.rawValue), it is an unsupported type"

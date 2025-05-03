@@ -461,13 +461,6 @@ actor libarchiveWrapper {
                             let perms = archive_entry_perm(entryPtr)
                             attributes[.posixPermissions] = perms
                         }
-                        // FIXME: Pretty sure we can't do these, because you have to be root
-//                        if archive_entry_uid_is_set(entryPtr) != 0 {
-//                            attributes[.ownerAccountID] = archive_entry_uid(entryPtr)
-//                        }
-//                        if archive_entry_gid_is_set(entryPtr) != 0 {
-//                            attributes[.groupOwnerAccountID] = archive_entry_gid(entryPtr)
-//                        }
 
                         if attributes.count > 0 {
                             try FileManager.default.setAttributes(attributes,

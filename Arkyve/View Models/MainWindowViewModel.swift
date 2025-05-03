@@ -177,7 +177,6 @@ class MainWindowViewModel {
         }
     }
 
-    // FIXME: Quicklooking a symlink produces an error
     func extractForQuicklook() {
         guard let archive else { return }
 

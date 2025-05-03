@@ -45,6 +45,7 @@ class MainWindowViewModel {
     var disableSaveAs: Bool { get { disableUI || archive == nil }}
     var disableQuicklook: Bool { get { disableUI || selectedEntries.isEmpty }}
     var disableExtract: Bool { get { disableUI || selectedEntries.isEmpty }}
+    var disableExtractAll: Bool { get { disableUI || archive == nil || archive?.entries.count == 0 }}
     var disableRename: Bool { get { disableUI || selectedEntries.count != 1 }}
     var disableDelete: Bool { get { disableUI || selectedEntries.isEmpty }}
     var disableNewFolder: Bool { get { disableUI || archive == nil }}
@@ -177,6 +178,35 @@ class MainWindowViewModel {
         }
     }
 
+    func extractEntries(_ chosenEntries: [ArchiveEntry], archive: Archive, destURL: URL, retainFullPath: Bool) {
+        var extractableEntries: [ArchiveEntryExtractable] = []
+        var itemCount = 0
+        for entry in chosenEntries {
+            let extractableEntry = entry.asExtractable(for: archive)
+            itemCount += extractableEntry.entries.count
+            extractableEntries.append(extractableEntry)
+        }
+
+        // FIXME: This needs to borrow a lot from extractForQuicklook in terms of how it handles InMemory/Filesystem items. Then they can be unified
+        Task {
+            let loader = libarchiveWrapper(url: archive.URL)
+            self.disableUI = true
+            defer { self.disableUI = false }
+
+            do {
+                try await withTaskProgression(totalUnits: itemCount) { _ in
+                    let _ = try await loader.extractEntries(extractableEntries,
+                                                            toFolder: destURL,
+                                                            retainFullPath: retainFullPath)
+                } progress: { progression in
+                    Task { @MainActor in setProgress(progression) }
+                }
+            } catch let error as ArkyveError {
+                showErrors.err(error)
+            }
+        }
+    }
+
     func extractForQuicklook() {
         guard let archive else { return }
 
@@ -301,10 +331,9 @@ class MainWindowViewModel {
         }
     }
 
-    func extractButton(_ entries: Set<ArchiveEntry.ID>? = nil) {
-        guard let archive else { return }
+    func prepareExtractPanel() -> NSSavePanel {
+        precondition(archive != nil, "prepareExtractPanel called without ensuring archive exists")
 
-        let actualEntries = entries ?? selectedEntries
         let panel = NSOpenPanel()
 
         let button = NSButton.init()
@@ -318,39 +347,43 @@ class MainWindowViewModel {
         panel.allowsMultipleSelection = false
         panel.canChooseDirectories = true
         panel.canChooseFiles = false
+
+        return panel
+    }
+
+    func extractButton(_ entries: Set<ArchiveEntry.ID>? = nil) {
+        guard let archive else { return }
+
+        let panel = prepareExtractPanel()
+
+        let actualEntries = entries ?? selectedEntries
         panel.prompt = "Extract \(actualEntries.count) item\(actualEntries.count > 1 ? "s" : "")"
 
         // FIXME: Refactor some of this out into an extraction method?
         if panel.runModal() == .OK {
             if let destURL = panel.url {
+                let button = panel.accessoryView as! NSButton
                 let retainFullPath = button.state == .on
-                var extractableEntries: [ArchiveEntryExtractable] = []
                 let chosenEntries = archive.entries.filter { actualEntries.contains($0.id) }
 
-                var itemCount = 0
-                for entry in chosenEntries {
-                    let extractableEntry = entry.asExtractable(for: archive)
-                    itemCount += extractableEntry.entries.count
-                    extractableEntries.append(extractableEntry)
-                }
+                extractEntries(chosenEntries, archive: archive, destURL: destURL, retainFullPath: retainFullPath)
+            }
+        }
+    }
 
-                Task {
-                    let loader = libarchiveWrapper(url: archive.URL)
-                    self.disableUI = true
-                    defer { self.disableUI = false }
+    func extractAllButton() {
+        guard let archive else { return }
+        guard let chosenEntries = archive.root.children else { return }
 
-                    do {
-                        try await withTaskProgression(totalUnits: itemCount) { _ in
-                            let _ = try await loader.extractEntries(extractableEntries,
-                                                                    toFolder: destURL,
-                                                                    retainFullPath: retainFullPath)
-                        } progress: { progression in
-                            Task { @MainActor in setProgress(progression) }
-                        }
-                    } catch let error as ArkyveError {
-                        showErrors.err(error)
-                    }
-                }
+        let panel = prepareExtractPanel()
+        panel.prompt = "Extract All"
+
+        if panel.runModal() == .OK {
+            if let destURL = panel.url {
+                let button = panel.accessoryView as! NSButton
+                let retainFullPath = button.state == .on
+
+                extractEntries(chosenEntries, archive: archive, destURL: destURL, retainFullPath: retainFullPath)
             }
         }
     }

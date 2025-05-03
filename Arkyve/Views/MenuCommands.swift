@@ -71,6 +71,11 @@ struct MenuCommands: Commands {
             .keyboardShortcut("e", modifiers: [.command])
             .disabled(viewModel.disableExtract)
 
+            Button("Extract All...") {
+                viewModel.extractAllButton()
+            }
+            .disabled(viewModel.disableExtractAll)
+
             Divider()
 
             Button("Delete") {

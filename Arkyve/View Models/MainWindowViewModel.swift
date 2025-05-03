@@ -41,10 +41,7 @@ class MainWindowViewModel {
     var disableAdd: Bool { get { disableUI || archive == nil }}
     var disableRevert: Bool { get { disableUI || archive?.dirty != true || archive?.existsOnDisk != true }}
     var disableClose: Bool { get { disableUI || archive == nil }}
-    var disableSave: Bool { get { disableUI ||
-        // FIXME: Adding existsOnDisk was a mistake, now we can't Save for new archives, we have to Save As which is dumb
-        archive?.dirty != true || archive?.format.canWrite == false || archive?.existsOnDisk == false
-    }}
+    var disableSave: Bool { get { disableUI || archive?.dirty != true || archive?.format.canWrite == false }}
     var disableSaveAs: Bool { get { disableUI || archive == nil }}
     var disableQuicklook: Bool { get { disableUI || selectedEntries.isEmpty }}
     var disableExtract: Bool { get { disableUI || selectedEntries.isEmpty }}

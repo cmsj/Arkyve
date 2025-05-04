@@ -39,15 +39,25 @@ struct TableView: View {
                             }
                     }
                 }
+                .disabledCustomizationBehavior(.visibility)
                 .customizationID("name")
-                TableColumn("Size (bytes)", value: \ArchiveEntry.sizeString)
+                TableColumn("Size", value: \ArchiveEntry.sizeStringHuman) { entry in
+                    Text(entry.sizeStringHuman)
+                        .foregroundStyle(.secondary)
+                }
+                    .customizationID("sizeStringHuman")
+                    .alignment(.trailing)
+                TableColumn("Size (bytes)", value: \ArchiveEntry.sizeString) { entry in
+                    Text(entry.sizeString)
+                        .foregroundStyle(.secondary)
+                }
                     .customizationID("sizeString")
                     .alignment(.trailing)
                     .defaultVisibility(.hidden)
-                TableColumn("Size", value: \ArchiveEntry.sizeStringHuman)
-                    .customizationID("sizeStringHuman")
-                    .alignment(.trailing)
-                TableColumn("Kind", value: \ArchiveEntry.type.userString)
+                TableColumn("Kind", value: \ArchiveEntry.type.userString) { entry in
+                    Text(entry.type.userString)
+                        .foregroundStyle(.secondary)
+                }
                     .customizationID("type")
                     .defaultVisibility(.hidden)
             }
@@ -55,6 +65,7 @@ struct TableView: View {
                 TableColumn("Date Modified", value: \ArchiveEntry.mtime.userFormatted) { entry in
                     @Bindable var entry = entry
                     Text(entry.mtime.userFormatted)
+                        .foregroundStyle(.secondary)
                         .popover(isPresented: $entry.mtimePopoverShowing, arrowEdge: .bottom) {
                             DateEditorView(selection: $entry.mtime, label: "Date Modified")
                         }
@@ -70,6 +81,7 @@ struct TableView: View {
                 TableColumn("Date Changed", value: \ArchiveEntry.ctime.userFormatted) { entry in
                     @Bindable var entry = entry
                     Text(entry.ctime.userFormatted)
+                        .foregroundStyle(.secondary)
                         .popover(isPresented: $entry.ctimePopoverShowing, arrowEdge: .bottom) {
                             DateEditorView(selection: $entry.ctime, label: "Date Changed")
                         }
@@ -86,6 +98,7 @@ struct TableView: View {
                 TableColumn("Date Accessed", value: \ArchiveEntry.atime.userFormatted) { entry in
                     @Bindable var entry = entry
                     Text(entry.atime.userFormatted)
+                        .foregroundStyle(.secondary)
                         .popover(isPresented: $entry.atimePopoverShowing, arrowEdge: .bottom) {
                             DateEditorView(selection: $entry.atime, label: "Date Access")
                         }
@@ -102,6 +115,7 @@ struct TableView: View {
                 TableColumn("Date Created", value: \ArchiveEntry.btime.userFormatted) { entry in
                     @Bindable var entry = entry
                     Text(entry.btime.userFormatted)
+                        .foregroundStyle(.secondary)
                         .popover(isPresented: $entry.btimePopoverShowing, arrowEdge: .bottom) {
                             DateEditorView(selection: $entry.btime, label: "Date Changed")
                         }
@@ -119,6 +133,7 @@ struct TableView: View {
                 TableColumn("Permissions", value: \ArchiveEntry.permsString) { entry in
                     @Bindable var entry = entry
                     Text(entry.perms.string)
+                        .foregroundStyle(.secondary)
                         .popover(isPresented: $entry.permsPopoverShowing, arrowEdge: .bottom) {
                             PermsEditorView(entry: entry)
                         }
@@ -132,16 +147,28 @@ struct TableView: View {
                 }
                     .customizationID("perms")
                     .defaultVisibility(.hidden)
-                TableColumn("UID", value: \ArchiveEntry.uidString)
+                TableColumn("UID", value: \ArchiveEntry.uidString) { entry in
+                    Text(entry.uidString)
+                        .foregroundStyle(.secondary)
+                }
                     .customizationID("uid")
                     .defaultVisibility(.hidden)
-                TableColumn("GID", value: \ArchiveEntry.gidString)
+                TableColumn("GID", value: \ArchiveEntry.gidString) { entry in
+                    Text(entry.gidString)
+                        .foregroundStyle(.secondary)
+                }
                     .customizationID("gid")
                     .defaultVisibility(.hidden)
-                TableColumn("Synthetic", value: \ArchiveEntry.isSynthesizedString)
+                TableColumn("Synthetic", value: \ArchiveEntry.isSynthesizedString) { entry in
+                    Text(entry.isSynthesizedString)
+                        .foregroundStyle(.secondary)
+                }
                     .customizationID("synth")
                     .defaultVisibility(.hidden)
-                TableColumn("Symlink Target", value: \ArchiveEntry.symlinkTargetString)
+                TableColumn("Symlink Target", value: \ArchiveEntry.symlinkTargetString) { entry in
+                    Text(entry.symlinkTargetString)
+                        .foregroundStyle(.secondary)
+                }
                     .customizationID("symlinkTarget")
                     .defaultVisibility(.hidden)
                 // FIXME: Add column for rdev
@@ -150,13 +177,13 @@ struct TableView: View {
             Group {
                 TableColumn("UUID (Debug)", value: \ArchiveEntry.id.uuidString)
                     .customizationID("uuid")
-                    .defaultVisibility(.visible)
+                    .defaultVisibility(.hidden)
                 TableColumn("Source (Debug)", value: \ArchiveEntry.source.description)
                     .customizationID("source")
-                    .defaultVisibility(.visible)
+                    .defaultVisibility(.hidden)
                 TableColumn("Path (Debug)", value: \ArchiveEntry.path)
                     .customizationID("path")
-                    .defaultVisibility(.visible)
+                    .defaultVisibility(.hidden)
             }
 #endif
 

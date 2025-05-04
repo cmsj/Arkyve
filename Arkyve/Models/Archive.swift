@@ -28,6 +28,8 @@ extension Archive {
             newSort = KeyPathComparator(\ArchiveEntry.atime, order: sortDetails.order)
         case \ArchiveEntry.btime.userFormatted:
             newSort = KeyPathComparator(\ArchiveEntry.btime, order: sortDetails.order)
+        case \ArchiveEntry.sizeString, \ArchiveEntry.sizeStringHuman:
+            newSort = KeyPathComparator(\ArchiveEntry.size, order: sortDetails.order)
         default:
             newSort = sortDetails
         }

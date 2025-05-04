@@ -17,6 +17,8 @@ struct TableView: View {
 
     @FocusState var renameEntryFocus: UUID?
 
+    @ScaledMetric(relativeTo: .body) var iconSize: CGFloat = 16
+
     var body: some View {
         // NOTE: This @Bindable is an ugly hack: https://www.hackingwithswift.com/books/ios-swiftui/sharing-observable-objects-through-swiftuis-environment
         @Bindable var viewModel = viewModel
@@ -26,7 +28,10 @@ struct TableView: View {
                 TableColumn("Name", value: \ArchiveEntry.name) { entry in
                     @Bindable var entry = entry
                     HStack {
-                        Image(systemName: entry.type.rawValue)
+                        Image(nsImage: NSWorkspace.shared.icon(for: entry.utType))
+                            .resizable()
+                            .scaledToFit()
+                            .frame(height: iconSize)
                         TextField(entry.name, text: $entry.name)
                             .focused($renameEntryFocus, equals: entry.id)
                             .onSubmit {
@@ -35,8 +40,12 @@ struct TableView: View {
                     }
                 }
                 .customizationID("name")
-                TableColumn("Size", value: \ArchiveEntry.sizeString)
+                TableColumn("Size (bytes)", value: \ArchiveEntry.sizeString)
                     .customizationID("sizeString")
+                    .alignment(.trailing)
+                    .defaultVisibility(.hidden)
+                TableColumn("Size", value: \ArchiveEntry.sizeStringHuman)
+                    .customizationID("sizeStringHuman")
                     .alignment(.trailing)
                 TableColumn("Kind", value: \ArchiveEntry.type.userString)
                     .customizationID("type")

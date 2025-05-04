@@ -46,6 +46,51 @@ class ArchiveEntry: Identifiable {
     var sizeString: String {
         get { size != -1 ? String(size) : "--" }
     }
+    var sizeStringHuman: String {
+        get {
+            // Define the units and the base for calculation
+            let units = ["bytes", "KB", "MB", "GB", "TB", "PB", "EB"]
+            let base: Double = 1024.0
+
+            // Handle non-positive values
+            if type == .directory {
+                return "--"
+            }
+            guard size > 0 else {
+                return "0 bytes"
+            }
+
+            // Calculate the exponent and the value
+            let exponent = Int(log(Double(size)) / log(base))
+            // Ensure exponent doesn't exceed available units
+            let unitIndex = min(exponent, units.count - 1)
+            let value = Double(size) / pow(base, Double(unitIndex))
+
+            // Format the number
+            let formatter = NumberFormatter()
+            formatter.numberStyle = .decimal
+            // Show integer if value is whole (e.g., 1MB instead of 1.0MB)
+            formatter.minimumFractionDigits = 0
+            // Show at most one decimal place otherwise (e.g., 1.5KB)
+            formatter.maximumFractionDigits = 1
+            // Use rounding strategy that feels natural for file sizes
+            formatter.roundingMode = .halfUp
+
+            // Handle the base "bytes" case specifically (no decimals needed)
+            if unitIndex == 0 {
+                // Use the original integer value for "bytes"
+                return "\(size) \(units[unitIndex])"
+            } else {
+                // Format the calculated value for KB, MB, etc.
+                if let formattedValue = formatter.string(from: NSNumber(value: value)) {
+                    return "\(formattedValue) \(units[unitIndex])"
+                } else {
+                    // Fallback formatting in case NumberFormatter fails
+                    return String(format: "%.1f %@", value, units[unitIndex])
+                }
+            }
+        }
+    }
 
     var perms: mode_t = 0
     var permsString: String {
@@ -71,6 +116,20 @@ class ArchiveEntry: Identifiable {
     }
 
     var type: ArchiveEntryType
+    var utType: UTType {
+        switch type {
+        case .directory:
+            return .folder
+        case .symlink:
+            return .symbolicLink
+        case .blockdev, .chardev, .fifo, .socket, .unknown:
+            return .data
+        case .root:
+            return .volume
+        case .file:
+            return UTType(filenameExtension: name.pathExtension) ?? .data
+        }
+    }
 
     var symlinkTarget: String? = nil
     var rdev: dev_t? = nil

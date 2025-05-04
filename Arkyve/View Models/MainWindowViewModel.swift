@@ -418,7 +418,6 @@ class MainWindowViewModel {
         let actualEntries = entries ?? selectedEntries
         panel.prompt = "Extract \(actualEntries.count) item\(actualEntries.count > 1 ? "s" : "")"
 
-        // FIXME: Refactor some of this out into an extraction method?
         if panel.runModal() == .OK {
             if let destURL = panel.url {
                 let button = panel.accessoryView as! NSButton

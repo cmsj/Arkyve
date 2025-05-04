@@ -593,11 +593,10 @@ actor libarchiveWrapper {
                 // Nothing to do here, the header above is sufficient
                 break
             case .socket, .fifo:
-                // FIXME: Figure out what to do here
+                // NOTE: These are pretty likely to never work when writing an archive, so there's nothing we can do here
                 break
             case .unknown, .root:
-                // FIXME: Pretty sure just skip these?
-                break
+                throw .init(.writeArchive, msg: "Internal error: Attempted to write unexpected item: \(flatEntry.header.name)")
             case .file:
                 // Open the file from the filesystem if we can
                 let fileHandle: FileHandle?

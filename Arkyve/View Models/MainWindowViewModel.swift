@@ -181,10 +181,39 @@ class MainWindowViewModel {
     func extractEntries(_ chosenEntries: [ArchiveEntry], archive: Archive, destURL: URL, retainFullPath: Bool) {
         var extractableEntries: [ArchiveEntryExtractable] = []
         var itemCount = 0
+        var overwriteAll = false
 
         do {
-            for entry in chosenEntries {
+            entryLoop: for entry in chosenEntries {
                 let fullDestURL = destURL.appending(path: retainFullPath ? entry.path : entry.name)
+
+                // Check if fullDestURL exists, if it does, show an alert to ask the user if we should overwrite
+                let fullDestExists = try? fullDestURL.checkResourceIsReachable()
+                if !overwriteAll && fullDestExists == true {
+                    let alert = NSAlert()
+                    alert.addButton(withTitle: "Replace")
+                    alert.addButton(withTitle: "Replace All")
+                    alert.addButton(withTitle: "Skip")
+
+                    alert.buttons[0].hasDestructiveAction = true
+                    alert.buttons[1].hasDestructiveAction = true
+                    alert.messageText = "File already exists"
+                    alert.informativeText = "Do you want to replace \(fullDestURL.path)"
+                    alert.alertStyle = .critical
+
+                    let response = alert.runModal()
+                    switch response {
+                    case .alertFirstButtonReturn:
+                        break
+                    case .alertSecondButtonReturn:
+                        overwriteAll = true
+                    case .alertThirdButtonReturn:
+                        continue entryLoop
+                    default:
+                        AKError("Unknown response \(response)")
+                        return
+                    }
+                }
 
                 switch entry.source.type {
                 case .InMemory:
@@ -201,6 +230,7 @@ class MainWindowViewModel {
             }
         } catch {
             showErrors.err(.init(.extract, msg: error.localizedDescription))
+            // FIXME: Decide if we should abandon the operation and return
         }
 
         if extractableEntries.count == 0 {
@@ -241,7 +271,11 @@ class MainWindowViewModel {
         for entry in chosenEntries {
             switch entry.source.type {
             case .InMemory:
-                // FIXME: We really should just make the directory in cache and quicklook it
+                let dirURL = archive.cacheURL.appending(path: entry.name)
+                do {
+                    try FileManager.default.createDirectory(at: dirURL, withIntermediateDirectories: true, attributes: nil)
+                    quickLookItems.append(dirURL)
+                } catch {}
                 continue
             case .Filesystem:
                 // This is an entry that isn't in the archive yet, so we can skip marking it as extractable and just capture the URL

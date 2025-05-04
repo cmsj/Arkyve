@@ -54,7 +54,7 @@ struct TableView: View {
             Group {
                 TableColumn("Date Modified", value: \ArchiveEntry.mtime.userFormatted) { entry in
                     @Bindable var entry = entry
-                    Text(entry.mtime.description)
+                    Text(entry.mtime.userFormatted)
                         .popover(isPresented: $entry.mtimePopoverShowing, arrowEdge: .bottom) {
                             DateEditorView(selection: $entry.mtime, label: "Date Modified")
                         }
@@ -69,7 +69,7 @@ struct TableView: View {
 
                 TableColumn("Date Changed", value: \ArchiveEntry.ctime.userFormatted) { entry in
                     @Bindable var entry = entry
-                    Text(entry.ctime.description)
+                    Text(entry.ctime.userFormatted)
                         .popover(isPresented: $entry.ctimePopoverShowing, arrowEdge: .bottom) {
                             DateEditorView(selection: $entry.ctime, label: "Date Changed")
                         }
@@ -85,7 +85,7 @@ struct TableView: View {
 
                 TableColumn("Date Accessed", value: \ArchiveEntry.atime.userFormatted) { entry in
                     @Bindable var entry = entry
-                    Text(entry.atime.description)
+                    Text(entry.atime.userFormatted)
                         .popover(isPresented: $entry.atimePopoverShowing, arrowEdge: .bottom) {
                             DateEditorView(selection: $entry.atime, label: "Date Access")
                         }
@@ -101,7 +101,7 @@ struct TableView: View {
 
                 TableColumn("Date Created", value: \ArchiveEntry.btime.userFormatted) { entry in
                     @Bindable var entry = entry
-                    Text(entry.btime.description)
+                    Text(entry.btime.userFormatted)
                         .popover(isPresented: $entry.btimePopoverShowing, arrowEdge: .bottom) {
                             DateEditorView(selection: $entry.btime, label: "Date Changed")
                         }

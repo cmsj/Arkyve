@@ -186,6 +186,8 @@ class Archive: Identifiable {
     }
 
     func removeEntries(_ entries: Set<ArchiveEntry.ID>) {
+        guard entries.count > 0 else { return }
+
         // Remove entries from the root tree structure by traversing the tree
         func removeFromTree(_ node: ArchiveEntry) {
             if node.children != nil {

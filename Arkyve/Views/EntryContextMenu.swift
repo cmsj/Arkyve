@@ -31,11 +31,19 @@ struct EntryContextMenu: View {
         .keyboardShortcut("r", modifiers:[.command])
         .disabled(items.isEmpty)
 
-        Button ("Extract..."){
+        Button ("Extract...") {
             viewModel.extractButton(items)
         }
         .keyboardShortcut("e", modifiers:[.command])
         .disabled(items.isEmpty)
+
+        Divider()
+
+        // FIXME: How would we do Cut/Copy here?
+        PasteButton(supportedContentTypes: [.archiveEntryExtractable, .fileURL]) { items in
+            viewModel.processDrop(for: items)
+        }
+        .keyboardShortcut("v", modifiers:[.command])
 
         Divider()
 

@@ -578,6 +578,7 @@ class MainWindowViewModel {
 
     func buildCopyable(entries: Set<ArchiveEntry.ID>) -> [ArchiveEntryExtractable] {
         guard let archive else { return [] }
+        guard entries.count > 0 else { return [] }
 
         let items = archive.entries.filter { entries.contains($0.id) }.map { $0.asExtractable(for: archive) }
         return items
@@ -585,6 +586,7 @@ class MainWindowViewModel {
 
     func buildCuttable(entries: Set<ArchiveEntry.ID>) -> [ArchiveEntryExtractable] {
         guard let archive else { return [] }
+        guard entries.count > 0 else { return [] }
 
         let items = buildCopyable(entries: entries)
         archive.removeEntries(entries)

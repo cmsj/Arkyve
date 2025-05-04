@@ -125,6 +125,10 @@ struct TableView: View {
                         .onTapGesture(count: 2) {
                             entry.permsPopoverShowing = true
                         }
+                        // FIXME: This isn't the same as a Force Touch press, which SwiftuI currently can't recognise. Can we hack it somehow?
+                        .onLongPressGesture {
+                            entry.permsPopoverShowing = true
+                        }
                 }
                     .customizationID("perms")
                     .defaultVisibility(.hidden)

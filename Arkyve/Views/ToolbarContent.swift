@@ -96,6 +96,7 @@ struct ToolbarContentView: CustomizableToolbarContent {
             .help("Add files to this archive")
             .disabled(viewModel.disableAdd)
         }
+        // FIXME: Should this button Extract All if nothing is selected?
         ToolbarItem(id: "Extract") {
             Button {
                 viewModel.extractButton()

@@ -230,7 +230,7 @@ class MainWindowViewModel {
             }
         } catch {
             showErrors.err(.init(.extract, msg: error.localizedDescription))
-            // FIXME: Decide if we should abandon the operation and return
+            return
         }
 
         if extractableEntries.count == 0 {

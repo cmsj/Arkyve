@@ -11,8 +11,6 @@ struct EntryContextMenu: View {
     @State var viewModel: MainWindowViewModel
     let items: Set<ArchiveEntry.ID>
 
-    // FIXME: Add cut/copy/paste items per https://gist.github.com/gboyegadada/43fc5950187a3417cc9c81a6ef9f5ec5#file-transferableitemexampleview-swift-L67
-
     var body: some View {
         Button("New Folder") {
             viewModel.newFolderButton(entries: items)

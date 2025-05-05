@@ -171,7 +171,12 @@ struct TableView: View {
                 }
                     .customizationID("symlinkTarget")
                     .defaultVisibility(.hidden)
-                // FIXME: Add column for rdev
+                TableColumn("Major/Minor", value: \ArchiveEntry.rdevString) { entry in
+                    Text(entry.rdevString)
+                        .foregroundStyle(.secondary)
+                }
+                    .customizationID("rdev")
+                    .defaultVisibility(.hidden)
             }
 #if DEBUG
             Group {

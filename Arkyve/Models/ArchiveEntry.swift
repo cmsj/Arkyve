@@ -133,6 +133,9 @@ class ArchiveEntry: Identifiable {
 
     var symlinkTarget: String? = nil
     var rdev: dev_t? = nil
+    var rdevString: String {
+        return rdev?.description ?? "--"
+    }
 
     var symlinkTargetString: String {
         get { symlinkTarget != nil ? "\(symlinkTarget!)" : "--"}

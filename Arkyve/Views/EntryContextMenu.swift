@@ -31,7 +31,7 @@ struct EntryContextMenu: View {
         .keyboardShortcut("r", modifiers:[.command])
         .disabled(items.isEmpty)
 
-        Button ("Extract...") {
+        Button("Extract...") {
             viewModel.extractButton(items)
         }
         .keyboardShortcut("e", modifiers:[.command])

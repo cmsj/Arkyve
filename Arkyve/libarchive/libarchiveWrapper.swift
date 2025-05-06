@@ -361,6 +361,7 @@ actor libarchiveWrapper {
                     outputURL = toFolder.appendingPathComponent(
                         entry.path.deletingPrefix(entryBasePath))
                 }
+                // FIXME: should this be entry.source.path?
                 pathMap[entry.path] = outputURL
             }
         }

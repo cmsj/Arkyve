@@ -75,7 +75,7 @@ extension MainWindowViewModel {
         // Check if we have the base extractable entry in the archive
         let entry = archive.entryForID(entryExtractable.id)
 
-        // FIXME: If we're doing a copy, the entryID may be blank
+        // FIXME: If we have duplicated a file inside an archive and not renamed it, it will later be silently lost. Maybe here (where the duplication happens) we should check for that and rename it?
         if entry == nil || entryExtractable.isCopied == true {
             // This entry doesn't exist in the archive, or we are doing a copy.
             // This means we must be pasting after a Cut, or we're doing a Copy.

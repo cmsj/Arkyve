@@ -37,7 +37,6 @@ struct EntryContextMenu: View {
 
         Divider()
 
-        // FIXME: How would we do Cut/Copy here?
         Button("Cut") {
             Task {
                 await viewModel.cutButton(entries: items)

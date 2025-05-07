@@ -94,6 +94,7 @@ extension MainWindowViewModel {
         panel.allowsMultipleSelection = false
         panel.canChooseDirectories = true
         panel.canChooseFiles = false
+        panel.canCreateDirectories = true
 
         return panel
     }
@@ -157,10 +158,12 @@ extension MainWindowViewModel {
         let panel = NSSavePanel()
 
         panel.prompt = "Save"
-        panel.isExtensionHidden = false
         panel.nameFieldStringValue = archive!.name.deletingPathExtension
         panel.allowedContentTypes = ArkyveFormats.writeableUTTypes
         panel.showsContentTypes = true
+        panel.canCreateDirectories = true
+        panel.canSelectHiddenExtension = true
+        panel.isExtensionHidden = false
 
         let currentFormat = ArkyveFormats.initFromlibarchiveFormatForSaving(archive!.format, withFilters: archive!.filters)
         panel.currentContentType = currentFormat.utType

@@ -13,6 +13,7 @@ struct ArchiveEntryExtractable: Codable, Transferable {
     let selectedPath: String
     let id: UUID
     let entries: [ArchiveEntryFlat]
+    var isCopied: Bool = false
 
     var basePath: String { selectedPath.split(separator: "/").dropLast().joined(separator: "/") }
 

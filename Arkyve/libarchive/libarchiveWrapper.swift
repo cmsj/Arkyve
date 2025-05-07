@@ -571,6 +571,7 @@ actor libarchiveWrapper {
                 continue
             }
 
+            // FIXME: This is wrong, if we have multiple mapEntryKeys we can't archive_read_data() the same data multiple times
             for mapEntryKey in mapEntryKeys {
                 guard let header = headerMap[mapEntryKey]?.header else {
                     throw ArkyveError(.entries, msg: "Unable to fetch entry header")

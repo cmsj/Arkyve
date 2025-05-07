@@ -41,7 +41,11 @@ extension MainWindowViewModel {
         guard let archive else { return [] }
         guard entries.count > 0 else { return [] }
 
-        let items = archive.entries.filter { entries.contains($0.id) }.map { $0.asExtractable(for: archive) }
+        let items = archive.entries.filter { entries.contains($0.id) }.map {
+            var extractable = $0.asExtractable(for: archive)
+            extractable.isCopied = true
+            return extractable
+        }
         return items
     }
 

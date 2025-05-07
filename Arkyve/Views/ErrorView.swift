@@ -20,7 +20,7 @@ class ShowErrors {
 
     func clear() {
         self.error = nil
-        AKError("ShowErrors::clear")
+        AKTrace("ShowErrors::clear")
     }
 }
 

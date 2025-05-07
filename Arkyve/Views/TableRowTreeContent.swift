@@ -37,7 +37,7 @@ struct TableRowTreeContent: TableRowContent {
         }
         .onInsert(of: [.archiveEntryExtractable, .fileURL]) { index, providers in
             print("TableRowTreeContent: onInsert")
-            viewModel.processDrop(at: index, on: node, for: providers)
+            viewModel.processDrop(at: index, on: node?.id, for: providers)
         }
     }
 }

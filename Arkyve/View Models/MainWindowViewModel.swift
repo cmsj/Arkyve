@@ -253,8 +253,6 @@ class MainWindowViewModel {
 
         Task {
             let loader = libarchiveWrapper(url: archive.URL)
-            self.disableUI = true
-            defer { self.disableUI = false }
 
             do {
                 try await withTaskProgression(totalUnits: extractableEntries.count) { _ in

@@ -46,8 +46,6 @@ struct EntryContextMenu: View {
         .disabled(items.isEmpty)
 
         Button("Copy") {
-            // FIXME: THis is broken, copy does a move. (may be fixed now)
-            // FIXME: What on earth happens to .Archive entries if we copy them, do they still write properly? What happens if we renamed one of the two copies?!
             Task {
                 await viewModel.copyButton(entries: items)
             }

@@ -534,15 +534,15 @@ actor libarchiveWrapper {
         defer { writeArchiveFD.close() }
 
         var readEntry: OpaquePointer?
-        let rbuf: UnsafeMutableRawPointer = UnsafeMutableRawPointer.allocate(byteCount: 524288,
-                                                                             alignment: MemoryLayout<UInt8>.size)
-        defer { rbuf.deallocate() }
+
         var rsize: size_t = size_t()
         var wsize: size_t = size_t()
 
         // First, examine the existing archive to find entries we need to copy over
         // (Except if skipRead is set)
         writeLoop: while (!skipRead && true) {
+            var rbuf: UnsafeMutableRawPointer
+
             result = archive_read_next_header(readArchiveFD.archive, &readEntry)
             switch (result) {
             case ARCHIVE_OK:
@@ -571,7 +571,31 @@ actor libarchiveWrapper {
                 continue
             }
 
-            // FIXME: This is wrong, if we have multiple mapEntryKeys we can't archive_read_data() the same data multiple times
+            // Grab the first mapEntryKey and allocate memory to read the entire data for that entry
+            guard let mapEntryKey = mapEntryKeys.first else {
+                throw .init(.writeArchive, msg: "Internal error: mapEntryKey not found")
+            }
+
+            guard let header = headerMap[mapEntryKey]?.header else {
+                throw ArkyveError(.entries, msg: "Unable to fetch entry header")
+            }
+
+            // Read the entire entry's data into the buffer so we can write it out multiple times if necessary
+            rbuf = UnsafeMutableRawPointer.allocate(byteCount: Int(header.size), alignment: MemoryLayout<UInt8>.size)
+            defer { rbuf.deallocate() }
+
+            while true {
+                rsize = archive_read_data(readArchiveFD.archive, rbuf, Int(header.size))
+                if rsize == 0 {
+                    rsize = Int(header.size)
+                    break
+                }
+                if rsize < 0 {
+                    throw .init(.writeArchive, msg: "Failed to read source archive")
+                }
+            }
+
+            // Iterate over all of the keys that relate to this archive entry and write a new header/data section for each
             for mapEntryKey in mapEntryKeys {
                 guard let header = headerMap[mapEntryKey]?.header else {
                     throw ArkyveError(.entries, msg: "Unable to fetch entry header")
@@ -582,17 +606,14 @@ actor libarchiveWrapper {
                 defer { archive_entry_free(writeEntry) }
 
                 while true {
-                    rsize = archive_read_data(readArchiveFD.archive, rbuf, 524288)
-                    if rsize <= 0 { break }
-
                     wsize = archive_write_data(writeArchiveFD.archive, rbuf, rsize)
+                    if wsize == 0 {
+                        wsize = rsize
+                        break
+                    }
                     if wsize < 0 {
                         let errorString = String(cString: archive_error_string(writeArchiveFD.archive))
-                        throw ArkyveError(.writeArchive, msg: "Failed to write data: \(errorString)")
-                    }
-
-                    if rsize != wsize {
-                        throw ArkyveError(.writeArchive, msg: "Data mismatch: read \(rsize) but wrote \(wsize)")
+                        throw .init(.writeArchive, msg: "Failed to write data: \(errorString)")
                     }
                 }
 

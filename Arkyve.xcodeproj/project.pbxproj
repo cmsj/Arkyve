@@ -48,6 +48,10 @@
 		4FBB814D2DC3C33D00EC2C83 /* ReadOnlyStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FBB814C2DC3C33A00EC2C83 /* ReadOnlyStatus.swift */; };
 		4FBB81512DC4F40800EC2C83 /* ArkyveProgressState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FBB81502DC4F40800EC2C83 /* ArkyveProgressState.swift */; };
 		4FC3FA732DCAA8AC0087E46B /* ArchiveEntryPasteboardWriter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FC3FA722DCAA8A80087E46B /* ArchiveEntryPasteboardWriter.swift */; };
+		4FC3FA752DCB7EBA0087E46B /* MWVM+Operations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FC3FA742DCB7EB70087E46B /* MWVM+Operations.swift */; };
+		4FC3FA772DCB7FAA0087E46B /* MWVM+Buttons.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FC3FA762DCB7FA60087E46B /* MWVM+Buttons.swift */; };
+		4FC3FA792DCB80030087E46B /* MWVM+Pasteboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FC3FA782DCB7FFF0087E46B /* MWVM+Pasteboard.swift */; };
+		4FC3FA7B2DCB80720087E46B /* MWVM+DragAndDrop.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FC3FA7A2DCB806B0087E46B /* MWVM+DragAndDrop.swift */; };
 		4FCEEEDE2BEE39E7009E9E17 /* ArkyveApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FCEEEDD2BEE39E7009E9E17 /* ArkyveApp.swift */; };
 		4FCEEEE02BEE39E7009E9E17 /* MainWindowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FCEEEDF2BEE39E7009E9E17 /* MainWindowView.swift */; };
 		4FCEEEE22BEE39E9009E9E17 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4FCEEEE12BEE39E9009E9E17 /* Assets.xcassets */; };
@@ -126,6 +130,10 @@
 		4FBB814C2DC3C33A00EC2C83 /* ReadOnlyStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReadOnlyStatus.swift; sourceTree = "<group>"; };
 		4FBB81502DC4F40800EC2C83 /* ArkyveProgressState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArkyveProgressState.swift; sourceTree = "<group>"; };
 		4FC3FA722DCAA8A80087E46B /* ArchiveEntryPasteboardWriter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArchiveEntryPasteboardWriter.swift; sourceTree = "<group>"; };
+		4FC3FA742DCB7EB70087E46B /* MWVM+Operations.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MWVM+Operations.swift"; sourceTree = "<group>"; };
+		4FC3FA762DCB7FA60087E46B /* MWVM+Buttons.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MWVM+Buttons.swift"; sourceTree = "<group>"; };
+		4FC3FA782DCB7FFF0087E46B /* MWVM+Pasteboard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MWVM+Pasteboard.swift"; sourceTree = "<group>"; };
+		4FC3FA7A2DCB806B0087E46B /* MWVM+DragAndDrop.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MWVM+DragAndDrop.swift"; sourceTree = "<group>"; };
 		4FCEEEDA2BEE39E7009E9E17 /* Arkyve.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Arkyve.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4FCEEEDD2BEE39E7009E9E17 /* ArkyveApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArkyveApp.swift; sourceTree = "<group>"; };
 		4FCEEEDF2BEE39E7009E9E17 /* MainWindowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainWindowView.swift; sourceTree = "<group>"; };
@@ -232,6 +240,10 @@
 			isa = PBXGroup;
 			children = (
 				4F7121962C0F6B4C000EB268 /* MainWindowViewModel.swift */,
+				4FC3FA762DCB7FA60087E46B /* MWVM+Buttons.swift */,
+				4FC3FA742DCB7EB70087E46B /* MWVM+Operations.swift */,
+				4FC3FA782DCB7FFF0087E46B /* MWVM+Pasteboard.swift */,
+				4FC3FA7A2DCB806B0087E46B /* MWVM+DragAndDrop.swift */,
 			);
 			path = "View Models";
 			sourceTree = "<group>";
@@ -452,6 +464,7 @@
 			files = (
 				4F41C40D2D1A171E0011DAAB /* ArkyveError.swift in Sources */,
 				4F7121922C0F5DE1000EB268 /* ToolbarContent.swift in Sources */,
+				4FC3FA772DCB7FAA0087E46B /* MWVM+Buttons.swift in Sources */,
 				4F41C4072D18A86D0011DAAB /* ArchiveEntryType.swift in Sources */,
 				4FCEEEE02BEE39E7009E9E17 /* MainWindowView.swift in Sources */,
 				4F6E856D2DC53DFB001FB62F /* dev_t.swift in Sources */,
@@ -470,9 +483,11 @@
 				4FED41E32D23752A003BA92B /* libarchiveFD.swift in Sources */,
 				4FB275582DB2FD350037BD44 /* EntryContextMenu.swift in Sources */,
 				4FCEEF2C2BEE3D72009E9E17 /* ArchiveEntry.swift in Sources */,
+				4FC3FA792DCB80030087E46B /* MWVM+Pasteboard.swift in Sources */,
 				4F344ED02C335243006E1D9F /* AppDelegate.swift in Sources */,
 				4FC3FA732DCAA8AC0087E46B /* ArchiveEntryPasteboardWriter.swift in Sources */,
 				4F344ECE2C335224006E1D9F /* SettingsManager.swift in Sources */,
+				4FC3FA7B2DCB80720087E46B /* MWVM+DragAndDrop.swift in Sources */,
 				4F7121872C0F48EB000EB268 /* Array.swift in Sources */,
 				4F1084922C262D5D007DCC39 /* LogWindowView.swift in Sources */,
 				4FCEEF292BEE3D3E009E9E17 /* Archive.swift in Sources */,
@@ -491,6 +506,7 @@
 				4F71219D2C10BB1D000EB268 /* ErrorView.swift in Sources */,
 				4F688A5A2D734551003B5D60 /* DropItem.swift in Sources */,
 				4FD96DEE2DBE5C6400194E95 /* ArkyveFormats.swift in Sources */,
+				4FC3FA752DCB7EBA0087E46B /* MWVM+Operations.swift in Sources */,
 				4F41C4262D1EB93E0011DAAB /* MenuCommands.swift in Sources */,
 			);
 		};

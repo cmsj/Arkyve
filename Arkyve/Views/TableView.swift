@@ -35,7 +35,7 @@ struct TableView: View {
                         TextField(entry.name, text: $entry.name)
                             .focused($renameEntryFocus, equals: entry.id)
                             .onSubmit {
-                                viewModel.doRename(of: entry)
+                                viewModel.renameEntry(of: entry)
                             }
                     }
                 }
@@ -73,7 +73,7 @@ struct TableView: View {
                             entry.mtimePopoverShowing = true
                         }
                         .onChange(of: entry.mtime) {
-                            viewModel.archive?.setDirty()
+                            viewModel.setArchiveDirty()
                         }
                 }
                     .customizationID("mtime")
@@ -89,7 +89,7 @@ struct TableView: View {
                             entry.ctimePopoverShowing = true
                         }
                         .onChange(of: entry.ctime) {
-                            viewModel.archive?.setDirty()
+                            viewModel.setArchiveDirty()
                         }
                 }
                     .customizationID("ctime")
@@ -106,7 +106,7 @@ struct TableView: View {
                             entry.atimePopoverShowing = true
                         }
                         .onChange(of: entry.atime) {
-                            viewModel.archive?.setDirty()
+                            viewModel.setArchiveDirty()
                         }
                 }
                     .customizationID("atime")
@@ -123,7 +123,7 @@ struct TableView: View {
                             entry.btimePopoverShowing = true
                         }
                         .onChange(of: entry.btime) {
-                            viewModel.archive?.setDirty()
+                            viewModel.setArchiveDirty()
                         }
                 }
                     .customizationID("btime")

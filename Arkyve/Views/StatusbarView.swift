@@ -20,11 +20,11 @@ struct StatusbarView: View {
                     .tipImageStyle(.red)
                 Spacer()
             }
-#if DEBUG
-            Text(viewModel.archive?.URL.absoluteString ?? "")
-                .padding([.bottom], 5)
-                .hide(if: viewModel.archive == nil)
-#endif
+//#if DEBUG
+//            Text(viewModel.archive?.URL.absoluteString ?? "")
+//                .padding([.bottom], 5)
+//                .hide(if: viewModel.archive == nil)
+//#endif
         }
     }
 }

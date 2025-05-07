@@ -1,0 +1,210 @@
+//
+//  MWVM+Operations.swift
+//  Arkyve
+//
+//  Created by Chris Jones on 07/05/2025.
+//
+
+import AppKit
+
+extension MainWindowViewModel {
+    func renameEntry(of entry: ArchiveEntry) {
+        guard let archive else { return }
+
+        archive.processEntryRename(entry)
+        sort()
+    }
+
+    func sort() {
+        guard let archive else { return }
+
+        archive.sort(using: sortOrder)
+    }
+
+    func setArchiveDirty() {
+        guard let archive else { return }
+        archive.setDirty()
+    }
+
+    func newArchive() {
+        showErrors.clear()
+
+        archive = Archive()
+        selectedEntries = []
+        quickLookURL = nil
+        quickLookItems = []
+    }
+
+    func openArchive(url: URL) async {
+        showErrors.clear()
+
+        let loader = libarchiveWrapper(url: url)
+        self.disableUI = true
+        defer { self.disableUI = false }
+
+        progressTask = Task {
+            defer { progressTask = nil }
+
+            progress = .indeterminate
+            do {
+                try await withTaskProgression { _ in
+                    archive = try await loader.loadArchive()
+                    sort()
+
+                    if archive?.format.asArkyveFormat?.canWrite == false {
+                        Self.didOpenReadOnlyEvent.sendDonation()
+                    }
+                } progress: { progression in
+                    Task { @MainActor in setProgress(progression) }
+                }
+            } catch let error as ArkyveError {
+                showErrors.err(error)
+            } catch {
+                showErrors.err(ArkyveError.init(.openArchive, msg: error.localizedDescription))
+            }
+        }
+    }
+
+    func closeArchive() {
+        showErrors.clear()
+        guard archive != nil else { return }
+
+        archive = nil
+        selectedEntries = []
+        quickLookURL = nil
+        quickLookItems = []
+    }
+
+    func saveArchive(to: URL, overrideFormat: libarchiveFormat = .Unknown, overrideFilters: [libarchiveFilter] = [.None]) async {
+        guard let archive else { return }
+        showErrors.clear()
+
+        let loader = libarchiveWrapper(url: archive.URL)
+        self.disableUI = true
+        defer { self.disableUI = false }
+
+        progressTask = Task {
+            defer { progressTask = nil }
+
+            progress = .indeterminate
+            let (format, filters, headerMap) = archive.metadataForSaving(overrideFormat: overrideFormat, overrideFilters: overrideFilters)
+
+            do {
+                try await withTaskProgression(totalUnits: archive.entries.count) { progression in
+                    try await loader.writeArchive(headerMap: headerMap, to: to, format: format, filters: filters, skipRead: archive.isNew)
+
+                    archive.didSave(to: to)
+                } progress: { progression in
+                    Task { @MainActor in setProgress(progression) }
+                }
+            } catch let error as ArkyveError {
+                showErrors.err(error)
+            } catch {
+                showErrors.err(ArkyveError(.writeArchive, msg: error.localizedDescription))
+            }
+        }
+    }
+
+    func copyArchive(to: URL) {
+        guard let archive else { return }
+
+        do {
+            AKTrace("Copying \(archive.URL) to \(to)")
+            try FileManager.default.copyItem(at: archive.URL, to: to)
+            archive.didSave(to: to)
+        } catch {
+            showErrors.err(.init(.writeArchive, msg: error.localizedDescription))
+        }
+    }
+
+    func extractEntries(_ chosenEntries: [ArchiveEntry], archive: Archive, destURL: URL, retainFullPath: Bool) {
+        var extractableEntries: [ArchiveEntryExtractable] = []
+        var overwriteAll = false
+
+        entryLoop: for entry in chosenEntries {
+            let fullDestURL = destURL.appending(path: retainFullPath ? entry.path : entry.name)
+
+            // Check if fullDestURL exists, if it does, show an alert to ask the user if we should overwrite
+            let fullDestExists = try? fullDestURL.checkResourceIsReachable()
+            if !overwriteAll && fullDestExists == true {
+                let alert = NSAlert()
+                alert.addButton(withTitle: "Replace")
+                alert.addButton(withTitle: "Replace All")
+                alert.addButton(withTitle: "Skip")
+
+                alert.buttons[0].hasDestructiveAction = true
+                alert.buttons[1].hasDestructiveAction = true
+                alert.messageText = "File already exists"
+                alert.informativeText = "Do you want to replace \(fullDestURL.path)"
+                alert.alertStyle = .critical
+
+                let response = alert.runModal()
+                switch response {
+                case .alertFirstButtonReturn:
+                    break
+                case .alertSecondButtonReturn:
+                    overwriteAll = true
+                case .alertThirdButtonReturn:
+                    continue entryLoop
+                default:
+                    AKError("Unknown response \(response)")
+                    return
+                }
+            }
+
+            let extractableEntry = entry.asExtractable(for: archive)
+            extractableEntries.append(extractableEntry)
+        }
+
+        if extractableEntries.count == 0 {
+            // We have nothing left to do
+            return
+        }
+
+        Task {
+            let loader = libarchiveWrapper(url: archive.URL)
+            self.disableUI = true
+            defer { self.disableUI = false }
+
+            do {
+                try await withTaskProgression(totalUnits: extractableEntries.count) { _ in
+                    let _ = try await loader.extractEntries(extractableEntries,
+                                                            toFolder: destURL,
+                                                            retainFullPath: retainFullPath)
+                } progress: { progression in
+                    Task { @MainActor in setProgress(progression) }
+                }
+            } catch let error as ArkyveError {
+                showErrors.err(error)
+            } catch {
+                showErrors.err(.init(.extract, msg: error.localizedDescription))
+            }
+        }
+    }
+
+    func extractForQuicklook() {
+        guard let archive else { return }
+
+        let chosenEntries = archive.entries.filter { selectedEntries.contains($0.id) }
+        let extractableEntries: [ArchiveEntryExtractable] = chosenEntries.map { $0.asExtractable(for: archive) }
+
+        quickLookItems = []
+
+        Task {
+            let loader = libarchiveWrapper(url: archive.URL)
+
+            do {
+                try await withTaskProgression(totalUnits: extractableEntries.count) { _ in
+                    quickLookItems += try await loader.extractEntries(extractableEntries, toFolder: archive.cacheURL)
+                    quickLookURL = quickLookItems.first
+                } progress: { progression in
+                    Task { @MainActor in setProgress(progression) }
+                }
+            } catch let error as ArkyveError {
+                showErrors.err(error)
+            } catch {
+                showErrors.err(.init(.extract, msg: error.localizedDescription))
+            }
+        }
+    }
+}

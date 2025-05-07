@@ -108,7 +108,7 @@ struct MainWindowView: View {
                 .environment(viewModel)
             TableView()
                 .environment(viewModel)
-                .disabled(viewModel.archive == nil || viewModel.disableUI == true)
+                .disabled(viewModel.disableTableView)
             Spacer(minLength: 0)
             StatusbarView()
                 .environment(viewModel)

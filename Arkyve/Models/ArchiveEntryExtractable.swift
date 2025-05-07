@@ -23,7 +23,6 @@ struct ArchiveEntryExtractable: Codable, Transferable {
             let archiveURL = entryDraggable.archiveURL
             let cacheURL = entryDraggable.cacheURL
 
-            // FIXME: This is horribly incomplete, it needs to work like MainWindowViewModel::extractEntries
             let loader = libarchiveWrapper(url: archiveURL)
 
             do {

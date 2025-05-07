@@ -15,7 +15,7 @@ struct MenuCommands: Commands {
         CommandGroup(replacing: .undoRedo) {}
 
         // File Menu
-        CommandGroup(after: .newItem) {
+        CommandGroup(replacing: .newItem) {
             Button("New") {
                 viewModel.newButton()
             }
@@ -24,7 +24,10 @@ struct MenuCommands: Commands {
                 viewModel.openButton()
             }
             .keyboardShortcut("o", modifiers: [.command])
-            Button("Revert") {
+        }
+
+        CommandGroup(replacing: .saveItem) {
+            Button("Revert to Saved") {
                 viewModel.revertButton()
             }
             .disabled(viewModel.disableRevert)
@@ -45,9 +48,10 @@ struct MenuCommands: Commands {
 
             Divider()
 
-            Button("Close Archive") {
+            Button("Close") {
                 viewModel.closeButton()
             }
+            .keyboardShortcut("w", modifiers: [.command])
             .disabled(viewModel.disableClose)
         }
 

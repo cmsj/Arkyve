@@ -11,7 +11,10 @@ struct MenuCommands: Commands {
     @State var viewModel: MainWindowViewModel
 
     var body: some Commands {
+        // Remove undo/redo
         CommandGroup(replacing: .undoRedo) {}
+
+        // File Menu
         CommandGroup(after: .newItem) {
             Button("New") {
                 viewModel.newButton()
@@ -47,6 +50,20 @@ struct MenuCommands: Commands {
             }
             .disabled(viewModel.disableClose)
         }
+
+        // View Menu
+        CommandGroup(after: .toolbar) {
+            Button("Expand all") {
+                viewModel.expandAll(true)
+            }
+            .disabled(viewModel.disableExpandCollapse)
+            Button("Collapse all") {
+                viewModel.expandAll(false)
+            }
+            .disabled(viewModel.disableExpandCollapse)
+        }
+
+        // Items Menu
         CommandMenu("Items") {
             Button("New Folder") {
                 viewModel.newFolderButton()

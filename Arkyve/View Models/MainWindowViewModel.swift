@@ -49,6 +49,7 @@ class MainWindowViewModel {
     var disableRename: Bool { get { disableUI || selectedEntries.count != 1 }}
     var disableDelete: Bool { get { disableUI || selectedEntries.isEmpty }}
     var disableNewFolder: Bool { get { disableUI || archive == nil }}
+    var disableExpandCollapse: Bool { get { disableUI || archive == nil }}
 
     // MARK: - Dynamic UI text
     let navTitleText = "Arkyve"
@@ -518,6 +519,11 @@ class MainWindowViewModel {
         }
     }
 
+    func expandAll(_ expand: Bool) {
+        guard let archive else { return }
+        archive.entries.forEach { $0.isExpanded = expand }
+    }
+
     // MARK: - Pasteboard interaction
     func extractablesToPasteboard(extractables: [ArchiveEntryExtractable]) async {
         var writers: [ArchiveEntryPasteboardWriter] = []
@@ -651,6 +657,7 @@ class MainWindowViewModel {
             newParent = archive.root
         }
 
+        // FIXME: IF we are in a copy operation, we don't want to parent, we should be duplicating
         archive.reparentEntry(entry, to: newParent)
         sort()
     }

@@ -19,6 +19,9 @@ struct TableRowTreeContent: TableRowContent {
                 DisclosureTableRow(child, isExpanded: $child.isExpanded) {
                     TableRowTreeContent(node: child, viewModel: viewModel)
                 }
+                .contextMenu() {
+                    EntryContextMenu(viewModel: viewModel, items: [child.id])
+                }
                 .draggable(child.asExtractable(for: viewModel.archive!))
                 .dropDestination(for: DropItem.self) { items in
                     print("DisclosureTableRow: dropDestination")
@@ -26,6 +29,9 @@ struct TableRowTreeContent: TableRowContent {
                 }
             } else {
                 TableRow(child)
+                    .contextMenu() {
+                        EntryContextMenu(viewModel: viewModel, items: [child.id])
+                    }
                     .draggable(child.asExtractable(for: viewModel.archive!))
             }
         }

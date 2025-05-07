@@ -337,6 +337,7 @@ actor libarchiveWrapper {
         try readArchiveFD.openRead(path: path)
         defer { readArchiveFD.close() }
 
+        // First create any synthetic directories we need to
         let synthPaths = extractableEntries.flatMap {
             $0.entries.filter { $0.isSynthesized == true }
         }
@@ -351,6 +352,7 @@ actor libarchiveWrapper {
             writtenURLs.append(synthURL)
         }
 
+        // Second, process the rest of the entries
         for extractableEntry in extractableEntries {
             let entryBasePath = extractableEntry.basePath
             for entry in extractableEntry.entries.filter({ $0.isSynthesized == false }) {
@@ -361,9 +363,38 @@ actor libarchiveWrapper {
                     outputURL = toFolder.appendingPathComponent(
                         entry.path.deletingPrefix(entryBasePath))
                 }
-                // FIXME: should this be entry.source.path?
-                pathMap[entry.path] = outputURL
+
+                do {
+                    switch entry.source.type {
+                    case .InMemory:
+                        // FIXME: There's a version of this call that can take a FileAttributes array - we should add API to ArchiveEntry to produce one of those
+                        try FileManager.default.createDirectory(at: outputURL,
+                                                                withIntermediateDirectories: true,
+                                                                attributes: nil)
+                        writtenURLs.append(outputURL)
+                    case .Filesystem:
+                        if entry.header.type == .directory {
+                            try FileManager.default.createDirectory(at: outputURL.deletingLastPathComponent(), withIntermediateDirectories: true)
+                        } else {
+                            try FileManager.default.copyItem(atPath: entry.source.path, toPath: outputURL.path)
+                        }
+                        writtenURLs.append(outputURL)
+                    case .Archive:
+                        // FIXME: should this be entry.source.path?
+                        pathMap[entry.path] = outputURL
+                    case .Synthetic, .Root:
+                        // NOTE: Synthetic entries were handled above, before we got to this loop
+                        continue
+                    }
+                } catch {
+                    throw .init(.extract, msg: error.localizedDescription)
+                }
             }
+        }
+
+        // Performance optimisation - if we don't have any .Archive entries left, don't bother
+        if pathMap.count == 0 {
+            return writtenURLs.sorted { $0.path < $1.path }
         }
 
         AKTrace("Extracting \(pathMap.count) entries to \(toFolder.path)")

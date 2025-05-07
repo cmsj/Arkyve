@@ -354,7 +354,7 @@ class ArchiveEntry: Identifiable {
     }
 
     func flatSelf() -> ArchiveEntryFlat {
-        return ArchiveEntryFlat(path: self.path, isSynthesized: self.isSynthesized, header: self.asHeader())
+        return ArchiveEntryFlat(path: self.path, isSynthesized: self.isSynthesized, header: self.asHeader(), source: self.source)
     }
 
     func flatChildren() -> [ArchiveEntryFlat] {
@@ -372,9 +372,9 @@ class ArchiveEntry: Identifiable {
         return libarchiveHeader(source: source, type: type, path: path, name: name, pathComponents: pathComponents, size: size, atime: atime, ctime: ctime, mtime: mtime, btime: btime, uid: uid, gid: gid, perms: perms, symlinkTarget: symlinkTarget, rdev: rdev)
     }
 
-    func asExtractable(for archive: Archive?) -> ArchiveEntryExtractable {
-        return ArchiveEntryExtractable(archiveURL: archive?.URL,
-                                       cacheURL: archive?.cacheURL,
+    func asExtractable(for archive: Archive) -> ArchiveEntryExtractable {
+        return ArchiveEntryExtractable(archiveURL: archive.URL,
+                                       cacheURL: archive.cacheURL,
                                        selectedPath: self.path,
                                        id: self.id,
                                        entries: self.flatChildren())

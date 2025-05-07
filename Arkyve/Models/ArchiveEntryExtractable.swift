@@ -8,8 +8,8 @@ import SwiftUI
 import UniformTypeIdentifiers
 
 struct ArchiveEntryExtractable: Codable, Transferable {
-    let archiveURL: URL?
-    let cacheURL: URL?
+    let archiveURL: URL
+    let cacheURL: URL
     let selectedPath: String
     let id: UUID
     let entries: [ArchiveEntryFlat]
@@ -20,13 +20,10 @@ struct ArchiveEntryExtractable: Codable, Transferable {
         CodableRepresentation(contentType: .archiveEntryExtractable)
         
         DataRepresentation(exportedContentType: .fileURL) { entryDraggable in
-            guard let archiveURL = entryDraggable.archiveURL else {
-                throw ArkyveError(.drop, msg: "Unable to retrieve archive URL")
-            }
-            guard let cacheURL = entryDraggable.cacheURL else {
-                throw ArkyveError(.drop, msg: "Unable to retrieve cache URL")
-            }
+            let archiveURL = entryDraggable.archiveURL
+            let cacheURL = entryDraggable.cacheURL
 
+            // FIXME: This is horribly incomplete, it needs to work like MainWindowViewModel::extractEntries
             let loader = libarchiveWrapper(url: archiveURL)
 
             do {

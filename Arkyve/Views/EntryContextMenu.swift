@@ -26,22 +26,39 @@ struct EntryContextMenu: View {
         Button("Rename...") {
             viewModel.renameButton(entries: items)
         }
-        .keyboardShortcut("r", modifiers:[.command])
+        .keyboardShortcut("r", modifiers: [.command])
         .disabled(items.isEmpty)
 
         Button("Extract...") {
             viewModel.extractButton(items)
         }
-        .keyboardShortcut("e", modifiers:[.command])
+        .keyboardShortcut("e", modifiers: [.command])
         .disabled(items.isEmpty)
 
         Divider()
 
         // FIXME: How would we do Cut/Copy here?
+        Button("Cut") {
+            Task {
+                await viewModel.cutButton(entries: items)
+            }
+        }
+        .keyboardShortcut("x", modifiers: [.command])
+        .disabled(items.isEmpty)
+
+        Button("Copy") {
+            Task {
+                await viewModel.copyButton(entries: items)
+            }
+        }
+        .keyboardShortcut("c", modifiers: [.command])
+        .disabled(items.isEmpty)
+
+        // FIXME: This doesn't respect where we have pasted
         PasteButton(supportedContentTypes: [.archiveEntryExtractable, .fileURL]) { items in
             viewModel.processDrop(for: items)
         }
-        .keyboardShortcut("v", modifiers:[.command])
+        .keyboardShortcut("v", modifiers: [.command])
 
         Divider()
 

@@ -180,81 +180,65 @@ class MainWindowViewModel {
 
     func extractEntries(_ chosenEntries: [ArchiveEntry], archive: Archive, destURL: URL, retainFullPath: Bool) {
         var extractableEntries: [ArchiveEntryExtractable] = []
-        var itemCount = 0
         var overwriteAll = false
 
-        do {
-            entryLoop: for entry in chosenEntries {
-                let fullDestURL = destURL.appending(path: retainFullPath ? entry.path : entry.name)
+        entryLoop: for entry in chosenEntries {
+            let fullDestURL = destURL.appending(path: retainFullPath ? entry.path : entry.name)
 
-                // Check if fullDestURL exists, if it does, show an alert to ask the user if we should overwrite
-                let fullDestExists = try? fullDestURL.checkResourceIsReachable()
-                if !overwriteAll && fullDestExists == true {
-                    let alert = NSAlert()
-                    alert.addButton(withTitle: "Replace")
-                    alert.addButton(withTitle: "Replace All")
-                    alert.addButton(withTitle: "Skip")
+            // Check if fullDestURL exists, if it does, show an alert to ask the user if we should overwrite
+            let fullDestExists = try? fullDestURL.checkResourceIsReachable()
+            if !overwriteAll && fullDestExists == true {
+                let alert = NSAlert()
+                alert.addButton(withTitle: "Replace")
+                alert.addButton(withTitle: "Replace All")
+                alert.addButton(withTitle: "Skip")
 
-                    alert.buttons[0].hasDestructiveAction = true
-                    alert.buttons[1].hasDestructiveAction = true
-                    alert.messageText = "File already exists"
-                    alert.informativeText = "Do you want to replace \(fullDestURL.path)"
-                    alert.alertStyle = .critical
+                alert.buttons[0].hasDestructiveAction = true
+                alert.buttons[1].hasDestructiveAction = true
+                alert.messageText = "File already exists"
+                alert.informativeText = "Do you want to replace \(fullDestURL.path)"
+                alert.alertStyle = .critical
 
-                    let response = alert.runModal()
-                    switch response {
-                    case .alertFirstButtonReturn:
-                        break
-                    case .alertSecondButtonReturn:
-                        overwriteAll = true
-                    case .alertThirdButtonReturn:
-                        continue entryLoop
-                    default:
-                        AKError("Unknown response \(response)")
-                        return
-                    }
-                }
-
-                switch entry.source.type {
-                case .InMemory:
-                    // FIXME: There's a version of this call that can take a FileAttributes array - we should add API to ArchiveEntry to produce one of those
-                    try FileManager.default.createDirectory(at: fullDestURL, withIntermediateDirectories: true)
-                case .Filesystem:
-                    try FileManager.default.createDirectory(at: fullDestURL.deletingLastPathComponent(), withIntermediateDirectories: true)
-                    try FileManager.default.copyItem(atPath: entry.source.path, toPath: fullDestURL.path)
+                let response = alert.runModal()
+                switch response {
+                case .alertFirstButtonReturn:
+                    break
+                case .alertSecondButtonReturn:
+                    overwriteAll = true
+                case .alertThirdButtonReturn:
+                    continue entryLoop
                 default:
-                    let extractableEntry = entry.asExtractable(for: archive)
-                    itemCount += extractableEntry.entries.count
-                    extractableEntries.append(extractableEntry)
+                    AKError("Unknown response \(response)")
+                    return
                 }
             }
-        } catch {
-            showErrors.err(.init(.extract, msg: error.localizedDescription))
-            return
+
+            let extractableEntry = entry.asExtractable(for: archive)
+            extractableEntries.append(extractableEntry)
         }
 
         if extractableEntries.count == 0 {
             // We have nothing left to do
             return
-        } else {
-            Task {
-                let loader = libarchiveWrapper(url: archive.URL)
-                self.disableUI = true
-                defer { self.disableUI = false }
+        }
 
-                do {
-                    try await withTaskProgression(totalUnits: itemCount) { _ in
-                        let _ = try await loader.extractEntries(extractableEntries,
-                                                                toFolder: destURL,
-                                                                retainFullPath: retainFullPath)
-                    } progress: { progression in
-                        Task { @MainActor in setProgress(progression) }
-                    }
-                } catch let error as ArkyveError {
-                    showErrors.err(error)
-                } catch {
-                    showErrors.err(.init(.extract, msg: error.localizedDescription))
+        Task {
+            let loader = libarchiveWrapper(url: archive.URL)
+            self.disableUI = true
+            defer { self.disableUI = false }
+            
+            do {
+                try await withTaskProgression(totalUnits: extractableEntries.count) { _ in
+                    let _ = try await loader.extractEntries(extractableEntries,
+                                                            toFolder: destURL,
+                                                            retainFullPath: retainFullPath)
+                } progress: { progression in
+                    Task { @MainActor in setProgress(progression) }
                 }
+            } catch let error as ArkyveError {
+                showErrors.err(error)
+            } catch {
+                showErrors.err(.init(.extract, msg: error.localizedDescription))
             }
         }
     }
@@ -262,53 +246,27 @@ class MainWindowViewModel {
     func extractForQuicklook() {
         guard let archive else { return }
 
+        let chosenEntries = archive.entries.filter { selectedEntries.contains($0.id) }
+        let extractableEntries: [ArchiveEntryExtractable] = chosenEntries.map { $0.asExtractable(for: archive) }
+
         quickLookItems = []
 
-        let chosenEntries = archive.entries.filter { selectedEntries.contains($0.id) }
-        var extractableEntries: [ArchiveEntryExtractable] = []
+        Task {
+            let loader = libarchiveWrapper(url: archive.URL)
+            self.disableUI = true
+            defer { self.disableUI = false }
 
-        var itemCount = 0
-        for entry in chosenEntries {
-            switch entry.source.type {
-            case .InMemory:
-                let dirURL = archive.cacheURL.appending(path: entry.name)
-                do {
-                    try FileManager.default.createDirectory(at: dirURL, withIntermediateDirectories: true, attributes: nil)
-                    quickLookItems.append(dirURL)
-                } catch {}
-                continue
-            case .Filesystem:
-                // This is an entry that isn't in the archive yet, so we can skip marking it as extractable and just capture the URL
-                quickLookItems.append(URL(filePath: entry.source.path))
-            default:
-                let extractableEntry = entry.asExtractable(for: archive)
-                itemCount += extractableEntry.entries.count
-                extractableEntries.append(extractableEntry)
-            }
-        }
-
-        if extractableEntries.count == 0 && quickLookItems.count > 0 {
-            // Nothing coming from the archive, but we have things coming from the filesystem
-            quickLookURL = quickLookItems.first
-        } else if extractableEntries.count > 0 {
-            // At least something is coming from the archive, so process that and then show quicklook
-            Task {
-                let loader = libarchiveWrapper(url: archive.URL)
-                self.disableUI = true
-                defer { self.disableUI = false }
-
-                do {
-                    try await withTaskProgression(totalUnits: itemCount) { _ in
-                        quickLookItems += try await loader.extractEntries(extractableEntries, toFolder: archive.cacheURL)
-                        quickLookURL = quickLookItems.first
-                    } progress: { progression in
-                        Task { @MainActor in setProgress(progression) }
-                    }
-                } catch let error as ArkyveError {
-                    showErrors.err(error)
-                } catch {
-                    showErrors.err(.init(.extract, msg: error.localizedDescription))
+            do {
+                try await withTaskProgression(totalUnits: extractableEntries.count) { _ in
+                    quickLookItems += try await loader.extractEntries(extractableEntries, toFolder: archive.cacheURL)
+                    quickLookURL = quickLookItems.first
+                } progress: { progression in
+                    Task { @MainActor in setProgress(progression) }
                 }
+            } catch let error as ArkyveError {
+                showErrors.err(error)
+            } catch {
+                showErrors.err(.init(.extract, msg: error.localizedDescription))
             }
         }
     }
@@ -562,6 +520,35 @@ class MainWindowViewModel {
         }
     }
 
+    // MARK: - Pasteboard interaction
+    func extractablesToPasteboard(extractables: [ArchiveEntryExtractable]) async {
+        var writers: [ArchiveEntryPasteboardWriter] = []
+
+        do {
+            for extractable in extractables {
+                let fileURLData = try await extractable.exported(as: .fileURL)
+                writers.append(ArchiveEntryPasteboardWriter(entry: extractable, fileURLData: fileURLData))
+            }
+        } catch {
+            showErrors.err(.init(.extract, msg: error.localizedDescription))
+            return
+        }
+
+        let pasteboard = NSPasteboard.general
+        pasteboard.prepareForNewContents()
+        pasteboard.writeObjects(writers)
+    }
+
+    func copyButton(entries: Set<ArchiveEntry.ID>? = nil) async {
+        let extractables = buildCopyable(entries: entries ?? selectedEntries)
+        await extractablesToPasteboard(extractables: extractables)
+    }
+
+    func cutButton(entries: Set<ArchiveEntry.ID>? = nil) async {
+        let extractables = buildCuttable(entries: entries ?? selectedEntries)
+        await extractablesToPasteboard(extractables: extractables)
+    }
+
     // MARK: - Other handlers
     func doRename(of entry: ArchiveEntry) {
         guard let archive else { return }
@@ -651,6 +638,8 @@ class MainWindowViewModel {
 
         guard let archive = archive else { return }
         // 1. Find the current entry from the supplied extractable
+
+        // FIXME: If we are in a cut/paste operation, there is no entry in the Archive, we need to rebuild it and parent it
         guard let entry = archive.entryForID(entryExtractable.id) else { return }
 
         // 2. Find the new parent

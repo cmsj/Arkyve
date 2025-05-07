@@ -19,14 +19,14 @@ struct TableRowTreeContent: TableRowContent {
                 DisclosureTableRow(child, isExpanded: $child.isExpanded) {
                     TableRowTreeContent(node: child, viewModel: viewModel)
                 }
-                .draggable(child.asExtractable(for: viewModel.archive))
+                .draggable(child.asExtractable(for: viewModel.archive!))
                 .dropDestination(for: DropItem.self) { items in
                     print("DisclosureTableRow: dropDestination")
                     viewModel.handleManyDrops(on: child.id, items: items)
                 }
             } else {
                 TableRow(child)
-                    .draggable(child.asExtractable(for: viewModel.archive))
+                    .draggable(child.asExtractable(for: viewModel.archive!))
             }
         }
         .onInsert(of: [.archiveEntryExtractable, .fileURL]) { index, providers in

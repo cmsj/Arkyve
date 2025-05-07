@@ -199,7 +199,7 @@ struct TableView: View {
         .cuttable(action: {
             viewModel.buildCuttable(entries: viewModel.selectedEntries)
         })
-        .onPasteCommand(of: [.fileURL], perform: { providers in
+        .onPasteCommand(of: [.archiveEntryExtractable, .fileURL], perform: { providers in
             viewModel.processDrop(for: providers)
         })
         .opacity(isEnabled ? 1.0 : 0.5)

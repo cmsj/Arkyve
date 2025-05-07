@@ -10,4 +10,5 @@ struct ArchiveEntryFlat: Codable {
     let path: String
     let isSynthesized: Bool
     let header: libarchiveHeader
+    let source: ArchiveEntrySource
 }

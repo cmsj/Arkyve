@@ -370,12 +370,20 @@ actor libarchiveWrapper {
                 do {
                     switch entry.source.type {
                     case .InMemory, .Synthetic:
+                        if FileManager.default.fileExists(atPath: outputURL.path) {
+                            try FileManager.default.removeItem(at: outputURL)
+                        }
+
                         // FIXME: There's a version of this call that can take a FileAttributes array - we should add API to ArchiveEntry to produce one of those
                         try FileManager.default.createDirectory(at: outputURL,
                                                                 withIntermediateDirectories: true,
                                                                 attributes: nil)
                         writtenURLs.append(outputURL)
                     case .Filesystem:
+                        if FileManager.default.fileExists(atPath: outputURL.path) {
+                            try FileManager.default.removeItem(at: outputURL)
+                        }
+
                         if entry.header.type == .directory {
                             try FileManager.default.createDirectory(at: outputURL.deletingLastPathComponent(), withIntermediateDirectories: true)
                         } else {

@@ -38,8 +38,10 @@ struct ArchiveEntryExtractable: Codable, Transferable {
                 guard let firstURL = writtenURLs.first else {
                     throw ArkyveError(.entries, msg: "Unable to retrieve written URLs")
                 }
+
                 return firstURL.dataRepresentation
-            } catch {
+            } catch let error as ArkyveError {
+                AKError(error.localizedDescription)
                 throw error
             }
         }

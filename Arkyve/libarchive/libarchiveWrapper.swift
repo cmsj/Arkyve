@@ -326,6 +326,77 @@ actor libarchiveWrapper {
         return archive
     }
 
+    @discardableResult func extract(_ extractableEntries: [ArchiveEntryExtractable],
+                                    toFolder: URL, retainFullPath: Bool = false,
+                                    archiveIsNew: Bool) async throws(ArkyveError) -> [URL] {
+        var writtenURLs: [URL] = []
+
+        writtenURLs += try await extractNonArchiveEntries(extractableEntries: extractableEntries,
+                                                          toFolder: toFolder,
+                                                          retainFullPath: retainFullPath)
+
+        if archiveIsNew {
+            // Archive has never been written to disk, so there's no need to proceed beyond here
+            return writtenURLs
+        }
+
+        writtenURLs += try await extractEntries(extractableEntries,
+                                                toFolder: toFolder,
+                                                retainFullPath: retainFullPath)
+        return writtenURLs
+    }
+
+    func extractNonArchiveEntries(extractableEntries: [ArchiveEntryExtractable],
+                                  toFolder: URL,
+                                  retainFullPath: Bool = false) async throws(ArkyveError) -> [URL] {
+        var writtenURLs: [URL] = []
+
+        // Ensure toFolder exists
+        do {
+            try FileManager.default.createDirectory(at: toFolder, withIntermediateDirectories: true)
+        } catch { throw .init(.extract, msg: error.localizedDescription) }
+
+        for extractableEntry in extractableEntries {
+            let entryBasePath = extractableEntry.basePath
+            for entry in extractableEntry.entries {
+                var outputURL: URL
+                if retainFullPath {
+                    outputURL = toFolder.appendingPathComponent(entry.path)
+                } else {
+                    outputURL = toFolder.appendingPathComponent(
+                        entry.path.deletingPrefix(entryBasePath))
+                }
+
+                do {
+                    switch entry.source.type {
+                    case .InMemory, .Synthetic:
+                        // FIXME: There's a version of this call that can take a FileAttributes array - we should add API to ArchiveEntry to produce one of those
+                        try FileManager.default.createDirectory(at: outputURL,
+                                                                withIntermediateDirectories: true,
+                                                                attributes: nil)
+                        writtenURLs.append(outputURL)
+                    case .Filesystem:
+                        if entry.header.type == .directory {
+                            try FileManager.default.createDirectory(at: outputURL.deletingLastPathComponent(), withIntermediateDirectories: true)
+                        } else {
+                            try FileManager.default.copyItem(atPath: entry.source.path, toPath: outputURL.path)
+                        }
+                        writtenURLs.append(outputURL)
+                    case .Archive, .Root:
+                        // These are someone else's responsibility
+                        continue
+                    }
+                } catch {
+                    throw .init(.extract, msg: error.localizedDescription)
+                }
+            }
+
+            await Task.unsafeProgress?.progressed()
+        }
+
+        return writtenURLs
+    }
+
     // FIXME: I think there's a bug here - if we are passed information about entries that have been moved without saving, we don't extract them
     func extractEntries(_ extractableEntries: [ArchiveEntryExtractable],
                                toFolder: URL,
@@ -364,31 +435,18 @@ actor libarchiveWrapper {
                         entry.path.deletingPrefix(entryBasePath))
                 }
 
-                do {
-                    switch entry.source.type {
-                    case .InMemory:
-                        // FIXME: There's a version of this call that can take a FileAttributes array - we should add API to ArchiveEntry to produce one of those
-                        try FileManager.default.createDirectory(at: outputURL,
-                                                                withIntermediateDirectories: true,
-                                                                attributes: nil)
-                        writtenURLs.append(outputURL)
-                    case .Filesystem:
-                        if entry.header.type == .directory {
-                            try FileManager.default.createDirectory(at: outputURL.deletingLastPathComponent(), withIntermediateDirectories: true)
-                        } else {
-                            try FileManager.default.copyItem(atPath: entry.source.path, toPath: outputURL.path)
-                        }
-                        writtenURLs.append(outputURL)
-                    case .Archive:
-                        // FIXME: should this be entry.source.path?
-                        pathMap[entry.path] = outputURL
-                    case .Synthetic, .Root:
-                        // NOTE: Synthetic entries were handled above, before we got to this loop
-                        continue
-                    }
-                } catch {
-                    throw .init(.extract, msg: error.localizedDescription)
+                switch entry.source.type {
+                case .Archive:
+                    // FIXME: should this be entry.source.path?
+                    pathMap[entry.path] = outputURL
+                case .InMemory, .Filesystem, .Synthetic, .Root:
+                    // NOTE:
+                    //  * Synthetic entries were handled above, before we got to this loop
+                    //  * Root entry should never be written out
+                    //  * InMemory/Filesystem entries are the responsibility of extractNonArchiveEntries
+                    continue
                 }
+
             }
         }
 

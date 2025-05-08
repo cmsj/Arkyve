@@ -373,6 +373,7 @@ class ArchiveEntry: Identifiable {
     func asExtractable(for archive: Archive) -> ArchiveEntryExtractable {
         return ArchiveEntryExtractable(archiveURL: archive.URL,
                                        cacheURL: archive.cacheURL,
+                                       archviveIsNew: !archive.existsOnDisk,
                                        selectedPath: self.path,
                                        id: self.id,
                                        entries: self.flatChildren())

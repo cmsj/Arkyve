@@ -10,6 +10,7 @@ import UniformTypeIdentifiers
 struct ArchiveEntryExtractable: Codable, Transferable {
     let archiveURL: URL
     let cacheURL: URL
+    let archviveIsNew: Bool
     let selectedPath: String
     let id: UUID
     let entries: [ArchiveEntryFlat]
@@ -23,11 +24,12 @@ struct ArchiveEntryExtractable: Codable, Transferable {
         DataRepresentation(exportedContentType: .fileURL) { entryDraggable in
             let archiveURL = entryDraggable.archiveURL
             let cacheURL = entryDraggable.cacheURL
+            let archiveIsNew = entryDraggable.archviveIsNew
 
             let loader = libarchiveWrapper(url: archiveURL)
 
             do {
-                let writtenURLs = try await loader.extractEntries([entryDraggable], toFolder: cacheURL)
+                let writtenURLs = try await loader.extract([entryDraggable], toFolder: cacheURL, archiveIsNew: archiveIsNew)
                 guard writtenURLs.count > 0 else {
                     throw ArkyveError(.extract, msg: "Zero entries extracted")
                 }

@@ -130,6 +130,7 @@ extension MainWindowViewModel {
         var extractableEntries: [ArchiveEntryExtractable] = []
         var overwriteAll = false
 
+        // Filter out anything that already exists, but that the user doesn't want to overwrite
         entryLoop: for entry in chosenEntries {
             let fullDestURL = destURL.appending(path: retainFullPath ? entry.path : entry.name)
 
@@ -171,15 +172,14 @@ extension MainWindowViewModel {
         }
 
         Task {
-            let loader = libarchiveWrapper(url: archive.URL)
             self.disableUI = true
             defer { self.disableUI = false }
 
+            let loader = libarchiveWrapper(url: archive.URL)
+
             do {
                 try await withTaskProgression(totalUnits: extractableEntries.count) { _ in
-                    let _ = try await loader.extractEntries(extractableEntries,
-                                                            toFolder: destURL,
-                                                            retainFullPath: retainFullPath)
+                    let _ = try await loader.extract(extractableEntries, toFolder: destURL, retainFullPath: retainFullPath, archiveIsNew: !archive.existsOnDisk)
                 } progress: { progression in
                     Task { @MainActor in setProgress(progression) }
                 }
@@ -191,7 +191,6 @@ extension MainWindowViewModel {
         }
     }
 
-    // FIXME: This seems to have broken for .Filesystem items in an archive that doesn't exist on disk yet
     func extractForQuicklook() {
         guard let archive else { return }
 
@@ -205,8 +204,10 @@ extension MainWindowViewModel {
 
             do {
                 try await withTaskProgression(totalUnits: extractableEntries.count) { _ in
-                    quickLookItems += try await loader.extractEntries(extractableEntries, toFolder: archive.cacheURL)
-                    quickLookURL = quickLookItems.first
+                    quickLookItems += try await loader.extract(extractableEntries, toFolder: archive.cacheURL, archiveIsNew: !archive.existsOnDisk)
+                    if !quickLookItems.isEmpty {
+                        quickLookURL = quickLookItems.first
+                    }
                 } progress: { progression in
                     Task { @MainActor in setProgress(progression) }
                 }

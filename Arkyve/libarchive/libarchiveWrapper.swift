@@ -436,15 +436,15 @@ actor libarchiveWrapper {
                 }
 
                 switch entry.source.type {
-                case .Archive:
-                    // FIXME: should this be entry.source.path?
-                    pathMap[entry.path] = outputURL
                 case .InMemory, .Filesystem, .Synthetic, .Root:
                     // NOTE:
                     //  * Synthetic entries were handled above, before we got to this loop
                     //  * Root entry should never be written out
                     //  * InMemory/Filesystem entries are the responsibility of extractNonArchiveEntries
                     continue
+                case .Archive:
+                    // FIXME: should this be entry.source.path?
+                    pathMap[entry.path] = outputURL
                 }
 
             }

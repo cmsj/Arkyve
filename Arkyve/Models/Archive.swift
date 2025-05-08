@@ -148,21 +148,34 @@ class Archive: Identifiable {
                 throw .init(.entries, msg: "Unable to add \(url.path)")
             }
 
-            // FIXME: Check if this entry exactly matches the path of another. How will we handle a directory here if we're changing its name? That will mess up the results of the enumerator below I think?
+            // Check if another file already has the exact same path - if it does we will forcibly rename this new one
+            // (if we don't then we'll later silently drop this file when saving, because paths should be unique)
+            // We do this by adding " copy", and then an incrementing number, onto the filename until we stop hitting duplicates.
+            while case let existingEntry = entries.first(where: { $0.path == entry.path }), existingEntry != nil {
+                entry.name.filenameMustDuplicate()
+                let pathComponentsBase = entry.pathComponents.dropLast()
+                entry.pathComponents = pathComponentsBase + [entry.name]
+
+                AKTrace("Avoided duplicate path, renaming to: \(entry.name) :: \(entry.path)")
+            }
 
             newEntries.append(entry)
 
             if entry.type == .directory {
                 // We only want to add the directory itself, so we'll need to know its full path so we can substract that later
-                let parentPath = Array(url.pathComponents.dropLast())
+                let filesystemParentPath = Array(url.pathComponents.dropLast())
 
                 guard let enumerator = FileManager.default.enumerator(at: url, includingPropertiesForKeys: []) else { break }
                 for case let fileURL as URL in enumerator {
-                    guard let dirPathComponents = fileURL.pathComponents.subtractPath(parentPath) else {
+                    guard var dirPathComponents = fileURL.pathComponents.subtractPath(filesystemParentPath) else {
                         throw .init(.entries, msg: "Unable to determine file path for \(fileURL.path)")
                     }
 
-                    guard let entry = ArchiveEntry(from: fileURL, pathInArchiveComponents: targetEntry.pathComponents + dirPathComponents) else {
+                    // NOTE: We are discarding the name of the directory here and replacing it with entry.name
+                    // because we might have renamed it above while detecting dupes
+                    dirPathComponents = [entry.name] + dirPathComponents.dropFirst()
+                    guard let entry = ArchiveEntry(from: fileURL,
+                                                   pathInArchiveComponents: targetEntry.pathComponents + dirPathComponents) else {
                         throw .init(.entries, msg: "Unable to add \(fileURL.path)")
                     }
 
@@ -171,19 +184,15 @@ class Archive: Identifiable {
             }
         }
 
-        // Store all the new entries
-        var addedEntries: [ArchiveEntry] = []
-
         // Add directories first so we create as few synthetic directories as possible and later have to re-parent their children
         let (newDirs, newFiles) = newEntries.filterBothwise { entry in entry.type == .directory }
         do {
-            addedEntries += try root.addChildrenHierarchically(newDirs)
-            addedEntries += try root.addChildrenHierarchically(newFiles)
+            try root.addChildrenHierarchically(newDirs)
+            try root.addChildrenHierarchically(newFiles)
         } catch {
             throw error
         }
 
-        // FIXME: Why is this newEntries and not addedEntries?
         entries += newEntries
 
         self.setDirty()

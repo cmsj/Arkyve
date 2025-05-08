@@ -148,6 +148,8 @@ class Archive: Identifiable {
                 throw .init(.entries, msg: "Unable to add \(url.path)")
             }
 
+            // FIXME: Check if this entry exactly matches the path of another. How will we handle a directory here if we're changing its name? That will mess up the results of the enumerator below I think?
+
             newEntries.append(entry)
 
             if entry.type == .directory {
@@ -172,6 +174,7 @@ class Archive: Identifiable {
         // Store all the new entries
         var addedEntries: [ArchiveEntry] = []
 
+        // Add directories first so we create as few synthetic directories as possible and later have to re-parent their children
         let (newDirs, newFiles) = newEntries.filterBothwise { entry in entry.type == .directory }
         do {
             addedEntries += try root.addChildrenHierarchically(newDirs)
@@ -180,6 +183,7 @@ class Archive: Identifiable {
             throw error
         }
 
+        // FIXME: Why is this newEntries and not addedEntries?
         entries += newEntries
 
         self.setDirty()

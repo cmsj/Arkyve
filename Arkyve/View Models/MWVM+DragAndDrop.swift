@@ -75,7 +75,6 @@ extension MainWindowViewModel {
         // Check if we have the base extractable entry in the archive
         let entry = archive.entryForID(entryExtractable.id)
 
-        // FIXME: If we have duplicated a file inside an archive and not renamed it, it will later be silently lost. Maybe here (where the duplication happens) we should check for that and rename it?
         if entry == nil || entryExtractable.isCopied == true {
             // This entry doesn't exist in the archive, or we are doing a copy.
             // This means we must be pasting after a Cut, or we're doing a Copy.
@@ -93,6 +92,22 @@ extension MainWindowViewModel {
                         throw ArkyveError(.drop, msg: "Unable to find new path for \(newEntry.path)")
                     }
                     newEntry.pathComponents = newParentPathComponents + newPathComponents
+
+                    // Check if another file already has the exact same path - if it does we will forcibly rename this new one
+                    // (if we don't then we'll later silently drop this file when saving, because paths should be unique)
+                    // We do this by adding " copy" onto the filename until we stop hitting duplicates.
+                    // FIXME: Finder does this by going " copy", "copy 2", "copy 3", etc. Can we clone that behaviour?
+                    while case let existingEntry = archive.entries.first(where: { $0.path == newEntry.path }), existingEntry != nil {
+                        let nameBase = newEntry.name.deletingPathExtension
+                        let nameExt = newEntry.name.pathExtension != "" ? ".\(newEntry.name.pathExtension)" : ""
+                        newEntry.name = "\(nameBase) copy\(nameExt)"
+
+                        let pathComponentsBase = newEntry.pathComponents.dropLast()
+                        newEntry.pathComponents = pathComponentsBase + [newEntry.name]
+
+                        AKTrace("Avoided duplicate path, renaming to: \(newEntry.name) :: \(newEntry.path)")
+                    }
+
                     modifiedEntries.append(newEntry)
                 }
 

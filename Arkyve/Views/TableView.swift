@@ -207,6 +207,11 @@ struct TableView: View {
             EntryContextMenu(viewModel: viewModel, items: items)
         }
         .onKeyPress(.space, action: {
+            if renameEntryFocus != nil {
+                // We're renaming a file, we do not want to try and Quick Look it
+                return .ignored
+            }
+
             if viewModel.selectedEntries.count > 0 {
                 viewModel.extractForQuicklook()
                 return .handled

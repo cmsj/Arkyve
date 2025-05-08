@@ -11,8 +11,12 @@ extension MainWindowViewModel {
     func renameEntry(of entry: ArchiveEntry) {
         guard let archive else { return }
 
-        archive.processEntryRename(entry)
-        sort()
+        do {
+            try archive.processEntryRename(entry)
+            sort()
+        } catch {
+            showErrors.err(error)
+        }
     }
 
     func sort() {
@@ -182,6 +186,7 @@ extension MainWindowViewModel {
         }
     }
 
+    // FIXME: This seems to have broken for .Filesystem items in an archive that doesn't exist on disk yet
     func extractForQuicklook() {
         guard let archive else { return }
 

@@ -96,12 +96,24 @@ extension MainWindowViewModel {
                     // Check if another file already has the exact same path - if it does we will forcibly rename this new one
                     // (if we don't then we'll later silently drop this file when saving, because paths should be unique)
                     // We do this by adding " copy" onto the filename until we stop hitting duplicates.
-                    // FIXME: Finder does this by going " copy", "copy 2", "copy 3", etc. Can we clone that behaviour?
                     while case let existingEntry = archive.entries.first(where: { $0.path == newEntry.path }), existingEntry != nil {
-                        let nameBase = newEntry.name.deletingPathExtension
+                        var nameBase = newEntry.name.deletingPathExtension
                         let nameExt = newEntry.name.pathExtension != "" ? ".\(newEntry.name.pathExtension)" : ""
-                        newEntry.name = "\(nameBase) copy\(nameExt)"
 
+                        var result = false
+                        if nameBase.hasSuffix(" copy") {
+                            nameBase.append(" 2")
+                            result = true
+                        } else if nameBase.contains(" copy") {
+                            result = nameBase.incrementTrailingInteger()
+                        }
+
+                        if result != true {
+                            // We either didn't have a " copy" suffix, or weren't able to increment it, so add " copy"
+                            nameBase = "\(nameBase) copy"
+                        }
+
+                        newEntry.name = "\(nameBase)\(nameExt)"
                         let pathComponentsBase = newEntry.pathComponents.dropLast()
                         newEntry.pathComponents = pathComponentsBase + [newEntry.name]
 

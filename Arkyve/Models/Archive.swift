@@ -275,7 +275,8 @@ class Archive: Identifiable {
         return nil
     }
 
-    func processEntryRename(_ entry: ArchiveEntry) {
+    // FIXME: This should check if the new path matches a pre-existing path and if so, it should throw
+    func processEntryRename(_ entry: ArchiveEntry) throws(ArkyveError) {
         // Get the parent's path components (if any)
         let parentPathComponents = entry.pathComponents.dropLast()
         

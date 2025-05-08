@@ -231,14 +231,12 @@ class ArchiveEntry: Identifiable {
         case .typeCharacterSpecial:
             entryType = .chardev
             filePerms |= S_IFCHR
-            // FIXME: Check if this works
             var buf = stat()
             stat(url.path.cString(using: .utf8)!, &buf)
             rdev = buf.st_rdev
         case .typeBlockSpecial:
             entryType = .blockdev
             filePerms |= S_IFBLK
-            // FIXME: Check if this works
             var buf = stat()
             stat(url.path.cString(using: .utf8)!, &buf)
             rdev = buf.st_rdev

@@ -143,6 +143,7 @@ extension MainWindowViewModel {
         }
 
         do {
+            // FIXME: Decide what to do about duplicate files, probably handle it inside addFiles (e.g. if someone drags the same file in twice)
             try archive.addFiles(from: [fileURL], parent: newParent)
             sort()
         } catch {

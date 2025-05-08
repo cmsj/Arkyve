@@ -85,4 +85,27 @@ extension String {
             return false
         }
     }
+
+    mutating func filenameMustDuplicate() {
+        var nameBase = self.deletingPathExtension
+        let nameExt = self.pathExtension != "" ? ".\(self.pathExtension)" : ""
+
+        var result = false
+        if nameBase.hasSuffix(" copy") {
+            // We already end with " copy", so add a hard-coded " 2" to the end
+            nameBase.append(" 2")
+            result = true
+        } else if nameBase.contains(" copy") {
+            // ^^ This isn't great, we should really check if we end with " copy [0-9]+"
+            // Increment the number after " copy" if we can
+            result = nameBase.incrementTrailingInteger()
+        }
+
+        if result != true {
+            // We either didn't have a " copy" suffix, or weren't able to increment it, so add " copy"
+            nameBase = "\(nameBase) copy"
+        }
+
+        self = "\(nameBase)\(nameExt)"
+    }
 }

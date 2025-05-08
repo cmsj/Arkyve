@@ -35,7 +35,11 @@ struct TableView: View {
                         TextField(entry.name, text: $entry.name)
                             .focused($renameEntryFocus, equals: entry.id)
                             .onSubmit {
-                                viewModel.renameEntry(of: entry)
+                                do {
+                                    try viewModel.renameEntry(of: entry)
+                                } catch {
+                                    renameEntryFocus = entry.id
+                                }
                             }
                     }
                 }

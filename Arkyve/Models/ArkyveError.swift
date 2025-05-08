@@ -16,6 +16,7 @@ struct ArkyveError: Error, Equatable {
         case drop = "Drop"
         case entries = "Entries"
         case cancelled = "Cancelled"
+        case rename = "Rename"
         case unknown = "Unknown"
     }
 

@@ -290,6 +290,12 @@ class Archive: Identifiable {
 
     // FIXME: This should check if the new path matches a pre-existing path and if so, it should throw
     func processEntryRename(_ entry: ArchiveEntry) throws(ArkyveError) {
+        // First, check if the user has renamed us to a duplicate of another name
+        let possibleDuplicateEntries = self.entries.filter { $0.name == entry.name && $0.id != entry.id }
+        if !possibleDuplicateEntries.isEmpty {
+            throw ArkyveError(.rename, msg: "\(entry.name) already exists")
+        }
+
         // Get the parent's path components (if any)
         let parentPathComponents = entry.pathComponents.dropLast()
         

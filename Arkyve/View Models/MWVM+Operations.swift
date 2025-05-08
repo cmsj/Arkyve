@@ -8,14 +8,19 @@
 import AppKit
 
 extension MainWindowViewModel {
-    func renameEntry(of entry: ArchiveEntry) {
+    // It's unusual to have something throwing here, but we want to
+    // surface a rename failure up to the UI so it can keep the item focused
+    func renameEntry(of entry: ArchiveEntry) throws(ArkyveError) {
         guard let archive else { return }
-
         do {
             try archive.processEntryRename(entry)
+            if showErrors.error?.kind == .rename {
+                showErrors.error = nil
+            }
             sort()
         } catch {
             showErrors.err(error)
+            throw error
         }
     }
 

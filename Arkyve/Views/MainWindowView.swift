@@ -11,7 +11,7 @@ struct MainWindowView: View {
     @Environment(MainWindowViewModel.self) var viewModel
     
     func shutdownSaveRequest() {
-        // FIXME: This is pretty disgusting, we're replicating various parts of the view model's closeButton/saveButton. Can we refactor all of them to be more wholistic?
+        // NOTE: Try and keep this in sync with the view model's closeButton/saveButton
         print("shutdownSaveRequest")
 
         defer { SettingsManager.shared.removeCacheDirectories() }

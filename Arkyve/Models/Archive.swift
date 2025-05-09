@@ -225,7 +225,7 @@ class Archive: Identifiable {
 
     func reparentEntry(_ entry: ArchiveEntry, to newParent: ArchiveEntry) {
         // 3. Remove from current parent
-        func removeFromParent(_ entry: ArchiveEntry) {
+        func removeEntryFromParent(_ entry: ArchiveEntry) {
             // Find the parent in the archive's entries. We don't need to walk the tree, we can iterate archive.entries
             let parent = parentForEntry(entry)
 //            entries.first(where: { parent in
@@ -242,13 +242,29 @@ class Archive: Identifiable {
                 root.children?.removeAll { $0.id == entry.id }
             }
         }
-        removeFromParent(entry)
+
+        func updateChildrenPathComponents(of entry: ArchiveEntry, replacing: [String], with: [String]) {
+            for child in entry.children ?? [] {
+                child.pathComponents = child.pathComponents.replacing(replacing, with: with)
+                if child.children != nil {
+                    updateChildrenPathComponents(of: child, replacing: replacing, with: with)
+                }
+            }
+        }
+
+        let originalParentPathComponents = Array(entry.pathComponents.dropLast())
+        removeEntryFromParent(entry)
 
         // 4. Update pathComponents to the new parent + name
         entry.pathComponents = newParent.pathComponents + [entry.name]
 
         // 5. Add to new parent
         newParent.children?.append(entry)
+
+        // Any child entries also need to have their path updated
+        if entry.type == .directory {
+            updateChildrenPathComponents(of: entry, replacing: originalParentPathComponents, with: newParent.pathComponents)
+        }
 
         // Mark the archive as dirty since we've made changes
         setDirty()

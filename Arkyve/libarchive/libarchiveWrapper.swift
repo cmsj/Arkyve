@@ -405,7 +405,6 @@ actor libarchiveWrapper {
         return writtenURLs
     }
 
-    // FIXME: I think there's a bug here - if we are passed information about entries that have been moved without saving, we don't extract them
     func extractEntries(_ extractableEntries: [ArchiveEntryExtractable],
                                toFolder: URL,
                                retainFullPath: Bool = false) async throws(ArkyveError) -> [URL] {
@@ -451,8 +450,7 @@ actor libarchiveWrapper {
                     //  * InMemory/Filesystem entries are the responsibility of extractNonArchiveEntries
                     continue
                 case .Archive:
-                    // FIXME: should this be entry.source.path?
-                    pathMap[entry.path] = outputURL
+                    pathMap[entry.source.path] = outputURL
                 }
 
             }

@@ -53,7 +53,6 @@ struct EntryContextMenu: View {
         .keyboardShortcut("c", modifiers: [.command])
         .disabled(items.isEmpty)
 
-        // FIXME: This doesn't respect where we have pasted
         PasteButton(supportedContentTypes: [.archiveEntryExtractable, .fileURL]) { providers in
             viewModel.processDrop(on: self.items.first, for: providers)
         }

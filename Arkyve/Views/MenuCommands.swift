@@ -46,6 +46,12 @@ struct MenuCommands: Commands {
             .keyboardShortcut("s", modifiers: [.command, .option])
             .disabled(viewModel.disableSaveAs)
 
+            Button("Extract All...") {
+                viewModel.extractAllButton()
+            }
+            .keyboardShortcut("e", modifiers: [.command, .option])
+            .disabled(viewModel.disableExtractAll)
+
             Divider()
 
             Button("Close") {
@@ -95,6 +101,7 @@ struct MenuCommands: Commands {
             Button("Extract All...") {
                 viewModel.extractAllButton()
             }
+            .keyboardShortcut("e", modifiers: [.command, .option])
             .disabled(viewModel.disableExtractAll)
 
             Divider()

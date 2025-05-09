@@ -44,12 +44,6 @@ struct ToolbarContentView: CustomizableToolbarContent {
         }
         .customizationBehavior(.reorderable)
         .hidden(viewModel.progressTask == nil)
-        ToolbarItem(id: "divider") {
-            HStack {
-                Divider()
-            }
-        }
-        .hidden(viewModel.progress == .idle)
 
         ToolbarItem(id: "New") {
             Button {
@@ -83,6 +77,12 @@ struct ToolbarContentView: CustomizableToolbarContent {
             }
             .help("Close this archive")
             .disabled(viewModel.disableClose)
+        }
+
+        ToolbarItem(id: "divider") {
+            HStack {
+                Divider()
+            }
         }
 
         ToolbarItem(id: "Add") {

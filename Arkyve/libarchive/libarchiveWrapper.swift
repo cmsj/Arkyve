@@ -374,10 +374,9 @@ actor libarchiveWrapper {
                             try FileManager.default.removeItem(at: outputURL)
                         }
 
-                        // FIXME: There's a version of this call that can take a FileAttributes array - we should add API to ArchiveEntry to produce one of those
                         try FileManager.default.createDirectory(at: outputURL,
                                                                 withIntermediateDirectories: true,
-                                                                attributes: nil)
+                                                                attributes: entry.fileManagerAttributes)
                         writtenURLs.append(outputURL)
                     case .Filesystem:
                         if FileManager.default.fileExists(atPath: outputURL.path) {
@@ -385,7 +384,9 @@ actor libarchiveWrapper {
                         }
 
                         if entry.header.type == .directory {
-                            try FileManager.default.createDirectory(at: outputURL.deletingLastPathComponent(), withIntermediateDirectories: true)
+                            try FileManager.default.createDirectory(at: outputURL.deletingLastPathComponent(),
+                                                                    withIntermediateDirectories: true,
+                                                                    attributes: entry.fileManagerAttributes)
                         } else {
                             try FileManager.default.copyItem(atPath: entry.source.path, toPath: outputURL.path)
                         }
@@ -405,10 +406,15 @@ actor libarchiveWrapper {
         return writtenURLs
     }
 
+    struct ExtractPathMap {
+        let outputURL: URL
+        let entry: ArchiveEntryFlat
+    }
+
     func extractEntries(_ extractableEntries: [ArchiveEntryExtractable],
                                toFolder: URL,
                                retainFullPath: Bool = false) async throws(ArkyveError) -> [URL] {
-        var pathMap: [String: URL] = [:]
+        var pathMap: [String: ExtractPathMap] = [:]
         var writtenURLs: [URL] = []
         var entryPtr: OpaquePointer?
 
@@ -450,7 +456,7 @@ actor libarchiveWrapper {
                     //  * InMemory/Filesystem entries are the responsibility of extractNonArchiveEntries
                     continue
                 case .Archive:
-                    pathMap[entry.source.path] = outputURL
+                    pathMap[entry.source.path] = ExtractPathMap(outputURL: outputURL, entry: entry)
                 }
 
             }
@@ -466,7 +472,8 @@ actor libarchiveWrapper {
         while archive_read_next_header(readArchiveFD.archive, &entryPtr) == ARCHIVE_OK {
             if let path = entryPath(entryPtr) {
                 if pathMap.keys.contains(path) {
-                    guard let outputURL = pathMap[path] else { continue }
+                    guard let exportPathMap = pathMap[path] else { continue }
+                    let outputURL = exportPathMap.outputURL
                     let entryType = ArchiveEntryType(rawValue: archive_entry_filetype(entryPtr))
 
                     // Ensure all intermediate directories exist, incase we're extracting multiple levels of files that may not arrive in an order that guarantees their parent folder (synthetic or otherwise) is created first
@@ -532,36 +539,9 @@ actor libarchiveWrapper {
                         )
                     }
 
-                    // Set some metadata on the filesystem object we just wrote
-                    let btime = readDate(.btime, for: entryPtr)
-                    let mtime = readDate(.mtime, for: entryPtr)
-
                     do {
-                        var attributes: [FileAttributeKey: Any] = [:]
-
-                        if btime != Date(since: 0) {
-                            attributes[.creationDate] = btime
-                        }
-                        if mtime != Date(since: 0) {
-                            attributes[.modificationDate] = mtime
-                        }
-                        if attributes.count > 0 {
-                            try FileManager.default.setAttributes(attributes,
-                                                                  ofItemAtPath: outputURL.path)
-                        }
-                        attributes = [:]
-
-                        if archive_entry_perm_is_set(entryPtr) != 0 {
-                            // We're doing this separately from the above attributes because this
-                            // is more likely to fail (e.g. on a setuid file that needs root)
-                            let perms = archive_entry_perm(entryPtr)
-                            attributes[.posixPermissions] = perms
-                        }
-
-                        if attributes.count > 0 {
-                            try FileManager.default.setAttributes(attributes,
-                                                                  ofItemAtPath: outputURL.path)
-                        }
+                        try FileManager.default.setAttributes(exportPathMap.entry.fileManagerAttributes,
+                                                              ofItemAtPath: outputURL.path)
                     } catch {
                         AKWarning("Unable to set attributes on \(outputURL.path)")
                     }

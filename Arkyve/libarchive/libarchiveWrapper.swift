@@ -596,6 +596,7 @@ actor libarchiveWrapper {
             case ARCHIVE_FATAL:
                 throw ArkyveError(.writeArchive, msg: "Unable to read archive")
             default:
+                // FIXME: Why are we doing this?
                 break writeLoop
             }
 
@@ -616,12 +617,9 @@ actor libarchiveWrapper {
             }
 
             // Grab the first mapEntryKey and allocate memory to read the entire data for that entry
-            guard let mapEntryKey = mapEntryKeys.first else {
+            guard let mapEntryKey = mapEntryKeys.first,
+                  let header = headerMap[mapEntryKey]?.header else {
                 throw .init(.writeArchive, msg: "Internal error: mapEntryKey not found")
-            }
-
-            guard let header = headerMap[mapEntryKey]?.header else {
-                throw ArkyveError(.entries, msg: "Unable to fetch entry header")
             }
 
             // Read the entire entry's data into the buffer so we can write it out multiple times if necessary

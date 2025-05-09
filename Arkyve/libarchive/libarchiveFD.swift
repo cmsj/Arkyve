@@ -109,6 +109,7 @@ struct libarchiveFD {
                 archive_read_support_format_raw(archive)
                 archive_read_support_filter_all(archive)
 
+                // Rewind our file descriptor so we can start reading it again
                 lseek(fd, 0, SEEK_SET)
                 let ptr = archive_read_open_fd(archive, fd, 10240)
                 if ptr == ARCHIVE_OK {

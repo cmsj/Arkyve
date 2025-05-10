@@ -64,6 +64,13 @@
             "x-source" : "openai"
           }
         },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "%@는 이미 존재합니다",
+            "x-source" : "openai"
+          }
+        },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "needs_review",
@@ -142,6 +149,13 @@
             "x-source" : "openai"
           }
         },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "%lld개",
+            "x-source" : "openai"
+          }
+        },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "needs_review",
@@ -206,6 +220,13 @@
           "stringUnit" : {
             "state" : "needs_review",
             "value" : "追加",
+            "x-source" : "openai"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "추가",
             "x-source" : "openai"
           }
         },
@@ -276,6 +297,13 @@
             "x-source" : "openai"
           }
         },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "파일\/폴더 추가...",
+            "x-source" : "openai"
+          }
+        },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "needs_review",
@@ -340,6 +368,13 @@
           "stringUnit" : {
             "state" : "needs_review",
             "value" : "このアーカイブにファイルを追加する",
+            "x-source" : "openai"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "이 아카이브에 파일 추가",
             "x-source" : "openai"
           }
         },
@@ -410,6 +445,13 @@
             "x-source" : "openai"
           }
         },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "취소",
+            "x-source" : "openai"
+          }
+        },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "needs_review",
@@ -474,6 +516,13 @@
           "stringUnit" : {
             "state" : "needs_review",
             "value" : "ログをクリア",
+            "x-source" : "openai"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "로그 지우기",
             "x-source" : "openai"
           }
         },
@@ -544,6 +593,13 @@
             "x-source" : "openai"
           }
         },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "닫기",
+            "x-source" : "openai"
+          }
+        },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "needs_review",
@@ -608,6 +664,13 @@
           "stringUnit" : {
             "state" : "needs_review",
             "value" : "アーカイブを閉じる",
+            "x-source" : "openai"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "아카이브 닫기",
             "x-source" : "openai"
           }
         },
@@ -678,6 +741,13 @@
             "x-source" : "openai"
           }
         },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "이 아카이브 닫기",
+            "x-source" : "openai"
+          }
+        },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "needs_review",
@@ -742,6 +812,13 @@
           "stringUnit" : {
             "state" : "needs_review",
             "value" : "保存せずに閉じますか？",
+            "x-source" : "openai"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "저장하지 않고 닫으시겠습니까?",
             "x-source" : "openai"
           }
         },
@@ -812,6 +889,13 @@
             "x-source" : "openai"
           }
         },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "모두 접기",
+            "x-source" : "openai"
+          }
+        },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "needs_review",
@@ -879,6 +963,13 @@
             "x-source" : "openai"
           }
         },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "복사",
+            "x-source" : "openai"
+          }
+        },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "needs_review",
@@ -942,6 +1033,13 @@
           "stringUnit" : {
             "state" : "needs_review",
             "value" : "%1$@ を開くことができませんでした（%2$d）",
+            "x-source" : "openai"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "%1$@을(를) 열 수 없습니다 (%2$d)",
             "x-source" : "openai"
           }
         },
@@ -1012,6 +1110,13 @@
             "x-source" : "openai"
           }
         },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "새 아카이브 생성",
+            "x-source" : "openai"
+          }
+        },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "needs_review",
@@ -1079,6 +1184,13 @@
             "x-source" : "openai"
           }
         },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "잘라내기",
+            "x-source" : "openai"
+          }
+        },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "needs_review",
@@ -1142,6 +1254,13 @@
           "stringUnit" : {
             "state" : "needs_review",
             "value" : "書き込み中にデータサイズの不一致が発生しました。期待されたサイズは%1$lldバイトですが、実際には%2$lldバイトが書き込まれました。",
+            "x-source" : "openai"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "쓰기 중 데이터 크기 불일치: 예상된 바이트 수는 %1$lld이지만, 실제로 기록된 바이트 수는 %2$lld입니다.",
             "x-source" : "openai"
           }
         },
@@ -1212,6 +1331,13 @@
             "x-source" : "openai"
           }
         },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "접근한 날짜",
+            "x-source" : "openai"
+          }
+        },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "needs_review",
@@ -1276,6 +1402,13 @@
           "stringUnit" : {
             "state" : "needs_review",
             "value" : "日付変更",
+            "x-source" : "openai"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "날짜 변경됨",
             "x-source" : "openai"
           }
         },
@@ -1346,6 +1479,13 @@
             "x-source" : "openai"
           }
         },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "생성 날짜",
+            "x-source" : "openai"
+          }
+        },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "needs_review",
@@ -1410,6 +1550,13 @@
           "stringUnit" : {
             "state" : "needs_review",
             "value" : "変更日",
+            "x-source" : "openai"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "수정된 날짜",
             "x-source" : "openai"
           }
         },
@@ -1480,6 +1627,13 @@
             "x-source" : "openai"
           }
         },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "삭제",
+            "x-source" : "openai"
+          }
+        },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "needs_review",
@@ -1544,6 +1698,13 @@
           "stringUnit" : {
             "state" : "needs_review",
             "value" : "選択したファイル\/フォルダを削除",
+            "x-source" : "openai"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "선택한 파일\/폴더 삭제",
             "x-source" : "openai"
           }
         },
@@ -1614,6 +1775,13 @@
             "x-source" : "openai"
           }
         },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "표시된 오류: %@",
+            "x-source" : "openai"
+          }
+        },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "needs_review",
@@ -1678,6 +1846,13 @@
           "stringUnit" : {
             "state" : "needs_review",
             "value" : "すべて展開",
+            "x-source" : "openai"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "모두 펼치기",
             "x-source" : "openai"
           }
         },
@@ -1748,6 +1923,13 @@
             "x-source" : "openai"
           }
         },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "모두 추출...",
+            "x-source" : "openai"
+          }
+        },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "needs_review",
@@ -1812,6 +1994,13 @@
           "stringUnit" : {
             "state" : "needs_review",
             "value" : "選択したファイル\/フォルダを展開",
+            "x-source" : "openai"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "선택한 파일\/폴더 추출",
             "x-source" : "openai"
           }
         },
@@ -1882,6 +2071,13 @@
             "x-source" : "openai"
           }
         },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "추출...",
+            "x-source" : "openai"
+          }
+        },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "needs_review",
@@ -1946,6 +2142,13 @@
           "stringUnit" : {
             "state" : "needs_review",
             "value" : "読み込み用のファイルを開くことができませんでした: %@",
+            "x-source" : "openai"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "파일을 읽기 위해 여는 데 실패했습니다: %@",
             "x-source" : "openai"
           }
         },
@@ -2016,6 +2219,13 @@
             "x-source" : "openai"
           }
         },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "소스 아카이브를 읽는 데 실패했습니다.",
+            "x-source" : "openai"
+          }
+        },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "needs_review",
@@ -2080,6 +2290,13 @@
           "stringUnit" : {
             "state" : "needs_review",
             "value" : "データの書き込みに失敗しました: %@",
+            "x-source" : "openai"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "데이터 쓰기에 실패했습니다: %@",
             "x-source" : "openai"
           }
         },
@@ -2149,6 +2366,13 @@
             "value" : "GID",
             "x-source" : "openai"
           }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "GID",
+            "x-source" : "openai"
+          }
         }
       }
     },
@@ -2207,6 +2431,13 @@
           "stringUnit" : {
             "state" : "needs_review",
             "value" : "グループ：",
+            "x-source" : "openai"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "그룹:",
             "x-source" : "openai"
           }
         },
@@ -2277,6 +2508,13 @@
             "x-source" : "openai"
           }
         },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "헤더 맵 불일치",
+            "x-source" : "openai"
+          }
+        },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "needs_review",
@@ -2341,6 +2579,13 @@
           "stringUnit" : {
             "state" : "needs_review",
             "value" : "内部エラー、エントリをエッジノードに追加中",
+            "x-source" : "openai"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "내부 오류, 엣지 노드에 항목 추가 중",
             "x-source" : "openai"
           }
         },
@@ -2411,6 +2656,13 @@
             "x-source" : "openai"
           }
         },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "내부 오류: 디렉토리가 아닌 곳에 항목을 추가하려고 시도함",
+            "x-source" : "openai"
+          }
+        },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "needs_review",
@@ -2475,6 +2727,13 @@
           "stringUnit" : {
             "state" : "needs_review",
             "value" : "内部エラー: 予期しない項目を書き込もうとしました: %@",
+            "x-source" : "openai"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "내부 오류: 예상치 못한 항목을 쓰려고 시도했습니다: %@",
             "x-source" : "openai"
           }
         },
@@ -2545,6 +2804,13 @@
             "x-source" : "openai"
           }
         },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "내부 오류: 중복된 생성 디렉토리",
+            "x-source" : "openai"
+          }
+        },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "needs_review",
@@ -2609,6 +2875,13 @@
           "stringUnit" : {
             "state" : "needs_review",
             "value" : "内部エラー: mapEntryKey が見つかりません",
+            "x-source" : "openai"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "내부 오류: 맵 항목 키를 찾을 수 없음",
             "x-source" : "openai"
           }
         },
@@ -2679,6 +2952,13 @@
             "x-source" : "openai"
           }
         },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "내부 헤더 맵 불일치",
+            "x-source" : "openai"
+          }
+        },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "needs_review",
@@ -2743,6 +3023,13 @@
           "stringUnit" : {
             "state" : "needs_review",
             "value" : "アイテム",
+            "x-source" : "openai"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "항목",
             "x-source" : "openai"
           }
         },
@@ -2814,6 +3101,13 @@
             "x-source" : "openai"
           }
         },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "종류",
+            "x-source" : "openai"
+          }
+        },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "needs_review",
@@ -2878,6 +3172,13 @@
           "stringUnit" : {
             "state" : "needs_review",
             "value" : "レベル",
+            "x-source" : "openai"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "레벨",
             "x-source" : "openai"
           }
         },
@@ -2948,6 +3249,13 @@
             "x-source" : "openai"
           }
         },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "로그 뷰어",
+            "x-source" : "openai"
+          }
+        },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "needs_review",
@@ -3012,6 +3320,13 @@
           "stringUnit" : {
             "state" : "needs_review",
             "value" : "メジャー\/マイナー",
+            "x-source" : "openai"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "주요\/부차",
             "x-source" : "openai"
           }
         },
@@ -3082,6 +3397,13 @@
             "x-source" : "openai"
           }
         },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "메모리 할당 실패",
+            "x-source" : "openai"
+          }
+        },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "needs_review",
@@ -3146,6 +3468,13 @@
           "stringUnit" : {
             "state" : "needs_review",
             "value" : "メッセージ",
+            "x-source" : "openai"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "메시지",
             "x-source" : "openai"
           }
         },
@@ -3216,6 +3545,13 @@
             "x-source" : "openai"
           }
         },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "최소 레벨",
+            "x-source" : "openai"
+          }
+        },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "needs_review",
@@ -3280,6 +3616,13 @@
           "stringUnit" : {
             "state" : "needs_review",
             "value" : "名前",
+            "x-source" : "openai"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "이름",
             "x-source" : "openai"
           }
         },
@@ -3350,6 +3693,13 @@
             "x-source" : "openai"
           }
         },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "새로 만들기",
+            "x-source" : "openai"
+          }
+        },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "needs_review",
@@ -3414,6 +3764,13 @@
           "stringUnit" : {
             "state" : "needs_review",
             "value" : "新規フォルダ",
+            "x-source" : "openai"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "새 폴더",
             "x-source" : "openai"
           }
         },
@@ -3484,6 +3841,13 @@
             "x-source" : "openai"
           }
         },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "아카이브 열기",
+            "x-source" : "openai"
+          }
+        },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "needs_review",
@@ -3548,6 +3912,13 @@
           "stringUnit" : {
             "state" : "needs_review",
             "value" : "開く...",
+            "x-source" : "openai"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "열기...",
             "x-source" : "openai"
           }
         },
@@ -3618,6 +3989,13 @@
             "x-source" : "openai"
           }
         },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "기타:",
+            "x-source" : "openai"
+          }
+        },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "needs_review",
@@ -3682,6 +4060,13 @@
           "stringUnit" : {
             "state" : "needs_review",
             "value" : "パス (デバッグ)",
+            "x-source" : "openai"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "경로 (디버그)",
             "x-source" : "openai"
           }
         },
@@ -3752,6 +4137,13 @@
             "x-source" : "openai"
           }
         },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "권한",
+            "x-source" : "openai"
+          }
+        },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "needs_review",
@@ -3816,6 +4208,13 @@
           "stringUnit" : {
             "state" : "needs_review",
             "value" : "クイックルック",
+            "x-source" : "openai"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "빠른 보기",
             "x-source" : "openai"
           }
         },
@@ -3885,6 +4284,13 @@
             "value" : "R",
             "x-source" : "openai"
           }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "R",
+            "x-source" : "openai"
+          }
         }
       }
     },
@@ -3943,6 +4349,13 @@
           "stringUnit" : {
             "state" : "needs_review",
             "value" : "読み取り専用アーカイブ",
+            "x-source" : "openai"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "읽기 전용 아카이브",
             "x-source" : "openai"
           }
         },
@@ -4013,6 +4426,13 @@
             "x-source" : "openai"
           }
         },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "선택한 파일\/폴더 이름 변경",
+            "x-source" : "openai"
+          }
+        },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "needs_review",
@@ -4077,6 +4497,13 @@
           "stringUnit" : {
             "state" : "needs_review",
             "value" : "名前を変更...",
+            "x-source" : "openai"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "이름 변경...",
             "x-source" : "openai"
           }
         },
@@ -4147,6 +4574,13 @@
             "x-source" : "openai"
           }
         },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "저장된 상태로 복원",
+            "x-source" : "openai"
+          }
+        },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "needs_review",
@@ -4213,6 +4647,13 @@
             "value" : "S",
             "x-source" : "openai"
           }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "에스",
+            "x-source" : "openai"
+          }
         }
       }
     },
@@ -4271,6 +4712,13 @@
           "stringUnit" : {
             "state" : "needs_review",
             "value" : "保存",
+            "x-source" : "openai"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "저장",
             "x-source" : "openai"
           }
         },
@@ -4341,6 +4789,13 @@
             "x-source" : "openai"
           }
         },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "다른 이름으로 저장...",
+            "x-source" : "openai"
+          }
+        },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "needs_review",
@@ -4405,6 +4860,13 @@
           "stringUnit" : {
             "state" : "needs_review",
             "value" : "サイズ",
+            "x-source" : "openai"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "크기",
             "x-source" : "openai"
           }
         },
@@ -4475,6 +4937,13 @@
             "x-source" : "openai"
           }
         },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "크기 (바이트)",
+            "x-source" : "openai"
+          }
+        },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "needs_review",
@@ -4539,6 +5008,13 @@
           "stringUnit" : {
             "state" : "needs_review",
             "value" : "ソース（デバッグ）",
+            "x-source" : "openai"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "소스 (디버그)",
             "x-source" : "openai"
           }
         },
@@ -4609,6 +5085,13 @@
             "x-source" : "openai"
           }
         },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "정지",
+            "x-source" : "openai"
+          }
+        },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "needs_review",
@@ -4673,6 +5156,13 @@
           "stringUnit" : {
             "state" : "needs_review",
             "value" : "現在のタスクを停止する",
+            "x-source" : "openai"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "현재 작업 중지",
             "x-source" : "openai"
           }
         },
@@ -4743,6 +5233,13 @@
             "x-source" : "openai"
           }
         },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "심볼릭 링크 대상",
+            "x-source" : "openai"
+          }
+        },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "needs_review",
@@ -4807,6 +5304,13 @@
           "stringUnit" : {
             "state" : "needs_review",
             "value" : "合成",
+            "x-source" : "openai"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "합성의",
             "x-source" : "openai"
           }
         },
@@ -4877,6 +5381,13 @@
             "x-source" : "openai"
           }
         },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "이 아카이브에는 저장되지 않은 변경 사항이 있습니다. 저장하지 않고 닫으시겠습니까?",
+            "x-source" : "openai"
+          }
+        },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "needs_review",
@@ -4941,6 +5452,13 @@
           "stringUnit" : {
             "state" : "needs_review",
             "value" : "このアーカイブの形式は読み取り専用です。変更が必要な場合は、「名前を付けて保存」を使用して書き込み可能な形式を選択してください。",
+            "x-source" : "openai"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "이 아카이브의 형식은 읽기 전용입니다. 변경이 필요하면 '다른 이름으로 저장'을 사용하여 쓸 수 있는 형식을 선택하세요.",
             "x-source" : "openai"
           }
         },
@@ -5011,6 +5529,13 @@
             "x-source" : "openai"
           }
         },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "사용자 ID",
+            "x-source" : "openai"
+          }
+        },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "needs_review",
@@ -5077,6 +5602,13 @@
             "value" : "UUID (デバッグ)",
             "x-source" : "openai"
           }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "UUID (디버그)",
+            "x-source" : "openai"
+          }
         }
       }
     },
@@ -5135,6 +5667,13 @@
           "stringUnit" : {
             "state" : "needs_review",
             "value" : "アーカイブのエントリーパスを読み取れません",
+            "x-source" : "openai"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "아카이브 항목 경로를 읽을 수 없습니다.",
             "x-source" : "openai"
           }
         },
@@ -5205,6 +5744,13 @@
             "x-source" : "openai"
           }
         },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "보안 범위에 접근할 수 없습니다: %@",
+            "x-source" : "openai"
+          }
+        },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "needs_review",
@@ -5269,6 +5815,13 @@
           "stringUnit" : {
             "state" : "needs_review",
             "value" : "%@を追加できません",
+            "x-source" : "openai"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "%@을(를) 추가할 수 없습니다.",
             "x-source" : "openai"
           }
         },
@@ -5339,6 +5892,13 @@
             "x-source" : "openai"
           }
         },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "필터를 추가할 수 없습니다: %@",
+            "x-source" : "openai"
+          }
+        },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "needs_review",
@@ -5403,6 +5963,13 @@
           "stringUnit" : {
             "state" : "needs_review",
             "value" : "キャッシュパスを作成できません",
+            "x-source" : "openai"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "캐시 경로를 생성할 수 없습니다",
             "x-source" : "openai"
           }
         },
@@ -5473,6 +6040,13 @@
             "x-source" : "openai"
           }
         },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "새 항목을 생성할 수 없습니다",
+            "x-source" : "openai"
+          }
+        },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "needs_review",
@@ -5537,6 +6111,13 @@
           "stringUnit" : {
             "state" : "needs_review",
             "value" : "%@ のファイルパスを特定できません",
+            "x-source" : "openai"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "%@에 대한 파일 경로를 확인할 수 없습니다.",
             "x-source" : "openai"
           }
         },
@@ -5607,6 +6188,13 @@
             "x-source" : "openai"
           }
         },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "사용자가 선택한 아카이브 형식을 알 수 없습니다",
+            "x-source" : "openai"
+          }
+        },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "needs_review",
@@ -5671,6 +6259,13 @@
           "stringUnit" : {
             "state" : "needs_review",
             "value" : "エントリーヘッダーを取得できません",
+            "x-source" : "openai"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "항목 헤더를 불러올 수 없습니다.",
             "x-source" : "openai"
           }
         },
@@ -5741,6 +6336,13 @@
             "x-source" : "openai"
           }
         },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "%@에 대한 새 경로를 찾을 수 없습니다",
+            "x-source" : "openai"
+          }
+        },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "needs_review",
@@ -5805,6 +6407,13 @@
           "stringUnit" : {
             "state" : "needs_review",
             "value" : "ファイルを開けません: %@",
+            "x-source" : "openai"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "파일을 열 수 없습니다: %@",
             "x-source" : "openai"
           }
         },
@@ -5875,6 +6484,13 @@
             "x-source" : "openai"
           }
         },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "출력 아카이브를 열 수 없습니다: %@",
+            "x-source" : "openai"
+          }
+        },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "needs_review",
@@ -5939,6 +6555,13 @@
           "stringUnit" : {
             "state" : "needs_review",
             "value" : "アーカイブを読み取れません",
+            "x-source" : "openai"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "아카이브를 읽을 수 없습니다.",
             "x-source" : "openai"
           }
         },
@@ -6009,6 +6632,13 @@
             "x-source" : "openai"
           }
         },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "%@ 위치에서 캐시 디렉토리를 제거할 수 없습니다.",
+            "x-source" : "openai"
+          }
+        },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "needs_review",
@@ -6073,6 +6703,13 @@
           "stringUnit" : {
             "state" : "needs_review",
             "value" : "記録されたURLを取得できません",
+            "x-source" : "openai"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "작성된 URL을 가져올 수 없습니다.",
             "x-source" : "openai"
           }
         },
@@ -6143,6 +6780,13 @@
             "x-source" : "openai"
           }
         },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "형식을 설정할 수 없습니다: %@",
+            "x-source" : "openai"
+          }
+        },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "needs_review",
@@ -6207,6 +6851,13 @@
           "stringUnit" : {
             "state" : "needs_review",
             "value" : "%@に書き込むことができません",
+            "x-source" : "openai"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "%@에 쓸 수 없습니다",
             "x-source" : "openai"
           }
         },
@@ -6277,6 +6928,13 @@
             "x-source" : "openai"
           }
         },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "자식 항목 추가 중 예기치 않은 오류: %@",
+            "x-source" : "openai"
+          }
+        },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "needs_review",
@@ -6341,6 +6999,13 @@
           "stringUnit" : {
             "state" : "needs_review",
             "value" : "不明な応答 %lld",
+            "x-source" : "openai"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "알 수 없는 응답 %lld",
             "x-source" : "openai"
           }
         },
@@ -6411,6 +7076,13 @@
             "x-source" : "openai"
           }
         },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "알 수 없는 결과 %d",
+            "x-source" : "openai"
+          }
+        },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "needs_review",
@@ -6475,6 +7147,13 @@
           "stringUnit" : {
             "state" : "needs_review",
             "value" : "ユーザー：",
+            "x-source" : "openai"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "사용자:",
             "x-source" : "openai"
           }
         },
@@ -6544,6 +7223,13 @@
             "value" : "W",
             "x-source" : "openai"
           }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "W",
+            "x-source" : "openai"
+          }
         }
       }
     },
@@ -6599,6 +7285,13 @@
           }
         },
         "ja" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "X",
+            "x-source" : "openai"
+          }
+        },
+        "ko" : {
           "stringUnit" : {
             "state" : "needs_review",
             "value" : "X",
@@ -6662,6 +7355,13 @@
           "stringUnit" : {
             "state" : "needs_review",
             "value" : "抽出された項目はありません",
+            "x-source" : "openai"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "추출된 항목이 없습니다",
             "x-source" : "openai"
           }
         },
@@ -6732,6 +7432,13 @@
             "x-source" : "openai"
           }
         },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "\"addChildHierarchically\"는 \"%@\"에서 호출되었습니다.",
+            "x-source" : "openai"
+          }
+        },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "needs_review",
@@ -6796,6 +7503,13 @@
           "stringUnit" : {
             "state" : "needs_review",
             "value" : "addChildHierarchically は初期化されていない子供の配列を見つけました",
+            "x-source" : "openai"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "addChildHierarchically에서 초기화되지 않은 자식 배열을 발견했습니다.",
             "x-source" : "openai"
           }
         },

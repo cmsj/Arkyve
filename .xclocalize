@@ -10,7 +10,32 @@
     },
     {
       "components" : {
+        "languageCode" : "ar"
+      }
+    },
+    {
+      "components" : {
+        "languageCode" : "he"
+      }
+    },
+    {
+      "components" : {
+        "languageCode" : "ja"
+      }
+    },
+    {
+      "components" : {
         "languageCode" : "it"
+      }
+    },
+    {
+      "components" : {
+        "languageCode" : "zh"
+      }
+    },
+    {
+      "components" : {
+        "languageCode" : "fr"
       }
     },
     {
@@ -25,32 +50,12 @@
     },
     {
       "components" : {
-        "languageCode" : "ja"
-      }
-    },
-    {
-      "components" : {
-        "languageCode" : "fr"
-      }
-    },
-    {
-      "components" : {
-        "languageCode" : "zh"
-      }
-    },
-    {
-      "components" : {
-        "languageCode" : "he"
-      }
-    },
-    {
-      "components" : {
-        "languageCode" : "ar"
-      }
-    },
-    {
-      "components" : {
         "languageCode" : "es"
+      }
+    },
+    {
+      "components" : {
+        "languageCode" : "tr"
       }
     }
   ]

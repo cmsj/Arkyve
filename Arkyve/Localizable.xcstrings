@@ -71,6 +71,13 @@
             "x-source" : "openai"
           }
         },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "%@ zaten var",
+            "x-source" : "openai"
+          }
+        },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "needs_review",
@@ -156,6 +163,13 @@
             "x-source" : "openai"
           }
         },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "%lld öğe",
+            "x-source" : "openai"
+          }
+        },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "needs_review",
@@ -227,6 +241,13 @@
           "stringUnit" : {
             "state" : "needs_review",
             "value" : "추가",
+            "x-source" : "openai"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Ekle",
             "x-source" : "openai"
           }
         },
@@ -304,6 +325,13 @@
             "x-source" : "openai"
           }
         },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Dosya\/Klasör Ekle...",
+            "x-source" : "openai"
+          }
+        },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "needs_review",
@@ -375,6 +403,13 @@
           "stringUnit" : {
             "state" : "needs_review",
             "value" : "이 아카이브에 파일 추가",
+            "x-source" : "openai"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Bu arşive dosya ekle",
             "x-source" : "openai"
           }
         },
@@ -452,6 +487,13 @@
             "x-source" : "openai"
           }
         },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "İptal",
+            "x-source" : "openai"
+          }
+        },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "needs_review",
@@ -523,6 +565,13 @@
           "stringUnit" : {
             "state" : "needs_review",
             "value" : "로그 지우기",
+            "x-source" : "openai"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Kayıtları Temizle",
             "x-source" : "openai"
           }
         },
@@ -600,6 +649,13 @@
             "x-source" : "openai"
           }
         },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Kapat",
+            "x-source" : "openai"
+          }
+        },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "needs_review",
@@ -671,6 +727,13 @@
           "stringUnit" : {
             "state" : "needs_review",
             "value" : "아카이브 닫기",
+            "x-source" : "openai"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Arşivi Kapat",
             "x-source" : "openai"
           }
         },
@@ -748,6 +811,13 @@
             "x-source" : "openai"
           }
         },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Bu arşivi kapat",
+            "x-source" : "openai"
+          }
+        },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "needs_review",
@@ -819,6 +889,13 @@
           "stringUnit" : {
             "state" : "needs_review",
             "value" : "저장하지 않고 닫으시겠습니까?",
+            "x-source" : "openai"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Kaydetmeden kapatmak istiyor musunuz?",
             "x-source" : "openai"
           }
         },
@@ -896,6 +973,13 @@
             "x-source" : "openai"
           }
         },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Tümünü daralt",
+            "x-source" : "openai"
+          }
+        },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "needs_review",
@@ -970,6 +1054,13 @@
             "x-source" : "openai"
           }
         },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Kopyala",
+            "x-source" : "openai"
+          }
+        },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "needs_review",
@@ -1040,6 +1131,13 @@
           "stringUnit" : {
             "state" : "needs_review",
             "value" : "%1$@을(를) 열 수 없습니다 (%2$d)",
+            "x-source" : "openai"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Açılamadı %1$@ (%2$d)",
             "x-source" : "openai"
           }
         },
@@ -1117,6 +1215,13 @@
             "x-source" : "openai"
           }
         },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Yeni bir arşiv oluştur",
+            "x-source" : "openai"
+          }
+        },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "needs_review",
@@ -1191,6 +1296,13 @@
             "x-source" : "openai"
           }
         },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Kes",
+            "x-source" : "openai"
+          }
+        },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "needs_review",
@@ -1261,6 +1373,13 @@
           "stringUnit" : {
             "state" : "needs_review",
             "value" : "쓰기 중 데이터 크기 불일치: 예상된 바이트 수는 %1$lld이지만, 실제로 기록된 바이트 수는 %2$lld입니다.",
+            "x-source" : "openai"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Yazma sırasında veri boyutu uyuşmazlığı: beklenen %1$lld bayt, ancak yazılan %2$lld bayt",
             "x-source" : "openai"
           }
         },
@@ -1338,6 +1457,13 @@
             "x-source" : "openai"
           }
         },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Erişim Tarihi",
+            "x-source" : "openai"
+          }
+        },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "needs_review",
@@ -1409,6 +1535,13 @@
           "stringUnit" : {
             "state" : "needs_review",
             "value" : "날짜 변경됨",
+            "x-source" : "openai"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Tarih Değiştirildi",
             "x-source" : "openai"
           }
         },
@@ -1486,6 +1619,13 @@
             "x-source" : "openai"
           }
         },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Oluşturulma Tarihi",
+            "x-source" : "openai"
+          }
+        },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "needs_review",
@@ -1557,6 +1697,13 @@
           "stringUnit" : {
             "state" : "needs_review",
             "value" : "수정된 날짜",
+            "x-source" : "openai"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Değiştirilme Tarihi",
             "x-source" : "openai"
           }
         },
@@ -1634,6 +1781,13 @@
             "x-source" : "openai"
           }
         },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Sil",
+            "x-source" : "openai"
+          }
+        },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "needs_review",
@@ -1705,6 +1859,13 @@
           "stringUnit" : {
             "state" : "needs_review",
             "value" : "선택한 파일\/폴더 삭제",
+            "x-source" : "openai"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Seçilen dosyaları\/klasörleri sil",
             "x-source" : "openai"
           }
         },
@@ -1782,6 +1943,13 @@
             "x-source" : "openai"
           }
         },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Görüntülenen hata: %@",
+            "x-source" : "openai"
+          }
+        },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "needs_review",
@@ -1853,6 +2021,13 @@
           "stringUnit" : {
             "state" : "needs_review",
             "value" : "모두 펼치기",
+            "x-source" : "openai"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Hepsini genişlet",
             "x-source" : "openai"
           }
         },
@@ -1930,6 +2105,13 @@
             "x-source" : "openai"
           }
         },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Tümünü Çıkart...",
+            "x-source" : "openai"
+          }
+        },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "needs_review",
@@ -2001,6 +2183,13 @@
           "stringUnit" : {
             "state" : "needs_review",
             "value" : "선택한 파일\/폴더 추출",
+            "x-source" : "openai"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Seçilen dosya\/klasörleri çıkart",
             "x-source" : "openai"
           }
         },
@@ -2078,6 +2267,13 @@
             "x-source" : "openai"
           }
         },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Çıkart...",
+            "x-source" : "openai"
+          }
+        },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "needs_review",
@@ -2149,6 +2345,13 @@
           "stringUnit" : {
             "state" : "needs_review",
             "value" : "파일을 읽기 위해 여는 데 실패했습니다: %@",
+            "x-source" : "openai"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Okuma amacıyla dosya açılamadı: %@",
             "x-source" : "openai"
           }
         },
@@ -2226,6 +2429,13 @@
             "x-source" : "openai"
           }
         },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Kaynak arşivi okunamadı",
+            "x-source" : "openai"
+          }
+        },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "needs_review",
@@ -2297,6 +2507,13 @@
           "stringUnit" : {
             "state" : "needs_review",
             "value" : "데이터 쓰기에 실패했습니다: %@",
+            "x-source" : "openai"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Veri yazılamadı: %@",
             "x-source" : "openai"
           }
         },
@@ -2373,6 +2590,13 @@
             "value" : "GID",
             "x-source" : "openai"
           }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "GID",
+            "x-source" : "openai"
+          }
         }
       }
     },
@@ -2438,6 +2662,13 @@
           "stringUnit" : {
             "state" : "needs_review",
             "value" : "그룹:",
+            "x-source" : "openai"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Grup:",
             "x-source" : "openai"
           }
         },
@@ -2515,6 +2746,13 @@
             "x-source" : "openai"
           }
         },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Başlık haritası tutarsızlığı",
+            "x-source" : "openai"
+          }
+        },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "needs_review",
@@ -2586,6 +2824,13 @@
           "stringUnit" : {
             "state" : "needs_review",
             "value" : "내부 오류, 엣지 노드에 항목 추가 중",
+            "x-source" : "openai"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Dahili hata, uç düğüme giriş ekleniyor",
             "x-source" : "openai"
           }
         },
@@ -2663,6 +2908,13 @@
             "x-source" : "openai"
           }
         },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Dahili hata, girdi dizin olmayan bir yere ekleniyor",
+            "x-source" : "openai"
+          }
+        },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "needs_review",
@@ -2734,6 +2986,13 @@
           "stringUnit" : {
             "state" : "needs_review",
             "value" : "내부 오류: 예상치 못한 항목을 쓰려고 시도했습니다: %@",
+            "x-source" : "openai"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Dahili hata: Beklenmeyen öğe yazılmaya çalışıldı: %@",
             "x-source" : "openai"
           }
         },
@@ -2811,6 +3070,13 @@
             "x-source" : "openai"
           }
         },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Dahili hata: Çift sentetik dizin",
+            "x-source" : "openai"
+          }
+        },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "needs_review",
@@ -2882,6 +3148,13 @@
           "stringUnit" : {
             "state" : "needs_review",
             "value" : "내부 오류: 맵 항목 키를 찾을 수 없음",
+            "x-source" : "openai"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Dahili hata: haritaGirişAnahtarı bulunamadı",
             "x-source" : "openai"
           }
         },
@@ -2959,6 +3232,13 @@
             "x-source" : "openai"
           }
         },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Dahili başlık eşleme tutarsızlığı",
+            "x-source" : "openai"
+          }
+        },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "needs_review",
@@ -3030,6 +3310,13 @@
           "stringUnit" : {
             "state" : "needs_review",
             "value" : "항목",
+            "x-source" : "openai"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Öğeler",
             "x-source" : "openai"
           }
         },
@@ -3108,6 +3395,13 @@
             "x-source" : "openai"
           }
         },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Tür",
+            "x-source" : "openai"
+          }
+        },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "needs_review",
@@ -3179,6 +3473,13 @@
           "stringUnit" : {
             "state" : "needs_review",
             "value" : "레벨",
+            "x-source" : "openai"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Seviye",
             "x-source" : "openai"
           }
         },
@@ -3256,6 +3557,13 @@
             "x-source" : "openai"
           }
         },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Kayıt görüntüleyici",
+            "x-source" : "openai"
+          }
+        },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "needs_review",
@@ -3327,6 +3635,13 @@
           "stringUnit" : {
             "state" : "needs_review",
             "value" : "주요\/부차",
+            "x-source" : "openai"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Majör\/Minör",
             "x-source" : "openai"
           }
         },
@@ -3404,6 +3719,13 @@
             "x-source" : "openai"
           }
         },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Bellek tahsisi başarısız oldu",
+            "x-source" : "openai"
+          }
+        },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "needs_review",
@@ -3475,6 +3797,13 @@
           "stringUnit" : {
             "state" : "needs_review",
             "value" : "메시지",
+            "x-source" : "openai"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Mesaj",
             "x-source" : "openai"
           }
         },
@@ -3552,6 +3881,13 @@
             "x-source" : "openai"
           }
         },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Minimum seviye",
+            "x-source" : "openai"
+          }
+        },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "needs_review",
@@ -3623,6 +3959,13 @@
           "stringUnit" : {
             "state" : "needs_review",
             "value" : "이름",
+            "x-source" : "openai"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Ad",
             "x-source" : "openai"
           }
         },
@@ -3700,6 +4043,13 @@
             "x-source" : "openai"
           }
         },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Yeni",
+            "x-source" : "openai"
+          }
+        },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "needs_review",
@@ -3771,6 +4121,13 @@
           "stringUnit" : {
             "state" : "needs_review",
             "value" : "새 폴더",
+            "x-source" : "openai"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Yeni Klasör",
             "x-source" : "openai"
           }
         },
@@ -3848,6 +4205,13 @@
             "x-source" : "openai"
           }
         },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Bir arşiv aç",
+            "x-source" : "openai"
+          }
+        },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "needs_review",
@@ -3919,6 +4283,13 @@
           "stringUnit" : {
             "state" : "needs_review",
             "value" : "열기...",
+            "x-source" : "openai"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Aç...",
             "x-source" : "openai"
           }
         },
@@ -3996,6 +4367,13 @@
             "x-source" : "openai"
           }
         },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Diğer:",
+            "x-source" : "openai"
+          }
+        },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "needs_review",
@@ -4067,6 +4445,13 @@
           "stringUnit" : {
             "state" : "needs_review",
             "value" : "경로 (디버그)",
+            "x-source" : "openai"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Dizin (Hata Ayıklama)",
             "x-source" : "openai"
           }
         },
@@ -4144,6 +4529,13 @@
             "x-source" : "openai"
           }
         },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "İzinler",
+            "x-source" : "openai"
+          }
+        },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "needs_review",
@@ -4215,6 +4607,13 @@
           "stringUnit" : {
             "state" : "needs_review",
             "value" : "빠른 보기",
+            "x-source" : "openai"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Hızlı Bakış",
             "x-source" : "openai"
           }
         },
@@ -4291,6 +4690,13 @@
             "value" : "R",
             "x-source" : "openai"
           }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "R",
+            "x-source" : "openai"
+          }
         }
       }
     },
@@ -4356,6 +4762,13 @@
           "stringUnit" : {
             "state" : "needs_review",
             "value" : "읽기 전용 아카이브",
+            "x-source" : "openai"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Salt okunur arşiv",
             "x-source" : "openai"
           }
         },
@@ -4433,6 +4846,13 @@
             "x-source" : "openai"
           }
         },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Seçili dosya\/klasörü yeniden adlandır",
+            "x-source" : "openai"
+          }
+        },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "needs_review",
@@ -4504,6 +4924,13 @@
           "stringUnit" : {
             "state" : "needs_review",
             "value" : "이름 변경...",
+            "x-source" : "openai"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Yeniden Adlandır...",
             "x-source" : "openai"
           }
         },
@@ -4581,6 +5008,13 @@
             "x-source" : "openai"
           }
         },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Kaydedilene Geri Dön",
+            "x-source" : "openai"
+          }
+        },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "needs_review",
@@ -4654,6 +5088,13 @@
             "value" : "에스",
             "x-source" : "openai"
           }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "S",
+            "x-source" : "openai"
+          }
         }
       }
     },
@@ -4719,6 +5160,13 @@
           "stringUnit" : {
             "state" : "needs_review",
             "value" : "저장",
+            "x-source" : "openai"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Kaydet",
             "x-source" : "openai"
           }
         },
@@ -4796,6 +5244,13 @@
             "x-source" : "openai"
           }
         },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Farklı Kaydet...",
+            "x-source" : "openai"
+          }
+        },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "needs_review",
@@ -4867,6 +5322,13 @@
           "stringUnit" : {
             "state" : "needs_review",
             "value" : "크기",
+            "x-source" : "openai"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Boyut",
             "x-source" : "openai"
           }
         },
@@ -4944,6 +5406,13 @@
             "x-source" : "openai"
           }
         },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Boyut (bayt)",
+            "x-source" : "openai"
+          }
+        },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "needs_review",
@@ -5015,6 +5484,13 @@
           "stringUnit" : {
             "state" : "needs_review",
             "value" : "소스 (디버그)",
+            "x-source" : "openai"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Kaynak (Hata Ayıklama)",
             "x-source" : "openai"
           }
         },
@@ -5092,6 +5568,13 @@
             "x-source" : "openai"
           }
         },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Durdur",
+            "x-source" : "openai"
+          }
+        },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "needs_review",
@@ -5163,6 +5646,13 @@
           "stringUnit" : {
             "state" : "needs_review",
             "value" : "현재 작업 중지",
+            "x-source" : "openai"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Mevcut görevi durdur",
             "x-source" : "openai"
           }
         },
@@ -5240,6 +5730,13 @@
             "x-source" : "openai"
           }
         },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Sembolik Bağlantı Hedefi",
+            "x-source" : "openai"
+          }
+        },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "needs_review",
@@ -5311,6 +5808,13 @@
           "stringUnit" : {
             "state" : "needs_review",
             "value" : "합성의",
+            "x-source" : "openai"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Sentetik",
             "x-source" : "openai"
           }
         },
@@ -5388,6 +5892,13 @@
             "x-source" : "openai"
           }
         },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Bu arşivde kaydedilmemiş değişiklikler var, kaydetmeden kapatmak istiyor musunuz?",
+            "x-source" : "openai"
+          }
+        },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "needs_review",
@@ -5459,6 +5970,13 @@
           "stringUnit" : {
             "state" : "needs_review",
             "value" : "이 아카이브의 형식은 읽기 전용입니다. 변경이 필요하면 '다른 이름으로 저장'을 사용하여 쓸 수 있는 형식을 선택하세요.",
+            "x-source" : "openai"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Bu arşivin formatı salt okunur. Değişiklik yapmanız gerekiyorsa, yazılabilir bir format seçmek için Farklı Kaydet'i kullanın.",
             "x-source" : "openai"
           }
         },
@@ -5536,6 +6054,13 @@
             "x-source" : "openai"
           }
         },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "UID",
+            "x-source" : "openai"
+          }
+        },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "needs_review",
@@ -5609,6 +6134,13 @@
             "value" : "UUID (디버그)",
             "x-source" : "openai"
           }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "UUID (Hata Ayıklama)",
+            "x-source" : "openai"
+          }
         }
       }
     },
@@ -5674,6 +6206,13 @@
           "stringUnit" : {
             "state" : "needs_review",
             "value" : "아카이브 항목 경로를 읽을 수 없습니다.",
+            "x-source" : "openai"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Arşiv giriş yolu okunamıyor.",
             "x-source" : "openai"
           }
         },
@@ -5751,6 +6290,13 @@
             "x-source" : "openai"
           }
         },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "%@ için güvenlik kapsamına erişilemiyor",
+            "x-source" : "openai"
+          }
+        },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "needs_review",
@@ -5822,6 +6368,13 @@
           "stringUnit" : {
             "state" : "needs_review",
             "value" : "%@을(를) 추가할 수 없습니다.",
+            "x-source" : "openai"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Eklenemiyor: %@",
             "x-source" : "openai"
           }
         },
@@ -5899,6 +6452,13 @@
             "x-source" : "openai"
           }
         },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Filtre eklenemedi: %@",
+            "x-source" : "openai"
+          }
+        },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "needs_review",
@@ -5970,6 +6530,13 @@
           "stringUnit" : {
             "state" : "needs_review",
             "value" : "캐시 경로를 생성할 수 없습니다",
+            "x-source" : "openai"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Önbellek yolu oluşturulamıyor",
             "x-source" : "openai"
           }
         },
@@ -6047,6 +6614,13 @@
             "x-source" : "openai"
           }
         },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Yeni giriş oluşturulamıyor",
+            "x-source" : "openai"
+          }
+        },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "needs_review",
@@ -6118,6 +6692,13 @@
           "stringUnit" : {
             "state" : "needs_review",
             "value" : "%@에 대한 파일 경로를 확인할 수 없습니다.",
+            "x-source" : "openai"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "%@ için dosya yolu belirlenemiyor",
             "x-source" : "openai"
           }
         },
@@ -6195,6 +6776,13 @@
             "x-source" : "openai"
           }
         },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Kullanıcının seçtiği arşiv formatı tespit edilemiyor",
+            "x-source" : "openai"
+          }
+        },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "needs_review",
@@ -6266,6 +6854,13 @@
           "stringUnit" : {
             "state" : "needs_review",
             "value" : "항목 헤더를 불러올 수 없습니다.",
+            "x-source" : "openai"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Giriş başlığı getirilemiyor",
             "x-source" : "openai"
           }
         },
@@ -6343,6 +6938,13 @@
             "x-source" : "openai"
           }
         },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "%@ için yeni yol bulunamadı",
+            "x-source" : "openai"
+          }
+        },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "needs_review",
@@ -6414,6 +7016,13 @@
           "stringUnit" : {
             "state" : "needs_review",
             "value" : "파일을 열 수 없습니다: %@",
+            "x-source" : "openai"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Dosya açılamıyor: %@",
             "x-source" : "openai"
           }
         },
@@ -6491,6 +7100,13 @@
             "x-source" : "openai"
           }
         },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Çıkış arşivi açılamadı: %@",
+            "x-source" : "openai"
+          }
+        },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "needs_review",
@@ -6562,6 +7178,13 @@
           "stringUnit" : {
             "state" : "needs_review",
             "value" : "아카이브를 읽을 수 없습니다.",
+            "x-source" : "openai"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Arşiv okunamıyor",
             "x-source" : "openai"
           }
         },
@@ -6639,6 +7262,13 @@
             "x-source" : "openai"
           }
         },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Önbellek dizini kaldırılamıyor: %@",
+            "x-source" : "openai"
+          }
+        },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "needs_review",
@@ -6710,6 +7340,13 @@
           "stringUnit" : {
             "state" : "needs_review",
             "value" : "작성된 URL을 가져올 수 없습니다.",
+            "x-source" : "openai"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Kaydedilmiş URL'ler alınamıyor",
             "x-source" : "openai"
           }
         },
@@ -6787,6 +7424,13 @@
             "x-source" : "openai"
           }
         },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Format ayarlanamadı: %@",
+            "x-source" : "openai"
+          }
+        },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "needs_review",
@@ -6858,6 +7502,13 @@
           "stringUnit" : {
             "state" : "needs_review",
             "value" : "%@에 쓸 수 없습니다",
+            "x-source" : "openai"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "%@'ya yazılamadı",
             "x-source" : "openai"
           }
         },
@@ -6935,6 +7586,13 @@
             "x-source" : "openai"
           }
         },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Çocuk eklenirken beklenmeyen bir hata: %@",
+            "x-source" : "openai"
+          }
+        },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "needs_review",
@@ -7006,6 +7664,13 @@
           "stringUnit" : {
             "state" : "needs_review",
             "value" : "알 수 없는 응답 %lld",
+            "x-source" : "openai"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Bilinmeyen yanıt %lld",
             "x-source" : "openai"
           }
         },
@@ -7083,6 +7748,13 @@
             "x-source" : "openai"
           }
         },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Bilinmeyen sonuç %d",
+            "x-source" : "openai"
+          }
+        },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "needs_review",
@@ -7154,6 +7826,13 @@
           "stringUnit" : {
             "state" : "needs_review",
             "value" : "사용자:",
+            "x-source" : "openai"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Kullanıcı:",
             "x-source" : "openai"
           }
         },
@@ -7230,6 +7909,13 @@
             "value" : "W",
             "x-source" : "openai"
           }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "W",
+            "x-source" : "openai"
+          }
         }
       }
     },
@@ -7292,6 +7978,13 @@
           }
         },
         "ko" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "X",
+            "x-source" : "openai"
+          }
+        },
+        "tr" : {
           "stringUnit" : {
             "state" : "needs_review",
             "value" : "X",
@@ -7362,6 +8055,13 @@
           "stringUnit" : {
             "state" : "needs_review",
             "value" : "추출된 항목이 없습니다",
+            "x-source" : "openai"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Hiçbir girdi çıkarılmadı",
             "x-source" : "openai"
           }
         },
@@ -7439,6 +8139,13 @@
             "x-source" : "openai"
           }
         },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "addChildHierarchically çağrıldı: %@",
+            "x-source" : "openai"
+          }
+        },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "needs_review",
@@ -7510,6 +8217,13 @@
           "stringUnit" : {
             "state" : "needs_review",
             "value" : "addChildHierarchically에서 초기화되지 않은 자식 배열을 발견했습니다.",
+            "x-source" : "openai"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "addChildHierarchically, başlatılmamış bir çocuk dizisi buldu",
             "x-source" : "openai"
           }
         },

@@ -1,0 +1,57 @@
+{
+  "catalogURLs" : [
+    "Arkyve\/Localizable.xcstrings"
+  ],
+  "targetLanguages" : [
+    {
+      "components" : {
+        "languageCode" : "de"
+      }
+    },
+    {
+      "components" : {
+        "languageCode" : "it"
+      }
+    },
+    {
+      "components" : {
+        "languageCode" : "en"
+      }
+    },
+    {
+      "components" : {
+        "languageCode" : "ko"
+      }
+    },
+    {
+      "components" : {
+        "languageCode" : "ja"
+      }
+    },
+    {
+      "components" : {
+        "languageCode" : "fr"
+      }
+    },
+    {
+      "components" : {
+        "languageCode" : "zh"
+      }
+    },
+    {
+      "components" : {
+        "languageCode" : "he"
+      }
+    },
+    {
+      "components" : {
+        "languageCode" : "ar"
+      }
+    },
+    {
+      "components" : {
+        "languageCode" : "es"
+      }
+    }
+  ]
+}

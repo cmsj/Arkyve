@@ -2,13 +2,93 @@
   "sourceLanguage" : "en",
   "strings" : {
     "" : {
+      "localizations" : {
 
+      }
     },
     "%@ already exists" : {
-
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "%@ موجود بالفعل",
+            "x-source" : "openai"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "%@ existiert bereits",
+            "x-source" : "openai"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "%@ already exists",
+            "x-source" : "openai"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "%@ ya existe",
+            "x-source" : "openai"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "%@ existe déjà",
+            "x-source" : "openai"
+          }
+        },
+        "he" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "%@ כבר קיים",
+            "x-source" : "openai"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "%@ esiste già",
+            "x-source" : "openai"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "%@はすでに存在します",
+            "x-source" : "openai"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "%@已存在",
+            "x-source" : "openai"
+          }
+        }
+      }
     },
     "%lld items" : {
       "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "عدد العناصر %lld",
+            "x-source" : "openai"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "%lld Elemente",
+            "x-source" : "openai"
+          }
+        },
         "en" : {
           "variations" : {
             "plural" : {
@@ -26,322 +106,6707 @@
               }
             }
           }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "%lld elementos",
+            "x-source" : "openai"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "%lld éléments",
+            "x-source" : "openai"
+          }
+        },
+        "he" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "%lld פריטים",
+            "x-source" : "openai"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "%lld elementos",
+            "x-source" : "openai"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "%lld アイテム",
+            "x-source" : "openai"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "%lld 个",
+            "x-source" : "openai"
+          }
         }
       }
     },
     "Add" : {
-
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "أضف",
+            "x-source" : "openai"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Hinzufügen",
+            "x-source" : "openai"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Add",
+            "x-source" : "openai"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Agregar",
+            "x-source" : "openai"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Ajouter",
+            "x-source" : "openai"
+          }
+        },
+        "he" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "הוסף",
+            "x-source" : "openai"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Agregar",
+            "x-source" : "openai"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "追加",
+            "x-source" : "openai"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "添加",
+            "x-source" : "openai"
+          }
+        }
+      }
+    },
+    "Add Files\/Folders..." : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "إضافة ملفات\/مجلدات...",
+            "x-source" : "openai"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Dateien\/Ordner hinzufügen...",
+            "x-source" : "openai"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Add Files\/Folders...",
+            "x-source" : "openai"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Agregar Archivos\/Carpetas...",
+            "x-source" : "openai"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Ajouter des fichiers\/dossiers...",
+            "x-source" : "openai"
+          }
+        },
+        "he" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "הוסף קבצים\/תיקיות...",
+            "x-source" : "openai"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Agregar Archivos\/Carpetas...",
+            "x-source" : "openai"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "ファイル\/フォルダを追加...",
+            "x-source" : "openai"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "添加文件\/文件夹...",
+            "x-source" : "openai"
+          }
+        }
+      }
     },
     "Add files to this archive" : {
-
-    },
-    "Add Files/Folders..." : {
-
-    },
-    "addChildHierarchically called on: %@" : {
-
-    },
-    "addChildHierarchically found an uninitialised children array" : {
-
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "إضافة ملفات إلى هذا الأرشيف",
+            "x-source" : "openai"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Dateien zu diesem Archiv hinzufügen",
+            "x-source" : "openai"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Add files to this archive",
+            "x-source" : "openai"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Añadir archivos a este archivo",
+            "x-source" : "openai"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Ajouter des fichiers à cette archive",
+            "x-source" : "openai"
+          }
+        },
+        "he" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "הוסף קבצים לארכיון זה",
+            "x-source" : "openai"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Añadir archivos a este archivo",
+            "x-source" : "openai"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "このアーカイブにファイルを追加する",
+            "x-source" : "openai"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "添加文件到此压缩包",
+            "x-source" : "openai"
+          }
+        }
+      }
     },
     "Cancel" : {
-
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "إلغاء",
+            "x-source" : "openai"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Abbrechen",
+            "x-source" : "openai"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Cancel",
+            "x-source" : "openai"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Cancelar",
+            "x-source" : "openai"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Annuler",
+            "x-source" : "openai"
+          }
+        },
+        "he" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "ביטול",
+            "x-source" : "openai"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Cancelar",
+            "x-source" : "openai"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "キャンセル",
+            "x-source" : "openai"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "取消",
+            "x-source" : "openai"
+          }
+        }
+      }
     },
     "Clear Logs" : {
-
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "مسح السجلات",
+            "x-source" : "openai"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Protokolle löschen",
+            "x-source" : "openai"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Clear Logs",
+            "x-source" : "openai"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Borrar Registros",
+            "x-source" : "openai"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Effacer les journaux",
+            "x-source" : "openai"
+          }
+        },
+        "he" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "נקה יומנים",
+            "x-source" : "openai"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Cancella registri",
+            "x-source" : "openai"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "ログをクリア",
+            "x-source" : "openai"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "清除日志",
+            "x-source" : "openai"
+          }
+        }
+      }
     },
     "Close" : {
-
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "إغلاق",
+            "x-source" : "openai"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Schließen",
+            "x-source" : "openai"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Close",
+            "x-source" : "openai"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Cerrar",
+            "x-source" : "openai"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Fermer",
+            "x-source" : "openai"
+          }
+        },
+        "he" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "סגור",
+            "x-source" : "openai"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Chiudi",
+            "x-source" : "openai"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "閉じる",
+            "x-source" : "openai"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "关闭",
+            "x-source" : "openai"
+          }
+        }
+      }
     },
     "Close Archive" : {
-
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "إغلاق الأرشيف",
+            "x-source" : "openai"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Archiv schließen",
+            "x-source" : "openai"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Close Archive",
+            "x-source" : "openai"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Cerrar Archivo",
+            "x-source" : "openai"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Fermer l'archive",
+            "x-source" : "openai"
+          }
+        },
+        "he" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "סגור ארכיון",
+            "x-source" : "openai"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Cerrar Archivo",
+            "x-source" : "openai"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "アーカイブを閉じる",
+            "x-source" : "openai"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "关闭归档",
+            "x-source" : "openai"
+          }
+        }
+      }
     },
     "Close this archive" : {
-
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "إغلاق هذا الأرشيف",
+            "x-source" : "openai"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Dieses Archiv schließen",
+            "x-source" : "openai"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Close this archive",
+            "x-source" : "openai"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Cerrar este archivo",
+            "x-source" : "openai"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Fermer cette archive",
+            "x-source" : "openai"
+          }
+        },
+        "he" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "סגור את הארכיון הזה",
+            "x-source" : "openai"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Cerrar este archivo",
+            "x-source" : "openai"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "このアーカイブを閉じる",
+            "x-source" : "openai"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "关闭此档案",
+            "x-source" : "openai"
+          }
+        }
+      }
     },
     "Close without saving?" : {
-
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "إغلاق دون حفظ؟",
+            "x-source" : "openai"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Schließen ohne zu speichern?",
+            "x-source" : "openai"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Close without saving?",
+            "x-source" : "openai"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "¿Cerrar sin guardar?",
+            "x-source" : "openai"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Fermer sans enregistrer ?",
+            "x-source" : "openai"
+          }
+        },
+        "he" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "לסגור ללא שמירה?",
+            "x-source" : "openai"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "¿Cerrar sin guardar?",
+            "x-source" : "openai"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "保存せずに閉じますか？",
+            "x-source" : "openai"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "不保存就关闭吗？",
+            "x-source" : "openai"
+          }
+        }
+      }
     },
     "Collapse all" : {
-
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "طي الكل",
+            "x-source" : "openai"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Alle einklappen",
+            "x-source" : "openai"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Collapse all",
+            "x-source" : "openai"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Contraer todo",
+            "x-source" : "openai"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Réduire tout",
+            "x-source" : "openai"
+          }
+        },
+        "he" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "לכווץ הכל",
+            "x-source" : "openai"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Contraer todo",
+            "x-source" : "openai"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "すべて折りたたむ",
+            "x-source" : "openai"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "折叠全部",
+            "x-source" : "openai"
+          }
+        }
+      }
     },
     "Copy" : {
-
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "نسخ",
+            "x-source" : "openai"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Kopieren",
+            "x-source" : "openai"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Copy",
+            "x-source" : "openai"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Copiar",
+            "x-source" : "openai"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Copier",
+            "x-source" : "openai"
+          }
+        },
+        "he" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "העתק",
+            "x-source" : "openai"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Copiar",
+            "x-source" : "openai"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "コピー",
+            "x-source" : "openai"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "复制",
+            "x-source" : "openai"
+          }
+        }
+      }
     },
     "Could not open %@ (%d)" : {
       "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "تعذر فتح %1$@ (%2$d)",
+            "x-source" : "openai"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Konnte %1$@ (%2$d) nicht öffnen",
+            "x-source" : "openai"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "new",
             "value" : "Could not open %1$@ (%2$d)"
           }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "No se pudo abrir %1$@ (%2$d)",
+            "x-source" : "openai"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Impossible d'ouvrir %1$@ (%2$d)",
+            "x-source" : "openai"
+          }
+        },
+        "he" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "לא ניתן לפתוח %1$@ (%2$d)",
+            "x-source" : "openai"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Impossibile aprire %1$@ (%2$d)",
+            "x-source" : "openai"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "%1$@ を開くことができませんでした（%2$d）",
+            "x-source" : "openai"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "无法打开 %1$@（错误代码：%2$d）",
+            "x-source" : "openai"
+          }
         }
       }
     },
     "Create a new archive" : {
-
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "إنشاء أرشيف جديد",
+            "x-source" : "openai"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Ein neues Archiv erstellen",
+            "x-source" : "openai"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Create a new archive",
+            "x-source" : "openai"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Crear un nuevo archivo",
+            "x-source" : "openai"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Créer une nouvelle archive",
+            "x-source" : "openai"
+          }
+        },
+        "he" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "ליצור ארכיון חדש",
+            "x-source" : "openai"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Crear un nuevo archivo",
+            "x-source" : "openai"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "新しいアーカイブを作成する",
+            "x-source" : "openai"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "创建新的归档",
+            "x-source" : "openai"
+          }
+        }
+      }
     },
     "Cut" : {
-
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "قص",
+            "x-source" : "openai"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Ausschneiden",
+            "x-source" : "openai"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Cut",
+            "x-source" : "openai"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Cortar",
+            "x-source" : "openai"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Couper",
+            "x-source" : "openai"
+          }
+        },
+        "he" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "גזור",
+            "x-source" : "openai"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Cortar",
+            "x-source" : "openai"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "切り取り",
+            "x-source" : "openai"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "剪切",
+            "x-source" : "openai"
+          }
+        }
+      }
     },
     "Data size mismatch during write, expected %lld bytes but wrote %lld bytes" : {
       "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "عدم تطابق حجم البيانات أثناء الكتابة، كان من المتوقع %1$lld بايت ولكن تم كتابة %2$lld بايت",
+            "x-source" : "openai"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Datenmengenabweichung während des Schreibvorgangs, erwartet %1$lld Bytes, aber %2$lld Bytes geschrieben",
+            "x-source" : "openai"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "new",
             "value" : "Data size mismatch during write, expected %1$lld bytes but wrote %2$lld bytes"
           }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Desajuste en el tamaño de los datos durante la escritura, se esperaban %1$lld bytes pero se escribieron %2$lld bytes",
+            "x-source" : "openai"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Inadéquation de la taille des données lors de l'écriture, attendu %1$lld octets mais a écrit %2$lld octets",
+            "x-source" : "openai"
+          }
+        },
+        "he" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "אי התאמה בגודל הנתונים במהלך כתיבה, ציפינו ל-%1$lld בתים אך נכתבו %2$lld בתים",
+            "x-source" : "openai"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Discrepanza nella dimensione dei dati durante la scrittura, previsti %1$lld byte ma scritti %2$lld byte",
+            "x-source" : "openai"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "書き込み中にデータサイズの不一致が発生しました。期待されたサイズは%1$lldバイトですが、実際には%2$lldバイトが書き込まれました。",
+            "x-source" : "openai"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "写入时数据大小不匹配，预期为 %1$lld 字节，但写入了 %2$lld 字节",
+            "x-source" : "openai"
+          }
         }
       }
     },
     "Date Accessed" : {
-
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "تاريخ الوصول",
+            "x-source" : "openai"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Zugriffsdatum",
+            "x-source" : "openai"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Date Accessed",
+            "x-source" : "openai"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Fecha de acceso",
+            "x-source" : "openai"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Date d'accès",
+            "x-source" : "openai"
+          }
+        },
+        "he" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "תאריך הגישה",
+            "x-source" : "openai"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Fecha de acceso",
+            "x-source" : "openai"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "アクセス日",
+            "x-source" : "openai"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "访问日期",
+            "x-source" : "openai"
+          }
+        }
+      }
     },
     "Date Changed" : {
-
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "تم تغيير التاريخ",
+            "x-source" : "openai"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Datum geändert",
+            "x-source" : "openai"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Date Changed",
+            "x-source" : "openai"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Fecha Cambiada",
+            "x-source" : "openai"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Date modifiée",
+            "x-source" : "openai"
+          }
+        },
+        "he" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "התאריך שונה",
+            "x-source" : "openai"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Fecha Cambiada",
+            "x-source" : "openai"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "日付変更",
+            "x-source" : "openai"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "日期已更改",
+            "x-source" : "openai"
+          }
+        }
+      }
     },
     "Date Created" : {
-
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "تاريخ الإنشاء",
+            "x-source" : "openai"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Erstellungsdatum",
+            "x-source" : "openai"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Date Created",
+            "x-source" : "openai"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Fecha de creación",
+            "x-source" : "openai"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Date de création",
+            "x-source" : "openai"
+          }
+        },
+        "he" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "תאריך יצירה",
+            "x-source" : "openai"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Fecha de creación",
+            "x-source" : "openai"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "作成日",
+            "x-source" : "openai"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "创建日期",
+            "x-source" : "openai"
+          }
+        }
+      }
     },
     "Date Modified" : {
-
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "تاريخ التعديل",
+            "x-source" : "openai"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Änderungsdatum",
+            "x-source" : "openai"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Date Modified",
+            "x-source" : "openai"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Fecha de modificación",
+            "x-source" : "openai"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Date de modification",
+            "x-source" : "openai"
+          }
+        },
+        "he" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "תאריך שינוי",
+            "x-source" : "openai"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Fecha de modificación",
+            "x-source" : "openai"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "変更日",
+            "x-source" : "openai"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "修改日期",
+            "x-source" : "openai"
+          }
+        }
+      }
     },
     "Delete" : {
-
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "حذف",
+            "x-source" : "openai"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Löschen",
+            "x-source" : "openai"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Delete",
+            "x-source" : "openai"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Eliminar",
+            "x-source" : "openai"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Supprimer",
+            "x-source" : "openai"
+          }
+        },
+        "he" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "מחק",
+            "x-source" : "openai"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Eliminar",
+            "x-source" : "openai"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "削除",
+            "x-source" : "openai"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "删除",
+            "x-source" : "openai"
+          }
+        }
+      }
     },
-    "Delete selected files/folders" : {
-
+    "Delete selected files\/folders" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "حذف الملفات\/المجلدات المحددة",
+            "x-source" : "openai"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Ausgewählte Dateien\/Ordner löschen",
+            "x-source" : "openai"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Delete selected files\/folders",
+            "x-source" : "openai"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Eliminar archivos\/carpetas seleccionados",
+            "x-source" : "openai"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Supprimer les fichiers\/dossiers sélectionnés",
+            "x-source" : "openai"
+          }
+        },
+        "he" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "מחק קבצים\/תיקיות נבחרים",
+            "x-source" : "openai"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Eliminar archivos\/carpetas seleccionados",
+            "x-source" : "openai"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "選択したファイル\/フォルダを削除",
+            "x-source" : "openai"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "删除所选文件\/文件夹",
+            "x-source" : "openai"
+          }
+        }
+      }
     },
     "Displayed error: %@" : {
-
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "خطأ معروض: %@",
+            "x-source" : "openai"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Angezeigter Fehler: %@",
+            "x-source" : "openai"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Displayed error: %@",
+            "x-source" : "openai"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Error mostrado: %@",
+            "x-source" : "openai"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Erreur affichée : %@",
+            "x-source" : "openai"
+          }
+        },
+        "he" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "שגיאה מוצגת: %@",
+            "x-source" : "openai"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Error mostrado: %@",
+            "x-source" : "openai"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "表示されたエラー: %@",
+            "x-source" : "openai"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "显示错误：%@",
+            "x-source" : "openai"
+          }
+        }
+      }
     },
     "Expand all" : {
-
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "توسيع الكل",
+            "x-source" : "openai"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Alle ausklappen",
+            "x-source" : "openai"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Expand all",
+            "x-source" : "openai"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Expandir todo",
+            "x-source" : "openai"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Tout développer",
+            "x-source" : "openai"
+          }
+        },
+        "he" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "הרחב הכל",
+            "x-source" : "openai"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Expandir todo",
+            "x-source" : "openai"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "すべて展開",
+            "x-source" : "openai"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "展开全部",
+            "x-source" : "openai"
+          }
+        }
+      }
     },
     "Extract All..." : {
-
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "استخراج الكل...",
+            "x-source" : "openai"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Alle entpacken...",
+            "x-source" : "openai"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Extract All...",
+            "x-source" : "openai"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Extraer todo...",
+            "x-source" : "openai"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Extraire tout...",
+            "x-source" : "openai"
+          }
+        },
+        "he" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "לחלץ את הכל...",
+            "x-source" : "openai"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Extraer todo...",
+            "x-source" : "openai"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "すべて抽出...",
+            "x-source" : "openai"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "提取全部...",
+            "x-source" : "openai"
+          }
+        }
+      }
     },
-    "Extract selected files/folders" : {
-
+    "Extract selected files\/folders" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "استخراج الملفات\/المجلدات المحددة",
+            "x-source" : "openai"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Ausgewählte Dateien\/Ordner entpacken",
+            "x-source" : "openai"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Extract selected files\/folders",
+            "x-source" : "openai"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Extraer archivos\/carpetas seleccionados",
+            "x-source" : "openai"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Extraire les fichiers\/dossiers sélectionnés",
+            "x-source" : "openai"
+          }
+        },
+        "he" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "חלץ קבצים\/תיקיות נבחרים",
+            "x-source" : "openai"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Extraer archivos\/carpetas seleccionados",
+            "x-source" : "openai"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "選択したファイル\/フォルダを展開",
+            "x-source" : "openai"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "提取所选文件\/文件夹",
+            "x-source" : "openai"
+          }
+        }
+      }
     },
     "Extract..." : {
-
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "استخراج...",
+            "x-source" : "openai"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Extrahieren...",
+            "x-source" : "openai"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Extract...",
+            "x-source" : "openai"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Extraer...",
+            "x-source" : "openai"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Extraire...",
+            "x-source" : "openai"
+          }
+        },
+        "he" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "חלץ...",
+            "x-source" : "openai"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Extraer...",
+            "x-source" : "openai"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "抽出...",
+            "x-source" : "openai"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "提取...",
+            "x-source" : "openai"
+          }
+        }
+      }
     },
     "Failed to open file for reading: %@" : {
-
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "فشل في فتح الملف للقراءة: %@",
+            "x-source" : "openai"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Fehler beim Öffnen der Datei zum Lesen: %@",
+            "x-source" : "openai"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Failed to open file for reading: %@",
+            "x-source" : "openai"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "No se pudo abrir el archivo para lectura: %@",
+            "x-source" : "openai"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Échec de l'ouverture du fichier pour lecture : %@",
+            "x-source" : "openai"
+          }
+        },
+        "he" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "נכשל בפתיחת הקובץ לקריאה: %@",
+            "x-source" : "openai"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Impossibile aprire il file per la lettura: %@",
+            "x-source" : "openai"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "読み込み用のファイルを開くことができませんでした: %@",
+            "x-source" : "openai"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "无法打开文件进行读取：%@",
+            "x-source" : "openai"
+          }
+        }
+      }
     },
     "Failed to read source archive" : {
-
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "فشل في قراءة أرشيف المصدر",
+            "x-source" : "openai"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Fehler beim Lesen des Quellarchivs",
+            "x-source" : "openai"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Failed to read source archive",
+            "x-source" : "openai"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "No se pudo leer el archivo fuente",
+            "x-source" : "openai"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Échec de la lecture de l'archive source",
+            "x-source" : "openai"
+          }
+        },
+        "he" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "נכשל בקריאת ארכיון המקור",
+            "x-source" : "openai"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Impossibile leggere l'archivio sorgente",
+            "x-source" : "openai"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "ソースアーカイブの読み込みに失敗しました",
+            "x-source" : "openai"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "无法读取源存档",
+            "x-source" : "openai"
+          }
+        }
+      }
     },
     "Failed to write data: %@" : {
-
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "فشل في كتابة البيانات: %@",
+            "x-source" : "openai"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Fehler beim Schreiben der Daten: %@",
+            "x-source" : "openai"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Failed to write data: %@",
+            "x-source" : "openai"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Error al escribir los datos: %@",
+            "x-source" : "openai"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Échec de l'écriture des données : %@",
+            "x-source" : "openai"
+          }
+        },
+        "he" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "נכשל בכתיבת הנתונים: %@",
+            "x-source" : "openai"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Impossibile scrivere i dati: %@",
+            "x-source" : "openai"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "データの書き込みに失敗しました: %@",
+            "x-source" : "openai"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "写入数据失败：%@",
+            "x-source" : "openai"
+          }
+        }
+      }
     },
     "GID" : {
-      "shouldTranslate" : false
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "GID",
+            "x-source" : "openai"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Gruppen-ID",
+            "x-source" : "openai"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "GID",
+            "x-source" : "openai"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "GID",
+            "x-source" : "openai"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "GID",
+            "x-source" : "openai"
+          }
+        },
+        "he" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "ג'י איי די",
+            "x-source" : "openai"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "GID",
+            "x-source" : "openai"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "GID",
+            "x-source" : "openai"
+          }
+        }
+      }
     },
     "Group:" : {
-
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "مجموعة:",
+            "x-source" : "openai"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Gruppe:",
+            "x-source" : "openai"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Group:",
+            "x-source" : "openai"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Grupo:",
+            "x-source" : "openai"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Groupe :",
+            "x-source" : "openai"
+          }
+        },
+        "he" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "קבוצה:",
+            "x-source" : "openai"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Grupo:",
+            "x-source" : "openai"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "グループ：",
+            "x-source" : "openai"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "组：",
+            "x-source" : "openai"
+          }
+        }
+      }
     },
     "Header map inconsistency" : {
-
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "تعارض في خريطة العنوان",
+            "x-source" : "openai"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Header-Zuordnungsinkonsistenz",
+            "x-source" : "openai"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Header map inconsistency",
+            "x-source" : "openai"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Inconsistencia en el mapa de encabezados",
+            "x-source" : "openai"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Incohérence du mappage des en-têtes",
+            "x-source" : "openai"
+          }
+        },
+        "he" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "אי התאמה במפת הכותרות",
+            "x-source" : "openai"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Incoerenza della mappa delle intestazioni",
+            "x-source" : "openai"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "ヘッダーマップの不一致",
+            "x-source" : "openai"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "头映射不一致",
+            "x-source" : "openai"
+          }
+        }
+      }
     },
     "Internal error, adding entry to edge node" : {
-
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "خطأ داخلي، إضافة إدخال إلى العقدة الطرفية",
+            "x-source" : "openai"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Interner Fehler, Eintrag zum Edge-Knoten hinzufügen",
+            "x-source" : "openai"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Internal error, adding entry to edge node",
+            "x-source" : "openai"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Error interno, añadiendo entrada al nodo de borde",
+            "x-source" : "openai"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Erreur interne, ajout d'une entrée au nœud de bord",
+            "x-source" : "openai"
+          }
+        },
+        "he" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "שגיאה פנימית, הוספת ערך לצומת קצה",
+            "x-source" : "openai"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Error interno, al agregar una entrada al nodo de borde",
+            "x-source" : "openai"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "内部エラー、エントリをエッジノードに追加中",
+            "x-source" : "openai"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "内部错误，添加条目到边缘节点",
+            "x-source" : "openai"
+          }
+        }
+      }
     },
     "Internal error, adding entry to non-directory" : {
-
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "خطأ داخلي، إضافة إدخال إلى مكان غير دليل",
+            "x-source" : "openai"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Interner Fehler, Eintrag zu keinem Verzeichnis hinzugefügt",
+            "x-source" : "openai"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Internal error, adding entry to non-directory",
+            "x-source" : "openai"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Error interno, al agregar una entrada a un elemento que no es un directorio",
+            "x-source" : "openai"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Erreur interne, ajout d'une entrée à un non-répertoire",
+            "x-source" : "openai"
+          }
+        },
+        "he" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "שגיאה פנימית, הוספת ערך למקום שאינו ספרייה",
+            "x-source" : "openai"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Errore interno, aggiunta di una voce a una non-directory",
+            "x-source" : "openai"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "内部エラー、ディレクトリではない場所にエントリを追加しています",
+            "x-source" : "openai"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "内部错误，将条目添加到非目录",
+            "x-source" : "openai"
+          }
+        }
+      }
     },
     "Internal error: Attempted to write unexpected item: %@" : {
-
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "خطأ داخلي: تمت محاولة كتابة عنصر غير متوقع: %@",
+            "x-source" : "openai"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Interner Fehler: Versuch, ein unerwartetes Element zu schreiben: %@",
+            "x-source" : "openai"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Internal error: Attempted to write unexpected item: %@",
+            "x-source" : "openai"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Error interno: Intento de escribir un elemento inesperado: %@",
+            "x-source" : "openai"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Erreur interne : Tentative d'écriture d'un élément inattendu : %@",
+            "x-source" : "openai"
+          }
+        },
+        "he" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "שגיאה פנימית: ניסיון לכתוב פריט לא צפוי: %@",
+            "x-source" : "openai"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Errore interno: Tentativo di scrivere un elemento imprevisto: %@",
+            "x-source" : "openai"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "内部エラー: 予期しない項目を書き込もうとしました: %@",
+            "x-source" : "openai"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "内部错误：尝试写入意外项目：%@",
+            "x-source" : "openai"
+          }
+        }
+      }
     },
     "Internal error: Duplicate synthetic directory" : {
-
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "خطأ داخلي: دليل اصطناعي مكرر",
+            "x-source" : "openai"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Interner Fehler: Doppelte synthetische Verzeichnisse",
+            "x-source" : "openai"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Internal error: Duplicate synthetic directory",
+            "x-source" : "openai"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Error interno: Directorio sintético duplicado",
+            "x-source" : "openai"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Erreur interne : Répertoire synthétique en double",
+            "x-source" : "openai"
+          }
+        },
+        "he" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "שגיאה פנימית: תיקייה סינתטית כפולה",
+            "x-source" : "openai"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Errore interno: Directory sintetica duplicata",
+            "x-source" : "openai"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "内部エラー: 重複した合成ディレクトリ",
+            "x-source" : "openai"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "内部错误：重复的合成目录",
+            "x-source" : "openai"
+          }
+        }
+      }
     },
     "Internal error: mapEntryKey not found" : {
-
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "خطأ داخلي: لم يتم العثور على mapEntryKey",
+            "x-source" : "openai"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Interner Fehler: mapEntryKey nicht gefunden",
+            "x-source" : "openai"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Internal error: mapEntryKey not found",
+            "x-source" : "openai"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Error interno: mapEntryKey no encontrado",
+            "x-source" : "openai"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Erreur interne : clé d'entrée de carte introuvable",
+            "x-source" : "openai"
+          }
+        },
+        "he" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "שגיאה פנימית: mapEntryKey לא נמצא",
+            "x-source" : "openai"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Errore interno: mapEntryKey non trovato",
+            "x-source" : "openai"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "内部エラー: mapEntryKey が見つかりません",
+            "x-source" : "openai"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "内部错误：未找到 mapEntryKey",
+            "x-source" : "openai"
+          }
+        }
+      }
     },
     "Internal header map inconsistency" : {
-
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "تعارض في خريطة العناوين الداخلية",
+            "x-source" : "openai"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Interne Header-Zuordnungsinkonsistenz",
+            "x-source" : "openai"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Internal header map inconsistency",
+            "x-source" : "openai"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Inconsistencia en el mapa de encabezados interno",
+            "x-source" : "openai"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Incohérence de la carte d'en-têtes interne",
+            "x-source" : "openai"
+          }
+        },
+        "he" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "חוסר עקביות במפת כותרות פנימית",
+            "x-source" : "openai"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Inconsistencia en el mapa de encabezados interno",
+            "x-source" : "openai"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "内部ヘッダーマップの不一致",
+            "x-source" : "openai"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "内部头部映射不一致",
+            "x-source" : "openai"
+          }
+        }
+      }
     },
     "Items" : {
-
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "عناصر",
+            "x-source" : "openai"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Elemente",
+            "x-source" : "openai"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Items",
+            "x-source" : "openai"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Elementos",
+            "x-source" : "openai"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Éléments",
+            "x-source" : "openai"
+          }
+        },
+        "he" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "פריטים",
+            "x-source" : "openai"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Elementos",
+            "x-source" : "openai"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "アイテム",
+            "x-source" : "openai"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "项目",
+            "x-source" : "openai"
+          }
+        }
+      }
     },
     "Kind" : {
-      "comment" : "This refers to the type of entry - file, directory, symbolic link, etc."
+      "comment" : "This refers to the type of entry - file, directory, symbolic link, etc.",
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "نوع",
+            "x-source" : "openai"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Art",
+            "x-source" : "openai"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Kind",
+            "x-source" : "openai"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Tipo",
+            "x-source" : "openai"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Type",
+            "x-source" : "openai"
+          }
+        },
+        "he" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "סוג",
+            "x-source" : "openai"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Tipo",
+            "x-source" : "openai"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "種類",
+            "x-source" : "openai"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "类型",
+            "x-source" : "openai"
+          }
+        }
+      }
     },
     "Level" : {
-
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "مستوى",
+            "x-source" : "openai"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Stufe",
+            "x-source" : "openai"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Level",
+            "x-source" : "openai"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Nivel",
+            "x-source" : "openai"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Niveau",
+            "x-source" : "openai"
+          }
+        },
+        "he" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "רמה",
+            "x-source" : "openai"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Nivel",
+            "x-source" : "openai"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "レベル",
+            "x-source" : "openai"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "等级",
+            "x-source" : "openai"
+          }
+        }
+      }
     },
     "Log viewer" : {
-
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "عارض السجلات",
+            "x-source" : "openai"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Protokollanzeige",
+            "x-source" : "openai"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Log viewer",
+            "x-source" : "openai"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Visor de registros",
+            "x-source" : "openai"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Visionneuse de journaux",
+            "x-source" : "openai"
+          }
+        },
+        "he" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "צופה ביומן",
+            "x-source" : "openai"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Visor de registros",
+            "x-source" : "openai"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "ログビューア",
+            "x-source" : "openai"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "日志查看器",
+            "x-source" : "openai"
+          }
+        }
+      }
     },
-    "Major/Minor" : {
-
+    "Major\/Minor" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "رئيسي\/ثانوي",
+            "x-source" : "openai"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Haupt\/Neben",
+            "x-source" : "openai"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Major\/Minor",
+            "x-source" : "openai"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Mayor\/Menor",
+            "x-source" : "openai"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Majeur\/Mineur",
+            "x-source" : "openai"
+          }
+        },
+        "he" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "ראשי\/משני",
+            "x-source" : "openai"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Mayor\/Menor",
+            "x-source" : "openai"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "メジャー\/マイナー",
+            "x-source" : "openai"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "主要\/次要",
+            "x-source" : "openai"
+          }
+        }
+      }
     },
     "Memory allocation failed" : {
-
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "فشل في تخصيص الذاكرة",
+            "x-source" : "openai"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Speicherzuweisung fehlgeschlagen",
+            "x-source" : "openai"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Memory allocation failed",
+            "x-source" : "openai"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Falló la asignación de memoria",
+            "x-source" : "openai"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "L'allocation de mémoire a échoué",
+            "x-source" : "openai"
+          }
+        },
+        "he" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "הקצאת הזיכרון נכשלה",
+            "x-source" : "openai"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Allocazione della memoria fallita",
+            "x-source" : "openai"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "メモリの割り当てに失敗しました",
+            "x-source" : "openai"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "内存分配失败",
+            "x-source" : "openai"
+          }
+        }
+      }
     },
     "Message" : {
-
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "رسالة",
+            "x-source" : "openai"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Nachricht",
+            "x-source" : "openai"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Message",
+            "x-source" : "openai"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Mensaje",
+            "x-source" : "openai"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Message",
+            "x-source" : "openai"
+          }
+        },
+        "he" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "הודעה",
+            "x-source" : "openai"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Mensaje",
+            "x-source" : "openai"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "メッセージ",
+            "x-source" : "openai"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "消息",
+            "x-source" : "openai"
+          }
+        }
+      }
     },
     "Minimum level" : {
-
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "المستوى الأدنى",
+            "x-source" : "openai"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Mindeststufe",
+            "x-source" : "openai"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Minimum level",
+            "x-source" : "openai"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Nivel mínimo",
+            "x-source" : "openai"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Niveau minimum",
+            "x-source" : "openai"
+          }
+        },
+        "he" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "רמה מינימלית",
+            "x-source" : "openai"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Nivel mínimo",
+            "x-source" : "openai"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "最低レベル",
+            "x-source" : "openai"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "最低级别",
+            "x-source" : "openai"
+          }
+        }
+      }
     },
     "Name" : {
-
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "اسم",
+            "x-source" : "openai"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Name",
+            "x-source" : "openai"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Name",
+            "x-source" : "openai"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Nombre",
+            "x-source" : "openai"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Nom",
+            "x-source" : "openai"
+          }
+        },
+        "he" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "שם",
+            "x-source" : "openai"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Nombre",
+            "x-source" : "openai"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "名前",
+            "x-source" : "openai"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "姓名",
+            "x-source" : "openai"
+          }
+        }
+      }
     },
     "New" : {
-
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "جديد",
+            "x-source" : "openai"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Neu",
+            "x-source" : "openai"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "New",
+            "x-source" : "openai"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Nuevo",
+            "x-source" : "openai"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Nouveau",
+            "x-source" : "openai"
+          }
+        },
+        "he" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "חדש",
+            "x-source" : "openai"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Nuevo",
+            "x-source" : "openai"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "新規",
+            "x-source" : "openai"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "新",
+            "x-source" : "openai"
+          }
+        }
+      }
     },
     "New Folder" : {
-
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "مجلد جديد",
+            "x-source" : "openai"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Neuer Ordner",
+            "x-source" : "openai"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "New Folder",
+            "x-source" : "openai"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Nueva Carpeta",
+            "x-source" : "openai"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Nouveau Dossier",
+            "x-source" : "openai"
+          }
+        },
+        "he" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "תיקיה חדשה",
+            "x-source" : "openai"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Nuova Cartella",
+            "x-source" : "openai"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "新規フォルダ",
+            "x-source" : "openai"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "新建文件夹",
+            "x-source" : "openai"
+          }
+        }
+      }
     },
     "Open an archive" : {
-
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "افتح أرشيفًا",
+            "x-source" : "openai"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Ein Archiv öffnen",
+            "x-source" : "openai"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Open an archive",
+            "x-source" : "openai"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Abrir un archivo",
+            "x-source" : "openai"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Ouvrir une archive",
+            "x-source" : "openai"
+          }
+        },
+        "he" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "לפתוח ארכיון",
+            "x-source" : "openai"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Abrir un archivo",
+            "x-source" : "openai"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "アーカイブを開く",
+            "x-source" : "openai"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "打开档案",
+            "x-source" : "openai"
+          }
+        }
+      }
     },
     "Open..." : {
-
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "افتح...",
+            "x-source" : "openai"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Öffnen...",
+            "x-source" : "openai"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Open...",
+            "x-source" : "openai"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Abrir...",
+            "x-source" : "openai"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Ouvrir...",
+            "x-source" : "openai"
+          }
+        },
+        "he" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "פתח...",
+            "x-source" : "openai"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Abrir...",
+            "x-source" : "openai"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "開く...",
+            "x-source" : "openai"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "打开...",
+            "x-source" : "openai"
+          }
+        }
+      }
     },
     "Other:" : {
-
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "أخرى:",
+            "x-source" : "openai"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Andere:",
+            "x-source" : "openai"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Other:",
+            "x-source" : "openai"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Otros:",
+            "x-source" : "openai"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Autres :",
+            "x-source" : "openai"
+          }
+        },
+        "he" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "אחר:",
+            "x-source" : "openai"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Altro:",
+            "x-source" : "openai"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "その他:",
+            "x-source" : "openai"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "其他：",
+            "x-source" : "openai"
+          }
+        }
+      }
     },
     "Path (Debug)" : {
-
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "مسار (تصحيح)",
+            "x-source" : "openai"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Pfad (Debug)",
+            "x-source" : "openai"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Path (Debug)",
+            "x-source" : "openai"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Ruta (Depuración)",
+            "x-source" : "openai"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Chemin (Débogage)",
+            "x-source" : "openai"
+          }
+        },
+        "he" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "נתיב (דיבוג)",
+            "x-source" : "openai"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Percorso (Debug)",
+            "x-source" : "openai"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "パス (デバッグ)",
+            "x-source" : "openai"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "路径 (调试)",
+            "x-source" : "openai"
+          }
+        }
+      }
     },
     "Permissions" : {
-
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "الأذونات",
+            "x-source" : "openai"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Berechtigungen",
+            "x-source" : "openai"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Permissions",
+            "x-source" : "openai"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Permisos",
+            "x-source" : "openai"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Autorisations",
+            "x-source" : "openai"
+          }
+        },
+        "he" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "הרשאות",
+            "x-source" : "openai"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Permisos",
+            "x-source" : "openai"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "権限",
+            "x-source" : "openai"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "权限",
+            "x-source" : "openai"
+          }
+        }
+      }
     },
     "Quick Look" : {
-
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "نظرة سريعة",
+            "x-source" : "openai"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Schnellansicht",
+            "x-source" : "openai"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Quick Look",
+            "x-source" : "openai"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Vista Rápida",
+            "x-source" : "openai"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Aperçu rapide",
+            "x-source" : "openai"
+          }
+        },
+        "he" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "תצוגה מהירה",
+            "x-source" : "openai"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Vista Rápida",
+            "x-source" : "openai"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "クイックルック",
+            "x-source" : "openai"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "快速查看",
+            "x-source" : "openai"
+          }
+        }
+      }
     },
     "R" : {
-      "shouldTranslate" : false
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "R",
+            "x-source" : "openai"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "R",
+            "x-source" : "openai"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "R",
+            "x-source" : "openai"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "R",
+            "x-source" : "openai"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "R",
+            "x-source" : "openai"
+          }
+        },
+        "he" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "אר",
+            "x-source" : "openai"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "R",
+            "x-source" : "openai"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "R",
+            "x-source" : "openai"
+          }
+        }
+      }
     },
     "Read-only archive" : {
-
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "أرشيف للقراءة فقط",
+            "x-source" : "openai"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Schreibgeschütztes Archiv",
+            "x-source" : "openai"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Read-only archive",
+            "x-source" : "openai"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Archivo de solo lectura",
+            "x-source" : "openai"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Archive en lecture seule",
+            "x-source" : "openai"
+          }
+        },
+        "he" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "ארכיון לקריאה בלבד",
+            "x-source" : "openai"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Archivio di sola lettura",
+            "x-source" : "openai"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "読み取り専用アーカイブ",
+            "x-source" : "openai"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "只读存档",
+            "x-source" : "openai"
+          }
+        }
+      }
     },
-    "Rename selected file/folder" : {
-
+    "Rename selected file\/folder" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "إعادة تسمية الملف\/المجلد المحدد",
+            "x-source" : "openai"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Ausgewählte Datei\/Ordner umbenennen",
+            "x-source" : "openai"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Rename selected file\/folder",
+            "x-source" : "openai"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Renombrar archivo\/carpeta seleccionada",
+            "x-source" : "openai"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Renommer le fichier\/dossier sélectionné",
+            "x-source" : "openai"
+          }
+        },
+        "he" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "שנה שם לקובץ\/תיקיה שנבחרו",
+            "x-source" : "openai"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Renombrar archivo\/carpeta seleccionado\/a",
+            "x-source" : "openai"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "選択したファイル\/フォルダの名前を変更",
+            "x-source" : "openai"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "重命名选定的文件\/文件夹",
+            "x-source" : "openai"
+          }
+        }
+      }
     },
     "Rename..." : {
-
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "إعادة تسمية...",
+            "x-source" : "openai"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Umbenennen...",
+            "x-source" : "openai"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Rename...",
+            "x-source" : "openai"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Renombrar...",
+            "x-source" : "openai"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Renommer...",
+            "x-source" : "openai"
+          }
+        },
+        "he" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "שנה שם...",
+            "x-source" : "openai"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Renombrar...",
+            "x-source" : "openai"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "名前を変更...",
+            "x-source" : "openai"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "重命名...",
+            "x-source" : "openai"
+          }
+        }
+      }
     },
     "Revert to Saved" : {
-
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "الرجوع إلى المحفوظ",
+            "x-source" : "openai"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Auf Gespeichertes zurücksetzen",
+            "x-source" : "openai"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Revert to Saved",
+            "x-source" : "openai"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Volver a la versión guardada",
+            "x-source" : "openai"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Revenir à la version enregistrée",
+            "x-source" : "openai"
+          }
+        },
+        "he" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "חזור לגרסה שמורה",
+            "x-source" : "openai"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Ripristina a Salvato",
+            "x-source" : "openai"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "保存済みに戻す",
+            "x-source" : "openai"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "恢复到已保存的版本",
+            "x-source" : "openai"
+          }
+        }
+      }
     },
     "S" : {
-      "shouldTranslate" : false
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "س",
+            "x-source" : "openai"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "S",
+            "x-source" : "openai"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "S",
+            "x-source" : "openai"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "S",
+            "x-source" : "openai"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "S",
+            "x-source" : "openai"
+          }
+        },
+        "he" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "ס",
+            "x-source" : "openai"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "S",
+            "x-source" : "openai"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "S",
+            "x-source" : "openai"
+          }
+        }
+      }
     },
     "Save" : {
-
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "حفظ",
+            "x-source" : "openai"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Speichern",
+            "x-source" : "openai"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Save",
+            "x-source" : "openai"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Guardar",
+            "x-source" : "openai"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Enregistrer",
+            "x-source" : "openai"
+          }
+        },
+        "he" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "שמור",
+            "x-source" : "openai"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Guardar",
+            "x-source" : "openai"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "保存",
+            "x-source" : "openai"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "保存",
+            "x-source" : "openai"
+          }
+        }
+      }
     },
     "Save As..." : {
-
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "حفظ باسم...",
+            "x-source" : "openai"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Speichern unter...",
+            "x-source" : "openai"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Save As...",
+            "x-source" : "openai"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Guardar como...",
+            "x-source" : "openai"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Enregistrer sous...",
+            "x-source" : "openai"
+          }
+        },
+        "he" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "שמור בשם...",
+            "x-source" : "openai"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Guardar como...",
+            "x-source" : "openai"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "名前を付けて保存...",
+            "x-source" : "openai"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "另存为...",
+            "x-source" : "openai"
+          }
+        }
+      }
     },
     "Size" : {
-
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "حجم",
+            "x-source" : "openai"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Größe",
+            "x-source" : "openai"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Size",
+            "x-source" : "openai"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Tamaño",
+            "x-source" : "openai"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Taille",
+            "x-source" : "openai"
+          }
+        },
+        "he" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "גודל",
+            "x-source" : "openai"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Tamaño",
+            "x-source" : "openai"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "サイズ",
+            "x-source" : "openai"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "大小",
+            "x-source" : "openai"
+          }
+        }
+      }
     },
     "Size (bytes)" : {
-
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "حجم (بايت)",
+            "x-source" : "openai"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Größe (Bytes)",
+            "x-source" : "openai"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Size (bytes)",
+            "x-source" : "openai"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Tamaño (bytes)",
+            "x-source" : "openai"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Taille (octets)",
+            "x-source" : "openai"
+          }
+        },
+        "he" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "גודל (בתים)",
+            "x-source" : "openai"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Dimensione (byte)",
+            "x-source" : "openai"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "サイズ (バイト)",
+            "x-source" : "openai"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "大小（字节）",
+            "x-source" : "openai"
+          }
+        }
+      }
     },
     "Source (Debug)" : {
-
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "مصدر (تصحيح)",
+            "x-source" : "openai"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Quelle (Debug)",
+            "x-source" : "openai"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Source (Debug)",
+            "x-source" : "openai"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Fuente (Depuración)",
+            "x-source" : "openai"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Source (Débogage)",
+            "x-source" : "openai"
+          }
+        },
+        "he" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "מקור (ניפוי שגיאות)",
+            "x-source" : "openai"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Sorgente (Debug)",
+            "x-source" : "openai"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "ソース（デバッグ）",
+            "x-source" : "openai"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "源（调试）",
+            "x-source" : "openai"
+          }
+        }
+      }
     },
     "Stop" : {
-
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "إيقاف",
+            "x-source" : "openai"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Stopp",
+            "x-source" : "openai"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Stop",
+            "x-source" : "openai"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Detener",
+            "x-source" : "openai"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Arrêter",
+            "x-source" : "openai"
+          }
+        },
+        "he" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "עצור",
+            "x-source" : "openai"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Detener",
+            "x-source" : "openai"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "停止",
+            "x-source" : "openai"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "停止",
+            "x-source" : "openai"
+          }
+        }
+      }
     },
     "Stop the current task" : {
-
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "إيقاف المهمة الحالية",
+            "x-source" : "openai"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Aktuelle Aufgabe stoppen",
+            "x-source" : "openai"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Stop the current task",
+            "x-source" : "openai"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Detener la tarea actual",
+            "x-source" : "openai"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Arrêter la tâche en cours",
+            "x-source" : "openai"
+          }
+        },
+        "he" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "הפסק את המשימה הנוכחית",
+            "x-source" : "openai"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Detener la tarea actual",
+            "x-source" : "openai"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "現在のタスクを停止する",
+            "x-source" : "openai"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "停止当前任务",
+            "x-source" : "openai"
+          }
+        }
+      }
     },
     "Symlink Target" : {
-
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "وجهة الرابط الرمزي",
+            "x-source" : "openai"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Symlink-Ziel",
+            "x-source" : "openai"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Symlink Target",
+            "x-source" : "openai"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Destino del Enlace Simbólico",
+            "x-source" : "openai"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Cible du lien symbolique",
+            "x-source" : "openai"
+          }
+        },
+        "he" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "יעד קישור סמלי",
+            "x-source" : "openai"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Destino del Enlace Simbólico",
+            "x-source" : "openai"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "シンボリックリンクのターゲット",
+            "x-source" : "openai"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "符号链接目标",
+            "x-source" : "openai"
+          }
+        }
+      }
     },
     "Synthetic" : {
-
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "اصطناعي",
+            "x-source" : "openai"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Synthetisch",
+            "x-source" : "openai"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Synthetic",
+            "x-source" : "openai"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Sintético",
+            "x-source" : "openai"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Synthétique",
+            "x-source" : "openai"
+          }
+        },
+        "he" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "סינתטי",
+            "x-source" : "openai"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Sintético",
+            "x-source" : "openai"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "合成",
+            "x-source" : "openai"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "合成的",
+            "x-source" : "openai"
+          }
+        }
+      }
     },
     "This archive has unsaved changes, do you want to close it without saving?" : {
-
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "هذا الأرشيف يحتوي على تغييرات غير محفوظة، هل تريد إغلاقه دون حفظ؟",
+            "x-source" : "openai"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Dieses Archiv enthält ungespeicherte Änderungen. Möchten Sie es schließen, ohne zu speichern?",
+            "x-source" : "openai"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "This archive has unsaved changes, do you want to close it without saving?",
+            "x-source" : "openai"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Este archivo tiene cambios no guardados, ¿desea cerrarlo sin guardar?",
+            "x-source" : "openai"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Cet archive contient des modifications non enregistrées, voulez-vous la fermer sans enregistrer ?",
+            "x-source" : "openai"
+          }
+        },
+        "he" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "לארכיון זה יש שינויים שלא נשמרו, האם ברצונך לסגור אותו ללא שמירה?",
+            "x-source" : "openai"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Questo archivio ha modifiche non salvate, vuoi chiuderlo senza salvare?",
+            "x-source" : "openai"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "このアーカイブには保存されていない変更があります。保存せずに閉じてもよろしいですか？",
+            "x-source" : "openai"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "此档案有未保存的更改，您确定要不保存就关闭吗？",
+            "x-source" : "openai"
+          }
+        }
+      }
     },
     "This archive's format is read-only. Use Save As to select a writable format if you need to make changes." : {
-
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "تنسيق هذا الأرشيف للقراءة فقط. استخدم \"حفظ باسم\" لاختيار تنسيق قابل للكتابة إذا كنت بحاجة إلى إجراء تغييرات.",
+            "x-source" : "openai"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Das Format dieses Archivs ist schreibgeschützt. Verwenden Sie \"Speichern unter\", um ein beschreibbares Format auszuwählen, wenn Sie Änderungen vornehmen müssen.",
+            "x-source" : "openai"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "This archive's format is read-only. Use Save As to select a writable format if you need to make changes.",
+            "x-source" : "openai"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "El formato de este archivo es de solo lectura. Use Guardar como para seleccionar un formato escribible si necesita hacer cambios.",
+            "x-source" : "openai"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Le format de cette archive est en lecture seule. Utilisez Enregistrer sous pour sélectionner un format modifiable si vous devez apporter des modifications.",
+            "x-source" : "openai"
+          }
+        },
+        "he" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "הפורמט של הארכיון הזה הוא לקריאה בלבד. השתמש ב\"שמור בשם\" כדי לבחור פורמט שניתן לכתיבה אם אתה צריך לבצע שינויים.",
+            "x-source" : "openai"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Il formato di questo archivio è di sola lettura. Usa \"Salva con nome\" per selezionare un formato scrivibile se hai bisogno di apportare modifiche.",
+            "x-source" : "openai"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "このアーカイブの形式は読み取り専用です。変更が必要な場合は、「名前を付けて保存」を使用して書き込み可能な形式を選択してください。",
+            "x-source" : "openai"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "此存档格式为只读。如果需要更改，请使用“另存为”选择可写格式。",
+            "x-source" : "openai"
+          }
+        }
+      }
     },
     "UID" : {
-      "shouldTranslate" : false
-    },
-    "Unabe to read archive entry path" : {
-
-    },
-    "Unable to access security scope for %@" : {
-
-    },
-    "Unable to add %@" : {
-
-    },
-    "Unable to add filter: %@" : {
-
-    },
-    "Unable to create cache path" : {
-
-    },
-    "Unable to create new entry" : {
-
-    },
-    "Unable to determine file path for %@" : {
-
-    },
-    "Unable to determine which archive format the user selected" : {
-
-    },
-    "Unable to fetch entry header" : {
-
-    },
-    "Unable to find new path for %@" : {
-
-    },
-    "Unable to open file: %@" : {
-
-    },
-    "Unable to open output archive: %@" : {
-
-    },
-    "Unable to read archive" : {
-
-    },
-    "Unable to remove cache directory at: %@" : {
-
-    },
-    "Unable to retrieve written URLs" : {
-
-    },
-    "Unable to set format: %@" : {
-
-    },
-    "Unable to write to %@" : {
-
-    },
-    "Unexpected error adding children: %@" : {
-
-    },
-    "Unknown response %lld" : {
-
-    },
-    "Unknown result %d" : {
-
-    },
-    "User:" : {
-
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "معرف المستخدم",
+            "x-source" : "openai"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Benutzer-ID",
+            "x-source" : "openai"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "UID",
+            "x-source" : "openai"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "UID",
+            "x-source" : "openai"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "ID utilisateur",
+            "x-source" : "openai"
+          }
+        },
+        "he" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "מזהה משתמש",
+            "x-source" : "openai"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "ID de Usuario",
+            "x-source" : "openai"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "ユーザーID",
+            "x-source" : "openai"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "用户ID",
+            "x-source" : "openai"
+          }
+        }
+      }
     },
     "UUID (Debug)" : {
-
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "UUID (تصحيح)",
+            "x-source" : "openai"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "UUID (Debuggen)",
+            "x-source" : "openai"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "UUID (Debug)",
+            "x-source" : "openai"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "UUID (Depuración)",
+            "x-source" : "openai"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "UUID (Débogage)",
+            "x-source" : "openai"
+          }
+        },
+        "he" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "UUID (דיבוג)",
+            "x-source" : "openai"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "UUID (Depuración)",
+            "x-source" : "openai"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "UUID (デバッグ)",
+            "x-source" : "openai"
+          }
+        }
+      }
+    },
+    "Unabe to read archive entry path" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "غير قادر على قراءة مسار الإدخال في الأرشيف",
+            "x-source" : "openai"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Archiv-Eintragspfad kann nicht gelesen werden.",
+            "x-source" : "openai"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Unabe to read archive entry path",
+            "x-source" : "openai"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "No se puede leer la ruta de entrada del archivo",
+            "x-source" : "openai"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Impossible de lire le chemin d'entrée de l'archive",
+            "x-source" : "openai"
+          }
+        },
+        "he" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "לא ניתן לקרוא את נתיב הכניסה בארכיון",
+            "x-source" : "openai"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "No se puede leer la ruta de entrada del archivo.",
+            "x-source" : "openai"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "アーカイブのエントリーパスを読み取れません",
+            "x-source" : "openai"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "无法读取存档条目路径",
+            "x-source" : "openai"
+          }
+        }
+      }
+    },
+    "Unable to access security scope for %@" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "غير قادر على الوصول إلى نطاق الأمان لـ %@",
+            "x-source" : "openai"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Kann nicht auf den Sicherheitsbereich für %@ zugreifen",
+            "x-source" : "openai"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Unable to access security scope for %@",
+            "x-source" : "openai"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "No se puede acceder al ámbito de seguridad para %@",
+            "x-source" : "openai"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Impossible d'accéder au périmètre de sécurité pour %@",
+            "x-source" : "openai"
+          }
+        },
+        "he" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "לא ניתן לגשת להיקף האבטחה עבור %@",
+            "x-source" : "openai"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "No se puede acceder al ámbito de seguridad para %@",
+            "x-source" : "openai"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "%@のセキュリティスコープにアクセスできません",
+            "x-source" : "openai"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "无法访问 %@ 的安全范围",
+            "x-source" : "openai"
+          }
+        }
+      }
+    },
+    "Unable to add %@" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "غير قادر على إضافة %@",
+            "x-source" : "openai"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Kann %@ nicht hinzufügen",
+            "x-source" : "openai"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Unable to add %@",
+            "x-source" : "openai"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "No se puede añadir %@",
+            "x-source" : "openai"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Impossible d'ajouter %@",
+            "x-source" : "openai"
+          }
+        },
+        "he" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "לא ניתן להוסיף את %@",
+            "x-source" : "openai"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "No se puede agregar %@",
+            "x-source" : "openai"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "%@を追加できません",
+            "x-source" : "openai"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "无法添加%@",
+            "x-source" : "openai"
+          }
+        }
+      }
+    },
+    "Unable to add filter: %@" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "غير قادر على إضافة الفلتر: %@",
+            "x-source" : "openai"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Filter konnte nicht hinzugefügt werden: %@",
+            "x-source" : "openai"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Unable to add filter: %@",
+            "x-source" : "openai"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "No se puede añadir el filtro: %@",
+            "x-source" : "openai"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Impossible d'ajouter le filtre : %@",
+            "x-source" : "openai"
+          }
+        },
+        "he" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "לא ניתן להוסיף את המסנן: %@",
+            "x-source" : "openai"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "No se puede agregar el filtro: %@",
+            "x-source" : "openai"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "フィルターを追加できません: %@",
+            "x-source" : "openai"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "无法添加过滤器：%@",
+            "x-source" : "openai"
+          }
+        }
+      }
+    },
+    "Unable to create cache path" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "غير قادر على إنشاء مسار ذاكرة التخزين المؤقت",
+            "x-source" : "openai"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Kann Cache-Pfad nicht erstellen",
+            "x-source" : "openai"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Unable to create cache path",
+            "x-source" : "openai"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "No se puede crear la ruta de caché",
+            "x-source" : "openai"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Impossible de créer le chemin du cache",
+            "x-source" : "openai"
+          }
+        },
+        "he" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "לא ניתן ליצור נתיב מטמון",
+            "x-source" : "openai"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "No se puede crear la ruta de caché",
+            "x-source" : "openai"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "キャッシュパスを作成できません",
+            "x-source" : "openai"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "无法创建缓存路径",
+            "x-source" : "openai"
+          }
+        }
+      }
+    },
+    "Unable to create new entry" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "غير قادر على إنشاء إدخال جديد",
+            "x-source" : "openai"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Kann neuen Eintrag nicht erstellen.",
+            "x-source" : "openai"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Unable to create new entry",
+            "x-source" : "openai"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "No se puede crear una nueva entrada",
+            "x-source" : "openai"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Impossible de créer une nouvelle entrée",
+            "x-source" : "openai"
+          }
+        },
+        "he" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "לא ניתן ליצור רשומה חדשה",
+            "x-source" : "openai"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "No se puede crear una nueva entrada",
+            "x-source" : "openai"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "新しいエントリを作成できません",
+            "x-source" : "openai"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "无法创建新条目",
+            "x-source" : "openai"
+          }
+        }
+      }
+    },
+    "Unable to determine file path for %@" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "غير قادر على تحديد مسار الملف لـ %@",
+            "x-source" : "openai"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Kann den Dateipfad für %@ nicht bestimmen.",
+            "x-source" : "openai"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Unable to determine file path for %@",
+            "x-source" : "openai"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "No se puede determinar la ruta del archivo para %@",
+            "x-source" : "openai"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Impossible de déterminer le chemin du fichier pour %@",
+            "x-source" : "openai"
+          }
+        },
+        "he" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "לא ניתן לקבוע את נתיב הקובץ עבור %@",
+            "x-source" : "openai"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Impossibile determinare il percorso del file per %@",
+            "x-source" : "openai"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "%@ のファイルパスを特定できません",
+            "x-source" : "openai"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "无法确定%@的文件路径",
+            "x-source" : "openai"
+          }
+        }
+      }
+    },
+    "Unable to determine which archive format the user selected" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "غير قادر على تحديد أي تنسيق أرشيف اختاره المستخدم",
+            "x-source" : "openai"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Es kann nicht festgestellt werden, welches Archivformat der Benutzer ausgewählt hat.",
+            "x-source" : "openai"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Unable to determine which archive format the user selected",
+            "x-source" : "openai"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "No se puede determinar qué formato de archivo seleccionó el usuario.",
+            "x-source" : "openai"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Impossible de déterminer quel format d'archive l'utilisateur a sélectionné",
+            "x-source" : "openai"
+          }
+        },
+        "he" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "לא ניתן לקבוע איזה פורמט ארכיון המשתמש בחר",
+            "x-source" : "openai"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "No se puede determinar qué formato de archivo seleccionó el usuario.",
+            "x-source" : "openai"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "ユーザーが選択したアーカイブ形式を特定できません",
+            "x-source" : "openai"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "无法确定用户选择了哪种归档格式",
+            "x-source" : "openai"
+          }
+        }
+      }
+    },
+    "Unable to fetch entry header" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "غير قادر على جلب رأس الإدخال",
+            "x-source" : "openai"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Konnte den Eintragskopf nicht abrufen",
+            "x-source" : "openai"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Unable to fetch entry header",
+            "x-source" : "openai"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "No se puede obtener el encabezado de entrada",
+            "x-source" : "openai"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Impossible de récupérer l'en-tête d'entrée",
+            "x-source" : "openai"
+          }
+        },
+        "he" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "לא ניתן לשלוף את כותרת הערך",
+            "x-source" : "openai"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "No se puede obtener el encabezado de entrada",
+            "x-source" : "openai"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "エントリーヘッダーを取得できません",
+            "x-source" : "openai"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "无法获取条目标题",
+            "x-source" : "openai"
+          }
+        }
+      }
+    },
+    "Unable to find new path for %@" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "غير قادر على العثور على مسار جديد لـ %@",
+            "x-source" : "openai"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Kann keinen neuen Pfad für %@ finden.",
+            "x-source" : "openai"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Unable to find new path for %@",
+            "x-source" : "openai"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "No se puede encontrar una nueva ruta para %@",
+            "x-source" : "openai"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Impossible de trouver un nouveau chemin pour %@",
+            "x-source" : "openai"
+          }
+        },
+        "he" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "לא ניתן למצוא נתיב חדש עבור %@",
+            "x-source" : "openai"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Impossibile trovare un nuovo percorso per %@",
+            "x-source" : "openai"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "%@の新しいパスを見つけることができません",
+            "x-source" : "openai"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "无法为 %@ 找到新路径",
+            "x-source" : "openai"
+          }
+        }
+      }
+    },
+    "Unable to open file: %@" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "تعذر فتح الملف: %@",
+            "x-source" : "openai"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Datei kann nicht geöffnet werden: %@",
+            "x-source" : "openai"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Unable to open file: %@",
+            "x-source" : "openai"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "No se puede abrir el archivo: %@",
+            "x-source" : "openai"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Impossible d'ouvrir le fichier : %@",
+            "x-source" : "openai"
+          }
+        },
+        "he" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "לא ניתן לפתוח את הקובץ: %@",
+            "x-source" : "openai"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "No se puede abrir el archivo: %@",
+            "x-source" : "openai"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "ファイルを開けません: %@",
+            "x-source" : "openai"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "无法打开文件：%@",
+            "x-source" : "openai"
+          }
+        }
+      }
+    },
+    "Unable to open output archive: %@" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "غير قادر على فتح أرشيف الإخراج: %@",
+            "x-source" : "openai"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Ausgabe-Archiv kann nicht geöffnet werden: %@",
+            "x-source" : "openai"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Unable to open output archive: %@",
+            "x-source" : "openai"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "No se puede abrir el archivo de salida: %@",
+            "x-source" : "openai"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Impossible d'ouvrir l'archive de sortie : %@",
+            "x-source" : "openai"
+          }
+        },
+        "he" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "לא ניתן לפתוח את ארכיון הפלט: %@",
+            "x-source" : "openai"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Impossibile aprire l'archivio di output: %@",
+            "x-source" : "openai"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "出力アーカイブを開くことができません: %@",
+            "x-source" : "openai"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "无法打开输出存档：%@",
+            "x-source" : "openai"
+          }
+        }
+      }
+    },
+    "Unable to read archive" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "غير قادر على قراءة الأرشيف",
+            "x-source" : "openai"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Archiv kann nicht gelesen werden",
+            "x-source" : "openai"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Unable to read archive",
+            "x-source" : "openai"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "No se puede leer el archivo",
+            "x-source" : "openai"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Impossible de lire l'archive",
+            "x-source" : "openai"
+          }
+        },
+        "he" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "לא ניתן לקרוא את קובץ הארכיון",
+            "x-source" : "openai"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "No se puede leer el archivo",
+            "x-source" : "openai"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "アーカイブを読み取れません",
+            "x-source" : "openai"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "无法读取存档",
+            "x-source" : "openai"
+          }
+        }
+      }
+    },
+    "Unable to remove cache directory at: %@" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "غير قادر على إزالة دليل التخزين المؤقت في: %@",
+            "x-source" : "openai"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Cache-Verzeichnis konnte nicht entfernt werden bei: %@",
+            "x-source" : "openai"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Unable to remove cache directory at: %@",
+            "x-source" : "openai"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "No se puede eliminar el directorio de caché en: %@",
+            "x-source" : "openai"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Impossible de supprimer le répertoire de cache à l'emplacement : %@",
+            "x-source" : "openai"
+          }
+        },
+        "he" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "לא ניתן להסיר את ספריית המטמון בכתובת: %@",
+            "x-source" : "openai"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Impossibile rimuovere la directory della cache in: %@",
+            "x-source" : "openai"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "キャッシュディレクトリを削除できません: %@",
+            "x-source" : "openai"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "无法删除位于 %@ 的缓存目录",
+            "x-source" : "openai"
+          }
+        }
+      }
+    },
+    "Unable to retrieve written URLs" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "غير قادر على استرجاع عناوين URL المكتوبة",
+            "x-source" : "openai"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Kann gespeicherte URLs nicht abrufen",
+            "x-source" : "openai"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Unable to retrieve written URLs",
+            "x-source" : "openai"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "No se pueden recuperar las URLs escritas",
+            "x-source" : "openai"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Impossible de récupérer les URL écrites",
+            "x-source" : "openai"
+          }
+        },
+        "he" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "לא ניתן לאחזר כתובות URL שנכתבו",
+            "x-source" : "openai"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "No se pueden recuperar las URL escritas",
+            "x-source" : "openai"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "記録されたURLを取得できません",
+            "x-source" : "openai"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "无法检索已记录的URL",
+            "x-source" : "openai"
+          }
+        }
+      }
+    },
+    "Unable to set format: %@" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "غير قادر على تعيين التنسيق: %@",
+            "x-source" : "openai"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Konnte das Format nicht festlegen: %@",
+            "x-source" : "openai"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Unable to set format: %@",
+            "x-source" : "openai"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "No se puede establecer el formato: %@",
+            "x-source" : "openai"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Impossible de définir le format : %@",
+            "x-source" : "openai"
+          }
+        },
+        "he" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "לא ניתן להגדיר את הפורמט: %@",
+            "x-source" : "openai"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "No se puede establecer el formato: %@",
+            "x-source" : "openai"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "フォーマットを設定できません: %@",
+            "x-source" : "openai"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "无法设置格式：%@",
+            "x-source" : "openai"
+          }
+        }
+      }
+    },
+    "Unable to write to %@" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "غير قادر على الكتابة إلى %@",
+            "x-source" : "openai"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Es ist nicht möglich, in %@ zu schreiben",
+            "x-source" : "openai"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Unable to write to %@",
+            "x-source" : "openai"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "No se puede escribir en %@",
+            "x-source" : "openai"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Impossible d'écrire dans %@",
+            "x-source" : "openai"
+          }
+        },
+        "he" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "לא ניתן לכתוב ל-%@",
+            "x-source" : "openai"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Impossibile scrivere su %@",
+            "x-source" : "openai"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "%@に書き込むことができません",
+            "x-source" : "openai"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "无法写入 %@",
+            "x-source" : "openai"
+          }
+        }
+      }
+    },
+    "Unexpected error adding children: %@" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "خطأ غير متوقع عند إضافة العناصر الفرعية: %@",
+            "x-source" : "openai"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Unerwarteter Fehler beim Hinzufügen von Unterelementen: %@",
+            "x-source" : "openai"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Unexpected error adding children: %@",
+            "x-source" : "openai"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Error inesperado al añadir hijos: %@",
+            "x-source" : "openai"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Erreur inattendue lors de l'ajout des enfants : %@",
+            "x-source" : "openai"
+          }
+        },
+        "he" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "שגיאה בלתי צפויה בהוספת ילדים: %@",
+            "x-source" : "openai"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Errore imprevisto aggiungendo elementi: %@",
+            "x-source" : "openai"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "子要素の追加中に予期しないエラーが発生しました: %@",
+            "x-source" : "openai"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "添加子项时出现意外错误：%@",
+            "x-source" : "openai"
+          }
+        }
+      }
+    },
+    "Unknown response %lld" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "استجابة غير معروفة %lld",
+            "x-source" : "openai"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Unbekannte Antwort %lld",
+            "x-source" : "openai"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Unknown response %lld",
+            "x-source" : "openai"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Respuesta desconocida %lld",
+            "x-source" : "openai"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Réponse inconnue %lld",
+            "x-source" : "openai"
+          }
+        },
+        "he" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "תגובה לא ידועה %lld",
+            "x-source" : "openai"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Respuesta desconocida %lld",
+            "x-source" : "openai"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "不明な応答 %lld",
+            "x-source" : "openai"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "未知响应 %lld",
+            "x-source" : "openai"
+          }
+        }
+      }
+    },
+    "Unknown result %d" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "نتيجة غير معروفة %d",
+            "x-source" : "openai"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Unbekanntes Ergebnis %d",
+            "x-source" : "openai"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Unknown result %d",
+            "x-source" : "openai"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Resultado desconocido %d",
+            "x-source" : "openai"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Résultat inconnu %d",
+            "x-source" : "openai"
+          }
+        },
+        "he" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "תוצאה לא ידועה %d",
+            "x-source" : "openai"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Risultato sconosciuto %d",
+            "x-source" : "openai"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "不明な結果 %d",
+            "x-source" : "openai"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "未知结果 %d",
+            "x-source" : "openai"
+          }
+        }
+      }
+    },
+    "User:" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "مستخدم:",
+            "x-source" : "openai"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Benutzer:",
+            "x-source" : "openai"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "User:",
+            "x-source" : "openai"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Usuario:",
+            "x-source" : "openai"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Utilisateur :",
+            "x-source" : "openai"
+          }
+        },
+        "he" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "משתמש:",
+            "x-source" : "openai"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Usuario:",
+            "x-source" : "openai"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "ユーザー：",
+            "x-source" : "openai"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "用户：",
+            "x-source" : "openai"
+          }
+        }
+      }
     },
     "W" : {
-      "shouldTranslate" : false
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "و",
+            "x-source" : "openai"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "W",
+            "x-source" : "openai"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "W",
+            "x-source" : "openai"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "W",
+            "x-source" : "openai"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "W",
+            "x-source" : "openai"
+          }
+        },
+        "he" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "W",
+            "x-source" : "openai"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "W",
+            "x-source" : "openai"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "W",
+            "x-source" : "openai"
+          }
+        }
+      }
     },
     "X" : {
-      "shouldTranslate" : false
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "X",
+            "x-source" : "openai"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "X",
+            "x-source" : "openai"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "X",
+            "x-source" : "openai"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "X",
+            "x-source" : "openai"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "X",
+            "x-source" : "openai"
+          }
+        },
+        "he" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "X",
+            "x-source" : "openai"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "X",
+            "x-source" : "openai"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "X",
+            "x-source" : "openai"
+          }
+        }
+      }
     },
     "Zero entries extracted" : {
-
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "لم يتم استخراج أي مدخلات",
+            "x-source" : "openai"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Null Einträge extrahiert.",
+            "x-source" : "openai"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Zero entries extracted",
+            "x-source" : "openai"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Cero entradas extraídas",
+            "x-source" : "openai"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Zéro entrées extraites",
+            "x-source" : "openai"
+          }
+        },
+        "he" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "אפס רשומות נשלפו",
+            "x-source" : "openai"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Nessuna voce estratta",
+            "x-source" : "openai"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "抽出された項目はありません",
+            "x-source" : "openai"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "提取了零条目",
+            "x-source" : "openai"
+          }
+        }
+      }
+    },
+    "addChildHierarchically called on: %@" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "تم استدعاء addChildHierarchically على: %@",
+            "x-source" : "openai"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "addChildHierarchically aufgerufen für: %@",
+            "x-source" : "openai"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "addChildHierarchically called on: %@",
+            "x-source" : "openai"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "addChildHierarchically llamado en: %@",
+            "x-source" : "openai"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "ajouterEnfantHiérarchiquement appelé sur : %@",
+            "x-source" : "openai"
+          }
+        },
+        "he" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "addChildHierarchically נקרא על: %@",
+            "x-source" : "openai"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "addChildHierarchically llamado en: %@",
+            "x-source" : "openai"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "addChildHierarchicallyが呼び出されました: %@",
+            "x-source" : "openai"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "分层添加子项调用于: %@",
+            "x-source" : "openai"
+          }
+        }
+      }
+    },
+    "addChildHierarchically found an uninitialised children array" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "addChildHierarchically وجد مصفوفة الأطفال غير مهيأة",
+            "x-source" : "openai"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "addChildHierarchically hat ein nicht initialisiertes Kind-Array gefunden",
+            "x-source" : "openai"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "addChildHierarchically found an uninitialised children array",
+            "x-source" : "openai"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "addChildHierarchically encontró un array de hijos no inicializado",
+            "x-source" : "openai"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "addChildHierarchically a trouvé un tableau d'enfants non initialisé",
+            "x-source" : "openai"
+          }
+        },
+        "he" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "addChildHierarchically מצא מערך ילדים לא מאותחל",
+            "x-source" : "openai"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "addChildHierarchically encontró un array de hijos no inicializado",
+            "x-source" : "openai"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "addChildHierarchically は初期化されていない子供の配列を見つけました",
+            "x-source" : "openai"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "addChildHierarchically 发现未初始化的子元素数组",
+            "x-source" : "openai"
+          }
+        }
+      }
     }
   },
   "version" : "1.0"

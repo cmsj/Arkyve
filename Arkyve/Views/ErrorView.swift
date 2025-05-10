@@ -15,12 +15,12 @@ class ShowErrors {
 
     func err(_ error: ArkyveError) {
         self.error = error
-        AKError("ShowErrors::err: \(error.localizedDescription)")
+        AKError(String(localized: "Displayed error: \(error.localizedDescription)"))
     }
 
     func clear() {
         self.error = nil
-        AKTrace("ShowErrors::clear")
+        AKTrace("Clearing log")
     }
 }
 

@@ -84,7 +84,7 @@ class Archive: Identifiable {
         do {
             try FileManager.default.removeItem(at: self.cacheURL)
         } catch {
-            AKError("Unable to remove cache directory at: \(self.cacheURL)")
+            AKError(String(localized: "Unable to remove cache directory at: \(self.cacheURL.path)"))
         }
     }
 
@@ -145,7 +145,7 @@ class Archive: Identifiable {
             let pathComponentsInArchive = targetEntry.pathComponents + [url.lastPathComponent]
 
             guard let entry = ArchiveEntry(from: url, pathInArchiveComponents: pathComponentsInArchive) else {
-                throw .init(.entries, msg: "Unable to add \(url.path)")
+                throw .init(.entries, msg: String(localized: "Unable to add \(url.path)"))
             }
 
             // Check if another file already has the exact same path - if it does we will forcibly rename this new one
@@ -168,7 +168,7 @@ class Archive: Identifiable {
                 guard let enumerator = FileManager.default.enumerator(at: url, includingPropertiesForKeys: []) else { break }
                 for case let fileURL as URL in enumerator {
                     guard var dirPathComponents = fileURL.pathComponents.subtractPath(filesystemParentPath) else {
-                        throw .init(.entries, msg: "Unable to determine file path for \(fileURL.path)")
+                        throw .init(.entries, msg: String(localized: "Unable to determine file path for \(fileURL.path)"))
                     }
 
                     // NOTE: We are discarding the name of the directory here and replacing it with entry.name
@@ -176,7 +176,7 @@ class Archive: Identifiable {
                     dirPathComponents = [entry.name] + dirPathComponents.dropFirst()
                     guard let entry = ArchiveEntry(from: fileURL,
                                                    pathInArchiveComponents: targetEntry.pathComponents + dirPathComponents) else {
-                        throw .init(.entries, msg: "Unable to add \(fileURL.path)")
+                        throw .init(.entries, msg: String(localized: "Unable to add \(fileURL.path)"))
                     }
 
                     newEntries.append(entry)
@@ -308,7 +308,7 @@ class Archive: Identifiable {
         // First, check if the user has renamed us to a duplicate of another name
         let possibleDuplicateEntries = self.entries.filter { $0.name == entry.name && $0.id != entry.id }
         if !possibleDuplicateEntries.isEmpty {
-            throw ArkyveError(.rename, msg: "\(entry.name) already exists")
+            throw ArkyveError(.rename, msg: String(localized: "\(entry.name) already exists"))
         }
 
         // Get the parent's path components (if any)

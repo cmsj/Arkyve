@@ -276,18 +276,18 @@ class ArchiveEntry: Identifiable {
         } catch let error as ArkyveError {
             throw error
         } catch {
-            throw .init(.entries, msg: "Unexpected error adding children hierarchically: \(error.localizedDescription)")
+            throw .init(.entries, msg: String(localized: "Unexpected error adding children: \(error.localizedDescription)"))
         }
     }
 
     @discardableResult func addChildHierarchically(_ entry: ArchiveEntry) throws(ArkyveError) -> [ArchiveEntry] {
         guard [.directory, .root].contains(self.type) else {
-            AKError("addChildHierarchically called on something other than directory/root: \(self.type)")
-            throw .init(.entries, msg: "Internal error, adding entry to non-directory")
+            AKError(String(localized: "addChildHierarchically called on: \(self.type.userString)"))
+            throw .init(.entries, msg: String(localized: "Internal error, adding entry to non-directory"))
         }
         guard self.children != nil else {
-            AKError("addCH found an uninitialised children array")
-            throw .init(.entries, msg: "Internal error, adding entry to edge node")
+            AKError(String(localized: "addChildHierarchically found an uninitialised children array"))
+            throw .init(.entries, msg: String(localized: "Internal error, adding entry to edge node"))
         }
 
         var syntheticEntries: [ArchiveEntry] = []
@@ -319,7 +319,9 @@ class ArchiveEntry: Identifiable {
             // If we have, we'll need to reparent its children to us and remove it.
             if let dispatchIndex = children?.firstIndex(where: { $0.name == entry.name && $0.type == .directory && $0.source.type == .Synthetic }) {
                 AKTrace("Replacing synthetic subdirectory \(entry.path)")
-                guard let duplicate = children?[dispatchIndex] else { throw .init(.readArchive, msg: "Internal error: Duplicate synthetic directory")}
+                guard let duplicate = children?[dispatchIndex] else {
+                    throw .init(.readArchive, msg: String(localized: "Internal error: Duplicate synthetic directory"))
+                }
                 entry.children = duplicate.children
                 self.lock.withLock { _ in
                     _ = self.children?.remove(at: dispatchIndex)

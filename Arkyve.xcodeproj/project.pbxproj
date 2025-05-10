@@ -52,6 +52,7 @@
 		4FC3FA772DCB7FAA0087E46B /* MWVM+Buttons.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FC3FA762DCB7FA60087E46B /* MWVM+Buttons.swift */; };
 		4FC3FA792DCB80030087E46B /* MWVM+Pasteboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FC3FA782DCB7FFF0087E46B /* MWVM+Pasteboard.swift */; };
 		4FC3FA7B2DCB80720087E46B /* MWVM+DragAndDrop.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FC3FA7A2DCB806B0087E46B /* MWVM+DragAndDrop.swift */; };
+		4FC3FA7F2DCFF47E0087E46B /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 4FC3FA7E2DCFF47E0087E46B /* Localizable.xcstrings */; };
 		4FCEEEDE2BEE39E7009E9E17 /* ArkyveApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FCEEEDD2BEE39E7009E9E17 /* ArkyveApp.swift */; };
 		4FCEEEE02BEE39E7009E9E17 /* MainWindowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FCEEEDF2BEE39E7009E9E17 /* MainWindowView.swift */; };
 		4FCEEEE22BEE39E9009E9E17 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4FCEEEE12BEE39E9009E9E17 /* Assets.xcassets */; };
@@ -134,6 +135,7 @@
 		4FC3FA762DCB7FA60087E46B /* MWVM+Buttons.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MWVM+Buttons.swift"; sourceTree = "<group>"; };
 		4FC3FA782DCB7FFF0087E46B /* MWVM+Pasteboard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MWVM+Pasteboard.swift"; sourceTree = "<group>"; };
 		4FC3FA7A2DCB806B0087E46B /* MWVM+DragAndDrop.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MWVM+DragAndDrop.swift"; sourceTree = "<group>"; };
+		4FC3FA7E2DCFF47E0087E46B /* Localizable.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = Localizable.xcstrings; sourceTree = "<group>"; };
 		4FCEEEDA2BEE39E7009E9E17 /* Arkyve.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Arkyve.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4FCEEEDD2BEE39E7009E9E17 /* ArkyveApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArkyveApp.swift; sourceTree = "<group>"; };
 		4FCEEEDF2BEE39E7009E9E17 /* MainWindowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainWindowView.swift; sourceTree = "<group>"; };
@@ -283,6 +285,7 @@
 				4FCEEEE12BEE39E9009E9E17 /* Assets.xcassets */,
 				4FCEEEE62BEE39E9009E9E17 /* Arkyve.entitlements */,
 				4F41C40A2D1A0AD70011DAAB /* PrivacyInfo.xcprivacy */,
+				4FC3FA7E2DCFF47E0087E46B /* Localizable.xcstrings */,
 				4FB498612C090B79004DE958 /* vendor */,
 				4F22BDC72CAE95060079FAC0 /* libarchive */,
 				4FD4BA542C07C57C00082C13 /* Extensions */,
@@ -439,6 +442,7 @@
 			isa = PBXResourcesBuildPhase;
 			files = (
 				4F41C40B2D1A0AD70011DAAB /* PrivacyInfo.xcprivacy in Resources */,
+				4FC3FA7F2DCFF47E0087E46B /* Localizable.xcstrings in Resources */,
 				4FCEEEE52BEE39E9009E9E17 /* Preview Assets.xcassets in Resources */,
 				4FCEEEE22BEE39E9009E9E17 /* Assets.xcassets in Resources */,
 				4F41C42A2D1EBAC60011DAAB /* Credits.rtf in Resources */,
@@ -641,6 +645,7 @@
 				);
 				SDKROOT = macosx;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
 			name = Debug;
@@ -716,6 +721,7 @@
 				);
 				SDKROOT = macosx;
 				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_EMIT_LOC_STRINGS = YES;
 			};
 			name = Release;
 		};

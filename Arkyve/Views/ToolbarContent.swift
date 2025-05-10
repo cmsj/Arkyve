@@ -40,7 +40,7 @@ struct ToolbarContentView: CustomizableToolbarContent {
                     .symbolRenderingMode(.hierarchical)
                     .padding()
             }
-            .help("Stop the current archive task")
+            .help("Stop the current task")
         }
         .customizationBehavior(.reorderable)
         .hidden(viewModel.progressTask == nil)
@@ -60,7 +60,7 @@ struct ToolbarContentView: CustomizableToolbarContent {
             Button {
                 viewModel.openButton()
             } label: {
-                Label("Open", systemImage: "folder")
+                Label("Open...", systemImage: "folder")
                     .symbolRenderingMode(.hierarchical)
                     .padding()
             }
@@ -100,7 +100,7 @@ struct ToolbarContentView: CustomizableToolbarContent {
             Button {
                 viewModel.extractButton()
             } label: {
-                Label("Extract", image: "zzExtract")
+                Label("Extract...", image: "zzExtract")
                     .symbolRenderingMode(.hierarchical)
                     .padding()
             }
@@ -111,7 +111,7 @@ struct ToolbarContentView: CustomizableToolbarContent {
             Button {
                 viewModel.renameButton()
             } label: {
-                Label("Rename", systemImage: "character.cursor.ibeam")
+                Label("Rename...", systemImage: "character.cursor.ibeam")
                     .symbolRenderingMode(.hierarchical)
                     .padding()
             }

@@ -1,0 +1,348 @@
+{
+  "sourceLanguage" : "en",
+  "strings" : {
+    "" : {
+
+    },
+    "%@ already exists" : {
+
+    },
+    "%lld items" : {
+      "localizations" : {
+        "en" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld item"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "new",
+                  "value" : "%lld items"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "Add" : {
+
+    },
+    "Add files to this archive" : {
+
+    },
+    "Add Files/Folders..." : {
+
+    },
+    "addChildHierarchically called on: %@" : {
+
+    },
+    "addChildHierarchically found an uninitialised children array" : {
+
+    },
+    "Cancel" : {
+
+    },
+    "Clear Logs" : {
+
+    },
+    "Close" : {
+
+    },
+    "Close Archive" : {
+
+    },
+    "Close this archive" : {
+
+    },
+    "Close without saving?" : {
+
+    },
+    "Collapse all" : {
+
+    },
+    "Copy" : {
+
+    },
+    "Could not open %@ (%d)" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Could not open %1$@ (%2$d)"
+          }
+        }
+      }
+    },
+    "Create a new archive" : {
+
+    },
+    "Cut" : {
+
+    },
+    "Data size mismatch during write, expected %lld bytes but wrote %lld bytes" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Data size mismatch during write, expected %1$lld bytes but wrote %2$lld bytes"
+          }
+        }
+      }
+    },
+    "Date Accessed" : {
+
+    },
+    "Date Changed" : {
+
+    },
+    "Date Created" : {
+
+    },
+    "Date Modified" : {
+
+    },
+    "Delete" : {
+
+    },
+    "Delete selected files/folders" : {
+
+    },
+    "Displayed error: %@" : {
+
+    },
+    "Expand all" : {
+
+    },
+    "Extract All..." : {
+
+    },
+    "Extract selected files/folders" : {
+
+    },
+    "Extract..." : {
+
+    },
+    "Failed to open file for reading: %@" : {
+
+    },
+    "Failed to read source archive" : {
+
+    },
+    "Failed to write data: %@" : {
+
+    },
+    "GID" : {
+      "shouldTranslate" : false
+    },
+    "Group:" : {
+
+    },
+    "Header map inconsistency" : {
+
+    },
+    "Internal error, adding entry to edge node" : {
+
+    },
+    "Internal error, adding entry to non-directory" : {
+
+    },
+    "Internal error: Attempted to write unexpected item: %@" : {
+
+    },
+    "Internal error: Duplicate synthetic directory" : {
+
+    },
+    "Internal error: mapEntryKey not found" : {
+
+    },
+    "Internal header map inconsistency" : {
+
+    },
+    "Items" : {
+
+    },
+    "Kind" : {
+      "comment" : "This refers to the type of entry - file, directory, symbolic link, etc."
+    },
+    "Level" : {
+
+    },
+    "Log viewer" : {
+
+    },
+    "Major/Minor" : {
+
+    },
+    "Memory allocation failed" : {
+
+    },
+    "Message" : {
+
+    },
+    "Minimum level" : {
+
+    },
+    "Name" : {
+
+    },
+    "New" : {
+
+    },
+    "New Folder" : {
+
+    },
+    "Open an archive" : {
+
+    },
+    "Open..." : {
+
+    },
+    "Other:" : {
+
+    },
+    "Path (Debug)" : {
+
+    },
+    "Permissions" : {
+
+    },
+    "Quick Look" : {
+
+    },
+    "R" : {
+      "shouldTranslate" : false
+    },
+    "Read-only archive" : {
+
+    },
+    "Rename selected file/folder" : {
+
+    },
+    "Rename..." : {
+
+    },
+    "Revert to Saved" : {
+
+    },
+    "S" : {
+      "shouldTranslate" : false
+    },
+    "Save" : {
+
+    },
+    "Save As..." : {
+
+    },
+    "Size" : {
+
+    },
+    "Size (bytes)" : {
+
+    },
+    "Source (Debug)" : {
+
+    },
+    "Stop" : {
+
+    },
+    "Stop the current task" : {
+
+    },
+    "Symlink Target" : {
+
+    },
+    "Synthetic" : {
+
+    },
+    "This archive has unsaved changes, do you want to close it without saving?" : {
+
+    },
+    "This archive's format is read-only. Use Save As to select a writable format if you need to make changes." : {
+
+    },
+    "UID" : {
+      "shouldTranslate" : false
+    },
+    "Unabe to read archive entry path" : {
+
+    },
+    "Unable to access security scope for %@" : {
+
+    },
+    "Unable to add %@" : {
+
+    },
+    "Unable to add filter: %@" : {
+
+    },
+    "Unable to create cache path" : {
+
+    },
+    "Unable to create new entry" : {
+
+    },
+    "Unable to determine file path for %@" : {
+
+    },
+    "Unable to determine which archive format the user selected" : {
+
+    },
+    "Unable to fetch entry header" : {
+
+    },
+    "Unable to find new path for %@" : {
+
+    },
+    "Unable to open file: %@" : {
+
+    },
+    "Unable to open output archive: %@" : {
+
+    },
+    "Unable to read archive" : {
+
+    },
+    "Unable to remove cache directory at: %@" : {
+
+    },
+    "Unable to retrieve written URLs" : {
+
+    },
+    "Unable to set format: %@" : {
+
+    },
+    "Unable to write to %@" : {
+
+    },
+    "Unexpected error adding children: %@" : {
+
+    },
+    "Unknown response %lld" : {
+
+    },
+    "Unknown result %d" : {
+
+    },
+    "User:" : {
+
+    },
+    "UUID (Debug)" : {
+
+    },
+    "W" : {
+      "shouldTranslate" : false
+    },
+    "X" : {
+      "shouldTranslate" : false
+    },
+    "Zero entries extracted" : {
+
+    }
+  },
+  "version" : "1.0"
+}

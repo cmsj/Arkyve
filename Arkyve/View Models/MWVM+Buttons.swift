@@ -179,7 +179,7 @@ extension MainWindowViewModel {
         if panel.runModal() == .OK {
             if let destURL = panel.url {
                 guard let selectedArkyveFormat = ArkyveFormats.initFromUTType(panel.currentContentType) else {
-                    AKError("Unable to determine which archive format the user selected")
+                    AKError(String(localized: "Unable to determine which archive format the user selected"))
                     return
                 }
                 let selectedFormat = selectedArkyveFormat.libarchiveFormat
@@ -191,7 +191,7 @@ extension MainWindowViewModel {
                     AKTrace("Save As to \(destURL) (format: \(selectedArkyveFormat))")
 
                     if !destURL.startAccessingSecurityScopedResource() {
-                        AKError("Unable to access security scope for \(destURL)")
+                        AKError(String(localized: "Unable to access security scope for \(destURL.path)"))
                         return
                     }
                     defer { destURL.stopAccessingSecurityScopedResource() }

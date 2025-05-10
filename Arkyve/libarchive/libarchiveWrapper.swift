@@ -108,7 +108,7 @@ actor libarchiveWrapper {
                 AKTrace("Reached end of archive")
                 break readLoop
             default:
-                AKError("Unknown result \(result)")
+                AKError(String(localized: "Unknown result \(result)"))
                 break readLoop
             }
 
@@ -237,7 +237,7 @@ actor libarchiveWrapper {
 
     private func writeArchiveEntryHeader(to: libarchiveFD, headers: libarchiveHeader) throws(ArkyveError) -> OpaquePointer {
         guard let writeEntry = archive_entry_new() else {
-            throw .init(.writeArchive, msg: "Unable to create new entry")
+            throw .init(.writeArchive, msg: String(localized: "Unable to create new entry"))
         }
 
         archive_entry_set_pathname(writeEntry, headers.path.cString(using: .utf8))
@@ -497,8 +497,7 @@ actor libarchiveWrapper {
                         let result = archive_read_data_into_fd(
                             readArchiveFD.archive, handle.fileDescriptor)
                         if result != ARCHIVE_OK {
-                            let error = "Unable to write to \(outputURL.path)"
-                            throw .init(.extract, msg: error)
+                            throw .init(.extract, msg: String(localized: "Unable to write to \(outputURL.path)"))
                         }
                         AKTrace("  Wrote \(outputURL.path(percentEncoded: false))")
 
@@ -594,14 +593,14 @@ actor libarchiveWrapper {
             case ARCHIVE_EOF:
                 break writeLoop
             case ARCHIVE_FATAL:
-                throw ArkyveError(.writeArchive, msg: "Unable to read archive")
+                throw ArkyveError(.writeArchive, msg: String(localized: "Unable to read archive"))
             default:
                 // FIXME: Why are we doing this?
                 break writeLoop
             }
 
             guard let readEntryPath = entryPath(readEntry) else {
-                throw ArkyveError(.entries, msg: "Unabe to read archive entry path")
+                throw ArkyveError(.entries, msg: String(localized: "Unabe to read archive entry path"))
             }
 
             // Find every entry in the tree that started out as this path, and in the archive
@@ -619,7 +618,7 @@ actor libarchiveWrapper {
             // Grab the first mapEntryKey and allocate memory to read the entire data for that entry
             guard let mapEntryKey = mapEntryKeys.first,
                   let header = headerMap[mapEntryKey]?.header else {
-                throw .init(.writeArchive, msg: "Internal error: mapEntryKey not found")
+                throw .init(.writeArchive, msg: String(localized: "Internal error: mapEntryKey not found"))
             }
 
             // Read the entire entry's data into the buffer so we can write it out multiple times if necessary
@@ -633,14 +632,14 @@ actor libarchiveWrapper {
                     break
                 }
                 if rsize < 0 {
-                    throw .init(.writeArchive, msg: "Failed to read source archive")
+                    throw .init(.writeArchive, msg: String(localized: "Failed to read source archive"))
                 }
             }
 
             // Iterate over all of the keys that relate to this archive entry and write a new header/data section for each
             for mapEntryKey in mapEntryKeys {
                 guard let header = headerMap[mapEntryKey]?.header else {
-                    throw ArkyveError(.entries, msg: "Unable to fetch entry header")
+                    throw ArkyveError(.entries, msg: String(localized: "Unable to fetch entry header"))
                 }
 
                 // Read from archive and write to new archive
@@ -655,7 +654,7 @@ actor libarchiveWrapper {
                     }
                     if wsize < 0 {
                         let errorString = String(cString: archive_error_string(writeArchiveFD.archive))
-                        throw .init(.writeArchive, msg: "Failed to write data: \(errorString)")
+                        throw .init(.writeArchive, msg: String(localized: "Failed to write data: \(errorString)"))
                     }
                 }
 
@@ -677,7 +676,7 @@ actor libarchiveWrapper {
         for filePath in headerMap.keys.filter({ headerMap[$0]?.header.source.type == .Filesystem })
         {
             guard let flatEntry = headerMap[filePath] else {
-                throw ArkyveError(.writeArchive, msg: "Header map inconsistency")
+                throw ArkyveError(.writeArchive, msg: String(localized: "Header map inconsistency"))
             }
 
             // Write a header to the archive for this file
@@ -692,17 +691,17 @@ actor libarchiveWrapper {
                 // NOTE: These are pretty likely to never work when writing an archive, so there's nothing we can do here
                 break
             case .unknown, .root:
-                throw .init(.writeArchive, msg: "Internal error: Attempted to write unexpected item: \(flatEntry.header.name)")
+                throw .init(.writeArchive, msg: String(localized: "Internal error: Attempted to write unexpected item: \(flatEntry.header.name)"))
             case .file:
                 // Open the file from the filesystem if we can
                 let fileHandle: FileHandle?
                 do {
                     fileHandle = try FileHandle(forReadingFrom: URL(fileURLWithPath: flatEntry.header.source.path))
                 } catch {
-                    throw .init(.writeArchive, msg: "Unable to open file: \(error.localizedDescription)")
+                    throw .init(.writeArchive, msg: String(localized: "Unable to open file: \(error.localizedDescription)"))
                 }
                 guard let fileHandle else {
-                    throw .init(.writeArchive, msg: "Failed to open file for reading: \(filePath)")
+                    throw .init(.writeArchive, msg: String(localized: "Failed to open file for reading: \(filePath)"))
                 }
                 defer { try? fileHandle.close() }
 
@@ -720,10 +719,10 @@ actor libarchiveWrapper {
                         let wsize = archive_write_data(writeArchiveFD.archive, ptr.baseAddress, data.count)
                         if wsize < 0 {
                             let errorString = String(cString: archive_error_string(writeArchiveFD.archive))
-                            throw ArkyveError(.writeArchive, msg: "Failed to write data: \(errorString)")
+                            throw ArkyveError(.writeArchive, msg: String(localized: "Failed to write data: \(errorString)"))
                         }
                         if wsize != data.count {
-                            throw ArkyveError(.writeArchive, msg: "Data size mismatch during write, expected \(data.count) bytes but wrote \(wsize) bytes")
+                            throw ArkyveError(.writeArchive, msg: String(localized: "Data size mismatch during write, expected \(data.count) bytes but wrote \(wsize) bytes"))
                         }
                     }
                 }
@@ -741,7 +740,7 @@ actor libarchiveWrapper {
         for filePath in headerMap.keys.filter({ headerMap[$0]?.header.source.type == .InMemory && headerMap[$0]?.header.type == .directory })
         {
             guard let flatEntry = headerMap[filePath] else {
-                throw ArkyveError(.writeArchive, msg: "Internal header map inconsistency")
+                throw ArkyveError(.writeArchive, msg: String(localized: "Internal header map inconsistency"))
             }
 
             // Write a header to the archive for this file

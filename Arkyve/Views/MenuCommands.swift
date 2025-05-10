@@ -86,7 +86,7 @@ struct MenuCommands: Commands {
             }
             .disabled(viewModel.disableAdd)
 
-            Button("Rename") {
+            Button("Rename...") {
                 viewModel.renameButton()
             }
             .keyboardShortcut("r", modifiers: [.command])

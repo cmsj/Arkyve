@@ -89,7 +89,7 @@ extension MainWindowViewModel {
                 var modifiedEntries: [ArchiveEntry] = []
                 try newEntries.forEach { newEntry in
                     guard let newPathComponents = newEntry.pathComponents.subtractPath(basePathComponents) else {
-                        throw ArkyveError(.drop, msg: "Unable to find new path for \(newEntry.path)")
+                        throw ArkyveError(.drop, msg: String(localized: "Unable to find new path for \(newEntry.path)"))
                     }
                     newEntry.pathComponents = newParentPathComponents + newPathComponents
 

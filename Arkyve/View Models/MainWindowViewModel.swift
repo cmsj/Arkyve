@@ -58,7 +58,7 @@ class MainWindowViewModel {
         if progressTask != nil { return "Working..." }
 
         guard let archive else { return "No archive open" }
-        var text = "\(archive.entries.count) items"
+        var text = String(localized:"\(archive.entries.count) items")
         if !archive.format.canWrite { text += " (read-only)" }
         return text
     }

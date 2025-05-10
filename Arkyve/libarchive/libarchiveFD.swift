@@ -80,7 +80,7 @@ struct libarchiveFD {
         // Prepare libarchive's data structure
         archive = archive_read_new()
         if archive == nil {
-            throw .init(.openArchive, msg: "Memory allocation failed")
+            throw .init(.openArchive, msg: String(localized: "Memory allocation failed"))
         }
 
         archive_read_support_filter_all(archive)
@@ -89,7 +89,7 @@ struct libarchiveFD {
         fd = Darwin.open(path, O_RDONLY)
         if fd < 0 {
             self.close()
-            throw .init(.openArchive, msg: "Could not open \(path) (\(errno))")
+            throw .init(.openArchive, msg: String(localized: "Could not open \(path) (\(errno))"))
         }
 
         let ptr = archive_read_open_fd(archive, fd, 10240)
@@ -102,7 +102,7 @@ struct libarchiveFD {
                 // Allocate a new archive
                 archive = archive_read_new()
                 if archive == nil {
-                    throw .init(.openArchive, msg: "Memory allocation failed")
+                    throw .init(.openArchive, msg: String(localized: "Memory allocation failed"))
                 }
 
                 // Explicitly add support only for raw format, since that's not included by _all() above
@@ -138,27 +138,27 @@ struct libarchiveFD {
 
         archive = archive_write_new()
         if (archive == nil) {
-            throw .init(.openArchive, msg: "Unable to allocate memory")
+            throw .init(.openArchive, msg: String(localized: "Memory allocation failed"))
         }
 
         result = archive_write_set_format(archive, format.rawValue)
         if (result != ARCHIVE_OK) {
             let errorString = String(cString: archive_error_string(archive))
-            throw .init(.writeArchive, msg: "Unable to set format: \(errorString)")
+            throw .init(.writeArchive, msg: String(localized: "Unable to set format: \(errorString)"))
         }
 
         for filter in filters {
             result = archive_write_add_filter(archive, filter.rawValue)
             if (result != ARCHIVE_OK) {
                 let errorString = String(cString: archive_error_string(archive))
-                throw .init(.writeArchive, msg: "Unable to add filter: \(errorString)")
+                throw .init(.writeArchive, msg: String(localized: "Unable to add filter: \(errorString)"))
             }
         }
 
         // Figure out cache filename
         writeCacheURL = SettingsManager.shared.writeCacheURL.appendingPathComponent(at.lastPathComponent)
         guard let writeCachePath = writeCacheURL else {
-            throw .init(.writeArchive, msg: "Unable to create cache path")
+            throw .init(.writeArchive, msg: String(localized: "Unable to create cache path"))
         }
 
         AKTrace("Archive write cache: \(writeCachePath.path)")
@@ -166,7 +166,7 @@ struct libarchiveFD {
         result = archive_write_open_filename(archive, writeCachePath.path.cString(using: .utf8))
         if (result != ARCHIVE_OK) {
             let errorString = String(cString: archive_error_string(archive))
-            throw .init(.writeArchive, msg: "Unable to open output archive: \(errorString)")
+            throw .init(.writeArchive, msg: String(localized: "Unable to open output archive: \(errorString)"))
         }
     }
 }

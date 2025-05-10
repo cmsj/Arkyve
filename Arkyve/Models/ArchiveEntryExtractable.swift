@@ -31,12 +31,12 @@ struct ArchiveEntryExtractable: Codable, Transferable {
             do {
                 let writtenURLs = try await loader.extract([entryDraggable], toFolder: cacheURL, archiveIsNew: archiveIsNew)
                 guard writtenURLs.count > 0 else {
-                    throw ArkyveError(.extract, msg: "Zero entries extracted")
+                    throw ArkyveError(.extract, msg: String(localized: "Zero entries extracted"))
                 }
                 AKTrace("Wrote \(writtenURLs.count) entries.")
 
                 guard let firstURL = writtenURLs.first else {
-                    throw ArkyveError(.entries, msg: "Unable to retrieve written URLs")
+                    throw ArkyveError(.entries, msg: String(localized: "Unable to retrieve written URLs"))
                 }
 
                 return firstURL.dataRepresentation

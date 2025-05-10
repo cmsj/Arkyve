@@ -20,7 +20,7 @@ struct LogWindowView: View {
                 }
             }
             Spacer()
-            Button("Clear") {
+            Button("Clear Logs") {
                 ArkyveLog.shared.clear()
             }
         }

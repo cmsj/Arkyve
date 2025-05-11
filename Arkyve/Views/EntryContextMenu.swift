@@ -65,11 +65,9 @@ struct EntryContextMenu: View {
         .disabled(items.isEmpty)
 
         ShareLink(items: viewModel.extractablesForSelected(),
-                  subject: Text("subject"),
-                  message: Text("message"),
-                  preview: { extractable in
-            SharePreview(extractable.name, icon: extractable.icon)
-        }
+                  subject: nil,
+                  message: nil,
+                  preview: { SharePreview($0.name, icon: $0.icon) }
         )
         .help("Share...")
         .disabled(viewModel.disableShare)

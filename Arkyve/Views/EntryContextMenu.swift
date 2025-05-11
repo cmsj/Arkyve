@@ -15,7 +15,6 @@ struct EntryContextMenu: View {
         Button("New Folder") {
             viewModel.newFolderButton(entries: items)
         }
-        .keyboardShortcut("n", modifiers: [.command, .shift])
         .disabled(viewModel.disableNewFolder)
 
         Button("Add Files/Folders...") {
@@ -26,13 +25,11 @@ struct EntryContextMenu: View {
         Button("Rename...") {
             viewModel.renameButton(entries: items)
         }
-        .keyboardShortcut("r", modifiers: [.command])
         .disabled(items.isEmpty)
 
         Button("Extract...") {
             viewModel.extractButton(items)
         }
-        .keyboardShortcut("e", modifiers: [.command])
         .disabled(items.isEmpty)
 
         Divider()
@@ -42,7 +39,6 @@ struct EntryContextMenu: View {
                 await viewModel.cutButton(entries: items)
             }
         }
-        .keyboardShortcut("x", modifiers: [.command])
         .disabled(items.isEmpty)
 
         Button("Copy") {
@@ -50,26 +46,22 @@ struct EntryContextMenu: View {
                 await viewModel.copyButton(entries: items)
             }
         }
-        .keyboardShortcut("c", modifiers: [.command])
         .disabled(items.isEmpty)
 
         PasteButton(supportedContentTypes: [.archiveEntryExtractable, .fileURL]) { providers in
             viewModel.processDrop(on: self.items.first, for: providers)
         }
-        .keyboardShortcut("v", modifiers: [.command])
 
         Divider()
 
         Button("Delete") {
             viewModel.deleteButton(items)
         }
-        .keyboardShortcut(.delete, modifiers: [])
         .disabled(items.isEmpty)
 
-        Button("Quick Look") {
+        Button("Quick Look\(viewModel.nameForQuickLook(items: items))") {
             viewModel.extractForQuicklook()
         }
-        .keyboardShortcut(.space, modifiers: [])
-        .disabled(viewModel.disableQuicklook)
+        .disabled(items.isEmpty)
     }
 }

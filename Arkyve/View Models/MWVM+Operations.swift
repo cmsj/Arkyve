@@ -218,4 +218,12 @@ extension MainWindowViewModel {
             }
         }
     }
+
+    func nameForQuickLook(items: Set<ArchiveEntry.ID>?) -> String {
+        let first = archive?.entries.first { entry in
+            entry.id == items?.first
+        }
+        guard let first, items?.count == 1 else { return "" }
+        return " \"\(first.name)\""
+    }
 }

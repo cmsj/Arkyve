@@ -378,7 +378,10 @@ class ArchiveEntry: Identifiable {
                                        archviveIsNew: !archive.existsOnDisk,
                                        selectedPath: self.path,
                                        id: self.id,
-                                       entries: self.flatChildren())
+                                       name: self.name,
+                                       entries: self.flatChildren(),
+                                       utType: self.utType
+        )
     }
 
     // Sort the tree at all levels

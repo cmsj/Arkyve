@@ -117,6 +117,16 @@ struct MenuCommands: Commands {
             }
             .keyboardShortcut(.space, modifiers: [])
             .disabled(viewModel.disableQuicklook)
+
+            ShareLink(items: viewModel.extractablesForSelected(),
+                      subject: Text("subject"),
+                      message: Text("message"),
+                      preview: { extractable in
+                SharePreview(extractable.name, icon: extractable.icon)
+            }
+            )
+            .help("Share...")
+            .disabled(viewModel.disableShare)
         }
     }
 }

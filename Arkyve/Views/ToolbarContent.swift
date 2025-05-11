@@ -107,17 +107,28 @@ struct ToolbarContentView: CustomizableToolbarContent {
             .help("Extract selected files/folders")
             .disabled(viewModel.disableExtract)
         }
-        ToolbarItem(id: "Rename") {
-            Button {
-                viewModel.renameButton()
-            } label: {
-                Label("Rename...", systemImage: "character.cursor.ibeam")
-                    .symbolRenderingMode(.hierarchical)
-                    .padding()
-            }
-            .help("Rename selected file/folder")
-            .disabled(viewModel.disableRename)
+        ToolbarItem(id: "Share") {
+            ShareLink(items: viewModel.extractablesForSelected(),
+                      subject: Text("subject"),
+                      message: Text("message"),
+                      preview: { extractable in
+                                SharePreview(extractable.name, icon: extractable.icon)
+                                }
+            )
+            .help("Share...")
+            .disabled(viewModel.disableShare)
         }
+//        ToolbarItem(id: "Rename") {
+//            Button {
+//                viewModel.renameButton()
+//            } label: {
+//                Label("Rename...", systemImage: "character.cursor.ibeam")
+//                    .symbolRenderingMode(.hierarchical)
+//                    .padding()
+//            }
+//            .help("Rename selected file/folder")
+//            .disabled(viewModel.disableRename)
+//        }
         ToolbarItem(id: "Delete") {
             Button {
                 viewModel.deleteButton()

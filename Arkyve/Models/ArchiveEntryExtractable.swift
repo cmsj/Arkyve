@@ -13,10 +13,17 @@ struct ArchiveEntryExtractable: Codable, Transferable {
     let archviveIsNew: Bool
     let selectedPath: String
     let id: UUID
+    let name: String
     let entries: [ArchiveEntryFlat]
     var isCopied: Bool = false
 
     var basePath: String { selectedPath.split(separator: "/").dropLast().joined(separator: "/") }
+
+    var utType: UTType
+    var icon: Image {
+        Image(nsImage: NSWorkspace.shared.icon(for: utType))
+            .resizable()
+    }
 
     static var transferRepresentation: some TransferRepresentation {
         CodableRepresentation(contentType: .archiveEntryExtractable)

@@ -219,11 +219,26 @@ extension MainWindowViewModel {
         }
     }
 
+    // FIXME: Do the following two functions belong here?
     func nameForQuickLook(items: Set<ArchiveEntry.ID>?) -> String {
         let first = archive?.entries.first { entry in
             entry.id == items?.first
         }
         guard let first, items?.count == 1 else { return "" }
         return " \"\(first.name)\""
+    }
+
+    func extractablesForSelected() -> [ArchiveEntryExtractable] {
+        guard let archive else { return [] }
+
+        let extractables = selectedEntries.compactMap { entryID in
+            if let first = archive.entries.first(where: { $0.id == entryID }) {
+                return first.asExtractable(for: archive)
+            } else {
+                return nil
+            }
+        }
+
+        return extractables
     }
 }

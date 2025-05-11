@@ -47,6 +47,7 @@ class MainWindowViewModel {
     var disableNewFolder: Bool { disableUI || archive == nil }
     var disableExpandCollapse: Bool { disableUI || archive == nil }
     var disableTableView: Bool { disableUI || archive == nil }
+    var disableShare: Bool { disableUI || selectedEntries.isEmpty }
 
     // MARK: - Dynamic UI text
     let navTitleText = "Arkyve"

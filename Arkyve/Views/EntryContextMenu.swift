@@ -63,5 +63,15 @@ struct EntryContextMenu: View {
             viewModel.extractForQuicklook()
         }
         .disabled(items.isEmpty)
+
+        ShareLink(items: viewModel.extractablesForSelected(),
+                  subject: Text("subject"),
+                  message: Text("message"),
+                  preview: { extractable in
+            SharePreview(extractable.name, icon: extractable.icon)
+        }
+        )
+        .help("Share...")
+        .disabled(viewModel.disableShare)
     }
 }

@@ -3941,6 +3941,9 @@
         }
       }
     },
+    "message" : {
+
+    },
     "Message" : {
       "localizations" : {
         "ar" : {
@@ -5005,6 +5008,7 @@
       }
     },
     "Rename selected file/folder" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ar" : {
           "stringUnit" : {
@@ -5490,6 +5494,9 @@
         }
       }
     },
+    "Share..." : {
+
+    },
     "Size" : {
       "localizations" : {
         "ar" : {
@@ -5899,6 +5906,9 @@
           }
         }
       }
+    },
+    "subject" : {
+
     },
     "Symlink Target" : {
       "localizations" : {

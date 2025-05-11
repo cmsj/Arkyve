@@ -71,6 +71,13 @@
             "x-source" : "openai"
           }
         },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "%@ уже существует",
+            "x-source" : "openai"
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "needs_review",
@@ -163,6 +170,13 @@
             "x-source" : "openai"
           }
         },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "%lld элемент(ов)",
+            "x-source" : "openai"
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "needs_review",
@@ -241,6 +255,13 @@
           "stringUnit" : {
             "state" : "needs_review",
             "value" : "추가",
+            "x-source" : "openai"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Добавить",
             "x-source" : "openai"
           }
         },
@@ -325,6 +346,13 @@
             "x-source" : "openai"
           }
         },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Добавить файлы\/папки...",
+            "x-source" : "openai"
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "needs_review",
@@ -403,6 +431,13 @@
           "stringUnit" : {
             "state" : "needs_review",
             "value" : "이 아카이브에 파일 추가",
+            "x-source" : "openai"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Добавить файлы в этот архив",
             "x-source" : "openai"
           }
         },
@@ -487,6 +522,13 @@
             "x-source" : "openai"
           }
         },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Отмена",
+            "x-source" : "openai"
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "needs_review",
@@ -565,6 +607,13 @@
           "stringUnit" : {
             "state" : "needs_review",
             "value" : "로그 지우기",
+            "x-source" : "openai"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Очистить логи",
             "x-source" : "openai"
           }
         },
@@ -649,6 +698,13 @@
             "x-source" : "openai"
           }
         },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Закрыть",
+            "x-source" : "openai"
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "needs_review",
@@ -727,6 +783,13 @@
           "stringUnit" : {
             "state" : "needs_review",
             "value" : "아카이브 닫기",
+            "x-source" : "openai"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Закрыть архив",
             "x-source" : "openai"
           }
         },
@@ -811,6 +874,13 @@
             "x-source" : "openai"
           }
         },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Закрыть этот архив",
+            "x-source" : "openai"
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "needs_review",
@@ -889,6 +959,13 @@
           "stringUnit" : {
             "state" : "needs_review",
             "value" : "저장하지 않고 닫으시겠습니까?",
+            "x-source" : "openai"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Закрыть без сохранения?",
             "x-source" : "openai"
           }
         },
@@ -973,6 +1050,13 @@
             "x-source" : "openai"
           }
         },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Свернуть все",
+            "x-source" : "openai"
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "needs_review",
@@ -1054,6 +1138,13 @@
             "x-source" : "openai"
           }
         },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Копировать",
+            "x-source" : "openai"
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "needs_review",
@@ -1131,6 +1222,13 @@
           "stringUnit" : {
             "state" : "needs_review",
             "value" : "%1$@을(를) 열 수 없습니다 (%2$d)",
+            "x-source" : "openai"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Не удалось открыть %1$@ (%2$d)",
             "x-source" : "openai"
           }
         },
@@ -1215,6 +1313,13 @@
             "x-source" : "openai"
           }
         },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Создать новый архив",
+            "x-source" : "openai"
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "needs_review",
@@ -1296,6 +1401,13 @@
             "x-source" : "openai"
           }
         },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Вырезать",
+            "x-source" : "openai"
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "needs_review",
@@ -1373,6 +1485,13 @@
           "stringUnit" : {
             "state" : "needs_review",
             "value" : "쓰기 중 데이터 크기 불일치: 예상된 바이트 수는 %1$lld이지만, 실제로 기록된 바이트 수는 %2$lld입니다.",
+            "x-source" : "openai"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Несоответствие размера данных при записи, ожидалось %1$lld байт, но записано %2$lld байт",
             "x-source" : "openai"
           }
         },
@@ -1457,6 +1576,13 @@
             "x-source" : "openai"
           }
         },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Дата доступа",
+            "x-source" : "openai"
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "needs_review",
@@ -1535,6 +1661,13 @@
           "stringUnit" : {
             "state" : "needs_review",
             "value" : "날짜 변경됨",
+            "x-source" : "openai"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Дата изменена",
             "x-source" : "openai"
           }
         },
@@ -1619,6 +1752,13 @@
             "x-source" : "openai"
           }
         },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Дата создания",
+            "x-source" : "openai"
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "needs_review",
@@ -1697,6 +1837,13 @@
           "stringUnit" : {
             "state" : "needs_review",
             "value" : "수정된 날짜",
+            "x-source" : "openai"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Дата изменения",
             "x-source" : "openai"
           }
         },
@@ -1781,6 +1928,13 @@
             "x-source" : "openai"
           }
         },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Удалить",
+            "x-source" : "openai"
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "needs_review",
@@ -1859,6 +2013,13 @@
           "stringUnit" : {
             "state" : "needs_review",
             "value" : "선택한 파일\/폴더 삭제",
+            "x-source" : "openai"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Удалить выбранные файлы\/папки",
             "x-source" : "openai"
           }
         },
@@ -1943,6 +2104,13 @@
             "x-source" : "openai"
           }
         },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Отображаемая ошибка: %@",
+            "x-source" : "openai"
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "needs_review",
@@ -2021,6 +2189,13 @@
           "stringUnit" : {
             "state" : "needs_review",
             "value" : "모두 펼치기",
+            "x-source" : "openai"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Развернуть все",
             "x-source" : "openai"
           }
         },
@@ -2105,6 +2280,13 @@
             "x-source" : "openai"
           }
         },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Извлечь всё...",
+            "x-source" : "openai"
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "needs_review",
@@ -2183,6 +2365,13 @@
           "stringUnit" : {
             "state" : "needs_review",
             "value" : "선택한 파일\/폴더 추출",
+            "x-source" : "openai"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Извлечь выбранные файлы\/папки",
             "x-source" : "openai"
           }
         },
@@ -2267,6 +2456,13 @@
             "x-source" : "openai"
           }
         },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Извлечь...",
+            "x-source" : "openai"
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "needs_review",
@@ -2345,6 +2541,13 @@
           "stringUnit" : {
             "state" : "needs_review",
             "value" : "파일을 읽기 위해 여는 데 실패했습니다: %@",
+            "x-source" : "openai"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Не удалось открыть файл для чтения: %@",
             "x-source" : "openai"
           }
         },
@@ -2429,6 +2632,13 @@
             "x-source" : "openai"
           }
         },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Не удалось прочитать исходный архив",
+            "x-source" : "openai"
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "needs_review",
@@ -2507,6 +2717,13 @@
           "stringUnit" : {
             "state" : "needs_review",
             "value" : "데이터 쓰기에 실패했습니다: %@",
+            "x-source" : "openai"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Не удалось записать данные: %@",
             "x-source" : "openai"
           }
         },
@@ -2591,6 +2808,13 @@
             "x-source" : "openai"
           }
         },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "ГИД",
+            "x-source" : "openai"
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "needs_review",
@@ -2662,6 +2886,13 @@
           "stringUnit" : {
             "state" : "needs_review",
             "value" : "그룹:",
+            "x-source" : "openai"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Группа:",
             "x-source" : "openai"
           }
         },
@@ -2746,6 +2977,13 @@
             "x-source" : "openai"
           }
         },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Несоответствие в отображении заголовков",
+            "x-source" : "openai"
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "needs_review",
@@ -2824,6 +3062,13 @@
           "stringUnit" : {
             "state" : "needs_review",
             "value" : "내부 오류, 엣지 노드에 항목 추가 중",
+            "x-source" : "openai"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Внутренняя ошибка, добавление записи в граничный узел",
             "x-source" : "openai"
           }
         },
@@ -2908,6 +3153,13 @@
             "x-source" : "openai"
           }
         },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Внутренняя ошибка, добавление записи в не каталог",
+            "x-source" : "openai"
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "needs_review",
@@ -2986,6 +3238,13 @@
           "stringUnit" : {
             "state" : "needs_review",
             "value" : "내부 오류: 예상치 못한 항목을 쓰려고 시도했습니다: %@",
+            "x-source" : "openai"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Внутренняя ошибка: Попытка записать неожиданный элемент: %@",
             "x-source" : "openai"
           }
         },
@@ -3070,6 +3329,13 @@
             "x-source" : "openai"
           }
         },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Внутренняя ошибка: Дублирующийся синтетический каталог",
+            "x-source" : "openai"
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "needs_review",
@@ -3148,6 +3414,13 @@
           "stringUnit" : {
             "state" : "needs_review",
             "value" : "내부 오류: 맵 항목 키를 찾을 수 없음",
+            "x-source" : "openai"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Внутренняя ошибка: ключ mapEntryKey не найден",
             "x-source" : "openai"
           }
         },
@@ -3232,6 +3505,13 @@
             "x-source" : "openai"
           }
         },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Внутреннее несоответствие карты заголовков",
+            "x-source" : "openai"
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "needs_review",
@@ -3310,6 +3590,13 @@
           "stringUnit" : {
             "state" : "needs_review",
             "value" : "항목",
+            "x-source" : "openai"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Элементы",
             "x-source" : "openai"
           }
         },
@@ -3395,6 +3682,13 @@
             "x-source" : "openai"
           }
         },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Тип",
+            "x-source" : "openai"
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "needs_review",
@@ -3473,6 +3767,13 @@
           "stringUnit" : {
             "state" : "needs_review",
             "value" : "레벨",
+            "x-source" : "openai"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Уровень",
             "x-source" : "openai"
           }
         },
@@ -3557,6 +3858,13 @@
             "x-source" : "openai"
           }
         },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Просмотрщик логов",
+            "x-source" : "openai"
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "needs_review",
@@ -3635,6 +3943,13 @@
           "stringUnit" : {
             "state" : "needs_review",
             "value" : "주요\/부차",
+            "x-source" : "openai"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Основной\/Второстепенный",
             "x-source" : "openai"
           }
         },
@@ -3719,6 +4034,13 @@
             "x-source" : "openai"
           }
         },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Ошибка выделения памяти",
+            "x-source" : "openai"
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "needs_review",
@@ -3797,6 +4119,13 @@
           "stringUnit" : {
             "state" : "needs_review",
             "value" : "메시지",
+            "x-source" : "openai"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Сообщение",
             "x-source" : "openai"
           }
         },
@@ -3881,6 +4210,13 @@
             "x-source" : "openai"
           }
         },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Минимальный уровень",
+            "x-source" : "openai"
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "needs_review",
@@ -3959,6 +4295,13 @@
           "stringUnit" : {
             "state" : "needs_review",
             "value" : "이름",
+            "x-source" : "openai"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Имя",
             "x-source" : "openai"
           }
         },
@@ -4043,6 +4386,13 @@
             "x-source" : "openai"
           }
         },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Новый",
+            "x-source" : "openai"
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "needs_review",
@@ -4121,6 +4471,13 @@
           "stringUnit" : {
             "state" : "needs_review",
             "value" : "새 폴더",
+            "x-source" : "openai"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Новая папка",
             "x-source" : "openai"
           }
         },
@@ -4205,6 +4562,13 @@
             "x-source" : "openai"
           }
         },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Открыть архив",
+            "x-source" : "openai"
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "needs_review",
@@ -4283,6 +4647,13 @@
           "stringUnit" : {
             "state" : "needs_review",
             "value" : "열기...",
+            "x-source" : "openai"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Открыть...",
             "x-source" : "openai"
           }
         },
@@ -4367,6 +4738,13 @@
             "x-source" : "openai"
           }
         },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Другое:",
+            "x-source" : "openai"
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "needs_review",
@@ -4445,6 +4823,13 @@
           "stringUnit" : {
             "state" : "needs_review",
             "value" : "경로 (디버그)",
+            "x-source" : "openai"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Путь (Отладка)",
             "x-source" : "openai"
           }
         },
@@ -4529,6 +4914,13 @@
             "x-source" : "openai"
           }
         },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Разрешения",
+            "x-source" : "openai"
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "needs_review",
@@ -4607,6 +4999,13 @@
           "stringUnit" : {
             "state" : "needs_review",
             "value" : "빠른 보기",
+            "x-source" : "openai"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Быстрый просмотр",
             "x-source" : "openai"
           }
         },
@@ -4691,6 +5090,13 @@
             "x-source" : "openai"
           }
         },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Р",
+            "x-source" : "openai"
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "needs_review",
@@ -4762,6 +5168,13 @@
           "stringUnit" : {
             "state" : "needs_review",
             "value" : "읽기 전용 아카이브",
+            "x-source" : "openai"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Архив только для чтения",
             "x-source" : "openai"
           }
         },
@@ -4846,6 +5259,13 @@
             "x-source" : "openai"
           }
         },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Переименовать выбранный файл\/папку",
+            "x-source" : "openai"
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "needs_review",
@@ -4924,6 +5344,13 @@
           "stringUnit" : {
             "state" : "needs_review",
             "value" : "이름 변경...",
+            "x-source" : "openai"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Переименовать...",
             "x-source" : "openai"
           }
         },
@@ -5008,6 +5435,13 @@
             "x-source" : "openai"
           }
         },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Вернуться к сохранённому",
+            "x-source" : "openai"
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "needs_review",
@@ -5089,6 +5523,13 @@
             "x-source" : "openai"
           }
         },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "С",
+            "x-source" : "openai"
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "needs_review",
@@ -5160,6 +5601,13 @@
           "stringUnit" : {
             "state" : "needs_review",
             "value" : "저장",
+            "x-source" : "openai"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Сохранить",
             "x-source" : "openai"
           }
         },
@@ -5244,6 +5692,13 @@
             "x-source" : "openai"
           }
         },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Сохранить как...",
+            "x-source" : "openai"
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "needs_review",
@@ -5322,6 +5777,13 @@
           "stringUnit" : {
             "state" : "needs_review",
             "value" : "크기",
+            "x-source" : "openai"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Размер",
             "x-source" : "openai"
           }
         },
@@ -5406,6 +5868,13 @@
             "x-source" : "openai"
           }
         },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Размер (байты)",
+            "x-source" : "openai"
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "needs_review",
@@ -5484,6 +5953,13 @@
           "stringUnit" : {
             "state" : "needs_review",
             "value" : "소스 (디버그)",
+            "x-source" : "openai"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Источник (Отладка)",
             "x-source" : "openai"
           }
         },
@@ -5568,6 +6044,13 @@
             "x-source" : "openai"
           }
         },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Стоп",
+            "x-source" : "openai"
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "needs_review",
@@ -5646,6 +6129,13 @@
           "stringUnit" : {
             "state" : "needs_review",
             "value" : "현재 작업 중지",
+            "x-source" : "openai"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Остановить текущую задачу",
             "x-source" : "openai"
           }
         },
@@ -5730,6 +6220,13 @@
             "x-source" : "openai"
           }
         },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Цель символической ссылки",
+            "x-source" : "openai"
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "needs_review",
@@ -5808,6 +6305,13 @@
           "stringUnit" : {
             "state" : "needs_review",
             "value" : "합성의",
+            "x-source" : "openai"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Синтетический",
             "x-source" : "openai"
           }
         },
@@ -5892,6 +6396,13 @@
             "x-source" : "openai"
           }
         },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "В этом архиве есть несохранённые изменения. Вы хотите закрыть его без сохранения?",
+            "x-source" : "openai"
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "needs_review",
@@ -5970,6 +6481,13 @@
           "stringUnit" : {
             "state" : "needs_review",
             "value" : "이 아카이브의 형식은 읽기 전용입니다. 변경이 필요하면 '다른 이름으로 저장'을 사용하여 쓸 수 있는 형식을 선택하세요.",
+            "x-source" : "openai"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Формат этого архива доступен только для чтения. Используйте «Сохранить как», чтобы выбрать формат, доступный для записи, если вам нужно внести изменения.",
             "x-source" : "openai"
           }
         },
@@ -6054,6 +6572,13 @@
             "x-source" : "openai"
           }
         },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Идентификатор пользователя",
+            "x-source" : "openai"
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "needs_review",
@@ -6135,6 +6660,13 @@
             "x-source" : "openai"
           }
         },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "UUID (Отладка)",
+            "x-source" : "openai"
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "needs_review",
@@ -6206,6 +6738,13 @@
           "stringUnit" : {
             "state" : "needs_review",
             "value" : "아카이브 항목 경로를 읽을 수 없습니다.",
+            "x-source" : "openai"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Не удается прочитать путь к записи в архиве",
             "x-source" : "openai"
           }
         },
@@ -6290,6 +6829,13 @@
             "x-source" : "openai"
           }
         },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Невозможно получить доступ к области безопасности для %@",
+            "x-source" : "openai"
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "needs_review",
@@ -6368,6 +6914,13 @@
           "stringUnit" : {
             "state" : "needs_review",
             "value" : "%@을(를) 추가할 수 없습니다.",
+            "x-source" : "openai"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Не удалось добавить %@",
             "x-source" : "openai"
           }
         },
@@ -6452,6 +7005,13 @@
             "x-source" : "openai"
           }
         },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Не удалось добавить фильтр: %@",
+            "x-source" : "openai"
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "needs_review",
@@ -6530,6 +7090,13 @@
           "stringUnit" : {
             "state" : "needs_review",
             "value" : "캐시 경로를 생성할 수 없습니다",
+            "x-source" : "openai"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Не удается создать путь кэша",
             "x-source" : "openai"
           }
         },
@@ -6614,6 +7181,13 @@
             "x-source" : "openai"
           }
         },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Не удалось создать новую запись",
+            "x-source" : "openai"
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "needs_review",
@@ -6692,6 +7266,13 @@
           "stringUnit" : {
             "state" : "needs_review",
             "value" : "%@에 대한 파일 경로를 확인할 수 없습니다.",
+            "x-source" : "openai"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Не удается определить путь к файлу для %@",
             "x-source" : "openai"
           }
         },
@@ -6776,6 +7357,13 @@
             "x-source" : "openai"
           }
         },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Не удается определить, какой формат архива выбрал пользователь",
+            "x-source" : "openai"
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "needs_review",
@@ -6854,6 +7442,13 @@
           "stringUnit" : {
             "state" : "needs_review",
             "value" : "항목 헤더를 불러올 수 없습니다.",
+            "x-source" : "openai"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Не удалось получить заголовок записи",
             "x-source" : "openai"
           }
         },
@@ -6938,6 +7533,13 @@
             "x-source" : "openai"
           }
         },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Не удалось найти новый путь для %@",
+            "x-source" : "openai"
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "needs_review",
@@ -7016,6 +7618,13 @@
           "stringUnit" : {
             "state" : "needs_review",
             "value" : "파일을 열 수 없습니다: %@",
+            "x-source" : "openai"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Не удается открыть файл: %@",
             "x-source" : "openai"
           }
         },
@@ -7100,6 +7709,13 @@
             "x-source" : "openai"
           }
         },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Не удается открыть выходной архив: %@",
+            "x-source" : "openai"
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "needs_review",
@@ -7178,6 +7794,13 @@
           "stringUnit" : {
             "state" : "needs_review",
             "value" : "아카이브를 읽을 수 없습니다.",
+            "x-source" : "openai"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Не удается прочитать архив",
             "x-source" : "openai"
           }
         },
@@ -7262,6 +7885,13 @@
             "x-source" : "openai"
           }
         },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Не удалось удалить каталог кэша по адресу: %@",
+            "x-source" : "openai"
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "needs_review",
@@ -7340,6 +7970,13 @@
           "stringUnit" : {
             "state" : "needs_review",
             "value" : "작성된 URL을 가져올 수 없습니다.",
+            "x-source" : "openai"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Не удается получить записанные URL-адреса",
             "x-source" : "openai"
           }
         },
@@ -7424,6 +8061,13 @@
             "x-source" : "openai"
           }
         },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Не удалось установить формат: %@",
+            "x-source" : "openai"
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "needs_review",
@@ -7502,6 +8146,13 @@
           "stringUnit" : {
             "state" : "needs_review",
             "value" : "%@에 쓸 수 없습니다",
+            "x-source" : "openai"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Не удается записать в %@",
             "x-source" : "openai"
           }
         },
@@ -7586,6 +8237,13 @@
             "x-source" : "openai"
           }
         },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Неожиданная ошибка при добавлении дочерних элементов: %@",
+            "x-source" : "openai"
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "needs_review",
@@ -7664,6 +8322,13 @@
           "stringUnit" : {
             "state" : "needs_review",
             "value" : "알 수 없는 응답 %lld",
+            "x-source" : "openai"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Неизвестный ответ %lld",
             "x-source" : "openai"
           }
         },
@@ -7748,6 +8413,13 @@
             "x-source" : "openai"
           }
         },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Неизвестный результат %d",
+            "x-source" : "openai"
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "needs_review",
@@ -7826,6 +8498,13 @@
           "stringUnit" : {
             "state" : "needs_review",
             "value" : "사용자:",
+            "x-source" : "openai"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Пользователь:",
             "x-source" : "openai"
           }
         },
@@ -7910,6 +8589,13 @@
             "x-source" : "openai"
           }
         },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "W",
+            "x-source" : "openai"
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "needs_review",
@@ -7978,6 +8664,13 @@
           }
         },
         "ko" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "X",
+            "x-source" : "openai"
+          }
+        },
+        "ru" : {
           "stringUnit" : {
             "state" : "needs_review",
             "value" : "X",
@@ -8055,6 +8748,13 @@
           "stringUnit" : {
             "state" : "needs_review",
             "value" : "추출된 항목이 없습니다",
+            "x-source" : "openai"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Извлечено ноль записей",
             "x-source" : "openai"
           }
         },
@@ -8139,6 +8839,13 @@
             "x-source" : "openai"
           }
         },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "addChildHierarchically вызван для: %@",
+            "x-source" : "openai"
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "needs_review",
@@ -8217,6 +8924,13 @@
           "stringUnit" : {
             "state" : "needs_review",
             "value" : "addChildHierarchically에서 초기화되지 않은 자식 배열을 발견했습니다.",
+            "x-source" : "openai"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "addChildHierarchically обнаружил неинициализированный массив дочерних элементов",
             "x-source" : "openai"
           }
         },

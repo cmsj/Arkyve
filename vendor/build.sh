@@ -9,7 +9,9 @@ fi
 
 export VENDOR_DIR="${PWD}"
 export MAKE="make -j12"
-export MACOSX_DEPLOYMENT_TARGET="15.2"
+export MACOSX_DEPLOYMENT_TARGET="$(xcrun xcodebuild -showBuildSettings -project ../Arkyve.xcodeproj -target Arkyve | grep " MACOSX_DEPLOYMENT_TARGET =" | sed -e 's/^.*= //')"
+echo "Identified macOS deployment target: '${MACOSX_DEPLOYMENT_TARGET}'"
+
 export SDK="macosx"
 
 export CC=$(xcrun --find --sdk ${SDK} clang)

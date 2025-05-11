@@ -86,6 +86,16 @@ struct MenuCommands: Commands {
             }
             .disabled(viewModel.disableAdd)
 
+            Divider()
+
+            Button("Delete") {
+                viewModel.deleteButton()
+            }
+            .keyboardShortcut(.delete, modifiers: [])
+            .disabled(viewModel.disableDelete)
+
+            Divider()
+
             Button("Rename...") {
                 viewModel.renameButton()
             }
@@ -105,12 +115,6 @@ struct MenuCommands: Commands {
             .disabled(viewModel.disableExtractAll)
 
             Divider()
-
-            Button("Delete") {
-                viewModel.deleteButton()
-            }
-            .keyboardShortcut(.delete, modifiers: [])
-            .disabled(viewModel.disableDelete)
 
             Button("Quick Look") {
                 viewModel.extractForQuicklook()

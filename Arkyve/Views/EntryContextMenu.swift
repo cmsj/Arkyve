@@ -22,6 +22,15 @@ struct EntryContextMenu: View {
         }
         .disabled(viewModel.disableAdd)
 
+        Divider()
+
+        Button("Delete") {
+            viewModel.deleteButton(items)
+        }
+        .disabled(items.isEmpty)
+
+        Divider()
+
         Button("Rename...") {
             viewModel.renameButton(entries: items)
         }
@@ -52,24 +61,19 @@ struct EntryContextMenu: View {
             viewModel.processDrop(on: self.items.first, for: providers)
         }
 
-        Divider()
-
-        Button("Delete") {
-            viewModel.deleteButton(items)
+        // FIXME: For some reason .disabled() doesn't seem to work on ShareLink here, so instead we'll wrap it in a conditional
+        if items.count > 0 {
+            ShareLink(items: viewModel.extractablesForSelected(),
+                      subject: nil, message: nil,
+                      preview: { SharePreview($0.name, icon: $0.icon) })
         }
-        .disabled(items.isEmpty)
+//        .disabled(items.isEmpty)
+
+        Divider()
 
         Button("Quick Look\(viewModel.nameForQuickLook(items: items))") {
             viewModel.extractForQuicklook()
         }
         .disabled(items.isEmpty)
-
-        ShareLink(items: viewModel.extractablesForSelected(),
-                  subject: nil,
-                  message: nil,
-                  preview: { SharePreview($0.name, icon: $0.icon) }
-        )
-        .help("Share...")
-        .disabled(viewModel.disableShare)
     }
 }

@@ -5,16 +5,6 @@
   "targetLanguages" : [
     {
       "components" : {
-        "languageCode" : "ar"
-      }
-    },
-    {
-      "components" : {
-        "languageCode" : "fr"
-      }
-    },
-    {
-      "components" : {
         "languageCode" : "ja"
       }
     },
@@ -30,22 +20,12 @@
     },
     {
       "components" : {
-        "languageCode" : "it"
-      }
-    },
-    {
-      "components" : {
-        "languageCode" : "tr"
-      }
-    },
-    {
-      "components" : {
         "languageCode" : "he"
       }
     },
     {
       "components" : {
-        "languageCode" : "ko"
+        "languageCode" : "fr"
       }
     },
     {
@@ -55,12 +35,37 @@
     },
     {
       "components" : {
-        "languageCode" : "ru"
+        "languageCode" : "tr"
       }
     },
     {
       "components" : {
         "languageCode" : "en"
+      }
+    },
+    {
+      "components" : {
+        "languageCode" : "ru"
+      }
+    },
+    {
+      "components" : {
+        "languageCode" : "nl"
+      }
+    },
+    {
+      "components" : {
+        "languageCode" : "ar"
+      }
+    },
+    {
+      "components" : {
+        "languageCode" : "it"
+      }
+    },
+    {
+      "components" : {
+        "languageCode" : "ko"
       }
     }
   ]

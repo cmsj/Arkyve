@@ -71,6 +71,13 @@
             "x-source" : "openai"
           }
         },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "%@ bestaat al",
+            "x-source" : "openai"
+          }
+        },
         "ru" : {
           "stringUnit" : {
             "state" : "needs_review",
@@ -170,6 +177,13 @@
             "x-source" : "openai"
           }
         },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "%lld items",
+            "x-source" : "openai"
+          }
+        },
         "ru" : {
           "stringUnit" : {
             "state" : "needs_review",
@@ -255,6 +269,13 @@
           "stringUnit" : {
             "state" : "needs_review",
             "value" : "추가",
+            "x-source" : "openai"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Toevoegen",
             "x-source" : "openai"
           }
         },
@@ -346,6 +367,13 @@
             "x-source" : "openai"
           }
         },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Bestanden\/Mappen toevoegen...",
+            "x-source" : "openai"
+          }
+        },
         "ru" : {
           "stringUnit" : {
             "state" : "needs_review",
@@ -431,6 +459,13 @@
           "stringUnit" : {
             "state" : "needs_review",
             "value" : "이 아카이브에 파일 추가",
+            "x-source" : "openai"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Bestanden aan dit archief toevoegen",
             "x-source" : "openai"
           }
         },
@@ -522,6 +557,13 @@
             "x-source" : "openai"
           }
         },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Annuleren",
+            "x-source" : "openai"
+          }
+        },
         "ru" : {
           "stringUnit" : {
             "state" : "needs_review",
@@ -607,6 +649,13 @@
           "stringUnit" : {
             "state" : "needs_review",
             "value" : "로그 지우기",
+            "x-source" : "openai"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Logboeken wissen",
             "x-source" : "openai"
           }
         },
@@ -698,6 +747,13 @@
             "x-source" : "openai"
           }
         },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Sluiten",
+            "x-source" : "openai"
+          }
+        },
         "ru" : {
           "stringUnit" : {
             "state" : "needs_review",
@@ -783,6 +839,13 @@
           "stringUnit" : {
             "state" : "needs_review",
             "value" : "아카이브 닫기",
+            "x-source" : "openai"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Archief sluiten",
             "x-source" : "openai"
           }
         },
@@ -874,6 +937,13 @@
             "x-source" : "openai"
           }
         },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Sluit dit archief",
+            "x-source" : "openai"
+          }
+        },
         "ru" : {
           "stringUnit" : {
             "state" : "needs_review",
@@ -959,6 +1029,13 @@
           "stringUnit" : {
             "state" : "needs_review",
             "value" : "저장하지 않고 닫으시겠습니까?",
+            "x-source" : "openai"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Sluiten zonder op te slaan?",
             "x-source" : "openai"
           }
         },
@@ -1050,6 +1127,13 @@
             "x-source" : "openai"
           }
         },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Alles inklappen",
+            "x-source" : "openai"
+          }
+        },
         "ru" : {
           "stringUnit" : {
             "state" : "needs_review",
@@ -1138,6 +1222,13 @@
             "x-source" : "openai"
           }
         },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Kopiëren",
+            "x-source" : "openai"
+          }
+        },
         "ru" : {
           "stringUnit" : {
             "state" : "needs_review",
@@ -1222,6 +1313,13 @@
           "stringUnit" : {
             "state" : "needs_review",
             "value" : "%1$@을(를) 열 수 없습니다 (%2$d)",
+            "x-source" : "openai"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Kon %1$@ niet openen (%2$d)",
             "x-source" : "openai"
           }
         },
@@ -1313,6 +1411,13 @@
             "x-source" : "openai"
           }
         },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Maak een nieuw archief",
+            "x-source" : "openai"
+          }
+        },
         "ru" : {
           "stringUnit" : {
             "state" : "needs_review",
@@ -1401,6 +1506,13 @@
             "x-source" : "openai"
           }
         },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Knippen",
+            "x-source" : "openai"
+          }
+        },
         "ru" : {
           "stringUnit" : {
             "state" : "needs_review",
@@ -1485,6 +1597,13 @@
           "stringUnit" : {
             "state" : "needs_review",
             "value" : "쓰기 중 데이터 크기 불일치: 예상된 바이트 수는 %1$lld이지만, 실제로 기록된 바이트 수는 %2$lld입니다.",
+            "x-source" : "openai"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Ongelijkheid in gegevensgrootte tijdens schrijven, verwacht %1$lld bytes maar %2$lld bytes geschreven",
             "x-source" : "openai"
           }
         },
@@ -1576,6 +1695,13 @@
             "x-source" : "openai"
           }
         },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Datum Geopend",
+            "x-source" : "openai"
+          }
+        },
         "ru" : {
           "stringUnit" : {
             "state" : "needs_review",
@@ -1661,6 +1787,13 @@
           "stringUnit" : {
             "state" : "needs_review",
             "value" : "날짜 변경됨",
+            "x-source" : "openai"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Datum gewijzigd",
             "x-source" : "openai"
           }
         },
@@ -1752,6 +1885,13 @@
             "x-source" : "openai"
           }
         },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Aanmaakdatum",
+            "x-source" : "openai"
+          }
+        },
         "ru" : {
           "stringUnit" : {
             "state" : "needs_review",
@@ -1837,6 +1977,13 @@
           "stringUnit" : {
             "state" : "needs_review",
             "value" : "수정된 날짜",
+            "x-source" : "openai"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Datum gewijzigd",
             "x-source" : "openai"
           }
         },
@@ -1928,6 +2075,13 @@
             "x-source" : "openai"
           }
         },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Verwijderen",
+            "x-source" : "openai"
+          }
+        },
         "ru" : {
           "stringUnit" : {
             "state" : "needs_review",
@@ -2013,6 +2167,13 @@
           "stringUnit" : {
             "state" : "needs_review",
             "value" : "선택한 파일\/폴더 삭제",
+            "x-source" : "openai"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Verwijder geselecteerde bestanden\/mappen",
             "x-source" : "openai"
           }
         },
@@ -2104,6 +2265,13 @@
             "x-source" : "openai"
           }
         },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Weergegeven foutmelding: %@",
+            "x-source" : "openai"
+          }
+        },
         "ru" : {
           "stringUnit" : {
             "state" : "needs_review",
@@ -2189,6 +2357,13 @@
           "stringUnit" : {
             "state" : "needs_review",
             "value" : "모두 펼치기",
+            "x-source" : "openai"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Alles uitvouwen",
             "x-source" : "openai"
           }
         },
@@ -2280,6 +2455,13 @@
             "x-source" : "openai"
           }
         },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Alles uitpakken...",
+            "x-source" : "openai"
+          }
+        },
         "ru" : {
           "stringUnit" : {
             "state" : "needs_review",
@@ -2365,6 +2547,13 @@
           "stringUnit" : {
             "state" : "needs_review",
             "value" : "선택한 파일\/폴더 추출",
+            "x-source" : "openai"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Geselecteerde bestanden\/mappen uitpakken",
             "x-source" : "openai"
           }
         },
@@ -2456,6 +2645,13 @@
             "x-source" : "openai"
           }
         },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Extraheer...",
+            "x-source" : "openai"
+          }
+        },
         "ru" : {
           "stringUnit" : {
             "state" : "needs_review",
@@ -2541,6 +2737,13 @@
           "stringUnit" : {
             "state" : "needs_review",
             "value" : "파일을 읽기 위해 여는 데 실패했습니다: %@",
+            "x-source" : "openai"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Kon bestand niet openen voor lezen: %@",
             "x-source" : "openai"
           }
         },
@@ -2632,6 +2835,13 @@
             "x-source" : "openai"
           }
         },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Mislukt om bronarchief te lezen",
+            "x-source" : "openai"
+          }
+        },
         "ru" : {
           "stringUnit" : {
             "state" : "needs_review",
@@ -2717,6 +2927,13 @@
           "stringUnit" : {
             "state" : "needs_review",
             "value" : "데이터 쓰기에 실패했습니다: %@",
+            "x-source" : "openai"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Het is niet gelukt om gegevens te schrijven: %@",
             "x-source" : "openai"
           }
         },
@@ -2808,6 +3025,13 @@
             "x-source" : "openai"
           }
         },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "GID",
+            "x-source" : "openai"
+          }
+        },
         "ru" : {
           "stringUnit" : {
             "state" : "needs_review",
@@ -2886,6 +3110,13 @@
           "stringUnit" : {
             "state" : "needs_review",
             "value" : "그룹:",
+            "x-source" : "openai"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Groep:",
             "x-source" : "openai"
           }
         },
@@ -2977,6 +3208,13 @@
             "x-source" : "openai"
           }
         },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Header map inconsistentie",
+            "x-source" : "openai"
+          }
+        },
         "ru" : {
           "stringUnit" : {
             "state" : "needs_review",
@@ -3062,6 +3300,13 @@
           "stringUnit" : {
             "state" : "needs_review",
             "value" : "내부 오류, 엣지 노드에 항목 추가 중",
+            "x-source" : "openai"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Interne fout, toevoegen van een invoer aan randknooppunt",
             "x-source" : "openai"
           }
         },
@@ -3153,6 +3398,13 @@
             "x-source" : "openai"
           }
         },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Interne fout, poging om een item toe te voegen aan een niet-map",
+            "x-source" : "openai"
+          }
+        },
         "ru" : {
           "stringUnit" : {
             "state" : "needs_review",
@@ -3238,6 +3490,13 @@
           "stringUnit" : {
             "state" : "needs_review",
             "value" : "내부 오류: 예상치 못한 항목을 쓰려고 시도했습니다: %@",
+            "x-source" : "openai"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Interne fout: Poging om onverwacht item te schrijven: %@",
             "x-source" : "openai"
           }
         },
@@ -3329,6 +3588,13 @@
             "x-source" : "openai"
           }
         },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Interne fout: Dubbele synthetische map",
+            "x-source" : "openai"
+          }
+        },
         "ru" : {
           "stringUnit" : {
             "state" : "needs_review",
@@ -3414,6 +3680,13 @@
           "stringUnit" : {
             "state" : "needs_review",
             "value" : "내부 오류: 맵 항목 키를 찾을 수 없음",
+            "x-source" : "openai"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Interne fout: mapEntryKey niet gevonden",
             "x-source" : "openai"
           }
         },
@@ -3505,6 +3778,13 @@
             "x-source" : "openai"
           }
         },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Interne header-mapping inconsistentie",
+            "x-source" : "openai"
+          }
+        },
         "ru" : {
           "stringUnit" : {
             "state" : "needs_review",
@@ -3590,6 +3870,13 @@
           "stringUnit" : {
             "state" : "needs_review",
             "value" : "항목",
+            "x-source" : "openai"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Items",
             "x-source" : "openai"
           }
         },
@@ -3682,6 +3969,13 @@
             "x-source" : "openai"
           }
         },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Soort",
+            "x-source" : "openai"
+          }
+        },
         "ru" : {
           "stringUnit" : {
             "state" : "needs_review",
@@ -3770,6 +4064,13 @@
             "x-source" : "openai"
           }
         },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Niveau",
+            "x-source" : "openai"
+          }
+        },
         "ru" : {
           "stringUnit" : {
             "state" : "needs_review",
@@ -3855,6 +4156,13 @@
           "stringUnit" : {
             "state" : "needs_review",
             "value" : "로그 뷰어",
+            "x-source" : "openai"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Logviewer",
             "x-source" : "openai"
           }
         },
@@ -4034,6 +4342,13 @@
             "x-source" : "openai"
           }
         },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Geheugentoewijzing mislukt",
+            "x-source" : "openai"
+          }
+        },
         "ru" : {
           "stringUnit" : {
             "state" : "needs_review",
@@ -4119,6 +4434,13 @@
           "stringUnit" : {
             "state" : "needs_review",
             "value" : "메시지",
+            "x-source" : "openai"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Bericht",
             "x-source" : "openai"
           }
         },
@@ -4210,6 +4532,13 @@
             "x-source" : "openai"
           }
         },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Minimaal niveau",
+            "x-source" : "openai"
+          }
+        },
         "ru" : {
           "stringUnit" : {
             "state" : "needs_review",
@@ -4295,6 +4624,13 @@
           "stringUnit" : {
             "state" : "needs_review",
             "value" : "이름",
+            "x-source" : "openai"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Naam",
             "x-source" : "openai"
           }
         },
@@ -4386,6 +4722,13 @@
             "x-source" : "openai"
           }
         },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Nieuw",
+            "x-source" : "openai"
+          }
+        },
         "ru" : {
           "stringUnit" : {
             "state" : "needs_review",
@@ -4471,6 +4814,13 @@
           "stringUnit" : {
             "state" : "needs_review",
             "value" : "새 폴더",
+            "x-source" : "openai"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Nieuwe map",
             "x-source" : "openai"
           }
         },
@@ -4562,6 +4912,13 @@
             "x-source" : "openai"
           }
         },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Open een archief",
+            "x-source" : "openai"
+          }
+        },
         "ru" : {
           "stringUnit" : {
             "state" : "needs_review",
@@ -4647,6 +5004,13 @@
           "stringUnit" : {
             "state" : "needs_review",
             "value" : "열기...",
+            "x-source" : "openai"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Openen...",
             "x-source" : "openai"
           }
         },
@@ -4738,6 +5102,13 @@
             "x-source" : "openai"
           }
         },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Overige:",
+            "x-source" : "openai"
+          }
+        },
         "ru" : {
           "stringUnit" : {
             "state" : "needs_review",
@@ -4823,6 +5194,13 @@
           "stringUnit" : {
             "state" : "needs_review",
             "value" : "경로 (디버그)",
+            "x-source" : "openai"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Pad (Debug)",
             "x-source" : "openai"
           }
         },
@@ -4914,6 +5292,13 @@
             "x-source" : "openai"
           }
         },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Toestemmingen",
+            "x-source" : "openai"
+          }
+        },
         "ru" : {
           "stringUnit" : {
             "state" : "needs_review",
@@ -4999,6 +5384,13 @@
           "stringUnit" : {
             "state" : "needs_review",
             "value" : "빠른 보기",
+            "x-source" : "openai"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Snel Bekijken",
             "x-source" : "openai"
           }
         },
@@ -5090,6 +5482,13 @@
             "x-source" : "openai"
           }
         },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "R",
+            "x-source" : "openai"
+          }
+        },
         "ru" : {
           "stringUnit" : {
             "state" : "needs_review",
@@ -5168,6 +5567,13 @@
           "stringUnit" : {
             "state" : "needs_review",
             "value" : "읽기 전용 아카이브",
+            "x-source" : "openai"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Alleen-lezen archief",
             "x-source" : "openai"
           }
         },
@@ -5259,6 +5665,13 @@
             "x-source" : "openai"
           }
         },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Hernoem geselecteerd bestand\/map",
+            "x-source" : "openai"
+          }
+        },
         "ru" : {
           "stringUnit" : {
             "state" : "needs_review",
@@ -5344,6 +5757,13 @@
           "stringUnit" : {
             "state" : "needs_review",
             "value" : "이름 변경...",
+            "x-source" : "openai"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Hernoemen...",
             "x-source" : "openai"
           }
         },
@@ -5435,6 +5855,13 @@
             "x-source" : "openai"
           }
         },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Terug naar Opgeslagen Versie",
+            "x-source" : "openai"
+          }
+        },
         "ru" : {
           "stringUnit" : {
             "state" : "needs_review",
@@ -5523,6 +5950,13 @@
             "x-source" : "openai"
           }
         },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "S",
+            "x-source" : "openai"
+          }
+        },
         "ru" : {
           "stringUnit" : {
             "state" : "needs_review",
@@ -5601,6 +6035,13 @@
           "stringUnit" : {
             "state" : "needs_review",
             "value" : "저장",
+            "x-source" : "openai"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Opslaan",
             "x-source" : "openai"
           }
         },
@@ -5692,6 +6133,13 @@
             "x-source" : "openai"
           }
         },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Opslaan als...",
+            "x-source" : "openai"
+          }
+        },
         "ru" : {
           "stringUnit" : {
             "state" : "needs_review",
@@ -5777,6 +6225,13 @@
           "stringUnit" : {
             "state" : "needs_review",
             "value" : "크기",
+            "x-source" : "openai"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Grootte",
             "x-source" : "openai"
           }
         },
@@ -5868,6 +6323,13 @@
             "x-source" : "openai"
           }
         },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Grootte (bytes)",
+            "x-source" : "openai"
+          }
+        },
         "ru" : {
           "stringUnit" : {
             "state" : "needs_review",
@@ -5953,6 +6415,13 @@
           "stringUnit" : {
             "state" : "needs_review",
             "value" : "소스 (디버그)",
+            "x-source" : "openai"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Bron (Debug)",
             "x-source" : "openai"
           }
         },
@@ -6044,6 +6513,13 @@
             "x-source" : "openai"
           }
         },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Stop",
+            "x-source" : "openai"
+          }
+        },
         "ru" : {
           "stringUnit" : {
             "state" : "needs_review",
@@ -6129,6 +6605,13 @@
           "stringUnit" : {
             "state" : "needs_review",
             "value" : "현재 작업 중지",
+            "x-source" : "openai"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Stop de huidige taak",
             "x-source" : "openai"
           }
         },
@@ -6220,6 +6703,13 @@
             "x-source" : "openai"
           }
         },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Symlink Doel",
+            "x-source" : "openai"
+          }
+        },
         "ru" : {
           "stringUnit" : {
             "state" : "needs_review",
@@ -6305,6 +6795,13 @@
           "stringUnit" : {
             "state" : "needs_review",
             "value" : "합성의",
+            "x-source" : "openai"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Synthetisch",
             "x-source" : "openai"
           }
         },
@@ -6396,6 +6893,13 @@
             "x-source" : "openai"
           }
         },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Dit archief heeft niet-opgeslagen wijzigingen, wil je het sluiten zonder op te slaan?",
+            "x-source" : "openai"
+          }
+        },
         "ru" : {
           "stringUnit" : {
             "state" : "needs_review",
@@ -6481,6 +6985,13 @@
           "stringUnit" : {
             "state" : "needs_review",
             "value" : "이 아카이브의 형식은 읽기 전용입니다. 변경이 필요하면 '다른 이름으로 저장'을 사용하여 쓸 수 있는 형식을 선택하세요.",
+            "x-source" : "openai"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Dit archiefformaat is alleen-lezen. Gebruik 'Opslaan als' om een beschrijfbaar formaat te selecteren als u wijzigingen wilt aanbrengen.",
             "x-source" : "openai"
           }
         },
@@ -6572,6 +7083,13 @@
             "x-source" : "openai"
           }
         },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Gebruikers-ID",
+            "x-source" : "openai"
+          }
+        },
         "ru" : {
           "stringUnit" : {
             "state" : "needs_review",
@@ -6660,6 +7178,13 @@
             "x-source" : "openai"
           }
         },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "UUID (Debug)",
+            "x-source" : "openai"
+          }
+        },
         "ru" : {
           "stringUnit" : {
             "state" : "needs_review",
@@ -6738,6 +7263,13 @@
           "stringUnit" : {
             "state" : "needs_review",
             "value" : "아카이브 항목 경로를 읽을 수 없습니다.",
+            "x-source" : "openai"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Kan het archiefpad niet lezen",
             "x-source" : "openai"
           }
         },
@@ -6829,6 +7361,13 @@
             "x-source" : "openai"
           }
         },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Kan geen toegang krijgen tot het beveiligingsbereik voor %@",
+            "x-source" : "openai"
+          }
+        },
         "ru" : {
           "stringUnit" : {
             "state" : "needs_review",
@@ -6914,6 +7453,13 @@
           "stringUnit" : {
             "state" : "needs_review",
             "value" : "%@을(를) 추가할 수 없습니다.",
+            "x-source" : "openai"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Kan %@ niet toevoegen",
             "x-source" : "openai"
           }
         },
@@ -7005,6 +7551,13 @@
             "x-source" : "openai"
           }
         },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Kan filter niet toevoegen: %@",
+            "x-source" : "openai"
+          }
+        },
         "ru" : {
           "stringUnit" : {
             "state" : "needs_review",
@@ -7090,6 +7643,13 @@
           "stringUnit" : {
             "state" : "needs_review",
             "value" : "캐시 경로를 생성할 수 없습니다",
+            "x-source" : "openai"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Kan cachepad niet aanmaken",
             "x-source" : "openai"
           }
         },
@@ -7181,6 +7741,13 @@
             "x-source" : "openai"
           }
         },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Kan geen nieuwe invoer maken",
+            "x-source" : "openai"
+          }
+        },
         "ru" : {
           "stringUnit" : {
             "state" : "needs_review",
@@ -7266,6 +7833,13 @@
           "stringUnit" : {
             "state" : "needs_review",
             "value" : "%@에 대한 파일 경로를 확인할 수 없습니다.",
+            "x-source" : "openai"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Kan het bestandspad voor %@ niet bepalen",
             "x-source" : "openai"
           }
         },
@@ -7357,6 +7931,13 @@
             "x-source" : "openai"
           }
         },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Kan niet bepalen welk archiefformaat de gebruiker heeft geselecteerd",
+            "x-source" : "openai"
+          }
+        },
         "ru" : {
           "stringUnit" : {
             "state" : "needs_review",
@@ -7442,6 +8023,13 @@
           "stringUnit" : {
             "state" : "needs_review",
             "value" : "항목 헤더를 불러올 수 없습니다.",
+            "x-source" : "openai"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Kan invoerkop niet ophalen",
             "x-source" : "openai"
           }
         },
@@ -7533,6 +8121,13 @@
             "x-source" : "openai"
           }
         },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Kan geen nieuw pad vinden voor %@",
+            "x-source" : "openai"
+          }
+        },
         "ru" : {
           "stringUnit" : {
             "state" : "needs_review",
@@ -7618,6 +8213,13 @@
           "stringUnit" : {
             "state" : "needs_review",
             "value" : "파일을 열 수 없습니다: %@",
+            "x-source" : "openai"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Kan bestand niet openen: %@",
             "x-source" : "openai"
           }
         },
@@ -7709,6 +8311,13 @@
             "x-source" : "openai"
           }
         },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Kan uitvoerarchief niet openen: %@",
+            "x-source" : "openai"
+          }
+        },
         "ru" : {
           "stringUnit" : {
             "state" : "needs_review",
@@ -7794,6 +8403,13 @@
           "stringUnit" : {
             "state" : "needs_review",
             "value" : "아카이브를 읽을 수 없습니다.",
+            "x-source" : "openai"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Kan archief niet lezen",
             "x-source" : "openai"
           }
         },
@@ -7885,6 +8501,13 @@
             "x-source" : "openai"
           }
         },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Kan cachemap niet verwijderen op: %@",
+            "x-source" : "openai"
+          }
+        },
         "ru" : {
           "stringUnit" : {
             "state" : "needs_review",
@@ -7970,6 +8593,13 @@
           "stringUnit" : {
             "state" : "needs_review",
             "value" : "작성된 URL을 가져올 수 없습니다.",
+            "x-source" : "openai"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Kan geschreven URL's niet ophalen",
             "x-source" : "openai"
           }
         },
@@ -8061,6 +8691,13 @@
             "x-source" : "openai"
           }
         },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Kan formaat niet instellen: %@",
+            "x-source" : "openai"
+          }
+        },
         "ru" : {
           "stringUnit" : {
             "state" : "needs_review",
@@ -8146,6 +8783,13 @@
           "stringUnit" : {
             "state" : "needs_review",
             "value" : "%@에 쓸 수 없습니다",
+            "x-source" : "openai"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Kan niet schrijven naar %@",
             "x-source" : "openai"
           }
         },
@@ -8237,6 +8881,13 @@
             "x-source" : "openai"
           }
         },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Onverwachte fout bij het toevoegen van kinderen: %@",
+            "x-source" : "openai"
+          }
+        },
         "ru" : {
           "stringUnit" : {
             "state" : "needs_review",
@@ -8322,6 +8973,13 @@
           "stringUnit" : {
             "state" : "needs_review",
             "value" : "알 수 없는 응답 %lld",
+            "x-source" : "openai"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Onbekende reactie %lld",
             "x-source" : "openai"
           }
         },
@@ -8413,6 +9071,13 @@
             "x-source" : "openai"
           }
         },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Onbekend resultaat %d",
+            "x-source" : "openai"
+          }
+        },
         "ru" : {
           "stringUnit" : {
             "state" : "needs_review",
@@ -8498,6 +9163,13 @@
           "stringUnit" : {
             "state" : "needs_review",
             "value" : "사용자:",
+            "x-source" : "openai"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Gebruiker:",
             "x-source" : "openai"
           }
         },
@@ -8589,6 +9261,13 @@
             "x-source" : "openai"
           }
         },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "W",
+            "x-source" : "openai"
+          }
+        },
         "ru" : {
           "stringUnit" : {
             "state" : "needs_review",
@@ -8664,6 +9343,13 @@
           }
         },
         "ko" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "X",
+            "x-source" : "openai"
+          }
+        },
+        "nl" : {
           "stringUnit" : {
             "state" : "needs_review",
             "value" : "X",
@@ -8748,6 +9434,13 @@
           "stringUnit" : {
             "state" : "needs_review",
             "value" : "추출된 항목이 없습니다",
+            "x-source" : "openai"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Nul vermeldingen geëxtraheerd",
             "x-source" : "openai"
           }
         },
@@ -8839,6 +9532,13 @@
             "x-source" : "openai"
           }
         },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "voegKindHiërarchischToe aangeroepen op: %@",
+            "x-source" : "openai"
+          }
+        },
         "ru" : {
           "stringUnit" : {
             "state" : "needs_review",
@@ -8924,6 +9624,13 @@
           "stringUnit" : {
             "state" : "needs_review",
             "value" : "addChildHierarchically에서 초기화되지 않은 자식 배열을 발견했습니다.",
+            "x-source" : "openai"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "addChildHierarchically vond een niet-geïnitialiseerde kinderen array",
             "x-source" : "openai"
           }
         },

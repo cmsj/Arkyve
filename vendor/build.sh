@@ -9,7 +9,7 @@ fi
 
 export VENDOR_DIR="${PWD}"
 export MAKE="make -j12"
-export MACOSX_DEPLOYMENT_TARGET="14.0"
+export MACOSX_DEPLOYMENT_TARGET="15.2"
 export SDK="macosx"
 
 export CC=$(xcrun --find --sdk ${SDK} clang)

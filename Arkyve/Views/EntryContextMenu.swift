@@ -63,9 +63,11 @@ struct EntryContextMenu: View {
 
         // FIXME: For some reason .disabled() doesn't seem to work on ShareLink here, so instead we'll wrap it in a conditional. This also applies in MenuCommands.swift
         if items.count > 0 {
-            ShareLink(items: viewModel.extractablesForSelected(),
-                      subject: nil, message: nil,
-                      preview: { SharePreview($0.name, icon: $0.icon) })
+            ShareLink(items: viewModel.extractablesForSelected(), subject: nil, message: nil, preview: {
+                let name = $0.name
+                let icon = $0.icon
+                return SharePreview(name, icon: icon)
+            })
         }
 //        .disabled(items.isEmpty)
 

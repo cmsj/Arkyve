@@ -117,18 +117,21 @@ struct MenuCommands: Commands {
             Divider()
 
             Button("Quick Look") {
+                viewModel.resetQuickLook()
                 viewModel.extractForQuicklook()
             }
-            .keyboardShortcut(.space, modifiers: [])
+            .keyboardShortcut("y", modifiers: [.command])
             .disabled(viewModel.disableQuicklook)
 
-            ShareLink(items: viewModel.extractablesForSelected(),
-                      subject: nil,
-                      message: nil,
-                      preview: { SharePreview($0.name, icon: $0.icon) }
-            )
-            .help("Share...")
-            .disabled(viewModel.disableShare)
+            // NOTE: ShareLink doesn't seem to respond to .disabled() so we have to make it conditional
+            if viewModel.selectedEntries.count > 0 {
+                ShareLink(items: viewModel.extractablesForSelected(),
+                          subject: nil,
+                          message: nil,
+                          preview: { SharePreview($0.name, icon: $0.icon) }
+                )
+                .disabled(viewModel.disableShare)
+            }
         }
     }
 }

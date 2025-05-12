@@ -191,6 +191,11 @@ extension MainWindowViewModel {
         }
     }
 
+    func resetQuickLook() {
+        self.quickLookURL = nil
+        self.quickLookItems = []
+    }
+
     func extractForQuicklook() {
         guard let archive else { return }
 

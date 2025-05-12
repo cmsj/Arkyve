@@ -40,6 +40,7 @@ struct ToolbarContentView: CustomizableToolbarContent {
                     .symbolRenderingMode(.hierarchical)
                     .padding()
             }
+            .disabled(viewModel.progressTask == nil)
             .help("Stop the current task")
         }
         .customizationBehavior(.reorderable)

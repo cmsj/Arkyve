@@ -427,6 +427,7 @@
       }
     },
     "addChildHierarchically called on: %@" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ar" : {
           "stringUnit" : {
@@ -509,6 +510,7 @@
       }
     },
     "addChildHierarchically found an uninitialised children array" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ar" : {
           "stringUnit" : {
@@ -1493,6 +1495,7 @@
       }
     },
     "Data size mismatch during write, expected %lld bytes but wrote %lld bytes" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ar" : {
           "stringUnit" : {
@@ -2067,6 +2070,7 @@
       }
     },
     "Displayed error: %@" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ar" : {
           "stringUnit" : {
@@ -2881,6 +2885,7 @@
       }
     },
     "Header map inconsistency" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ar" : {
           "stringUnit" : {
@@ -3290,6 +3295,12 @@
         }
       }
     },
+    "Internal error: header map inconsistency" : {
+
+    },
+    "Internal error: Header map inconsistency" : {
+
+    },
     "Internal error: mapEntryKey not found" : {
       "localizations" : {
         "ar" : {
@@ -3373,6 +3384,7 @@
       }
     },
     "Internal header map inconsistency" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ar" : {
           "stringUnit" : {
@@ -5658,6 +5670,16 @@
         }
       }
     },
+    "Size mismatch during write, expected %lld bytes but wrote %lld bytes" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Size mismatch during write, expected %1$lld bytes but wrote %2$lld bytes"
+          }
+        }
+      }
+    },
     "Source (Debug)" : {
       "localizations" : {
         "ar" : {
@@ -6397,6 +6419,7 @@
       }
     },
     "Unable to access security scope for %@" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ar" : {
           "stringUnit" : {
@@ -6889,6 +6912,7 @@
       }
     },
     "Unable to determine which archive format the user selected" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ar" : {
           "stringUnit" : {
@@ -7135,6 +7159,7 @@
       }
     },
     "Unable to open file: %@" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ar" : {
           "stringUnit" : {
@@ -7212,6 +7237,16 @@
           "stringUnit" : {
             "state" : "needs_review",
             "value" : "无法打开文件：%@"
+          }
+        }
+      }
+    },
+    "Unable to open file: %@ %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Unable to open file: %1$@ %2$@"
           }
         }
       }
@@ -7381,6 +7416,7 @@
       }
     },
     "Unable to remove cache directory at: %@" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ar" : {
           "stringUnit" : {
@@ -7791,6 +7827,7 @@
       }
     },
     "Unknown response %lld" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ar" : {
           "stringUnit" : {
@@ -7873,6 +7910,7 @@
       }
     },
     "Unknown result %d" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ar" : {
           "stringUnit" : {

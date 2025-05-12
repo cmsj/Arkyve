@@ -61,7 +61,7 @@ struct EntryContextMenu: View {
             viewModel.processDrop(on: self.items.first, for: providers)
         }
 
-        // FIXME: For some reason .disabled() doesn't seem to work on ShareLink here, so instead we'll wrap it in a conditional
+        // FIXME: For some reason .disabled() doesn't seem to work on ShareLink here, so instead we'll wrap it in a conditional. This also applies in MenuCommands.swift
         if items.count > 0 {
             ShareLink(items: viewModel.extractablesForSelected(),
                       subject: nil, message: nil,

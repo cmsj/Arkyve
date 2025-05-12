@@ -29,6 +29,9 @@ struct ArkyveApp: App {
         }
         .commands {
             MenuCommands(viewModel: viewModel)
+
+            // Include the standard macOS menu items for controlling the toolbar
+            // (visibility/editing) from the menus
             ToolbarCommands()
         }
 

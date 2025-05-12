@@ -38,4 +38,8 @@ struct StatusbarView: View {
         StatusbarView()
             .environment(viewModel)
     }
+    .task {
+        try? await Task.sleep(for: .seconds(5))
+        viewModel.newButton()
+    }
 }

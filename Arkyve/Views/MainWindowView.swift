@@ -168,6 +168,10 @@ struct MainWindowView: View {
 }
 
 #Preview {
+    @Previewable @State var viewModel = MainWindowViewModel()
     MainWindowView()
-        .environment(MainWindowViewModel())
+        .environment(viewModel)
+        .task {
+            viewModel.newButton()
+        }
 }

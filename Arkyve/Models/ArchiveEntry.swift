@@ -282,11 +282,11 @@ class ArchiveEntry: Identifiable {
 
     @discardableResult func addChildHierarchically(_ entry: ArchiveEntry) throws(ArkyveError) -> [ArchiveEntry] {
         guard [.directory, .root].contains(self.type) else {
-            AKError(String(localized: "addChildHierarchically called on: \(self.type.userString)"))
+            AKError("addChildHierarchically called on: \(self.type.userString)")
             throw .init(.entries, msg: String(localized: "Internal error, adding entry to non-directory"))
         }
         guard self.children != nil else {
-            AKError(String(localized: "addChildHierarchically found an uninitialised children array"))
+            AKError("addChildHierarchically found an uninitialised children array")
             throw .init(.entries, msg: String(localized: "Internal error, adding entry to edge node"))
         }
 

@@ -84,7 +84,7 @@ class Archive: Identifiable {
         do {
             try FileManager.default.removeItem(at: self.cacheURL)
         } catch {
-            AKError(String(localized: "Unable to remove cache directory at: \(self.cacheURL.path)"))
+            AKError("Unable to remove cache directory at: \(self.cacheURL.path)")
         }
     }
 

@@ -108,7 +108,7 @@ actor libarchiveWrapper {
                 AKTrace("Reached end of archive")
                 break readLoop
             default:
-                AKError(String(localized: "Unknown result \(result)"))
+                AKError("readHeaders() Unknown result \(result)")
                 break readLoop
             }
 

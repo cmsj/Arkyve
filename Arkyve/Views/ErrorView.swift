@@ -15,7 +15,7 @@ class ShowErrors {
 
     func err(_ error: ArkyveError) {
         self.error = error
-        AKError(String(localized: "Displayed error: \(error.localizedDescription)"))
+        AKError("Displayed error: \(error.localizedDescription)")
     }
 
     func clear() {

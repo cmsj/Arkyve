@@ -157,7 +157,7 @@ extension MainWindowViewModel {
                 case .alertThirdButtonReturn:
                     continue entryLoop
                 default:
-                    AKError(String(localized: "Unknown response \(response.rawValue)"))
+                    AKError("Unknown response \(response.rawValue)")
                     return
                 }
             }

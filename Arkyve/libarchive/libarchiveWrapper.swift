@@ -90,7 +90,7 @@ actor libarchiveWrapper {
 
     private func readHeaders() async throws(ArkyveError) -> [libarchiveHeader] {
         guard readArchiveFD.archive != nil else {
-            throw .init(.entries, msg: "readHeaders() called with no archive")
+            throw .init(.entries, msg: "Internal error: archive does not exist")
         }
 
         var headers: [libarchiveHeader] = []
@@ -676,7 +676,7 @@ actor libarchiveWrapper {
         for filePath in headerMap.keys.filter({ headerMap[$0]?.header.source.type == .Filesystem })
         {
             guard let flatEntry = headerMap[filePath] else {
-                throw ArkyveError(.writeArchive, msg: String(localized: "Header map inconsistency"))
+                throw ArkyveError(.writeArchive, msg: String(localized: "Internal error: Header map inconsistency"))
             }
 
             // Write a header to the archive for this file
@@ -698,7 +698,7 @@ actor libarchiveWrapper {
                 do {
                     fileHandle = try FileHandle(forReadingFrom: URL(fileURLWithPath: flatEntry.header.source.path))
                 } catch {
-                    throw .init(.writeArchive, msg: String(localized: "Unable to open file: \(error.localizedDescription)"))
+                    throw .init(.writeArchive, msg: String(localized: "Unable to open file: \(flatEntry.header.name) \(error.localizedDescription)"))
                 }
                 guard let fileHandle else {
                     throw .init(.writeArchive, msg: String(localized: "Failed to open file for reading: \(filePath)"))
@@ -722,7 +722,7 @@ actor libarchiveWrapper {
                             throw ArkyveError(.writeArchive, msg: String(localized: "Failed to write data: \(errorString)"))
                         }
                         if wsize != data.count {
-                            throw ArkyveError(.writeArchive, msg: String(localized: "Data size mismatch during write, expected \(data.count) bytes but wrote \(wsize) bytes"))
+                            throw ArkyveError(.writeArchive, msg: String(localized: "Size mismatch during write, expected \(data.count) bytes but wrote \(wsize) bytes"))
                         }
                     }
                 }
@@ -740,7 +740,7 @@ actor libarchiveWrapper {
         for filePath in headerMap.keys.filter({ headerMap[$0]?.header.source.type == .InMemory && headerMap[$0]?.header.type == .directory })
         {
             guard let flatEntry = headerMap[filePath] else {
-                throw ArkyveError(.writeArchive, msg: String(localized: "Internal header map inconsistency"))
+                throw ArkyveError(.writeArchive, msg: String(localized: "Internal error: header map inconsistency"))
             }
 
             // Write a header to the archive for this file

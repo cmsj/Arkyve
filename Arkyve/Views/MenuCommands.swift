@@ -78,12 +78,13 @@ struct MenuCommands: Commands {
             Button("New Folder") {
                 viewModel.newFolderButton()
             }
-            .keyboardShortcut("n", modifiers:[.command, .shift])
+            .keyboardShortcut("n", modifiers: [.command, .shift])
             .disabled(viewModel.disableNewFolder)
 
             Button("Add Files/Folders...") {
                 viewModel.addButton()
             }
+            .keyboardShortcut("i", modifiers: [.command])
             .disabled(viewModel.disableAdd)
 
             Divider()

@@ -55,7 +55,7 @@ struct PermsEditorView: View {
         }
     }
 }
-//#Preview {
-//    PermsEditorView()
-//}
 
+#Preview {
+    PermsEditorView(entry: ArchiveEntry(syntheticDirectory: "testSynth"))
+}

@@ -77,3 +77,7 @@ struct EntryContextMenu: View {
         .disabled(items.isEmpty)
     }
 }
+
+#Preview {
+    EntryContextMenu(viewModel: MainWindowViewModel(), items: [])
+}

@@ -34,6 +34,7 @@ struct DateEditorView: View {
     }
 }
 
-//#Preview {
-//    DateEditorView()
-//}
+#Preview {
+    @Previewable @State var date = Date()
+    DateEditorView(selection: $date, label: "Test Label")
+}

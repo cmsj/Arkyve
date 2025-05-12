@@ -254,5 +254,8 @@ struct TableView: View {
     .toolbar(id: "Preview") {
         ToolbarContentView(viewModel: viewModel)
     }
-    .task { viewModel.newButton() }
+    .task {
+        viewModel.newButton()
+        try? viewModel.archive?.addFiles(from: [URL(fileURLWithPath:"/Users/cmsj/Desktop/")])
+    }
 }

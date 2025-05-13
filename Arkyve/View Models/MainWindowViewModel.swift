@@ -21,7 +21,6 @@ class MainWindowViewModel {
     var quickLookItems: [URL] = []
 
     var progressTask: Task<Void, Never>? = nil
-    var progress: ArkyveProgressState = .idle
 
     var showErrors: ShowErrors = ShowErrors()
 
@@ -70,18 +69,4 @@ class MainWindowViewModel {
     }
     static let didOpenReadOnlyEvent = Tips.Event(id: "didOpenReadOnly")
     let tips = TipsStore()
-
-    // MARK: - Progress indicator
-    func setProgress(_ tp: TaskProgress) {
-        switch tp.status {
-        case .running(let units):
-            if let total = units.total {
-                progress = .determinate(Double(units.completed) / Double(total))
-            } else {
-                progress = .indeterminate
-            }
-        case .finished, .failed(_):
-            progress = .idle
-        }
-    }
 }

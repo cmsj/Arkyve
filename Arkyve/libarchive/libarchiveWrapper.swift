@@ -194,8 +194,6 @@ actor libarchiveWrapper {
             if Task.isCancelled {
                 throw .init(.cancelled, msg: "")
             }
-
-            await Task.unsafeProgress?.progressed()
         }
 
         return headers
@@ -288,8 +286,6 @@ actor libarchiveWrapper {
         let archiveFormat: libarchiveFormat
         let archiveFilters: [libarchiveFilter]
         let archiveEntries: [libarchiveHeader]
-
-        await Task.unsafeProgress?.progressed()
 
         do {
             (archiveFormat, archiveFilters, archiveEntries) = try await readEntriesFormatFilters()
@@ -399,8 +395,6 @@ actor libarchiveWrapper {
                     throw .init(.extract, msg: error.localizedDescription)
                 }
             }
-
-            await Task.unsafeProgress?.progressed()
         }
 
         return writtenURLs
@@ -544,8 +538,6 @@ actor libarchiveWrapper {
                     } catch {
                         AKWarning("Unable to set attributes on \(outputURL.path)")
                     }
-
-                    await Task.unsafeProgress?.progressed()
                 }
             }
         }
@@ -661,7 +653,6 @@ actor libarchiveWrapper {
                 if Task.isCancelled {
                     throw .init(.cancelled, msg: "")
                 }
-                await Task.unsafeProgress?.progressed()
 
                 // Remove the headerMap value now we've processed it
                 headerMap.removeValue(forKey: mapEntryKey)
@@ -731,7 +722,6 @@ actor libarchiveWrapper {
             if Task.isCancelled {
                 throw .init(.cancelled, msg: "")
             }
-            await Task.unsafeProgress?.progressed()
 
             headerMap.removeValue(forKey: filePath)
         }
@@ -750,7 +740,6 @@ actor libarchiveWrapper {
             if Task.isCancelled {
                 throw .init(.cancelled, msg: "")
             }
-            await Task.unsafeProgress?.progressed()
 
             headerMap.removeValue(forKey: filePath)
         }

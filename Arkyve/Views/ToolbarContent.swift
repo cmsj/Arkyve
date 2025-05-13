@@ -13,25 +13,13 @@ struct ToolbarContentView: CustomizableToolbarContent {
 
     var body: some CustomizableToolbarContent {
         ToolbarItem(id: "progress") {
-            ZStack {
-                ProgressView(value: viewModel.progress.value)
-                    .progressViewStyle(.circular)
-                    .controlSize(.small)
-                    .opacity({
-                        switch viewModel.progress {
-                        case .determinate(_): return 1.0
-                        default: return 0.0
-                        }
-                    }())
-                ProgressView()
-                    .controlSize(.small)
-                    .opacity(viewModel.progress == .indeterminate ? 1.0 : 0.0)
-            }
-            .help("Progress: \(viewModel.progress)")
-
+            ProgressView()
+                .controlSize(.small)
+                .help("Working...")
         }
         .customizationBehavior(.reorderable)
-        .hidden(viewModel.progress == .idle)
+        .hidden(viewModel.progressTask == nil)
+
         ToolbarItem(id: "cancel") {
             Button {
                 viewModel.progressTask?.cancel()

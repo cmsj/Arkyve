@@ -54,17 +54,12 @@ extension MainWindowViewModel {
         progressTask = Task {
             defer { progressTask = nil }
 
-            progress = .indeterminate
             do {
-                try await withTaskProgression { _ in
-                    archive = try await loader.loadArchive()
-                    sort()
+                archive = try await loader.loadArchive()
+                sort()
 
-                    if archive?.format.asArkyveFormat?.canWrite == false {
-                        Self.didOpenReadOnlyEvent.sendDonation()
-                    }
-                } progress: { progression in
-                    Task { @MainActor in setProgress(progression) }
+                if archive?.format.asArkyveFormat?.canWrite == false {
+                    Self.didOpenReadOnlyEvent.sendDonation()
                 }
             } catch let error as ArkyveError {
                 showErrors.err(error)
@@ -95,17 +90,11 @@ extension MainWindowViewModel {
         progressTask = Task {
             defer { progressTask = nil }
 
-            progress = .indeterminate
             let (format, filters, headerMap) = archive.metadataForSaving(overrideFormat: overrideFormat, overrideFilters: overrideFilters)
 
             do {
-                try await withTaskProgression(totalUnits: archive.entries.count) { progression in
-                    try await loader.writeArchive(headerMap: headerMap, to: to, format: format, filters: filters, skipRead: archive.isNew)
-
-                    archive.didSave(to: to)
-                } progress: { progression in
-                    Task { @MainActor in setProgress(progression) }
-                }
+                try await loader.writeArchive(headerMap: headerMap, to: to, format: format, filters: filters, skipRead: archive.isNew)
+                archive.didSave(to: to)
             } catch let error as ArkyveError {
                 showErrors.err(error)
             } catch {
@@ -171,18 +160,16 @@ extension MainWindowViewModel {
             return
         }
 
-        Task {
+        progressTask = Task {
+            defer { progressTask = nil }
+
             self.disableUI = true
             defer { self.disableUI = false }
 
             let loader = libarchiveWrapper(url: archive.URL)
 
             do {
-                try await withTaskProgression(totalUnits: extractableEntries.count) { _ in
-                    let _ = try await loader.extract(extractableEntries, toFolder: destURL, retainFullPath: retainFullPath, archiveIsNew: !archive.existsOnDisk)
-                } progress: { progression in
-                    Task { @MainActor in setProgress(progression) }
-                }
+                let _ = try await loader.extract(extractableEntries, toFolder: destURL, retainFullPath: retainFullPath, archiveIsNew: !archive.existsOnDisk)
             } catch let error as ArkyveError {
                 showErrors.err(error)
             } catch {
@@ -208,13 +195,9 @@ extension MainWindowViewModel {
             let loader = libarchiveWrapper(url: archive.URL)
 
             do {
-                try await withTaskProgression(totalUnits: extractableEntries.count) { _ in
-                    quickLookItems += try await loader.extract(extractableEntries, toFolder: archive.cacheURL, archiveIsNew: !archive.existsOnDisk)
-                    if !quickLookItems.isEmpty {
-                        quickLookURL = quickLookItems.first
-                    }
-                } progress: { progression in
-                    Task { @MainActor in setProgress(progression) }
+                quickLookItems += try await loader.extract(extractableEntries, toFolder: archive.cacheURL, archiveIsNew: !archive.existsOnDisk)
+                if !quickLookItems.isEmpty {
+                    quickLookURL = quickLookItems.first
                 }
             } catch let error as ArkyveError {
                 showErrors.err(error)

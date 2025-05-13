@@ -4610,7 +4610,6 @@
       }
     },
     "Path (Debug)" : {
-      "extractionState" : "stale",
       "localizations" : {
         "ar" : {
           "stringUnit" : {
@@ -5682,7 +5681,6 @@
       }
     },
     "Source (Debug)" : {
-      "extractionState" : "stale",
       "localizations" : {
         "ar" : {
           "stringUnit" : {
@@ -8077,7 +8075,6 @@
       }
     },
     "UUID (Debug)" : {
-      "extractionState" : "stale",
       "localizations" : {
         "ar" : {
           "stringUnit" : {

@@ -2152,6 +2152,9 @@
         }
       }
     },
+    "Drag files/folders here to create a new archive" : {
+
+    },
     "Expand all" : {
       "localizations" : {
         "ar" : {

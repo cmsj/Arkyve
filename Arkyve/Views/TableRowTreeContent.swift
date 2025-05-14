@@ -35,7 +35,8 @@ struct TableRowTreeContent: TableRowContent {
                     .draggable(child.asExtractable(for: viewModel.archive!))
             }
         }
-        .onInsert(of: [.archiveEntryExtractable, .fileURL, .image]) { index, providers in
+        // FIXME: We want to have .image in here too, but it ruins too many things at the moment
+        .onInsert(of: [.archiveEntryExtractable, .fileURL]) { index, providers in
             print("TableRowTreeContent: onInsert")
             viewModel.processDrop(at: index, on: node?.id, for: providers)
         }

@@ -234,7 +234,8 @@ struct TableView: View {
         .onChange(of: renameEntryFocus) { _, newValue in
             viewModel.focusedEntry = newValue
         }
-        .onDrop(of: [.archiveEntryExtractable, .fileURL, .image], isTargeted: nil, perform: { items, _ in
+        // FIXME: We want to have .image in here too, but it ruins too many things at the moment
+        .onDrop(of: [.archiveEntryExtractable, .fileURL], isTargeted: nil, perform: { items, _ in
             print("Table: onDrop")
             if viewModel.archive == nil {
                 viewModel.newButton()

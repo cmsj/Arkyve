@@ -106,9 +106,23 @@ struct MainWindowView: View {
         VStack(spacing: 0) {
             ErrorView()
                 .environment(viewModel)
-            TableView()
-                .environment(viewModel)
-                .disabled(viewModel.disableTableView)
+            ZStack {
+                TableView()
+                    .environment(viewModel)
+                    .disabled(viewModel.disableTableView)
+                if viewModel.archive == nil {
+                    VStack {
+                        Spacer()
+                        HStack {
+                            Spacer()
+                            Text("Drag files/folders here to create a new archive")
+                                .font(.largeTitle)
+                            Spacer()
+                        }
+                        Spacer()
+                    }
+                }
+            }
             Spacer(minLength: 0)
             StatusbarView()
                 .environment(viewModel)

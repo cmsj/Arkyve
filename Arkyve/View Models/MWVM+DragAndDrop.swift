@@ -150,6 +150,7 @@ extension MainWindowViewModel {
 
                 archive.entries += modifiedEntries
                 try archive.root.addChildrenHierarchically(modifiedEntries)
+                archive.setDirty()
                 sort()
             } catch let error as ArkyveError {
                 showErrors.err(error)

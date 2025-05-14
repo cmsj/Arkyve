@@ -10,6 +10,7 @@ import TipKit
 
 struct ToolbarContentView: CustomizableToolbarContent {
     var viewModel: MainWindowViewModel
+    @State private var renderingMode: SymbolRenderingMode = .hierarchical
 
     var body: some CustomizableToolbarContent {
         ToolbarItem(id: "progress") {
@@ -25,7 +26,7 @@ struct ToolbarContentView: CustomizableToolbarContent {
                 viewModel.progressTask?.cancel()
             } label: {
                 Label("Stop", systemImage: "stop.circle")
-                    .symbolRenderingMode(.hierarchical)
+                    .symbolRenderingMode(renderingMode)
                     .padding()
             }
             .disabled(viewModel.progressTask == nil)
@@ -38,8 +39,8 @@ struct ToolbarContentView: CustomizableToolbarContent {
             Button {
                 viewModel.newButton()
             } label: {
-                Label("New", systemImage: "plus.rectangle.on.folder")
-                    .symbolRenderingMode(.hierarchical)
+                Label("New", image: "custom.folder.badge.sparkles.alt")
+                    .symbolRenderingMode(renderingMode)
                     .padding()
             }
             .help("Create a new archive")
@@ -50,7 +51,7 @@ struct ToolbarContentView: CustomizableToolbarContent {
                 viewModel.openButton()
             } label: {
                 Label("Open...", systemImage: "folder")
-                    .symbolRenderingMode(.hierarchical)
+                    .symbolRenderingMode(renderingMode)
                     .padding()
             }
             .help("Open an archive")
@@ -60,8 +61,8 @@ struct ToolbarContentView: CustomizableToolbarContent {
             Button {
                 viewModel.closeButton()
             } label: {
-                Label("Close", image: "zzClose")
-                    .symbolRenderingMode(.hierarchical)
+                Label("Close", image: "custom.folder.slash")
+                    .symbolRenderingMode(renderingMode)
                     .padding()
             }
             .help("Close this archive")
@@ -78,8 +79,8 @@ struct ToolbarContentView: CustomizableToolbarContent {
             Button {
                 viewModel.addButton()
             } label: {
-                Label("Add", image: "zzAdd")
-                    .symbolRenderingMode(.hierarchical)
+                Label("Add", image: "custom.document.badge.plus")
+                    .symbolRenderingMode(renderingMode)
                     .padding()
             }
             .help("Add files to this archive")
@@ -89,8 +90,8 @@ struct ToolbarContentView: CustomizableToolbarContent {
             Button {
                 viewModel.extractButton()
             } label: {
-                Label("Extract...", image: "zzExtract")
-                    .symbolRenderingMode(.hierarchical)
+                Label("Extract...", image: "custom.folder.badge.arrow.up")
+                    .symbolRenderingMode(renderingMode)
                     .padding()
             }
             .help("Extract selected files/folders")
@@ -121,7 +122,7 @@ struct ToolbarContentView: CustomizableToolbarContent {
                 viewModel.deleteButton()
             } label: {
                 Label("Delete", systemImage: "trash")
-                    .symbolRenderingMode(.hierarchical)
+                    .symbolRenderingMode(renderingMode)
                     .padding()
             }
             .help("Delete selected files/folders")

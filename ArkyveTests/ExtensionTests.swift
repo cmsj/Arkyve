@@ -36,7 +36,7 @@ import Foundation
         }
 
         @Test func userFormatted() async throws {
-            #expect(Date(since: 0).userFormatted == "--")
+            #expect(Date(since: 0).finderFormatted == "--")
 
             let expectedString: String
 
@@ -51,7 +51,25 @@ import Foundation
             default:
                 expectedString = "Unknown"
             }
-            #expect(Date(since: 1).userFormatted == expectedString)
+            #expect(Date(since: 1).finderFormatted == expectedString)
+        }
+
+        @Test func screenshotFormatted() async throws {
+            let expectedString: String
+
+            // HACK: Depending on where the test is run, the output here will be different
+            // (because DateFormatter() is used in this codepath and it cares about timezones)
+            print("Adjusting expected result for: \(TimeZone.current.identifier)")
+            switch TimeZone.current.identifier {
+            case "Europe/London":
+                expectedString = "Screenshot 1970-01-01 at 01.00.00"
+            case "US/Pacific":
+                expectedString = "Screenshot 1969-12-31 at 16.00.00"
+            default:
+                expectedString = "Unknown"
+            }
+
+            #expect(Date(since: 0).screenshotFormatted == expectedString)
         }
     }
 

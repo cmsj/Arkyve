@@ -236,6 +236,10 @@ struct TableView: View {
         }
         .onDrop(of: [.archiveEntryExtractable, .fileURL, .image], isTargeted: nil, perform: { items, _ in
             print("Table: onDrop")
+            if viewModel.archive == nil {
+                viewModel.newButton()
+            }
+
             guard viewModel.archive != nil else { return false }
             viewModel.processDrop(for: items)
 

@@ -743,6 +743,7 @@
 				GCC_WARN_UNUSED_LABEL = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Arkyve/Info.plist;
+				INFOPLIST_KEY_ITSAppUsesNonExemptEncryption = NO;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
 				INFOPLIST_KEY_NSHumanReadableCopyright = "© 2025 Chris Jones. All Rights Reserved";
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -779,6 +780,7 @@
 				GCC_WARN_UNUSED_LABEL = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Arkyve/Info.plist;
+				INFOPLIST_KEY_ITSAppUsesNonExemptEncryption = NO;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
 				INFOPLIST_KEY_NSHumanReadableCopyright = "© 2025 Chris Jones. All Rights Reserved";
 				LD_RUNPATH_SEARCH_PATHS = (

@@ -66,9 +66,9 @@ struct TableView: View {
                     .defaultVisibility(.hidden)
             }
             Group {
-                TableColumn("Date Modified", value: \ArchiveEntry.mtime.userFormatted) { entry in
+                TableColumn("Date Modified", value: \ArchiveEntry.mtime.finderFormatted) { entry in
                     @Bindable var entry = entry
-                    Text(entry.mtime.userFormatted)
+                    Text(entry.mtime.finderFormatted)
                         .foregroundStyle(.secondary)
                         .popover(isPresented: $entry.mtimePopoverShowing, arrowEdge: .bottom) {
                             DateEditorView(selection: $entry.mtime, label: "Date Modified")
@@ -82,9 +82,9 @@ struct TableView: View {
                 }
                     .customizationID("mtime")
 
-                TableColumn("Date Changed", value: \ArchiveEntry.ctime.userFormatted) { entry in
+                TableColumn("Date Changed", value: \ArchiveEntry.ctime.finderFormatted) { entry in
                     @Bindable var entry = entry
-                    Text(entry.ctime.userFormatted)
+                    Text(entry.ctime.finderFormatted)
                         .foregroundStyle(.secondary)
                         .popover(isPresented: $entry.ctimePopoverShowing, arrowEdge: .bottom) {
                             DateEditorView(selection: $entry.ctime, label: "Date Changed")
@@ -99,9 +99,9 @@ struct TableView: View {
                     .customizationID("ctime")
                     .defaultVisibility(.hidden)
 
-                TableColumn("Date Accessed", value: \ArchiveEntry.atime.userFormatted) { entry in
+                TableColumn("Date Accessed", value: \ArchiveEntry.atime.finderFormatted) { entry in
                     @Bindable var entry = entry
-                    Text(entry.atime.userFormatted)
+                    Text(entry.atime.finderFormatted)
                         .foregroundStyle(.secondary)
                         .popover(isPresented: $entry.atimePopoverShowing, arrowEdge: .bottom) {
                             DateEditorView(selection: $entry.atime, label: "Date Access")
@@ -116,9 +116,9 @@ struct TableView: View {
                     .customizationID("atime")
                     .defaultVisibility(.hidden)
 
-                TableColumn("Date Created", value: \ArchiveEntry.btime.userFormatted) { entry in
+                TableColumn("Date Created", value: \ArchiveEntry.btime.finderFormatted) { entry in
                     @Bindable var entry = entry
-                    Text(entry.btime.userFormatted)
+                    Text(entry.btime.finderFormatted)
                         .foregroundStyle(.secondary)
                         .popover(isPresented: $entry.btimePopoverShowing, arrowEdge: .bottom) {
                             DateEditorView(selection: $entry.btime, label: "Date Changed")
@@ -234,7 +234,7 @@ struct TableView: View {
         .onChange(of: renameEntryFocus) { _, newValue in
             viewModel.focusedEntry = newValue
         }
-        .onDrop(of: [.archiveEntryExtractable, .fileURL], isTargeted: nil, perform: { items, _ in
+        .onDrop(of: [.archiveEntryExtractable, .fileURL, .image], isTargeted: nil, perform: { items, _ in
             print("Table: onDrop")
             guard viewModel.archive != nil else { return false }
             viewModel.processDrop(for: items)

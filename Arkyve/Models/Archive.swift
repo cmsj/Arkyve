@@ -20,13 +20,13 @@ extension Archive {
         let origPath: PartialKeyPath<ArchiveEntry> = sortDetails.keyPath
 
         switch (origPath) {
-        case \ArchiveEntry.mtime.userFormatted:
+        case \ArchiveEntry.mtime.finderFormatted:
             newSort = KeyPathComparator(\ArchiveEntry.mtime, order: sortDetails.order)
-        case \ArchiveEntry.ctime.userFormatted:
+        case \ArchiveEntry.ctime.finderFormatted:
             newSort = KeyPathComparator(\ArchiveEntry.ctime, order: sortDetails.order)
-        case \ArchiveEntry.atime.userFormatted:
+        case \ArchiveEntry.atime.finderFormatted:
             newSort = KeyPathComparator(\ArchiveEntry.atime, order: sortDetails.order)
-        case \ArchiveEntry.btime.userFormatted:
+        case \ArchiveEntry.btime.finderFormatted:
             newSort = KeyPathComparator(\ArchiveEntry.btime, order: sortDetails.order)
         case \ArchiveEntry.sizeString, \ArchiveEntry.sizeStringHuman:
             newSort = KeyPathComparator(\ArchiveEntry.size, order: sortDetails.order)

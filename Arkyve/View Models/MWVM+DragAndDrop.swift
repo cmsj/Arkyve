@@ -6,6 +6,7 @@
 //
 
 import UniformTypeIdentifiers
+import AppKit
 
 extension MainWindowViewModel {
     // MARK: - Drag and drop (high level)
@@ -16,6 +17,8 @@ extension MainWindowViewModel {
                 handleEntryDrop(on: entryID, entryExtractable: entryExtractable)
             case .file(let url):
                 handleFileURLDrop(on: entryID, fileURL: url)
+            case .image(let imageData):
+                handleImageDrop(on: entryID, image: imageData)
             default:
                 showErrors.err(.init(.drop, msg: "Unknown drop type"))
             }
@@ -48,8 +51,46 @@ extension MainWindowViewModel {
                         }
                     }
                 }
+            } else if provider.hasItemConformingToTypeIdentifier(UTType.image.identifier) {
+                _ = provider.loadTransferable(type: NSImage.self) { result in
+                    switch result {
+                    case .success(let nsImage):
+                        guard let png = nsImage.png else {
+                            Task { @MainActor in
+                                self.showErrors.err(.init(.drop, msg: "Unable to process image"))
+                            }
+                            return
+                        }
+                        Task { @MainActor in
+                            self.handleImageDrop(at: index, on: entryID, image: png)
+                        }
+                    case .failure(let error):
+                        Task { @MainActor in
+                            self.showErrors.err(.init(.drop, msg: "Unable to import image: \(error.localizedDescription)"))
+                        }
+                    }
+                }
             } else {
                 showErrors.err(.init(.drop, msg: "Unsupported item type: \(provider.registeredTypeIdentifiers.joined(separator: ","))"))
+            }
+        }
+    }
+
+    func handleImageDrop(at index: Int? = nil, on entryID: UUID? = nil, image: Data) {
+        if let cacheURL = self.archive?.cacheURL {
+            // Figure out a temporary directory to write the data to, then call handleFileURLDrop
+            let filename = Date().screenshotFormatted + ".png"
+            do {
+                let outputFolder = cacheURL.appendingPathComponent("drop-cache")
+                let outputURL = outputFolder.appendingPathComponent(filename)
+                try FileManager.default.createDirectory(at: outputFolder, withIntermediateDirectories: true)
+                try image.write(to: outputURL)
+
+                handleFileURLDrop(at: index, on: entryID, fileURL:outputURL)
+            } catch {
+                Task { @MainActor in
+                    self.showErrors.err(.init(.drop, msg: "Unable to cache imported image: \(error.localizedDescription)"))
+                }
             }
         }
     }

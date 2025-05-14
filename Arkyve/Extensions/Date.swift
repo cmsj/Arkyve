@@ -15,12 +15,20 @@ extension Date {
     /// If the date is January 1, 1970 (timeIntervalSince1970: 0), returns "--" instead.
     ///
     /// - Returns: A formatted string representation of the date.
-    var userFormatted: String {
+    var finderFormatted: String {
         get {
             if self == Date(timeIntervalSince1970: 0) { return "--" }
             let formatter = DateFormatter()
 
             formatter.dateFormat = "d MMM yyyy 'at' HH:mm"
+            return formatter.string(from: self)
+        }
+    }
+
+    var screenshotFormatted: String {
+        get {
+            let formatter = DateFormatter()
+            formatter.dateFormat = "'Screenshot' yyyy-MM-dd 'at' HH.mm.ss"
             return formatter.string(from: self)
         }
     }

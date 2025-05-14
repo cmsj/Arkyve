@@ -10,10 +10,12 @@ enum DropItem: Codable, Transferable {
     case none
     case file(URL)
     case entry(ArchiveEntryExtractable)
+    case image(Data)
 
     static var transferRepresentation: some TransferRepresentation {
         ProxyRepresentation { DropItem.entry($0) }
         ProxyRepresentation { DropItem.file($0) }
+        ProxyRepresentation { DropItem.image($0) }
     }
 
     var file: URL? {
@@ -26,6 +28,13 @@ enum DropItem: Codable, Transferable {
     var entry: ArchiveEntryExtractable? {
         switch self {
         case .entry(let entry): return entry
+        default: return nil
+        }
+    }
+
+    var image: Data? {
+        switch self {
+        case .image(let nsImage): return nsImage
         default: return nil
         }
     }

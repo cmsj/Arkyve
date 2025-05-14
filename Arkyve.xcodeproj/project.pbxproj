@@ -57,6 +57,8 @@
 		4FCEEEE52BEE39E9009E9E17 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4FCEEEE42BEE39E9009E9E17 /* Preview Assets.xcassets */; };
 		4FCEEF292BEE3D3E009E9E17 /* Archive.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FCEEF282BEE3D3E009E9E17 /* Archive.swift */; };
 		4FCEEF2C2BEE3D72009E9E17 /* ArchiveEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FCEEF2B2BEE3D72009E9E17 /* ArchiveEntry.swift */; };
+		4FCF03E52DD4904F0084E1F6 /* NSImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FCF03E42DD4904C0084E1F6 /* NSImage.swift */; };
+		4FCF03E62DD4904F0084E1F6 /* NSImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FCF03E42DD4904C0084E1F6 /* NSImage.swift */; };
 		4FD4508B2DBADE2F001D5420 /* FileManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FED41E42D237674003BA92B /* FileManager.swift */; };
 		4FD4BA562C07C58E00082C13 /* Date.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FD4BA552C07C58E00082C13 /* Date.swift */; };
 		4FD96DEE2DBE5C6400194E95 /* ArkyveFormats.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FD96DED2DBE5C6400194E95 /* ArkyveFormats.swift */; };
@@ -141,6 +143,7 @@
 		4FCEEEE62BEE39E9009E9E17 /* Arkyve.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Arkyve.entitlements; sourceTree = "<group>"; };
 		4FCEEF282BEE3D3E009E9E17 /* Archive.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Archive.swift; sourceTree = "<group>"; };
 		4FCEEF2B2BEE3D72009E9E17 /* ArchiveEntry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArchiveEntry.swift; sourceTree = "<group>"; };
+		4FCF03E42DD4904C0084E1F6 /* NSImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NSImage.swift; sourceTree = "<group>"; };
 		4FD4BA552C07C58E00082C13 /* Date.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Date.swift; sourceTree = "<group>"; };
 		4FD4BA572C07EC7F00082C13 /* libarchive_Bridge.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = libarchive_Bridge.h; sourceTree = "<group>"; };
 		4FD96DED2DBE5C6400194E95 /* ArkyveFormats.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArkyveFormats.swift; sourceTree = "<group>"; };
@@ -337,6 +340,7 @@
 		4FD4BA542C07C57C00082C13 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
+				4FCF03E42DD4904C0084E1F6 /* NSImage.swift */,
 				4F6E856C2DC53DF9001FB62F /* dev_t.swift */,
 				4F7121862C0F48EB000EB268 /* Array.swift */,
 				4FD4BA552C07C58E00082C13 /* Date.swift */,
@@ -453,6 +457,7 @@
 				4F6E856E2DC53DFB001FB62F /* dev_t.swift in Sources */,
 				4F41C41C2D1B55990011DAAB /* String.swift in Sources */,
 				4F14DAF32D78A8070080D7AA /* mode_t.swift in Sources */,
+				4FCF03E52DD4904F0084E1F6 /* NSImage.swift in Sources */,
 				4F41C41E2D1B5A320011DAAB /* Array.swift in Sources */,
 				4F41C41D2D1B58AA0011DAAB /* Date.swift in Sources */,
 				4FD4508B2DBADE2F001D5420 /* FileManager.swift in Sources */,
@@ -486,6 +491,7 @@
 				4FC3FA732DCAA8AC0087E46B /* ArchiveEntryPasteboardWriter.swift in Sources */,
 				4F344ECE2C335224006E1D9F /* SettingsManager.swift in Sources */,
 				4FC3FA7B2DCB80720087E46B /* MWVM+DragAndDrop.swift in Sources */,
+				4FCF03E62DD4904F0084E1F6 /* NSImage.swift in Sources */,
 				4F7121872C0F48EB000EB268 /* Array.swift in Sources */,
 				4F1084922C262D5D007DCC39 /* LogWindowView.swift in Sources */,
 				4FCEEF292BEE3D3E009E9E17 /* Archive.swift in Sources */,

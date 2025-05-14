@@ -18,7 +18,7 @@ struct ReadOnlyStatus: Tip {
         Text("This archive's format is read-only. Use Save As to select a writable format if you need to make changes.")
     }
     var image: Image? {
-        Image(systemName: "square.and.arrow.down")
+        Image("custom.square.and.arrow.down.slash")
     }
 
     var rules: [Rule] {

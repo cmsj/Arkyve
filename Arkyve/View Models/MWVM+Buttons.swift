@@ -185,8 +185,6 @@ extension MainWindowViewModel {
                 let selectedFormat = selectedArkyveFormat.libarchiveFormat
                 let selectedFilters = selectedArkyveFormat.libarchiveFilters
 
-                archive.name = destURL.lastPathComponent
-
                 Task {
                     AKTrace("Save As to \(destURL) (format: \(selectedArkyveFormat))")
 
@@ -201,9 +199,7 @@ extension MainWindowViewModel {
                         // The archive/format/filters haven't changed, so just copy the existing file
                         copyArchive(to: destURL)
                     } else {
-                        archive.format = selectedFormat
-                        archive.filters = selectedFilters
-                        await saveArchive(to: destURL)
+                        await saveArchive(to: destURL, overrideFormat: selectedFormat, overrideFilters: selectedFilters)
                     }
                 }
             }

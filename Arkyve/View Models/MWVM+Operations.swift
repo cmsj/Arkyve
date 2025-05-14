@@ -94,7 +94,7 @@ extension MainWindowViewModel {
 
             do {
                 try await loader.writeArchive(headerMap: headerMap, to: to, format: format, filters: filters, skipRead: archive.isNew)
-                archive.didSave(to: to)
+                archive.didSave(to: to, format: format, filters: filters)
             } catch let error as ArkyveError {
                 showErrors.err(error)
             } catch {
@@ -109,7 +109,7 @@ extension MainWindowViewModel {
         do {
             AKTrace("Copying \(archive.URL) to \(to)")
             try FileManager.default.copyItem(at: archive.URL, to: to)
-            archive.didSave(to: to)
+            archive.didSave(to: to, format: archive.format, filters: archive.filters)
         } catch {
             showErrors.err(.init(.writeArchive, msg: error.localizedDescription))
         }

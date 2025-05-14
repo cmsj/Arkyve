@@ -110,7 +110,7 @@ class Archive: Identifiable {
         return (format, filters, headerMap)
     }
 
-    func didSave(to: URL) {
+    func didSave(to: URL, format: libarchiveFormat, filters: [libarchiveFilter]) {
         // Having written the archive, we should no longer have any entries of source type .Filesystem
         // So we'll update our entries to switch them to .Archive
         // Same for .InMemory directories
@@ -119,6 +119,10 @@ class Archive: Identifiable {
                 entry.source = .init(type: .Archive, path: entry.path)
             }
         }
+
+        name = to.lastPathComponent
+        self.format = format
+        self.filters = filters
 
         setClean()
         isNew = false

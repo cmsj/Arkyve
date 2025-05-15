@@ -17,8 +17,8 @@ extension MainWindowViewModel {
                 handleEntryDrop(on: entryID, entryExtractable: entryExtractable)
             case .file(let url):
                 handleFileURLDrop(on: entryID, fileURL: url)
-            case .image(let imageData):
-                handleImageDrop(on: entryID, image: imageData)
+//            case .image(let imageData):
+//                handleImageDrop(on: entryID, image: imageData)
             default:
                 showErrors.err(.init(.drop, msg: "Unknown drop type"))
             }

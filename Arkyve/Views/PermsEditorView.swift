@@ -17,25 +17,25 @@ struct PermsEditorView: View {
             Grid(alignment: .trailing) {
                 GridRow {
                     Text("User:")
-                    Toggle(isOn: $entry.perms.IRUSR) { Text("R") }
-                    Toggle(isOn: $entry.perms.IWUSR) { Text("W") }
-                    Toggle(isOn: $entry.perms.IXUSR) { Text("X") }
-                    Toggle(isOn: $entry.perms.ISUSR) { Text("S") }
+                    Toggle(isOn: $entry.perms.IRUSR) { Text("R").accessibilityLabel("Read") }
+                    Toggle(isOn: $entry.perms.IWUSR) { Text("W").accessibilityLabel("Write") }
+                    Toggle(isOn: $entry.perms.IXUSR) { Text("X").accessibilityLabel("Execute") }
+                    Toggle(isOn: $entry.perms.ISUSR) { Text("S").accessibilityLabel("SetUID") }
                 }
                 GridRow {
                     Text("Group:")
-                    Toggle(isOn: $entry.perms.IRGRP) { Text("R") }
-                    Toggle(isOn: $entry.perms.IWGRP) { Text("W") }
-                    Toggle(isOn: $entry.perms.IXGRP) { Text("X") }
-                    Toggle(isOn: $entry.perms.ISGRP) { Text("S") }
+                    Toggle(isOn: $entry.perms.IRGRP) { Text("R").accessibilityLabel("Read") }
+                    Toggle(isOn: $entry.perms.IWGRP) { Text("W").accessibilityLabel("Write") }
+                    Toggle(isOn: $entry.perms.IXGRP) { Text("X").accessibilityLabel("Execute") }
+                    Toggle(isOn: $entry.perms.ISGRP) { Text("S").accessibilityLabel("SetGID") }
 
                 }
                 GridRow {
                     Text("Other:")
-                    Toggle(isOn: $entry.perms.IROTH) { Text("R") }
-                    Toggle(isOn: $entry.perms.IWOTH) { Text("W") }
-                    Toggle(isOn: $entry.perms.IXOTH) { Text("X") }
-                    Toggle(isOn: $entry.perms.ISVTX) { Text("S") }
+                    Toggle(isOn: $entry.perms.IROTH) { Text("R").accessibilityLabel("Read") }
+                    Toggle(isOn: $entry.perms.IWOTH) { Text("W").accessibilityLabel("Write") }
+                    Toggle(isOn: $entry.perms.IXOTH) { Text("X").accessibilityLabel("Execute") }
+                    Toggle(isOn: $entry.perms.ISVTX) { Text("S").accessibilityLabel("Sticky") }
 
                 }
             }

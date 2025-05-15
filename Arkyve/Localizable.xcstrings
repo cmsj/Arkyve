@@ -2155,6 +2155,9 @@
     "Drag files/folders here to create a new archive" : {
 
     },
+    "Execute" : {
+
+    },
     "Expand all" : {
       "localizations" : {
         "ar" : {
@@ -4776,6 +4779,9 @@
         }
       }
     },
+    "POSIX Permissions" : {
+
+    },
     "Quick Look" : {
       "localizations" : {
         "ar" : {
@@ -4936,6 +4942,9 @@
           }
         }
       }
+    },
+    "Read" : {
+
     },
     "Read-only archive" : {
       "localizations" : {
@@ -5506,6 +5515,12 @@
         }
       }
     },
+    "SetGID" : {
+
+    },
+    "SetUID" : {
+
+    },
     "Share..." : {
 
     },
@@ -5764,6 +5779,9 @@
           }
         }
       }
+    },
+    "Sticky" : {
+
     },
     "Stop" : {
       "localizations" : {
@@ -8230,6 +8248,9 @@
       }
     },
     "Working..." : {
+
+    },
+    "Write" : {
 
     },
     "X" : {

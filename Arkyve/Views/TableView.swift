@@ -42,6 +42,9 @@ struct TableView: View {
                                 }
                             }
                     }
+                    .accessibilityElement()
+                    .accessibilityLabel("Name")
+                    .accessibilityValue(entry.name)
                 }
                 .disabledCustomizationBehavior(.visibility)
                 .customizationID("name")
@@ -79,6 +82,8 @@ struct TableView: View {
                         .onChange(of: entry.mtime) {
                             viewModel.setArchiveDirty()
                         }
+                        .accessibilityLabel("Date Modified")
+                        .accessibilityValue(entry.mtime.finderFormatted)
                 }
                     .customizationID("mtime")
 
@@ -95,6 +100,8 @@ struct TableView: View {
                         .onChange(of: entry.ctime) {
                             viewModel.setArchiveDirty()
                         }
+                        .accessibilityLabel("Date Changed")
+                        .accessibilityValue(entry.ctime.finderFormatted)
                 }
                     .customizationID("ctime")
                     .defaultVisibility(.hidden)
@@ -112,6 +119,8 @@ struct TableView: View {
                         .onChange(of: entry.atime) {
                             viewModel.setArchiveDirty()
                         }
+                        .accessibilityLabel("Date Accessed")
+                        .accessibilityValue(entry.atime.finderFormatted)
                 }
                     .customizationID("atime")
                     .defaultVisibility(.hidden)
@@ -129,6 +138,8 @@ struct TableView: View {
                         .onChange(of: entry.btime) {
                             viewModel.setArchiveDirty()
                         }
+                        .accessibilityLabel("Date Created")
+                        .accessibilityValue(entry.btime.finderFormatted)
                 }
                     .customizationID("btime")
                     .defaultVisibility(.hidden)
@@ -148,6 +159,8 @@ struct TableView: View {
                         .onLongPressGesture {
                             entry.permsPopoverShowing = true
                         }
+                        .accessibilityLabel("POSIX Permissions")
+                        .accessibilityValue(entry.permsAccessibilityString)
                 }
                     .customizationID("perms")
                     .defaultVisibility(.hidden)

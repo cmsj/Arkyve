@@ -99,6 +99,12 @@ class ArchiveEntry: Identifiable {
             return perms.string
         }
     }
+    var permsAccessibilityString: String {
+        get {
+            if type == .root { return "" }
+            return perms.accessibilityString
+        }
+    }
 
     var atime = Date(timeIntervalSince1970: 0)
     var ctime = Date(timeIntervalSince1970: 0)

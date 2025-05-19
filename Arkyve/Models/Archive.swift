@@ -310,6 +310,7 @@ class Archive: Identifiable {
 
     func processEntryRename(_ entry: ArchiveEntry) throws(ArkyveError) {
         // First, check if the user has renamed us to a duplicate of another name
+        // FIXME: This should check the path, not the name?
         let possibleDuplicateEntries = self.entries.filter { $0.name == entry.name && $0.id != entry.id }
         if !possibleDuplicateEntries.isEmpty {
             throw ArkyveError(.rename, msg: String(localized: "\(entry.name) already exists"))

@@ -320,7 +320,6 @@ class Archive: Identifiable {
         let newPathComponents = Array(parentPathComponents + [entry.name])
 
         // Check if the user has renamed us to a duplicate of another name
-        // FIXME: This should check the path, not the name?
         let possibleDuplicateEntries = self.entries.filter {
             $0.pathComponents == newPathComponents && $0.id != entry.id
         }

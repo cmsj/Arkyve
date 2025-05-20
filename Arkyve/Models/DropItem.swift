@@ -10,7 +10,7 @@ enum DropItem: Codable, Transferable {
     case none
     case file(URL)
     case entry(ArchiveEntryExtractable)
-    // FIXME: Until we figure out how to support dragging image types without clobbering URLs, this can't be here
+    // FIXME: Add image(Data) here when Apple fixes drag&drop. DTS filed
 //    case image(Data)
 
     static var transferRepresentation: some TransferRepresentation {

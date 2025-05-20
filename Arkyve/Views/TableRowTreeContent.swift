@@ -35,7 +35,7 @@ struct TableRowTreeContent: TableRowContent {
                     .draggable(child.asExtractable(for: viewModel.archive!))
             }
         }
-        // FIXME: We want to have .image in here too, but it ruins too many things at the moment
+        // FIXME: Add .image here when Apple fixes drag&drop. DTS filed
         .onInsert(of: [.archiveEntryExtractable, .fileURL]) { index, providers in
             print("TableRowTreeContent: onInsert")
             viewModel.processDrop(at: index, on: node?.id, for: providers)

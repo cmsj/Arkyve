@@ -124,7 +124,7 @@ struct MenuCommands: Commands {
             .keyboardShortcut("y", modifiers: [.command])
             .disabled(viewModel.disableQuicklook)
 
-            // NOTE: ShareLink doesn't seem to respond to .disabled() so we have to make it conditional
+            // FIXME: ShareLink ignores .disabled() in a menu, so we wrap it in a conditional instead. FB17656789
             if viewModel.selectedEntries.count > 0 {
                 ShareLink(items: viewModel.extractablesForSelected(),
                           subject: nil,

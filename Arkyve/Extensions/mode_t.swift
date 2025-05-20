@@ -113,7 +113,6 @@ extension mode_t {
         get {
             var output = ""
 
-            // FIXME: Setuid/Setgid/Sticky
             output +=   "User: \(self.IRUSR ? "read" : "no read"), \(self.IWUSR ? " write" : "no write"), \(self.IXUSR ? " execute" : "no execute"), \(self.ISUSR ? "SetUID" : "no SetUID")."
             output += " Group: \(self.IRGRP ? "read" : "no read"), \(self.IWGRP ? " write" : "no write"), \(self.IXGRP ? " execute" : "no execute"), \(self.ISGRP ? "SetGID" : "no SetGID")."
             output += " Other: \(self.IROTH ? "read" : "no read"), \(self.IWOTH ? " write" : "no write"), \(self.IXOTH ? " execute" : "no execute"), \(self.ISVTX ? "sticky" : "no sticky")"

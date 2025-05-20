@@ -106,23 +106,9 @@ struct MainWindowView: View {
         VStack(spacing: 0) {
             ErrorView()
                 .environment(viewModel)
-            ZStack {
-                TableView()
-                    .environment(viewModel)
-                    .disabled(viewModel.disableTableView)
-                if viewModel.archive == nil {
-                    VStack {
-                        Spacer()
-                        HStack {
-                            Spacer()
-                            Text("Drag files/folders here to create a new archive")
-                                .font(.largeTitle)
-                            Spacer()
-                        }
-                        Spacer()
-                    }
-                }
-            }
+            TableView()
+                .environment(viewModel)
+                .disabled(viewModel.disableTableView)
             Spacer(minLength: 0)
             StatusbarView()
                 .environment(viewModel)
@@ -176,6 +162,12 @@ struct MainWindowView: View {
             AKTrace("System opened URL: \(url)")
             Task {
                 await viewModel.openArchive(url: url)
+            }
+        }
+        .task {
+            try? await Task.sleep(for: .seconds(5))
+            if viewModel.archive == nil {
+                MainWindowViewModel.noArchiveIsOpen.sendDonation()
             }
         }
     }

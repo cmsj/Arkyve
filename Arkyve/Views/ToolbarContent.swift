@@ -43,6 +43,7 @@ struct ToolbarContentView: CustomizableToolbarContent {
                     .symbolRenderingMode(renderingMode)
                     .padding()
             }
+            .popoverTip(viewModel.tips.createNewArchive)
             .help("Create a new archive")
             .disabled(viewModel.disableNew)
         }

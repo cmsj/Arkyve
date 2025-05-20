@@ -309,19 +309,27 @@ class Archive: Identifiable {
     }
 
     func processEntryRename(_ entry: ArchiveEntry) throws(ArkyveError) {
-        // First, check if the user has renamed us to a duplicate of another name
-        // FIXME: This should check the path, not the name?
-        let possibleDuplicateEntries = self.entries.filter { $0.name == entry.name && $0.id != entry.id }
-        if !possibleDuplicateEntries.isEmpty {
-            throw ArkyveError(.rename, msg: String(localized: "\(entry.name) already exists"))
+        guard entry.name != "" else {
+            throw .init(.rename, msg: String(localized: "Filename must not be empty"))
         }
 
         // Get the parent's path components (if any)
         let parentPathComponents = entry.pathComponents.dropLast()
         
         // Update the path with the new name
-        entry.pathComponents = parentPathComponents + [entry.name]
-        
+        let newPathComponents = Array(parentPathComponents + [entry.name])
+
+        // Check if the user has renamed us to a duplicate of another name
+        // FIXME: This should check the path, not the name?
+        let possibleDuplicateEntries = self.entries.filter {
+            $0.pathComponents == newPathComponents && $0.id != entry.id
+        }
+        if !possibleDuplicateEntries.isEmpty {
+            throw .init(.rename, msg: String(localized: "\(entry.name) already exists"))
+        }
+
+        entry.pathComponents = newPathComponents
+
         // Mark the archive as dirty since we've made changes
         self.setDirty()
     }

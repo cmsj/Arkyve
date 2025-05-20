@@ -43,6 +43,7 @@
 		4F71219B2C10864F000EB268 /* HideViewModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F71219A2C10864F000EB268 /* HideViewModifier.swift */; };
 		4F71219D2C10BB1D000EB268 /* ErrorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F71219C2C10BB1D000EB268 /* ErrorView.swift */; };
 		4FB275582DB2FD350037BD44 /* EntryContextMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FB275572DB2FD320037BD44 /* EntryContextMenu.swift */; };
+		4FB9A2802DDD4AE60095A4FB /* CreateNewArchive.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FB9A27F2DDD4AE10095A4FB /* CreateNewArchive.swift */; };
 		4FBB814D2DC3C33D00EC2C83 /* ReadOnlyStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FBB814C2DC3C33A00EC2C83 /* ReadOnlyStatus.swift */; };
 		4FBB81512DC4F40800EC2C83 /* ArkyveProgressState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FBB81502DC4F40800EC2C83 /* ArkyveProgressState.swift */; };
 		4FC3FA732DCAA8AC0087E46B /* ArchiveEntryPasteboardWriter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FC3FA722DCAA8A80087E46B /* ArchiveEntryPasteboardWriter.swift */; };
@@ -127,6 +128,7 @@
 		4FB4985C2C08A020004DE958 /* libbz2.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libbz2.tbd; path = usr/lib/libbz2.tbd; sourceTree = SDKROOT; };
 		4FB4985E2C08A02D004DE958 /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
 		4FB498612C090B79004DE958 /* vendor */ = {isa = PBXFileReference; lastKnownFileType = folder; path = vendor; sourceTree = SOURCE_ROOT; };
+		4FB9A27F2DDD4AE10095A4FB /* CreateNewArchive.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateNewArchive.swift; sourceTree = "<group>"; };
 		4FBB814C2DC3C33A00EC2C83 /* ReadOnlyStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReadOnlyStatus.swift; sourceTree = "<group>"; };
 		4FBB81502DC4F40800EC2C83 /* ArkyveProgressState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArkyveProgressState.swift; sourceTree = "<group>"; };
 		4FC3FA722DCAA8A80087E46B /* ArchiveEntryPasteboardWriter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArchiveEntryPasteboardWriter.swift; sourceTree = "<group>"; };
@@ -253,6 +255,7 @@
 		4FBB814B2DC3C32B00EC2C83 /* Tips */ = {
 			isa = PBXGroup;
 			children = (
+				4FB9A27F2DDD4AE10095A4FB /* CreateNewArchive.swift */,
 				4FBB814C2DC3C33A00EC2C83 /* ReadOnlyStatus.swift */,
 			);
 			path = Tips;
@@ -497,6 +500,7 @@
 				4FCEEF292BEE3D3E009E9E17 /* Archive.swift in Sources */,
 				4F71219B2C10864F000EB268 /* HideViewModifier.swift in Sources */,
 				4F41C4052D18A7440011DAAB /* ArchiveEntryExtractable.swift in Sources */,
+				4FB9A2802DDD4AE60095A4FB /* CreateNewArchive.swift in Sources */,
 				4F71218C2C0F4CCA000EB268 /* StatusbarView.swift in Sources */,
 				4F41C4092D19B19D0011DAAB /* ArchiveEntryFlat.swift in Sources */,
 				4F71218E2C0F4DE7000EB268 /* TableView.swift in Sources */,

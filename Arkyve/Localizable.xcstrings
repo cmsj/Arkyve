@@ -2152,9 +2152,6 @@
         }
       }
     },
-    "Drag files/folders here to create a new archive" : {
-
-    },
     "Execute" : {
 
     },
@@ -2731,6 +2728,9 @@
           }
         }
       }
+    },
+    "Filename must not be empty" : {
+
     },
     "GID" : {
       "localizations" : {
@@ -8328,6 +8328,9 @@
           }
         }
       }
+    },
+    "You can create a new archive by clicking here, or dragging files/folders into the window." : {
+
     },
     "Zero entries extracted" : {
       "localizations" : {

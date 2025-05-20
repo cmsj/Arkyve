@@ -66,7 +66,9 @@ class MainWindowViewModel {
     // MARK: - Tips
     struct TipsStore {
         var readOnlyStatus = ReadOnlyStatus()
+        var createNewArchive = CreateNewArchive()
     }
     static let didOpenReadOnlyEvent = Tips.Event(id: "didOpenReadOnly")
+    static let noArchiveIsOpen = Tips.Event(id: "noArchiveIsOpen")
     let tips = TipsStore()
 }

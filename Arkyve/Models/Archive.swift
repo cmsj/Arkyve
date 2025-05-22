@@ -59,6 +59,13 @@ class Archive: Identifiable {
     var existsOnDisk: Bool {
         URL.path != Archive.newFilePath
     }
+    var offerTopDirectory: Bool {
+        // Should extraction offer to create a directory?
+        guard let children = root.children else { return false }
+        if children.count == 0 { return false }
+        if children.count == 1 && children[0].type == .directory { return false }
+        return true
+    }
 
     init(URL: URL) {
         self.URL = URL

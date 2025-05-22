@@ -78,17 +78,37 @@ extension MainWindowViewModel {
         }
     }
 
-    func prepareExtractPanel() -> NSSavePanel {
-        precondition(archive != nil, "prepareExtractPanel called without ensuring archive exists")
+    func prepareExtractPanel(overrideTopDirectory: Bool? = nil) -> NSSavePanel? {
+        guard let archive else { return nil }
 
         let panel = NSOpenPanel()
 
-        let button = NSButton.init()
-        button.setButtonType(.switch)
-        button.title = "Retain full archive path"
-        button.state = .off
+        let retainPathButton = NSButton.init()
+        retainPathButton.setButtonType(.switch)
+        retainPathButton.title = "Retain full archive path"
+        retainPathButton.state = .off
 
-        panel.accessoryView = button
+        let addTopDirectory = NSButton.init()
+        addTopDirectory.setButtonType(.switch)
+        addTopDirectory.title = "Extract into a directory called '\(archive.name.deletingPathExtension)'"
+        addTopDirectory.state = .off
+
+        if let overrideTopDirectory {
+            addTopDirectory.state = overrideTopDirectory ? .on : .off
+        } else {
+            if archive.offerTopDirectory {
+                addTopDirectory.state = .on
+            }
+        }
+
+        let accessoryButtons = [retainPathButton, addTopDirectory]
+
+        let vStack = NSStackView(views: accessoryButtons)
+        vStack.orientation = .vertical
+        vStack.alignment = .leading
+        vStack.edgeInsets = .init(top: 5, left: 5, bottom: 5, right: 5)
+
+        panel.accessoryView = vStack
         panel.isAccessoryViewDisclosed = true
 
         panel.allowsMultipleSelection = false
@@ -102,17 +122,24 @@ extension MainWindowViewModel {
     func extractButton(_ entries: Set<ArchiveEntry.ID>? = nil) {
         guard let archive else { return }
 
-        let panel = prepareExtractPanel()
-
         let actualEntries = entries ?? selectedEntries
+        let overrideTopDirectory = actualEntries.count == 1 ? false : true
+        guard let panel = prepareExtractPanel(overrideTopDirectory: overrideTopDirectory) else { return }
+
         panel.prompt = "Extract \(actualEntries.count) item\(actualEntries.count > 1 ? "s" : "")"
 
         if panel.runModal() == .OK {
-            if let destURL = panel.url {
-                let button = panel.accessoryView as! NSButton
-                let retainFullPath = button.state == .on
-                let chosenEntries = archive.entries.filter { actualEntries.contains($0.id) }
+            if var destURL = panel.url {
+                let vStack = panel.accessoryView as! NSStackView
+                let retainPathButton = vStack.views[0] as! NSButton
+                let addTopDirectoryButton = vStack.views[1] as! NSButton
 
+                let retainFullPath = retainPathButton.state == .on
+                if addTopDirectoryButton.state == .on {
+                    destURL = destURL.appendingPathComponent(archive.name.deletingPathExtension)
+                }
+
+                let chosenEntries = archive.entries.filter { actualEntries.contains($0.id) }
                 extractEntries(chosenEntries, archive: archive, destURL: destURL, retainFullPath: retainFullPath)
             }
         }
@@ -122,13 +149,20 @@ extension MainWindowViewModel {
         guard let archive else { return }
         guard let chosenEntries = archive.root.children else { return }
 
-        let panel = prepareExtractPanel()
+        let overrideTopDirectory = chosenEntries.count == 1 ? false : true
+        guard let panel = prepareExtractPanel(overrideTopDirectory: overrideTopDirectory) else { return }
         panel.prompt = "Extract All"
 
         if panel.runModal() == .OK {
-            if let destURL = panel.url {
-                let button = panel.accessoryView as! NSButton
-                let retainFullPath = button.state == .on
+            if var destURL = panel.url {
+                let vStack = panel.accessoryView as! NSStackView
+                let retainPathButton = vStack.views[0] as! NSButton
+                let addTopDirectoryButton = vStack.views[1] as! NSButton
+
+                let retainFullPath = retainPathButton.state == .on
+                if addTopDirectoryButton.state == .on {
+                    destURL = destURL.appendingPathComponent(archive.name.deletingPathExtension)
+                }
 
                 extractEntries(chosenEntries, archive: archive, destURL: destURL, retainFullPath: retainFullPath)
             }

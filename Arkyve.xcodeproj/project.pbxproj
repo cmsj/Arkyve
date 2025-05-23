@@ -42,6 +42,29 @@
 		4F7121972C0F6B4C000EB268 /* MainWindowViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F7121962C0F6B4C000EB268 /* MainWindowViewModel.swift */; };
 		4F71219B2C10864F000EB268 /* HideViewModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F71219A2C10864F000EB268 /* HideViewModifier.swift */; };
 		4F71219D2C10BB1D000EB268 /* ErrorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F71219C2C10BB1D000EB268 /* ErrorView.swift */; };
+		4F76992A2DDFDA0D0070BA1F /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4F7699292DDFDA0D0070BA1F /* Cocoa.framework */; };
+		4F7699362DDFDA0D0070BA1F /* ArkyveExtractAction.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 4F7699282DDFDA0D0070BA1F /* ArkyveExtractAction.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		4F76993C2DDFE5D10070BA1F /* libarchiveWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FDC674E2C19065A00A10035 /* libarchiveWrapper.swift */; };
+		4F76993D2DDFE5ED0070BA1F /* libarchiveFD.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FED41E22D23752A003BA92B /* libarchiveFD.swift */; };
+		4F76993E2DDFE5F20070BA1F /* libarchiveHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F41C4022D1891230011DAAB /* libarchiveHeader.swift */; };
+		4F76993F2DDFE5F90070BA1F /* libarchiveFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F22BDCA2CAE95820079FAC0 /* libarchiveFilter.swift */; };
+		4F7699402DDFE5FD0070BA1F /* libarchiveFormat.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F22BDC82CAE95490079FAC0 /* libarchiveFormat.swift */; };
+		4F7699412DDFE6110070BA1F /* ArkyveFormats.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FD96DED2DBE5C6400194E95 /* ArkyveFormats.swift */; };
+		4F7699422DDFE6300070BA1F /* ArchiveEntrySource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F41C4232D1DE6F10011DAAB /* ArchiveEntrySource.swift */; };
+		4F7699432DDFE6350070BA1F /* ArchiveEntryType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F41C4062D18A86D0011DAAB /* ArchiveEntryType.swift */; };
+		4F7699442DDFE64B0070BA1F /* mode_t.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F688A5B2D7666FE003B5D60 /* mode_t.swift */; };
+		4F7699452DDFE6830070BA1F /* UTType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FD96DEF2DBE5C8A00194E95 /* UTType.swift */; };
+		4F7699462DDFE6990070BA1F /* ArkyveError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F41C40C2D1A171E0011DAAB /* ArkyveError.swift */; };
+		4F7699472DDFE6AF0070BA1F /* ArchiveEntryExtractable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F41C4042D18A7440011DAAB /* ArchiveEntryExtractable.swift */; };
+		4F7699482DDFE6AF0070BA1F /* Archive.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FCEEF282BEE3D3E009E9E17 /* Archive.swift */; };
+		4F7699492DDFE6AF0070BA1F /* ArchiveEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FCEEF2B2BEE3D72009E9E17 /* ArchiveEntry.swift */; };
+		4F76994A2DDFE6AF0070BA1F /* ArchiveEntryFlat.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F41C4082D19B19D0011DAAB /* ArchiveEntryFlat.swift */; };
+		4F76994B2DDFE86A0070BA1F /* String.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F7121882C0F48FD000EB268 /* String.swift */; };
+		4F76994C2DDFE8720070BA1F /* dev_t.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F6E856C2DC53DF9001FB62F /* dev_t.swift */; };
+		4F76994D2DDFE9AD0070BA1F /* SettingsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F344ECD2C335224006E1D9F /* SettingsManager.swift */; };
+		4F76994E2DDFE9B90070BA1F /* ArkyveLog.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F10848D2C262393007DCC39 /* ArkyveLog.swift */; };
+		4F76994F2DDFE9DC0070BA1F /* Array.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F7121862C0F48EB000EB268 /* Array.swift */; };
+		4F7699502DDFE9E50070BA1F /* Date.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FD4BA552C07C58E00082C13 /* Date.swift */; };
 		4FB275582DB2FD350037BD44 /* EntryContextMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FB275572DB2FD320037BD44 /* EntryContextMenu.swift */; };
 		4FB9A2802DDD4AE60095A4FB /* CreateNewArchive.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FB9A27F2DDD4AE10095A4FB /* CreateNewArchive.swift */; };
 		4FBB814D2DC3C33D00EC2C83 /* ReadOnlyStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FBB814C2DC3C33A00EC2C83 /* ReadOnlyStatus.swift */; };
@@ -77,9 +100,25 @@
 			remoteGlobalIDString = 4FCEEED92BEE39E7009E9E17;
 			remoteInfo = ZipZap;
 		};
+		4F7699342DDFDA0D0070BA1F /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 4FCEEED22BEE39E7009E9E17 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 4F7699272DDFDA0D0070BA1F;
+			remoteInfo = ExtractAction;
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
+		4F7699372DDFDA0D0070BA1F /* Embed Foundation Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			dstPath = "";
+			dstSubfolder = PlugIns;
+			files = (
+				4F7699362DDFDA0D0070BA1F /* ArkyveExtractAction.appex in Embed Foundation Extensions */,
+			);
+			name = "Embed Foundation Extensions";
+		};
 		4FCEEEF02BEE39F6009E9E17 /* Embed Libraries */ = {
 			isa = PBXCopyFilesBuildPhase;
 			dstPath = "";
@@ -122,6 +161,8 @@
 		4F71219A2C10864F000EB268 /* HideViewModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HideViewModifier.swift; sourceTree = "<group>"; };
 		4F71219C2C10BB1D000EB268 /* ErrorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorView.swift; sourceTree = "<group>"; };
 		4F71219E2C110C67000EB268 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		4F7699282DDFDA0D0070BA1F /* ArkyveExtractAction.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = ArkyveExtractAction.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		4F7699292DDFDA0D0070BA1F /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
 		4FB275572DB2FD320037BD44 /* EntryContextMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EntryContextMenu.swift; sourceTree = "<group>"; };
 		4FB498582C08A00F004DE958 /* libiconv.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libiconv.tbd; path = usr/lib/libiconv.tbd; sourceTree = SDKROOT; };
 		4FB4985A2C08A018004DE958 /* libexpat.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libexpat.tbd; path = usr/lib/libexpat.tbd; sourceTree = SDKROOT; };
@@ -156,6 +197,13 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		4F76993B2DDFDA0D0070BA1F /* Exceptions for "ExtractAction" folder in "ArkyveExtractAction" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = 4F7699272DDFDA0D0070BA1F /* ArkyveExtractAction */;
+		};
 		4FD96DDC2DBD4A2400194E95 /* Exceptions for "ArkyveTests" folder in "ArkyveTests" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
@@ -175,12 +223,26 @@
 			path = ArkyveTests;
 			sourceTree = "<group>";
 		};
+		4F76992B2DDFDA0D0070BA1F /* ExtractAction */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				4F76993B2DDFDA0D0070BA1F /* Exceptions for "ExtractAction" folder in "ArkyveExtractAction" target */,
+			);
+			path = ExtractAction;
+			sourceTree = "<group>";
+		};
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
 		4F41C40F2D1B0C900011DAAB /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			files = (
+			);
+		};
+		4F7699252DDFDA0D0070BA1F /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			files = (
+				4F76992A2DDFDA0D0070BA1F /* Cocoa.framework in Frameworks */,
 			);
 		};
 		4FCEEED72BEE39E7009E9E17 /* Frameworks */ = {
@@ -267,6 +329,7 @@
 				4F41C4282D1EBAC60011DAAB /* Credits.rtf */,
 				4FCEEEDC2BEE39E7009E9E17 /* Arkyve */,
 				4F41C4132D1B0C900011DAAB /* ArkyveTests */,
+				4F76992B2DDFDA0D0070BA1F /* ExtractAction */,
 				4FCEEEDB2BEE39E7009E9E17 /* Products */,
 				4FCEEEEC2BEE39F6009E9E17 /* Frameworks */,
 			);
@@ -277,6 +340,7 @@
 			children = (
 				4FCEEEDA2BEE39E7009E9E17 /* Arkyve.app */,
 				4F41C4122D1B0C900011DAAB /* ArkyveTests.xctest */,
+				4F7699282DDFDA0D0070BA1F /* ArkyveExtractAction.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -318,6 +382,7 @@
 				4FB4985C2C08A020004DE958 /* libbz2.tbd */,
 				4FB4985A2C08A018004DE958 /* libexpat.tbd */,
 				4FB498582C08A00F004DE958 /* libiconv.tbd */,
+				4F7699292DDFDA0D0070BA1F /* Cocoa.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -380,6 +445,24 @@
 			productReference = 4F41C4122D1B0C900011DAAB /* ArkyveTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
+		4F7699272DDFDA0D0070BA1F /* ArkyveExtractAction */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 4F76993A2DDFDA0D0070BA1F /* Build configuration list for PBXNativeTarget "ArkyveExtractAction" */;
+			buildPhases = (
+				4F7699242DDFDA0D0070BA1F /* Sources */,
+				4F7699252DDFDA0D0070BA1F /* Frameworks */,
+				4F7699262DDFDA0D0070BA1F /* Resources */,
+			);
+			buildRules = (
+			);
+			fileSystemSynchronizedGroups = (
+				4F76992B2DDFDA0D0070BA1F /* ExtractAction */,
+			);
+			name = ArkyveExtractAction;
+			productName = ExtractAction;
+			productReference = 4F7699282DDFDA0D0070BA1F /* ArkyveExtractAction.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
 		4FCEEED92BEE39E7009E9E17 /* Arkyve */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 4FCEEEE92BEE39E9009E9E17 /* Build configuration list for PBXNativeTarget "Arkyve" */;
@@ -388,8 +471,12 @@
 				4FCEEED72BEE39E7009E9E17 /* Frameworks */,
 				4FCEEED82BEE39E7009E9E17 /* Resources */,
 				4FCEEEF02BEE39F6009E9E17 /* Embed Libraries */,
+				4F7699372DDFDA0D0070BA1F /* Embed Foundation Extensions */,
 			);
 			buildRules = (
+			);
+			dependencies = (
+				4F7699352DDFDA0D0070BA1F /* PBXTargetDependency */,
 			);
 			name = Arkyve;
 			productName = ZipZap;
@@ -403,12 +490,15 @@
 			isa = PBXProject;
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
-				LastSwiftUpdateCheck = 1620;
+				LastSwiftUpdateCheck = 1630;
 				LastUpgradeCheck = 1630;
 				TargetAttributes = {
 					4F41C4112D1B0C900011DAAB = {
 						CreatedOnToolsVersion = 16.2;
 						TestTargetID = 4FCEEED92BEE39E7009E9E17;
+					};
+					4F7699272DDFDA0D0070BA1F = {
+						CreatedOnToolsVersion = 16.3;
 					};
 					4FCEEED92BEE39E7009E9E17 = {
 						CreatedOnToolsVersion = 15.3;
@@ -430,6 +520,7 @@
 			targets = (
 				4FCEEED92BEE39E7009E9E17 /* Arkyve */,
 				4F41C4112D1B0C900011DAAB /* ArkyveTests */,
+				4F7699272DDFDA0D0070BA1F /* ArkyveExtractAction */,
 			);
 		};
 /* End PBXProject section */
@@ -439,6 +530,11 @@
 			isa = PBXResourcesBuildPhase;
 			files = (
 				4F41C4292D1EBAC60011DAAB /* Credits.rtf in Resources */,
+			);
+		};
+		4F7699262DDFDA0D0070BA1F /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			files = (
 			);
 		};
 		4FCEEED82BEE39E7009E9E17 /* Resources */ = {
@@ -464,6 +560,32 @@
 				4F41C41E2D1B5A320011DAAB /* Array.swift in Sources */,
 				4F41C41D2D1B58AA0011DAAB /* Date.swift in Sources */,
 				4FD4508B2DBADE2F001D5420 /* FileManager.swift in Sources */,
+			);
+		};
+		4F7699242DDFDA0D0070BA1F /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			files = (
+				4F7699422DDFE6300070BA1F /* ArchiveEntrySource.swift in Sources */,
+				4F76993D2DDFE5ED0070BA1F /* libarchiveFD.swift in Sources */,
+				4F7699432DDFE6350070BA1F /* ArchiveEntryType.swift in Sources */,
+				4F7699452DDFE6830070BA1F /* UTType.swift in Sources */,
+				4F7699462DDFE6990070BA1F /* ArkyveError.swift in Sources */,
+				4F7699442DDFE64B0070BA1F /* mode_t.swift in Sources */,
+				4F76993C2DDFE5D10070BA1F /* libarchiveWrapper.swift in Sources */,
+				4F76994D2DDFE9AD0070BA1F /* SettingsManager.swift in Sources */,
+				4F76994F2DDFE9DC0070BA1F /* Array.swift in Sources */,
+				4F76993E2DDFE5F20070BA1F /* libarchiveHeader.swift in Sources */,
+				4F7699412DDFE6110070BA1F /* ArkyveFormats.swift in Sources */,
+				4F76993F2DDFE5F90070BA1F /* libarchiveFilter.swift in Sources */,
+				4F7699472DDFE6AF0070BA1F /* ArchiveEntryExtractable.swift in Sources */,
+				4F7699482DDFE6AF0070BA1F /* Archive.swift in Sources */,
+				4F76994E2DDFE9B90070BA1F /* ArkyveLog.swift in Sources */,
+				4F7699492DDFE6AF0070BA1F /* ArchiveEntry.swift in Sources */,
+				4F76994B2DDFE86A0070BA1F /* String.swift in Sources */,
+				4F76994A2DDFE6AF0070BA1F /* ArchiveEntryFlat.swift in Sources */,
+				4F7699502DDFE9E50070BA1F /* Date.swift in Sources */,
+				4F76994C2DDFE8720070BA1F /* dev_t.swift in Sources */,
+				4F7699402DDFE5FD0070BA1F /* libarchiveFormat.swift in Sources */,
 			);
 		};
 		4FCEEED62BEE39E7009E9E17 /* Sources */ = {
@@ -526,6 +648,11 @@
 			target = 4FCEEED92BEE39E7009E9E17 /* Arkyve */;
 			targetProxy = 4F41C4162D1B0C900011DAAB /* PBXContainerItemProxy */;
 		};
+		4F7699352DDFDA0D0070BA1F /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 4F7699272DDFDA0D0070BA1F /* ArkyveExtractAction */;
+			targetProxy = 4F7699342DDFDA0D0070BA1F /* PBXContainerItemProxy */;
+		};
 /* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
@@ -568,6 +695,62 @@
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				SWIFT_VERSION = 6.0;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Arkyve.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Arkyve";
+			};
+			name = Release;
+		};
+		4F7699382DDFDA0D0070BA1F /* Debug configuration for PBXNativeTarget "ArkyveExtractAction" */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = ExtractAction/ExtractAction.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				ENABLE_HARDENED_RUNTIME = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = ExtractAction/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "Extract with Arkyve";
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@executable_path/../../../../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 15.4;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = net.tenshu.Arkyve.ExtractAction;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = Arkyve/libarchive/libarchive_Bridge.h;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		4F7699392DDFDA0D0070BA1F /* Release configuration for PBXNativeTarget "ArkyveExtractAction" */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = ExtractAction/ExtractAction.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				ENABLE_HARDENED_RUNTIME = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = ExtractAction/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "Extract with Arkyve";
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@executable_path/../../../../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 15.4;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = net.tenshu.Arkyve.ExtractAction;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = Arkyve/libarchive/libarchive_Bridge.h;
+				SWIFT_VERSION = 5.0;
 			};
 			name = Release;
 		};
@@ -810,6 +993,14 @@
 			buildConfigurations = (
 				4F41C4192D1B0C900011DAAB /* Debug configuration for PBXNativeTarget "ArkyveTests" */,
 				4F41C41A2D1B0C900011DAAB /* Release configuration for PBXNativeTarget "ArkyveTests" */,
+			);
+			defaultConfigurationName = Release;
+		};
+		4F76993A2DDFDA0D0070BA1F /* Build configuration list for PBXNativeTarget "ArkyveExtractAction" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				4F7699382DDFDA0D0070BA1F /* Debug configuration for PBXNativeTarget "ArkyveExtractAction" */,
+				4F7699392DDFDA0D0070BA1F /* Release configuration for PBXNativeTarget "ArkyveExtractAction" */,
 			);
 			defaultConfigurationName = Release;
 		};

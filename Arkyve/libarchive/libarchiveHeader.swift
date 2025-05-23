@@ -5,6 +5,7 @@
 //  Created by Chris Jones on 22/12/2024.
 //
 
+import Foundation
 
 struct libarchiveHeader: Identifiable, Codable {
     let id: UUID

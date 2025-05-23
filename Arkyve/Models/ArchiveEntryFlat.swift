@@ -5,6 +5,7 @@
 //  Created by Chris Jones on 23/12/2024.
 //
 
+import Foundation
 
 struct ArchiveEntryFlat: Codable {
     let path: String

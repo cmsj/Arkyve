@@ -23,6 +23,10 @@ struct ArkyveError: Error, Equatable {
     let kind: ErrorKind
     let msg: String
 
+    var description: String {
+        localizedDescription
+    }
+
     var localizedDescription: String {
         "\(kind.rawValue): \(msg)"
     }

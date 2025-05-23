@@ -5,6 +5,8 @@
 //  Created by Chris Jones on 22/12/2024.
 //
 
+import Darwin.sys
+
 extension ArchiveEntryType: CaseIterable {
     public static var allCases: [ArchiveEntryType] {
         [.unknown, .file, .directory, .socket, .symlink, .chardev, .blockdev, .fifo, .root]

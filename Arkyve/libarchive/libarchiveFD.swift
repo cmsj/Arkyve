@@ -5,6 +5,8 @@
 //  Created by Chris Jones on 31/12/2024.
 //
 
+import Foundation
+
 /// Represents the type of file descriptor operation for libarchive.
 enum libarchiveFDType {
     /// Indicates a read operation on the archive.

@@ -44,14 +44,15 @@ func extract(_ url: URL) async throws -> URL? {
         NSLog("extract(): Returning extra top-level directory: \(outputFolderURL)")
         return outputFolderURL
     } else {
-        NSLog("extract(): Returning written URL: \(writtenURLs.first?.absoluteString ?? "nil")")
-        return writtenURLs.first
+        let returnURL = writtenURLs.sorted(by: { $0.path < $1.path }).first // FIXME: This is a terrible way to get the single top-most item
+        NSLog("extract(): Returning written URL: \(returnURL?.absoluteString ?? "nil")")
+        return returnURL
     }
 }
 
 class ActionRequestHandler: NSObject, NSExtensionRequestHandling {
     func beginRequest(with context: NSExtensionContext) {
-        NSLog("beginRequest(): Starting up... (v19)")
+        NSLog("beginRequest(): Starting up... (v21)")
         // Get the input item
         guard let inputItem = context.inputItems.first as? NSExtensionItem else {
             preconditionFailure("beginRequest(): Expected an extension item")
@@ -62,7 +63,7 @@ class ActionRequestHandler: NSObject, NSExtensionRequestHandling {
         }
         precondition(inputAttachments.isEmpty == false, "beginRequest(): Expected at least one attachment")
 
-        let outputAttachments: Mutex<[NSItemProvider]> = Mutex([])
+        let outputAttachmentsStore: Mutex<[NSItemProvider]> = Mutex([])
         let dispatchGroup = DispatchGroup()
 
         for attachment in inputAttachments {
@@ -80,29 +81,29 @@ class ActionRequestHandler: NSObject, NSExtensionRequestHandling {
                 }
 
                 NSLog("beginRequest(): Found URL: \(url)")
-                let itemProvider = NSItemProvider()
+                outputAttachmentsStore.withLock { outputAttachments in
+                    let itemProvider = NSItemProvider()
 
-                NSLog("beginRequest(): Registering file representation...")
-                itemProvider.registerFileRepresentation(forTypeIdentifier: UTType.data.identifier,
-                                                        fileOptions: [.openInPlace],
-                                                        visibility: .all,
-                                                        loadHandler: { completionHandler in
-                    NSLog("beginRequest(): in registerFileRepresentation loadHandler")
-                    Task.detached {
-                        NSLog("beginRequest(): in Task")
-                        do {
-                            let writtenURL = try await extract(url)
-                            completionHandler(writtenURL, false, nil)
-                        } catch {
-                            completionHandler(nil, false, error)
+                    NSLog("beginRequest(): Registering file representation...")
+                    itemProvider.registerFileRepresentation(forTypeIdentifier: UTType.data.identifier,
+                                                            fileOptions: [.openInPlace],
+                                                            visibility: .all,
+                                                            loadHandler: { completionHandler in
+                        NSLog("beginRequest(): in registerFileRepresentation loadHandler")
+                        Task.detached {
+                            NSLog("beginRequest(): in Task")
+                            do {
+                                let writtenURL = try await extract(url)
+                                completionHandler(writtenURL, false, nil)
+                            } catch {
+                                completionHandler(nil, false, error)
+                            }
                         }
-                    }
-                    return nil
-                })
+                        return nil
+                    })
 
-                outputAttachments.withLock {
-                    $0.append(itemProvider)
-                    NSLog("beginRequest(): Adding provider output, there are now \($0.count) providers")
+                    outputAttachments.append(itemProvider)
+                    NSLog("beginRequest(): Adding provider output, there are now \(outputAttachments.count) providers")
                 }
             }
         }
@@ -110,17 +111,28 @@ class ActionRequestHandler: NSObject, NSExtensionRequestHandling {
         dispatchGroup.notify(queue: DispatchQueue.main) {
             NSLog("beginRequest(): DispatchGroup completed")
             let outputItem = NSExtensionItem()
-            outputAttachments.withLock {
-                if inputAttachments.count < $0.count {
+
+            let result = outputAttachmentsStore.withLock { (outputAttachments: inout sending [NSItemProvider]) -> [NSItemProvider] in
+
+                if inputAttachments.count < outputAttachments.count {
                     NSLog("beginRequest(): Did not find enough output attachments")
-                    context.cancelRequest(withError: ArkyveError(.extract, msg: "Unable to extract archive"))
-                    return
+                    return []
                 }
-                outputItem.attachments = inputAttachments + $0
+
+                // We can't return outputAttachments because it's isolated by the Mutex, but we know no further
+                // changes will happen at this point, so we can return an array of copies
+                return outputAttachments.compactMap { $0.copy() as? NSItemProvider }
             }
+
+            if result.isEmpty {
+                context.cancelRequest(withError: ArkyveError(.extract, msg: "Unable to extract archive"))
+                return
+            }
+
+            outputItem.attachments = inputAttachments + result
+
             NSLog("beginRequest(): Returning completion")
             context.completeRequest(returningItems: [outputItem], completionHandler: nil)
         }
     }
-
 }

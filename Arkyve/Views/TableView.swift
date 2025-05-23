@@ -13,7 +13,7 @@ struct TableView: View {
     @Environment(MainWindowViewModel.self) var viewModel
     @Environment(\.isEnabled) var isEnabled
 
-    @SceneStorage("ArchiveEntryTableConfig") private var columnCustomization: TableColumnCustomization<ArchiveEntry>
+    @AppStorage("ArchiveEntryTableConfig") private var columnCustomization: TableColumnCustomization<ArchiveEntry>
 
     @FocusState var renameEntryFocus: UUID?
 

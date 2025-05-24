@@ -53,8 +53,18 @@ func extract(_ url: URL) async throws -> URL? {
         NSLog("extract(): Returning extra top-level directory: \(outputFolderURL)")
         return outputFolderURL
     } else {
-        let returnURL = writtenURLs.sorted(by: { $0.path < $1.path }).first // FIXME: This is a terrible way to get the single top-most item
-        NSLog("extract(): Returning written URL: \(returnURL?.absoluteString ?? "nil")")
+        guard let rootEntryName = archive.root.children?.first?.pathComponents.last else {
+            NSLog("ERROR: Unable to get the name of the root archive entry")
+            return nil
+        }
+        let expectedRootEntryURL = outputFolderURL.appendingPathComponent(rootEntryName)
+
+        guard let returnURL = writtenURLs.first(where: { $0.path == expectedRootEntryURL.path }) else {
+            NSLog("ERROR: Unable to find a matching written URL for the root archive entry")
+            return nil
+        }
+
+        NSLog("extract(): Returning written URL: \(returnURL.absoluteString)")
         return returnURL
     }
 }

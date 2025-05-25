@@ -25,6 +25,8 @@ class QuickLookExtensionViewModel {
     var formatString: String {
         archive?.format.description ?? "Unknown format"
     }
+
+    var didTruncateRead: Bool = false
 }
 
 struct QLTableRowTreeContent: TableRowContent {
@@ -63,6 +65,15 @@ struct ArkyveQuickLookView: View {
             .padding([.top, .bottom], 2)
             .background(Color(#colorLiteral(red: 0.7470226884, green: 0, blue: 0, alpha: 0.5411817071)))
             .hide(if: viewModel.error == "")
+
+            HStack {
+                Spacer()
+                Text("Preview truncated to 150 entries")
+                Spacer()
+            }
+            .padding([.top, .bottom], 2)
+            .background(.gray)
+            .hide(if: !viewModel.didTruncateRead)
 
             Table(of: ArchiveEntry.self, selection: $viewModel.selectedEntries, sortOrder: $viewModel.sortOrder, columnCustomization: $columnCustomization) {
                 Group {
@@ -187,7 +198,9 @@ struct ArkyveQuickLookView: View {
             do {
                 NSLog(".task(): Loading archive \(url)")
                 let loader = libarchiveWrapper(url: url)
-                viewModel.archive = try await loader.loadArchive()
+                viewModel.archive = try await loader.loadArchive(entryLimit: 150)
+                viewModel.didTruncateRead = await loader.didTruncateRead
+
                 viewModel.archive?.entries.forEach { entry in
                     if entry.type == .directory {
                         entry.isExpanded = true

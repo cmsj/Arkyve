@@ -17,6 +17,8 @@ actor libarchiveWrapper {
         url.path.removingPercentEncoding ?? "Unknown"
     }
 
+    var didTruncateRead: Bool = false
+
 #if DEBUG
     // periphery:ignore
     func testURL() -> URL {
@@ -88,7 +90,7 @@ actor libarchiveWrapper {
         return string
     }
 
-    private func readHeaders() async throws(ArkyveError) -> [libarchiveHeader] {
+    private func readHeaders(entryLimit: Int = -1) async throws(ArkyveError) -> [libarchiveHeader] {
         guard readArchiveFD.archive != nil else {
             throw .init(.entries, msg: "Internal error: archive does not exist")
         }
@@ -97,6 +99,10 @@ actor libarchiveWrapper {
 
         var entry: OpaquePointer?
         readLoop: while true {
+            if entryLimit != -1 && headers.count >= entryLimit {
+                didTruncateRead = true
+                break readLoop
+            }
             let result = archive_read_next_header(readArchiveFD.archive, &entry)
             switch result {
             case ARCHIVE_OK:
@@ -220,13 +226,13 @@ actor libarchiveWrapper {
         return filters
     }
 
-    func readEntriesFormatFilters() async throws(ArkyveError) -> (libarchiveFormat,
-                                               [libarchiveFilter],
-                                               [libarchiveHeader]) {
+    func readEntriesFormatFilters(entryLimit: Int = -1) async throws(ArkyveError) -> (libarchiveFormat,
+                                                                                      [libarchiveFilter],
+                                                                                      [libarchiveHeader]) {
         try readArchiveFD.openRead(path: path)
         defer { readArchiveFD.close() }
 
-        let headers = try await readHeaders()
+        let headers = try await readHeaders(entryLimit: entryLimit)
         let format = readFormat()
         let filters = readFilters()
 
@@ -280,7 +286,7 @@ actor libarchiveWrapper {
         return writeEntry
     }
 
-    func loadArchive() async throws(ArkyveError) -> sending Archive {
+    func loadArchive(entryLimit: Int = -1) async throws(ArkyveError) -> sending Archive {
         AKTrace("loadArchive() for \(path)")
         let archive = Archive(URL: self.url)
         let archiveFormat: libarchiveFormat
@@ -288,7 +294,7 @@ actor libarchiveWrapper {
         let archiveEntries: [libarchiveHeader]
 
         do {
-            (archiveFormat, archiveFilters, archiveEntries) = try await readEntriesFormatFilters()
+            (archiveFormat, archiveFilters, archiveEntries) = try await readEntriesFormatFilters(entryLimit: entryLimit)
 
             let entries = archiveEntries.map { ArchiveEntry($0) }
             AKTrace("loadArchive() found \(entries.count) entries")
@@ -588,7 +594,8 @@ actor libarchiveWrapper {
                 throw ArkyveError(.writeArchive, msg: String(localized: "Unable to read archive"))
             default:
                 // FIXME: Why are we doing this?
-                break writeLoop
+//                break writeLoop
+                throw .init(.writeArchive, msg: "UNKNOWN FAILURE: archive_read_next_header returned \(result)")
             }
 
             guard let readEntryPath = entryPath(readEntry) else {

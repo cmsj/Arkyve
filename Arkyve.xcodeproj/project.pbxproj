@@ -27,6 +27,7 @@
 		4F41C4262D1EB93E0011DAAB /* MenuCommands.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F41C4252D1EB9370011DAAB /* MenuCommands.swift */; };
 		4F41C4292D1EBAC60011DAAB /* Credits.rtf in Resources */ = {isa = PBXBuildFile; fileRef = 4F41C4282D1EBAC60011DAAB /* Credits.rtf */; };
 		4F41C42A2D1EBAC60011DAAB /* Credits.rtf in Resources */ = {isa = PBXBuildFile; fileRef = 4F41C4282D1EBAC60011DAAB /* Credits.rtf */; };
+		4F4CD2C52DE328E500FA77E4 /* DummyTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F4CD2C42DE328E200FA77E4 /* DummyTableView.swift */; };
 		4F545DFD2DC61C6200B435DD /* PermsEditorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F545DFC2DC61C6200B435DD /* PermsEditorView.swift */; };
 		4F545E362DC65EF000B435DD /* DateEditorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F545E352DC65EF000B435DD /* DateEditorView.swift */; };
 		4F688A5A2D734551003B5D60 /* DropItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F688A592D734551003B5D60 /* DropItem.swift */; };
@@ -178,6 +179,7 @@
 		4F41C4232D1DE6F10011DAAB /* ArchiveEntrySource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArchiveEntrySource.swift; sourceTree = "<group>"; };
 		4F41C4252D1EB9370011DAAB /* MenuCommands.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuCommands.swift; sourceTree = "<group>"; };
 		4F41C4282D1EBAC60011DAAB /* Credits.rtf */ = {isa = PBXFileReference; lastKnownFileType = text.rtf; path = Credits.rtf; sourceTree = "<group>"; };
+		4F4CD2C42DE328E200FA77E4 /* DummyTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DummyTableView.swift; sourceTree = "<group>"; };
 		4F545DFC2DC61C6200B435DD /* PermsEditorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PermsEditorView.swift; sourceTree = "<group>"; };
 		4F545E352DC65EF000B435DD /* DateEditorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateEditorView.swift; sourceTree = "<group>"; };
 		4F688A592D734551003B5D60 /* DropItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DropItem.swift; sourceTree = "<group>"; };
@@ -347,6 +349,7 @@
 				4F7121912C0F5DE1000EB268 /* ToolbarContent.swift */,
 				4F71219C2C10BB1D000EB268 /* ErrorView.swift */,
 				4F71218D2C0F4DE7000EB268 /* TableView.swift */,
+				4F4CD2C42DE328E200FA77E4 /* DummyTableView.swift */,
 				4F7121932C0F6938000EB268 /* TableRowTreeContent.swift */,
 				4FB275572DB2FD320037BD44 /* EntryContextMenu.swift */,
 				4F545DFC2DC61C6200B435DD /* PermsEditorView.swift */,
@@ -734,6 +737,7 @@
 				4F1084922C262D5D007DCC39 /* LogWindowView.swift in Sources */,
 				4FCEEF292BEE3D3E009E9E17 /* Archive.swift in Sources */,
 				4F71219B2C10864F000EB268 /* HideViewModifier.swift in Sources */,
+				4F4CD2C52DE328E500FA77E4 /* DummyTableView.swift in Sources */,
 				4F41C4052D18A7440011DAAB /* ArchiveEntryExtractable.swift in Sources */,
 				4FB9A2802DDD4AE60095A4FB /* CreateNewArchive.swift in Sources */,
 				4F71218C2C0F4CCA000EB268 /* StatusbarView.swift in Sources */,

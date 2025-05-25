@@ -106,9 +106,16 @@ struct MainWindowView: View {
         VStack(spacing: 0) {
             ErrorView()
                 .environment(viewModel)
-            TableView()
-                .environment(viewModel)
-                .disabled(viewModel.disableTableView)
+            if viewModel.archive != nil {
+                TableView()
+                    .environment(viewModel)
+                    .disabled(viewModel.disableTableView)
+            } else {
+                // FIXME: This is a workaround until FB17404990 is resolved
+                DummyTableView()
+                    .environment(viewModel)
+                    .disabled(viewModel.disableTableView)
+            }
             Spacer(minLength: 0)
             StatusbarView()
                 .environment(viewModel)

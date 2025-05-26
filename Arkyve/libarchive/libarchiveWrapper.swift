@@ -114,8 +114,10 @@ actor libarchiveWrapper {
                 AKTrace("Reached end of archive")
                 break readLoop
             default:
-                AKError("readHeaders() Unknown result \(result)")
-                break readLoop
+                // FIXME: I'm nervous about this choice
+                throw .init(.readArchive, msg: "readHeaders() Unknown result \(result)")
+//                AKError("readHeaders() Unknown result \(result)")
+//                break readLoop
             }
 
             let name: String
@@ -593,9 +595,9 @@ actor libarchiveWrapper {
             case ARCHIVE_FATAL:
                 throw ArkyveError(.writeArchive, msg: String(localized: "Unable to read archive"))
             default:
-                // FIXME: Why are we doing this?
-//                break writeLoop
-                throw .init(.writeArchive, msg: "UNKNOWN FAILURE: archive_read_next_header returned \(result)")
+                // FIXME: I'm nervous about this choice
+                throw .init(.writeArchive, msg: "readHeaders() Unknown result \(result)")
+                //                break writeLoop
             }
 
             guard let readEntryPath = entryPath(readEntry) else {

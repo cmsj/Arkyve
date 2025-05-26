@@ -753,11 +753,12 @@ actor libarchiveWrapper {
             headerMap.removeValue(forKey: filePath)
         }
 
-        // FIXME: Deal with: do we have any headerMap entries left?
         if !headerMap.isEmpty {
-            AKWarning(
-                "Some entries were not processed during archive write: \(headerMap.keys.joined(separator: ", "))"
-            )
+            // FIXME: I'm nervous about this choice
+            throw .init(.writeArchive, msg: "Internal error: Unprocessed entries found: \(headerMap.keys.joined(separator: ", "))")
+//            AKWarning(
+//                "Some entries were not processed during archive write: \(headerMap.keys.joined(separator: ", "))"
+//            )
         }
 
         writeArchiveFD.close()

@@ -11,6 +11,7 @@ struct SettingsManager {
     static let shared = SettingsManager()
     let readCacheURL = FileManager.default.temporaryDirectory.appendingPathComponent("read-cache")
     let writeCacheURL = FileManager.default.temporaryDirectory.appendingPathComponent("write-cache")
+    let dropCacheURL = FileManager.default.temporaryDirectory.appendingPathComponent("drop-cache")
 
     var newFolderURL: URL {
         get {
@@ -56,15 +57,17 @@ struct SettingsManager {
 
     func removeCacheDirectories() {
         print("Removing cache directories")
-        try? FileManager.default.removeItem(at: SettingsManager.shared.readCacheURL)
-        try? FileManager.default.removeItem(at: SettingsManager.shared.writeCacheURL)
+        try? FileManager.default.removeItem(at: readCacheURL)
+        try? FileManager.default.removeItem(at: writeCacheURL)
+        try? FileManager.default.removeItem(at: dropCacheURL)
     }
 
     func createCacheDirectories() {
         print("Creating cache directories")
         do {
-            try FileManager.default.createDirectory(at: SettingsManager.shared.readCacheURL, withIntermediateDirectories: true)
-            try FileManager.default.createDirectory(at: SettingsManager.shared.writeCacheURL, withIntermediateDirectories: true)
+            try FileManager.default.createDirectory(at: readCacheURL, withIntermediateDirectories: true)
+            try FileManager.default.createDirectory(at: writeCacheURL, withIntermediateDirectories: true)
+            try FileManager.default.createDirectory(at: dropCacheURL, withIntermediateDirectories: true)
         } catch {
             fatalError("Unable to create cache directories: \(error.localizedDescription)")
         }

@@ -16,8 +16,12 @@ enum DropItem: Codable, Transferable {
         ProxyRepresentation { DropItem.entry($0) }
         ProxyRepresentation { DropItem.file($0) }
         FileRepresentation(importedContentType: .image) { url in
-            let tempDir = FileManager.default.temporaryDirectory
+            AKTrace("User dragged an image: \(url)")
+            let tempDir = SettingsManager.shared.dropCacheURL.appendingPathComponent(UUID().uuidString)
+            try FileManager.default.createDirectory(at: tempDir, withIntermediateDirectories: true)
+
             let tempURL = tempDir.appendingPathComponent(url.file.lastPathComponent)
+            AKTrace("Copying to cache: \(tempURL)")
             try FileManager.default.copyItem(at: url.file, to: tempURL)
             return DropItem.file(tempURL)
         }

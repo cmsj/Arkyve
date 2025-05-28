@@ -20,18 +20,17 @@ struct DummyTableView: View {
                 TableColumn("Name", value: \ArchiveEntry.name)
         }
         .opacity(isEnabled ? 1.0 : 0.5)
-        // FIXME: Add .image here when Apple fixes drag&drop. DTS filed
-        .onDrop(of: [.archiveEntryExtractable, .fileURL], isTargeted: nil, perform: { items, _ in
-            print("DummyTable: onDrop")
+        .dropDestination(for: DropItem.self) { items, _  in
+            print("DummyTableView: dropDestination")
             if viewModel.archive == nil {
                 viewModel.newButton()
             }
 
             guard viewModel.archive != nil else { return false }
-            viewModel.processDrop(for: items)
 
+            viewModel.handleManyDrops(items: items)
             return true
-        })
+        }
     }
 }
 

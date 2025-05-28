@@ -201,7 +201,17 @@ class ArchiveEntry: Identifiable {
 
     // Helper to create a new ArchiveEntry from a URL on the local filesystem
     convenience init?(from url: URL, pathInArchiveComponents: [String]) {
-        guard let attrs = try? FileManager.default.attributesOfItem(atPath: url.path) else { return nil }
+        _ = url.startAccessingSecurityScopedResource()
+        defer { url.stopAccessingSecurityScopedResource() }
+
+        let attrs: [FileAttributeKey : Any]
+
+        do {
+            attrs = try FileManager.default.attributesOfItem(atPath: url.path)
+        } catch {
+            AKError(error.localizedDescription)
+            return nil
+        }
 
         let source = ArchiveEntrySource(type: .Filesystem, path: url.path)
 

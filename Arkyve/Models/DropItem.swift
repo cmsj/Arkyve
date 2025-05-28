@@ -4,19 +4,23 @@
 //
 //  Created by Chris Jones on 01/03/2025.
 //
+import Foundation
 import SwiftUI
 
 enum DropItem: Codable, Transferable {
     case none
     case file(URL)
     case entry(ArchiveEntryExtractable)
-    // FIXME: Add image(Data) here when Apple fixes drag&drop. DTS filed
-//    case image(Data)
 
     static var transferRepresentation: some TransferRepresentation {
         ProxyRepresentation { DropItem.entry($0) }
         ProxyRepresentation { DropItem.file($0) }
-//        ProxyRepresentation { DropItem.image($0) }
+        FileRepresentation(importedContentType: .image) { url in
+            let tempDir = FileManager.default.temporaryDirectory
+            let tempURL = tempDir.appendingPathComponent(url.file.lastPathComponent)
+            try FileManager.default.copyItem(at: url.file, to: tempURL)
+            return DropItem.file(tempURL)
+        }
     }
 
     var file: URL? {
@@ -32,11 +36,4 @@ enum DropItem: Codable, Transferable {
         default: return nil
         }
     }
-
-//    var image: Data? {
-//        switch self {
-//        case .image(let nsImage): return nsImage
-//        default: return nil
-//        }
-//    }
 }

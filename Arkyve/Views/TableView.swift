@@ -247,18 +247,17 @@ struct TableView: View {
         .onChange(of: renameEntryFocus) { _, newValue in
             viewModel.focusedEntry = newValue
         }
-        // FIXME: Add .image here when Apple fixes drag&drop. DTS filed
-        .onDrop(of: [.archiveEntryExtractable, .fileURL], isTargeted: nil, perform: { items, _ in
-            print("Table: onDrop")
+        .dropDestination(for: DropItem.self) { items, _  in
+            print("Table: dropDestination")
             if viewModel.archive == nil {
                 viewModel.newButton()
             }
 
             guard viewModel.archive != nil else { return false }
-            viewModel.processDrop(for: items)
 
+            viewModel.handleManyDrops(items: items)
             return true
-        })
+        }
     }
 }
 

@@ -212,6 +212,7 @@ struct TableView: View {
         } rows: {
             TableRowTreeContent(node: viewModel.archive?.root, viewModel: viewModel)
         }
+        .searchable(text: $viewModel.searchQuery, isPresented: $viewModel.searchPresented)
         .copyable(viewModel.buildCopyable(entries: viewModel.selectedEntries))
         .cuttable(action: {
             viewModel.buildCuttable(entries: viewModel.selectedEntries)

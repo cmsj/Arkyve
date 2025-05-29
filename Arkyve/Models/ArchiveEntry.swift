@@ -412,4 +412,12 @@ class ArchiveEntry: Identifiable {
             child.sort(using: sortDetails)
         }
     }
+
+    func hasSelfOrChildrenMatching(_ query: String) -> Bool {
+        if self.path.contains(query) { return true }
+        for child in self.flatChildren() {
+            if child.path.contains(query) { return true }
+        }
+        return false
+    }
 }

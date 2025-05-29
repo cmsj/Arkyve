@@ -16,6 +16,10 @@ class MainWindowViewModel {
 
     var selectedEntries = Set<ArchiveEntry.ID>()
     var focusedEntry: UUID? = nil
+
+    var searchQuery: String = ""
+    var searchPresented: Bool = false
+
     var sortOrder = [KeyPathComparator(\ArchiveEntry.name)]
     var quickLookURL: URL?
     var quickLookItems: [URL] = []
@@ -47,6 +51,7 @@ class MainWindowViewModel {
     var disableExpandCollapse: Bool { disableUI || archive == nil }
     var disableTableView: Bool { disableUI || archive == nil }
     var disableShare: Bool { disableUI || selectedEntries.isEmpty }
+    var disableSearchMenu: Bool { disableUI || archive == nil }
 
     // MARK: - Dynamic UI text
     let navTitleText = "Arkyve"

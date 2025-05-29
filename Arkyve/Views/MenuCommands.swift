@@ -61,6 +61,13 @@ struct MenuCommands: Commands {
             .disabled(viewModel.disableClose)
         }
 
+        CommandGroup(after: .pasteboard) {
+            Button("Find") {
+                viewModel.searchPresented = true
+            }
+            .keyboardShortcut("f", modifiers: [.command])
+            .disabled(viewModel.disableSearchMenu)
+        }
         // View Menu
         CommandGroup(after: .toolbar) {
             Button("Expand all") {

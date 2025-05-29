@@ -42,6 +42,7 @@ struct ArchiveEntryExtractable: Codable, Transferable {
                 }
                 AKTrace("Wrote \(writtenURLs.count) entries.")
 
+                // FIXME: Are we sure the first URL here is always the topmost? It hasn't been elsewhere
                 guard let firstURL = writtenURLs.first else {
                     throw ArkyveError(.entries, msg: String(localized: "Unable to retrieve written URLs"))
                 }

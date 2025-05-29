@@ -48,7 +48,7 @@ struct IntentExtractAll: AppIntent {
         let supportedArchiveTypes = Set(ArkyveFormats.utTypes)
         if inputFileContentTypes.intersection(supportedArchiveTypes).count == 0 {
             NSLog("perform(): Unable to find suitable content type in: \(inputFile.availableContentTypes)")
-            throw ArkyveError(.extract, msg: "Input file is not a supported archive type: \(inputFile.availableContentTypes)")
+            throw ArkyveError(.extract, msg: "Archive file is not a supported archive type: \(inputFile.availableContentTypes)")
         }
 
         let resultURL: URL = try await inputFile.withFile(contentType: .data, allowOpenInPlace: true) { inputURL, _  in
@@ -57,9 +57,8 @@ struct IntentExtractAll: AppIntent {
 
             NSLog("extract(): Reading source archive: \(inputURL)")
             let archive = try await libarchiveWrapper.loadArchive(at: inputURL)
-            guard let rootEntries = archive.root.children else { throw ArkyveError(.extract, msg: "Unable to find archive contents")}
 
-            if rootEntries.count > 1 {
+            if archive.offerTopDirectory {
                 // We'll enforce an additional top-level directory since we have multiple root entries
                 NSLog("extract(): Adding a top-level directory due to multiple root entries")
                 returnExtraTopLevelDirectory = true
@@ -83,7 +82,7 @@ struct IntentExtractAll: AppIntent {
 
                 guard let returnURL = writtenURLs.first(where: { $0.path == expectedRootEntryURL.path }) else {
                     NSLog("ERROR: Unable to find a matching written URL for the root archive entry")
-                    throw ArkyveError(.extract, msg: "Unable to find a matching written URL for the root archive entry")
+                    throw ArkyveError(.extract, msg: "Unable to find a matching written URL for the first archive entry")
                 }
 
                 NSLog("extract(): Returning written URL: \(returnURL.absoluteString)")

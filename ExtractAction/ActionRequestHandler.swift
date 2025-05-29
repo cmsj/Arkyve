@@ -32,9 +32,8 @@ func extract(_ url: URL) async throws -> URL? {
 
     NSLog("extract(): Reading source archive: \(url)")
     let archive = try await libarchiveWrapper.loadArchive(at: url)
-    guard let rootEntries = archive.root.children else { throw ArkyveError(.extract, msg: "Unable to find archive contents")}
 
-    if rootEntries.count > 1 {
+    if archive.offerTopDirectory {
         // We'll enforce an additional top-level directory since we have multiple root entries
         NSLog("extract(): Adding a top-level directory due to multiple root entries")
         returnExtraTopLevelDirectory = true

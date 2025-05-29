@@ -9,7 +9,7 @@ import Testing
 import Foundation
 @testable import Arkyve // Assuming your module is named Arkyve
 
-@Suite("libarchiveTestsClaudeFuyo", .serialized)
+@Suite("libarchiveTestsClaudeFuyo")
 struct libarchiveTestsClaudeFuyo {
 
     // MARK: - Test Helpers
@@ -23,7 +23,7 @@ struct libarchiveTestsClaudeFuyo {
 
         // Copy to a temporary location so we can modify it if needed
         let tempDir = FileManager.default.temporaryDirectory
-        let tempURL = tempDir.appendingPathComponent(name)
+        let tempURL = tempDir.appendingPathComponent("\(UUID().uuidString)-\(name)")
 
         try FileManager.default.copyItem(at: bundleURL, to: tempURL)
 
@@ -189,13 +189,12 @@ struct libarchiveTestsClaudeFuyo {
         let loadedArchive = try await archive.loadArchive()
 
         // Create a new destination for the written archive
-        let newArchiveURL = FileManager.default.temporaryDirectory.appendingPathComponent("new_test_archive.zip")
+        let newArchiveURL = FileManager.default.temporaryDirectory.appendingPathComponent("new_test_archive-\(UUID().uuidString).zip")
         defer { cleanupTestFiles([newArchiveURL]) }
 
         // Create a header map from the flat entries
-        let flatEntries = loadedArchive.root.flatChildren()
         var headerMap: [String: ArchiveEntryFlat] = [:]
-        for entry in flatEntries {
+        for entry in loadedArchive.entries.map({ $0.flatSelf() }) {
             headerMap[entry.path] = entry
         }
 

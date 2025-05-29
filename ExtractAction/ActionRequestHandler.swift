@@ -24,14 +24,14 @@ func extract(_ url: URL) async throws -> URL? {
     // we will create an extra top level directory to put them in, and just return that directory
     var returnExtraTopLevelDirectory: Bool = false
 
-    // Now add the name of the archive (the last path component of `url`) to our temporary
-    // directory, and create that directory. This is where we'll tell our actor to extract to
-    let outputFolderName = url.deletingPathExtension().lastPathComponent.deletingPathExtension
-    var outputFolderURL = itemReplacementDirectory.appendingPathComponent(outputFolderName)
-    try FileManager.default.createDirectory(at: outputFolderURL, withIntermediateDirectories: true)
-
     NSLog("extract(): Reading source archive: \(url)")
     let archive = try await libarchiveWrapper.loadArchive(at: url)
+
+    // Now add the name of the archive to our temporary directory, and create that directory.
+    // This is where we'll tell our actor to extract to
+    let outputFolderName = archive.name.deletingPathExtension
+    var outputFolderURL = itemReplacementDirectory.appendingPathComponent(outputFolderName)
+    try FileManager.default.createDirectory(at: outputFolderURL, withIntermediateDirectories: true)
 
     if archive.offerTopDirectory {
         // We'll enforce an additional top-level directory since we have multiple root entries

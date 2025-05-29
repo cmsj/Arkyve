@@ -68,8 +68,8 @@ struct EntryContextMenu: View {
                 let icon = $0.icon
                 return SharePreview(name, icon: icon)
             })
+            .disabled(items.isEmpty)
         }
-//        .disabled(items.isEmpty)
 
         Divider()
 

@@ -339,4 +339,37 @@ class Archive: Identifiable {
         // Mark the archive as dirty since we've made changes
         self.setDirty()
     }
+
+    func extract(paths: [String], toFolder: URL,
+                 retainFullPath:Bool = false, archiveIsNew: Bool) async throws(ArkyveError) -> [URL] {
+        let extractables = entries.compactMap { entry in
+            paths.contains(entry.path) ? entry.asExtractable(for: self) : nil
+        }
+
+        return try await extract(extractables: extractables, toFolder: toFolder,
+                                 retainFullPath: retainFullPath, archiveIsNew: archiveIsNew)
+    }
+
+    func extract(entries: [ArchiveEntry], toFolder: URL,
+                 retainFullPath: Bool = false, archiveIsNew: Bool) async throws(ArkyveError) -> [URL] {
+        let extractables = entries.map { $0.asExtractable(for: self) }
+        return try await extract(extractables: extractables, toFolder: toFolder,
+                                 retainFullPath: retainFullPath, archiveIsNew: archiveIsNew)
+    }
+
+    func extract(toFolder: URL, retainFullPath: Bool = false,
+                 archiveIsNew: Bool) async throws(ArkyveError) -> [URL] {
+        guard let rootEntries = root.children else { throw ArkyveError(.extract, msg: "Unable to find archive contents")}
+        let extractables = rootEntries.map { $0.asExtractable(for: self) }
+
+        return try await extract(extractables: extractables, toFolder: toFolder,
+                                 retainFullPath: retainFullPath, archiveIsNew: archiveIsNew)
+    }
+
+    func extract(extractables: [ArchiveEntryExtractable], toFolder: URL,
+                 retainFullPath: Bool = false, archiveIsNew: Bool) async throws(ArkyveError) -> [URL] {
+        let loader = libarchiveWrapper(url: self.URL)
+        return try await loader.extract(extractables, toFolder: toFolder,
+                                        retainFullPath: retainFullPath, archiveIsNew: archiveIsNew)
+    }
 }

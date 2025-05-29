@@ -288,6 +288,11 @@ actor libarchiveWrapper {
         return writeEntry
     }
 
+    static func loadArchive(at url: URL, entryLimit: Int = -1) async throws(ArkyveError) -> sending Archive {
+        let loader = libarchiveWrapper(url: url)
+        return try await loader.loadArchive(entryLimit: entryLimit)
+    }
+
     func loadArchive(entryLimit: Int = -1) async throws(ArkyveError) -> sending Archive {
         AKTrace("loadArchive() for \(path)")
         let archive = Archive(URL: self.url)

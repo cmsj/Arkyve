@@ -56,8 +56,7 @@ struct IntentExtractAll: AppIntent {
             defer { inputURL.stopAccessingSecurityScopedResource() }
 
             NSLog("extract(): Reading source archive: \(inputURL)")
-            var loader = libarchiveWrapper(url: inputURL)
-            let archive = try await loader.loadArchive()
+            let archive = try await libarchiveWrapper.loadArchive(at: inputURL)
             guard let rootEntries = archive.root.children else { throw ArkyveError(.extract, msg: "Unable to find archive contents")}
 
             if rootEntries.count > 1 {
@@ -70,11 +69,7 @@ struct IntentExtractAll: AppIntent {
 
             NSLog("extract(): Attempting to extract to \(outputFolderURL)")
 
-            // Determine which entries to extract
-            let extractables = rootEntries.map { $0.asExtractable(for: archive) }
-
-            loader = libarchiveWrapper(url: inputURL)
-            let writtenURLs = try await loader.extract(extractables, toFolder: outputFolderURL, retainFullPath: true, archiveIsNew: false)
+            let writtenURLs = try await archive.extract(toFolder: outputFolderURL, retainFullPath: true, archiveIsNew: false)
 
             if returnExtraTopLevelDirectory {
                 NSLog("extract(): Returning extra top-level directory: \(outputFolderURL)")

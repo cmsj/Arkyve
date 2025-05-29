@@ -47,7 +47,6 @@ extension MainWindowViewModel {
     func openArchive(url: URL) async {
         showErrors.clear()
 
-        let loader = libarchiveWrapper(url: url)
         self.disableUI = true
         defer { self.disableUI = false }
 
@@ -55,7 +54,7 @@ extension MainWindowViewModel {
             defer { progressTask = nil }
 
             do {
-                archive = try await loader.loadArchive()
+                archive = try await libarchiveWrapper.loadArchive(at: url)
                 sort()
 
                 if archive?.format.asArkyveFormat?.canWrite == false {
@@ -166,10 +165,8 @@ extension MainWindowViewModel {
             self.disableUI = true
             defer { self.disableUI = false }
 
-            let loader = libarchiveWrapper(url: archive.URL)
-
             do {
-                let _ = try await loader.extract(extractableEntries, toFolder: destURL, retainFullPath: retainFullPath, archiveIsNew: !archive.existsOnDisk)
+                let _ = try await archive.extract(extractables: extractableEntries, toFolder: destURL, retainFullPath: retainFullPath, archiveIsNew: !archive.existsOnDisk)
             } catch let error as ArkyveError {
                 showErrors.err(error)
             } catch {
@@ -187,15 +184,11 @@ extension MainWindowViewModel {
         guard let archive else { return }
 
         let chosenEntries = archive.entries.filter { selectedEntries.contains($0.id) }
-        let extractableEntries: [ArchiveEntryExtractable] = chosenEntries.map { $0.asExtractable(for: archive) }
-
         quickLookItems = []
 
         Task {
-            let loader = libarchiveWrapper(url: archive.URL)
-
             do {
-                quickLookItems += try await loader.extract(extractableEntries, toFolder: archive.cacheURL, archiveIsNew: !archive.existsOnDisk)
+                quickLookItems += try await archive.extract(entries: chosenEntries, toFolder: archive.cacheURL, archiveIsNew: !archive.existsOnDisk)
                 if !quickLookItems.isEmpty {
                     quickLookURL = quickLookItems.first
                 }

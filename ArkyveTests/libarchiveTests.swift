@@ -21,8 +21,7 @@ import Foundation
 
         #expect(url != nil)
 
-        let loader = libarchiveWrapper(url: url!)
-        archive = try await loader.loadArchive()
+        archive = try await libarchiveWrapper.loadArchive(at: url!)
     }
 
     @Test func testArchiveProperties() async throws {

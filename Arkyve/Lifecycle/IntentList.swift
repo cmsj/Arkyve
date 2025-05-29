@@ -40,8 +40,7 @@ struct IntentList: AppIntent {
             defer { inputURL.stopAccessingSecurityScopedResource() }
 
             NSLog("extract(): Reading source archive: \(inputURL)")
-            let loader = libarchiveWrapper(url: inputURL)
-            let archive = try await loader.loadArchive()
+            let archive = try await libarchiveWrapper.loadArchive(at: inputURL)
 
             return archive.entries.map { $0.path }
         }

@@ -63,18 +63,10 @@ struct IntentExtractSome: AppIntent {
             defer { inputURL.stopAccessingSecurityScopedResource() }
 
             NSLog("extract(): Reading source archive: \(inputURL)")
-            var loader = libarchiveWrapper(url: inputURL)
-            let archive = try await loader.loadArchive()
+            let archive = try await libarchiveWrapper.loadArchive(at: inputURL)
 
             NSLog("extract(): Attempting to extract \(entryPaths.count) entries to \(outputFolderURL)")
-
-            // Determine which entries to extract
-            let extractables = archive.entries.compactMap {
-                entryPaths.contains($0.path) ? $0.asExtractable(for: archive) : nil
-            }
-
-            loader = libarchiveWrapper(url: inputURL)
-            return try await loader.extract(extractables, toFolder: outputFolderURL, retainFullPath: retainFullPath, archiveIsNew: false)
+            return try await archive.extract(paths: entryPaths, toFolder: outputFolderURL, retainFullPath: retainFullPath, archiveIsNew: false)
         }
         return .result(value: resultURL)
     }

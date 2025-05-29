@@ -31,8 +31,7 @@ func extract(_ url: URL) async throws -> URL? {
     try FileManager.default.createDirectory(at: outputFolderURL, withIntermediateDirectories: true)
 
     NSLog("extract(): Reading source archive: \(url)")
-    var loader = libarchiveWrapper(url: url)
-    let archive = try await loader.loadArchive()
+    let archive = try await libarchiveWrapper.loadArchive(at: url)
     guard let rootEntries = archive.root.children else { throw ArkyveError(.extract, msg: "Unable to find archive contents")}
 
     if rootEntries.count > 1 {
@@ -45,9 +44,7 @@ func extract(_ url: URL) async throws -> URL? {
 
     NSLog("extract(): Attempting to extract to \(outputFolderURL)")
 
-    let extractables = rootEntries.map { $0.asExtractable(for: archive) }
-    loader = libarchiveWrapper(url: url)
-    let writtenURLs = try await loader.extract(extractables, toFolder: outputFolderURL, retainFullPath: true, archiveIsNew: false)
+    let writtenURLs = try await archive.extract(toFolder: outputFolderURL, retainFullPath: true, archiveIsNew: false)
 
     if returnExtraTopLevelDirectory {
         NSLog("extract(): Returning extra top-level directory: \(outputFolderURL)")

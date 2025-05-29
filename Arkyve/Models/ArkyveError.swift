@@ -5,7 +5,7 @@
 //  Created by Chris Jones on 23/12/2024.
 //
 
-struct ArkyveError: Error, Equatable {
+struct ArkyveError: Error, Equatable, CustomLocalizedStringResourceConvertible {
     enum ErrorKind: String {
         case openArchive = "Open"
         case readArchive = "Read"
@@ -28,6 +28,10 @@ struct ArkyveError: Error, Equatable {
     }
 
     var localizedDescription: String {
+        "\(kind.rawValue): \(msg)"
+    }
+
+    var localizedStringResource: LocalizedStringResource {
         "\(kind.rawValue): \(msg)"
     }
 

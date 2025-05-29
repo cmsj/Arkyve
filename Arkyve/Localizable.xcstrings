@@ -86,6 +86,16 @@
         }
       }
     },
+    "%@: %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$@: %2$@"
+          }
+        }
+      }
+    },
     "%lld items" : {
       "localizations" : {
         "ar" : {
@@ -591,6 +601,15 @@
           }
         }
       }
+    },
+    "An archive file to extract" : {
+
+    },
+    "An archive file to list" : {
+
+    },
+    "Archive File" : {
+
     },
     "Cancel" : {
       "localizations" : {
@@ -2069,6 +2088,9 @@
         }
       }
     },
+    "Destination Folder" : {
+
+    },
     "Displayed error: %@" : {
       "extractionState" : "stale",
       "localizations" : {
@@ -2151,6 +2173,9 @@
           }
         }
       }
+    },
+    "Entry Paths" : {
+
     },
     "Execute" : {
 
@@ -2236,6 +2261,12 @@
           }
         }
       }
+    },
+    "Extract ${entryPaths} from ${inputFile} to ${destinationFolder}" : {
+
+    },
+    "Extract ${inputFile} to ${destinationFolder}" : {
+
     },
     "Extract All..." : {
       "localizations" : {
@@ -2401,6 +2432,12 @@
         }
       }
     },
+    "Extract some files from archive" : {
+
+    },
+    "Extract with Arkyve2" : {
+
+    },
     "Extract..." : {
       "localizations" : {
         "ar" : {
@@ -2482,6 +2519,12 @@
           }
         }
       }
+    },
+    "Extracts an archive to a given destination folder. Supports .zip, .7z, .rar, .iso, .cpio, .tar.gz, .tar.bz, .tar.xz, .lha, .lzh, .cab, .a, .xip, .xar, .pkg." : {
+
+    },
+    "Extracts some files from an archive to a given destination folder. Supports .zip, .7z, .rar, .iso, .cpio, .tar.gz, .tar.bz, .tar.xz, .lha, .lzh, .cab, .a, .xip, .xar, .pkg." : {
+
     },
     "Failed to open file for reading: %@" : {
       "localizations" : {
@@ -2972,6 +3015,9 @@
           }
         }
       }
+    },
+    "If this is true, extracted entries will be placed in the equivalent folder hierarchy as they were in the archive. If this is false, the chosen entries will be extracted without any additional parent folders" : {
+
     },
     "Internal error, adding entry to edge node" : {
       "localizations" : {
@@ -3718,6 +3764,15 @@
           }
         }
       }
+    },
+    "List archive contents" : {
+
+    },
+    "List the contents of ${inputFile}" : {
+
+    },
+    "Lists the contents of an archive. Supports .zip, .7z, .rar, .iso, .cpio, .tar.gz, .tar.bz, .tar.xz, .lha, .lzh, .cab, .a, .xip, .xar, .pkg." : {
+
     },
     "Log viewer" : {
       "localizations" : {
@@ -4697,6 +4752,9 @@
         }
       }
     },
+    "Paths within the archive to extract" : {
+
+    },
     "Permissions" : {
       "localizations" : {
         "ar" : {
@@ -5192,6 +5250,9 @@
           }
         }
       }
+    },
+    "Retain full path" : {
+
     },
     "Revert to Saved" : {
       "localizations" : {
@@ -6110,6 +6171,9 @@
           }
         }
       }
+    },
+    "The folder to extract the archive into. This should be specified as a path, e.g. /path/to/folder. The folder will be created if it does not already exist." : {
+
     },
     "This archive has unsaved changes, do you want to close it without saving?" : {
       "localizations" : {

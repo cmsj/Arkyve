@@ -36,7 +36,8 @@ enum DropItem: Codable, Transferable {
                 return DropItem.file(receivedFile.file)
             }
 
-            // This isn't the original file, so we will copy it to our drop cache
+            // This isn't the original file, or it's in a temporary private OS cache folder,
+            // so we will copy it to our drop cache
             let tempURL = try CacheManager.shared.cacheDropURL(receivedFile.file)
             return DropItem.file(tempURL)
         }

@@ -200,7 +200,6 @@ extension MainWindowViewModel {
         }
     }
 
-    // FIXME: Do the following two functions belong here?
     func nameForQuickLook(items: Set<ArchiveEntry.ID>?) -> String {
         let first = archive?.entries.first { entry in
             entry.id == items?.first

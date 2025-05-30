@@ -8,18 +8,17 @@
 import Darwin
 
 extension dev_t {
-    func major(_ x: dev_t) -> Int32 {
-        return (x >> 24) & 0xff
+    func major() -> Int32 {
+        return (self >> 24) & 0xff
     }
 
-    func minor(_ x: dev_t) -> Int32 {
-        return x & 0xffffff
+    func minor() -> Int32 {
+        return self & 0xffffff
     }
 
     var description: String {
-        let major = major(self)
-        let minor = minor(self)
-
+        let major = String(major(), radix: 16)
+        let minor = String(minor(), radix: 16)
         return "\(major), \(minor)"
     }
 }

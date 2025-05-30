@@ -293,6 +293,24 @@ struct ArchiveEntryTests {
         #expect(synth.sizeString == "--")
         #expect(file.sizeString == "100")
 
+        #expect(root.sizeStringHuman == "--")
+        #expect(synth.sizeStringHuman == "--")
+        #expect(file.sizeStringHuman == "100 bytes")
+        file.size = 1024
+        #expect(file.sizeStringHuman == "1 KB")
+        file.size *= 1024
+        #expect(file.sizeStringHuman == "1 MB")
+        file.size *= 1024
+        #expect(file.sizeStringHuman == "1 GB")
+        file.size *= 1024
+        #expect(file.sizeStringHuman == "1 TB")
+        file.size *= 1024
+        #expect(file.sizeStringHuman == "1 PB")
+        file.size *= 1024
+        #expect(file.sizeStringHuman == "1 EB")
+        file.size = 0
+        #expect(file.sizeStringHuman == "0 bytes")
+
         synth.uid = nil
         #expect(root.uidString == "0")
         #expect(synth.uidString == "--")
@@ -306,6 +324,61 @@ struct ArchiveEntryTests {
         // We don't need to test this any deeper, mode_t provides the actual perms string and it has extensive tests
         #expect(root.permsString == "")
         #expect(file.permsString == "?rw-r--r--")
+
+        #expect(root.permsAccessibilityString == "")
+        #expect(file.permsAccessibilityString == "User: read,  write, no execute, no SetUID. Group: read, no write, no execute, no SetGID. Other: read, no write, no execute, no sticky")
+
+        #expect(root.rdevString == "--")
+        #expect(file.rdevString == "--")
+        file.type = .blockdev
+        #expect(file.rdevString == "--")
+        file.rdev = 0
+        #expect(file.rdevString == "0, 0")
+        file.rdev = 0x12345678
+        #expect(file.rdevString == "12, 345678")
+
+        file.rdev = nil
+        #expect(file.symlinkTargetString == "--")
+        file.type = .symlink
+        file.symlinkTarget = "something"
+        #expect(file.symlinkTargetString == "something")
+    }
+
+    @Test("Check computed string property")
+    func testUTTypeProperty() throws {
+        let root = ArchiveEntry(isRoot: true)
+        let synth = ArchiveEntry(syntheticDirectory: "synthDir")
+        let file = createFileEntry(path: "/tmp/testfile.txt")
+
+        #expect(root.utType == .volume)
+        #expect(synth.utType == .folder)
+        #expect(file.utType == .plainText)
+
+        file.type = .symlink
+        #expect(file.utType == .symbolicLink)
+
+        file.type = .blockdev
+        #expect(file.utType == .data)
+
+        file.name = "lol"
+        file.type = .file
+        #expect(file.utType == .data)
+    }
+
+    @Test("Initialise from URL")
+    func testURLInitialisation() async throws {
+        let bundle = Bundle(for: libarchiveTests.self)
+
+        guard let url = bundle.url(forResource: "hello", withExtension: "txt") else {
+            throw TestError("Could not find resource file")
+        }
+        NSLog("Set URL to: \(url)")
+
+        guard let entry = ArchiveEntry(from: url, pathInArchiveComponents: [url.lastPathComponent]) else {
+            throw TestError("Unable to load entry")
+        }
+        #expect(entry.name == "hello.txt")
+
     }
 
     // Helper method to create file entries for testing

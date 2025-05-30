@@ -145,6 +145,62 @@ import Foundation
             #expect((mode & S_IWOTH) == 0)
             #expect((mode & S_IXOTH) != 0)
         }
+
+        @Test func testBits() async throws {
+            var mode: mode_t = 0
+
+            #expect(mode.accessibilityString == "User: no read, no write, no execute, no SetUID. Group: no read, no write, no execute, no SetGID. Other: no read, no write, no execute, no sticky")
+
+            #expect(mode.IRUSR == false)
+            mode.IRUSR = true
+            #expect(mode.IRUSR == true)
+
+            #expect(mode.IWUSR == false)
+            mode.IWUSR = true
+            #expect(mode.IWUSR == true)
+
+            #expect(mode.IXUSR == false)
+            mode.IXUSR = true
+            #expect(mode.IXUSR == true)
+
+            #expect(mode.IRGRP == false)
+            mode.IRGRP = true
+            #expect(mode.IRGRP == true)
+
+            #expect(mode.IWGRP == false)
+            mode.IWGRP = true
+            #expect(mode.IWGRP == true)
+
+            #expect(mode.IXGRP == false)
+            mode.IXGRP = true
+            #expect(mode.IXGRP == true)
+
+            #expect(mode.IROTH == false)
+            mode.IROTH = true
+            #expect(mode.IROTH == true)
+
+            #expect(mode.IWOTH == false)
+            mode.IWOTH = true
+            #expect(mode.IWOTH == true)
+
+            #expect(mode.IXOTH == false)
+            mode.IXOTH = true
+            #expect(mode.IXOTH == true)
+
+            #expect(mode.ISUSR == false)
+            mode.ISUSR = true
+            #expect(mode.ISUSR == true)
+
+            #expect(mode.ISGRP == false)
+            mode.ISGRP = true
+            #expect(mode.ISGRP == true)
+
+            #expect(mode.ISVTX == false)
+            mode.ISVTX = true
+            #expect(mode.ISVTX == true)
+
+            #expect(mode.accessibilityString == "User: read,  write,  execute, SetUID. Group: read,  write,  execute, SetGID. Other: read,  write,  execute, sticky")
+        }
     }
 
     @Suite("FileManager Extensions") struct FileManagerTests {
@@ -223,6 +279,21 @@ import Foundation
             } catch {
                 #expect(true, "Error was thrown as expected")
             }
+        }
+    }
+
+    @Suite("dev_t Extensions") struct DevTTests {
+        @Test func testDev_t() async throws {
+            var foo: dev_t = 0
+            #expect(foo.major() == 0)
+            #expect(foo.minor() == 0)
+            #expect(foo.description == "0, 0")
+
+            foo = 0x12345678
+            #expect(foo.description == "12, 345678")
+
+            foo = Int32.max
+            #expect(foo.description == "7f, ffffff")
         }
     }
 }

@@ -53,7 +53,7 @@ class ArchiveEntry: Identifiable {
             let base: Double = 1024.0
 
             // Handle non-positive values
-            if type == .directory {
+            if size == -1 {
                 return "--"
             }
             guard size > 0 else {

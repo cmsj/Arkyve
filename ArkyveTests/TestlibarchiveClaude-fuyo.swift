@@ -46,13 +46,13 @@ struct libarchiveTestsClaudeFuyo {
 
     // MARK: - Tests
 
-//    @Test("Initialize libarchive")
-//    func testInitialization() throws {
-//        let testURL = URL(fileURLWithPath: "/path/to/archive.zip")
-//        let archive = libarchive(url: testURL)
-//
-//        #expect(archive.url == testURL)
-//    }
+    @Test("Initialize libarchive")
+    func testInitialization() async throws {
+        let testURL = try getTestArchive(named: "helloworld.zip")
+        let archive = try await libarchiveWrapper.loadArchive(at: testURL)
+
+        #expect(archive.URL == testURL)
+    }
 
     @Test("Read archive entries, format, and filters")
     func testReadEntriesFormatFilters() async throws {

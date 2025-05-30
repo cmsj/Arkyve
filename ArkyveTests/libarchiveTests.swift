@@ -33,14 +33,18 @@ import Foundation
         #expect(archive.entries.count == 4)
     }
 
-//    @Test func testArchiveDirtyFlag() async throws {
-//        // test if dirtiness works
-//        #expect(archive.dirty == false)
-//        archive.setDirty()
-//        #expect(archive.dirty == true)
-//        archive.setDirty(false)
-//        #expect(archive.dirty == false)
-//    }
+    @Test func testArchiveDirtyFlag() async throws {
+        // test if dirtiness works
+        #expect(archive.dirty == false)
+        archive.setDirty()
+        #expect(archive.dirty == true)
+        archive.setDirty(false)
+        #expect(archive.dirty == false)
+        archive.setDirty()
+        #expect(archive.dirty == true)
+        archive.setClean()
+        #expect(archive.dirty == false)
+    }
 
     @Test func testArchiveRoot() async throws {
         #expect(archive.root.type == .root)

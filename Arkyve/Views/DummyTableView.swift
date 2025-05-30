@@ -14,6 +14,8 @@ struct DummyTableView: View {
     @Environment(\.isEnabled) var isEnabled
 
     @State private var dummyRows: [ArchiveEntry] = []
+    @State private var searchQuery: String = ""
+    @State private var isSearchPresented: Bool = false
 
     var body: some View {
         Table(dummyRows) {
@@ -31,6 +33,7 @@ struct DummyTableView: View {
             viewModel.handleManyDrops(items: items)
             return true
         }
+        .searchable(text: $searchQuery, isPresented: $isSearchPresented)
     }
 }
 

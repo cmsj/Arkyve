@@ -29,6 +29,9 @@
 		4F41C42A2D1EBAC60011DAAB /* Credits.rtf in Resources */ = {isa = PBXBuildFile; fileRef = 4F41C4282D1EBAC60011DAAB /* Credits.rtf */; };
 		4F4CD2C52DE328E500FA77E4 /* DummyTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F4CD2C42DE328E200FA77E4 /* DummyTableView.swift */; };
 		4F51AFF82DE8A79900E972EE /* IntentExtractSome.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F51AFF72DE8A79500E972EE /* IntentExtractSome.swift */; };
+		4F51B01B2DE9CC8500E972EE /* CacheManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F51B01A2DE9CC8500E972EE /* CacheManager.swift */; };
+		4F51B01D2DE9CCA500E972EE /* CacheManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F51B01A2DE9CC8500E972EE /* CacheManager.swift */; };
+		4F51B01E2DE9CCA500E972EE /* CacheManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F51B01A2DE9CC8500E972EE /* CacheManager.swift */; };
 		4F545DFD2DC61C6200B435DD /* PermsEditorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F545DFC2DC61C6200B435DD /* PermsEditorView.swift */; };
 		4F545E362DC65EF000B435DD /* DateEditorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F545E352DC65EF000B435DD /* DateEditorView.swift */; };
 		4F688A5A2D734551003B5D60 /* DropItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F688A592D734551003B5D60 /* DropItem.swift */; };
@@ -184,6 +187,7 @@
 		4F41C4282D1EBAC60011DAAB /* Credits.rtf */ = {isa = PBXFileReference; lastKnownFileType = text.rtf; path = Credits.rtf; sourceTree = "<group>"; };
 		4F4CD2C42DE328E200FA77E4 /* DummyTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DummyTableView.swift; sourceTree = "<group>"; };
 		4F51AFF72DE8A79500E972EE /* IntentExtractSome.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntentExtractSome.swift; sourceTree = "<group>"; };
+		4F51B01A2DE9CC8500E972EE /* CacheManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CacheManager.swift; sourceTree = "<group>"; };
 		4F545DFC2DC61C6200B435DD /* PermsEditorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PermsEditorView.swift; sourceTree = "<group>"; };
 		4F545E352DC65EF000B435DD /* DateEditorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateEditorView.swift; sourceTree = "<group>"; };
 		4F688A592D734551003B5D60 /* DropItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DropItem.swift; sourceTree = "<group>"; };
@@ -345,6 +349,7 @@
 				4F706C372DE865D800069D1F /* IntentList.swift */,
 				4FCEEEDD2BEE39E7009E9E17 /* ArkyveApp.swift */,
 				4F344ECD2C335224006E1D9F /* SettingsManager.swift */,
+				4F51B01A2DE9CC8500E972EE /* CacheManager.swift */,
 				4F344ECF2C335243006E1D9F /* AppDelegate.swift */,
 			);
 			path = Lifecycle;
@@ -668,6 +673,7 @@
 				4F7699432DDFE6350070BA1F /* ArchiveEntryType.swift in Sources */,
 				4F7699452DDFE6830070BA1F /* UTType.swift in Sources */,
 				4F7699462DDFE6990070BA1F /* ArkyveError.swift in Sources */,
+				4F51B01D2DE9CCA500E972EE /* CacheManager.swift in Sources */,
 				4F7699442DDFE64B0070BA1F /* mode_t.swift in Sources */,
 				4F76993C2DDFE5D10070BA1F /* libarchiveWrapper.swift in Sources */,
 				4F76994D2DDFE9AD0070BA1F /* SettingsManager.swift in Sources */,
@@ -693,6 +699,7 @@
 				4F76996B2DE0BB7F0070BA1F /* ArchiveEntry.swift in Sources */,
 				4F76996C2DE0BB930070BA1F /* ArchiveEntryType.swift in Sources */,
 				4F76996D2DE0BB930070BA1F /* ArkyveError.swift in Sources */,
+				4F51B01E2DE9CCA500E972EE /* CacheManager.swift in Sources */,
 				4F7699732DE0BBA40070BA1F /* libarchiveHeader.swift in Sources */,
 				4F7699742DE0BBA40070BA1F /* libarchiveWrapper.swift in Sources */,
 				4F7699752DE0BBA40070BA1F /* libarchiveFD.swift in Sources */,
@@ -724,6 +731,7 @@
 				4FCEEEE02BEE39E7009E9E17 /* MainWindowView.swift in Sources */,
 				4F6E856D2DC53DFB001FB62F /* dev_t.swift in Sources */,
 				4FF10CA62DE7387100FB90D6 /* IntentExtractAll.swift in Sources */,
+				4F51B01B2DE9CC8500E972EE /* CacheManager.swift in Sources */,
 				4F545E362DC65EF000B435DD /* DateEditorView.swift in Sources */,
 				4F41C4032D1891230011DAAB /* libarchiveHeader.swift in Sources */,
 				4F10848E2C262396007DCC39 /* ArkyveLog.swift in Sources */,

@@ -212,6 +212,17 @@ struct TableView: View {
         } rows: {
             TableRowTreeContent(node: viewModel.archive?.root, viewModel: viewModel)
         }
+        .dropDestination(for: DropItem.self) { items, _  in
+            print("Table: dropDestination")
+            if viewModel.archive == nil {
+                viewModel.newButton()
+            }
+
+            guard viewModel.archive != nil else { return false }
+
+            viewModel.handleManyDrops(items: items)
+            return true
+        }
         .searchable(text: $viewModel.searchQuery, isPresented: $viewModel.searchPresented)
         .copyable(viewModel.buildCopyable(entries: viewModel.selectedEntries))
         .cuttable(action: {
@@ -247,17 +258,6 @@ struct TableView: View {
         }
         .onChange(of: renameEntryFocus) { _, newValue in
             viewModel.focusedEntry = newValue
-        }
-        .dropDestination(for: DropItem.self) { items, _  in
-            print("Table: dropDestination")
-            if viewModel.archive == nil {
-                viewModel.newButton()
-            }
-
-            guard viewModel.archive != nil else { return false }
-
-            viewModel.handleManyDrops(items: items)
-            return true
         }
     }
 }

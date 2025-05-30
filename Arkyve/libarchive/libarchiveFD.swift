@@ -158,7 +158,7 @@ struct libarchiveFD {
         }
 
         // Figure out cache filename
-        writeCacheURL = SettingsManager.shared.writeCacheURL.appendingPathComponent(at.lastPathComponent)
+        writeCacheURL = CacheManager.shared.urlForItem(cacheType: .write, itemName: at.lastPathComponent)
         guard let writeCachePath = writeCacheURL else {
             throw .init(.writeArchive, msg: String(localized: "Unable to create cache path"))
         }

@@ -14,7 +14,7 @@ struct MainWindowView: View {
         // NOTE: Try and keep this in sync with the view model's closeButton/saveButton
         print("shutdownSaveRequest")
 
-        defer { SettingsManager.shared.removeCacheDirectories() }
+        defer { CacheManager.shared.removeCacheDirectories() }
 
         guard let archive = viewModel.archive, archive.dirty == true else {
             print("Archive not dirty, or not open, skipping.")

@@ -74,7 +74,7 @@ class Archive: Identifiable {
         self.URL = URL
         self.path = URL.path().removingPercentEncoding ?? "Unknown"
         self.name = URL.lastPathComponent
-        self.cacheURL = SettingsManager.shared.readCacheURL.appendingPathComponent(_name)
+        self.cacheURL = CacheManager.shared.urlForItem(cacheType: .read, itemName: _name)
 
         AKTrace("Initialised for \(URL)")
     }
@@ -110,10 +110,9 @@ class Archive: Identifiable {
         }
     }
 
-    func metadataForSaving(overrideFormat: libarchiveFormat = .Unknown,
-                           overrideFilters: [libarchiveFilter] = [.None]) -> (libarchiveFormat,
-                                                                              [libarchiveFilter],
-                                                                              [String:ArchiveEntryFlat]) {
+    func metadataForSaving(overrideFormat: libarchiveFormat = .Unknown, overrideFilters: [libarchiveFilter] = [.None])
+        -> (libarchiveFormat, [libarchiveFilter], [String:ArchiveEntryFlat])
+    {
         let format = overrideFormat == .Unknown ? format : overrideFormat
         let filters = overrideFilters == [.None] ? filters : overrideFilters
 
@@ -129,8 +128,18 @@ class Archive: Identifiable {
         // Having written the archive, we should no longer have any entries of source type .Filesystem
         // So we'll update our entries to switch them to .Archive
         // Same for .InMemory directories
+
+        var dropCacheCleanups: [String] = []
+        defer { CacheManager.shared.removeCacheItems(cacheType: .drop, paths: dropCacheCleanups) }
+
         entries.forEach { entry in
             if (entry.source.type == .Filesystem || entry.source.type == .InMemory) {
+                // IF this entry started out as an item in our drop cache, we should now clean it up
+                if CacheManager.shared.isInDropCache(path: entry.source.path) {
+                    dropCacheCleanups.append(entry.source.path)
+                }
+
+                // Update our source to the archive path
                 entry.source = .init(type: .Archive, path: entry.path)
             }
         }
@@ -348,6 +357,7 @@ class Archive: Identifiable {
         self.setDirty()
     }
 
+    // MARK: - Helper methods for extraction
     func extract(paths: [String], toFolder: URL,
                  retainFullPath:Bool = false, archiveIsNew: Bool) async throws(ArkyveError) -> [URL] {
         let extractables = entries.compactMap { entry in

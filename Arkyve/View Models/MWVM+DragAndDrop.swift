@@ -10,6 +10,21 @@ import AppKit
 
 extension MainWindowViewModel {
     // MARK: - Drag and drop (high level)
+    func processDrop(at index: Int? = nil, on entryID: ArchiveEntry.ID? = nil, for providers: [NSItemProvider]) {
+        for provider in providers {
+            _ = provider.loadTransferable(type: DropItem.self, completionHandler: { result in
+                Task { @MainActor in
+                    switch result {
+                    case .success(let item):
+                        self.handleManyDrops(on: entryID, items: [item])
+                    case .failure(let error):
+                        self.showErrors.err(.init(.drop, msg: "Failed to handle drop: \(error.localizedDescription)"))
+                    }
+                }
+            })
+        }
+    }
+
     func handleManyDrops(on entryID: UUID? = nil, items: [DropItem]) {
         for item in items {
             switch (item) {
@@ -19,37 +34,6 @@ extension MainWindowViewModel {
                 handleFileURLDrop(on: entryID, fileURL: url)
             default:
                 showErrors.err(.init(.drop, msg: "Unknown drop type"))
-            }
-        }
-    }
-
-    func processDrop(at index: Int? = nil, on entryID: ArchiveEntry.ID? = nil, for providers: [NSItemProvider]) {
-        for provider in providers {
-            // Check for the internal type first, because internal drags also have a fileURL so they can be dragged externally
-            if provider.hasItemConformingToTypeIdentifier(UTType.archiveEntryExtractable.identifier) {
-                _ = provider.loadTransferable(type: ArchiveEntryExtractable.self) { result in
-                    Task { @MainActor in
-                        switch result {
-                        case .success(let entry):
-                            self.handleEntryDrop(at: index, on: entryID, entryExtractable: entry)
-                        case .failure(let error):
-                            self.showErrors.err(.init(.drop, msg: "Failed to handle drop: \(error.localizedDescription)"))
-                        }
-                    }
-                }
-            } else if provider.hasItemConformingToTypeIdentifier(UTType.fileURL.identifier) {
-                _ = provider.loadTransferable(type: URL.self) { result in
-                    Task { @MainActor in
-                        switch result {
-                        case .success(let url):
-                            self.handleFileURLDrop(at: index, on: entryID, fileURL: url)
-                        case .failure(let error):
-                            self.showErrors.err(.init(.drop, msg: "Failed to handle drop: \(error.localizedDescription)"))
-                        }
-                    }
-                }
-            } else {
-                showErrors.err(.init(.drop, msg: "Unsupported item type: \(provider.registeredTypeIdentifiers.joined(separator: ","))"))
             }
         }
     }

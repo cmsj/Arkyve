@@ -14,15 +14,30 @@ enum DropItem: Codable, Transferable {
 
     static var transferRepresentation: some TransferRepresentation {
         ProxyRepresentation { DropItem.entry($0) }
-        ProxyRepresentation { DropItem.file($0) }
-        FileRepresentation(importedContentType: .image) { url in
-            AKTrace("User dragged an image: \(url)")
-            let tempDir = SettingsManager.shared.dropCacheURL.appendingPathComponent(UUID().uuidString)
-            try FileManager.default.createDirectory(at: tempDir, withIntermediateDirectories: true)
+        ProxyRepresentation { url in
+            var sourceURL: URL = url
+            AKTrace("User dragged a file (proxy): \(sourceURL)")
 
-            let tempURL = tempDir.appendingPathComponent(url.file.lastPathComponent)
-            AKTrace("Copying to cache: \(tempURL)")
-            try FileManager.default.copyItem(at: url.file, to: tempURL)
+            if sourceURL.path.hasPrefix("/var") {
+                // We are likely receiving something in a weird private temporary folder
+                // (e.g. a screenshot preview drag). Copy it to our drop cache
+                sourceURL = try CacheManager.shared.cacheDropURL(sourceURL)
+            }
+            return DropItem.file(sourceURL)
+        }
+        FileRepresentation(importedContentType: .image, shouldAttemptToOpenInPlace: true) { receivedFile in
+            AKTrace("User dragged an image: \(receivedFile)")
+
+            _ = receivedFile.file.startAccessingSecurityScopedResource()
+            defer { receivedFile.file.stopAccessingSecurityScopedResource() }
+
+            if receivedFile.isOriginalFile && !receivedFile.file.path.hasPrefix("/var") {
+                AKTrace("Returning original file: \(receivedFile.file)")
+                return DropItem.file(receivedFile.file)
+            }
+
+            // This isn't the original file, so we will copy it to our drop cache
+            let tempURL = try CacheManager.shared.cacheDropURL(receivedFile.file)
             return DropItem.file(tempURL)
         }
     }

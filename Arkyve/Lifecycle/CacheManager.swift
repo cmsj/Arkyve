@@ -101,4 +101,14 @@ struct CacheManager {
             }
         }
     }
+
+    func cacheDropURL(_ url: URL) throws -> URL {
+        let tempDir = urlForItem(cacheType: .drop, itemName: UUID().uuidString)
+        try FileManager.default.createDirectory(at: tempDir, withIntermediateDirectories: true)
+
+        let tempURL = tempDir.appendingPathComponent(url.lastPathComponent)
+        AKTrace("Drop-caching \(url) to \(tempURL)")
+        try FileManager.default.copyItem(at: url, to: tempURL)
+        return tempURL
+    }
 }

@@ -162,7 +162,7 @@ import Foundation
         let wrapper = libarchiveWrapper(url: url)
         #expect(await wrapper.testURL() == url)
     }
-    
+
     @Test func testLibarchiveWrapperPath() async {
         let url = URL(fileURLWithPath: "/test/archive.zip")
         let wrapper = libarchiveWrapper(url: url)
@@ -175,6 +175,46 @@ import Foundation
         #expect(await wrapper.testPath() == "/test/archive with spaces.zip")
     }
 
+    @Test func testBigFunctionalTest() async throws {
+        let bundle = Bundle(for: libarchiveTests.self)
+        var archive = Archive()
+        let archiveName = "test-\(UUID().uuidString).zip"
+        let archiveURL = FileManager.default.temporaryDirectory.appendingPathComponent(archiveName)
+
+        let root = ArchiveEntry(isRoot: true)
+        archive.root = root
+
+        guard let helloTxtURL = bundle.url(forResource: "hello", withExtension: "txt") else {
+            throw TestError("Unable to find hello.txt in bundle")
+        }
+        try archive.addFiles(from: [helloTxtURL])
+
+        guard let folderID = archive.newFolder(at: root.id) else {
+            throw TestError("Unable to add new folder")
+        }
+        guard let folderEntry = archive.entryForID(folderID) else {
+            throw TestError("Unable to find new folder entry")
+        }
+        folderEntry.name = "Test folder"
+
+        guard let testTxtURL = bundle.url(forResource: "test", withExtension: "txt") else {
+            throw TestError("Unable to find test.txt in bundle")
+        }
+        try archive.addFiles(from: [testTxtURL], parent: folderEntry)
+
+
+        // Write the archive
+        let (format, filters, headerMap) = archive.metadataForSaving(overrideFormat: .ZIP, overrideFilters: [.None])
+        var loader = libarchiveWrapper(url: archive.URL)
+        try await loader.writeArchive(headerMap: headerMap, to: archiveURL, format: format, filters: filters, skipRead: true)
+        archive.didSave(to: archiveURL, format: format, filters: filters)
+
+        // Read the archive back and verify its contents
+        loader = libarchiveWrapper(url: archiveURL)
+        archive = try await loader.loadArchive()
+        #expect(archive.name == archiveName)
+        #expect(archive.entries.count == 3)
+    }
 //    @Test func testLibarchiveWrapperExtractEntries() async throws {
 //        let testURL = URL(fileURLWithPath: "/tmp/test_extract")
 //        let wrapper = libarchiveWrapper(url: url!)

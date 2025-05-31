@@ -105,6 +105,7 @@ class Archive: Identifiable {
         self.filters = filters
 
         // If we only have one child and it's a directory, let's expand it for a better UX
+        // FIXME: Expose a setting for this behaviour
         if self.root.children?.count == 1, self.root.children?.first?.type == .directory {
             self.root.children?.first?.isExpanded = true
         }

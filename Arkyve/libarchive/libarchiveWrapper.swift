@@ -774,6 +774,7 @@ actor libarchiveWrapper {
                 _ = try FileManager.default.replaceItemAt(to, withItemAt: writeCacheURL, options: [.usingNewMetadataOnly])
             } catch {
                 do {
+                    // FIXME: Add a comment here explaining why we retry with this call
                     try FileManager.default.moveItem(at: writeCacheURL, to: to)
                 } catch {
                     throw .init(.writeArchive, msg: error.localizedDescription)

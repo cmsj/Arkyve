@@ -111,4 +111,50 @@ struct CacheManager {
         try FileManager.default.copyItem(at: url, to: tempURL)
         return tempURL
     }
+
+    func cacheSizes() -> (Int, Int, Int) {
+        let readCacheSize = cacheSize(cacheType: .read)
+        let dropCacheSize = cacheSize(cacheType: .drop)
+        let writeCacheSize = cacheSize(cacheType: .write)
+        return (readCacheSize, dropCacheSize, writeCacheSize)
+    }
+
+    func cacheSize(cacheType: CacheType) -> Int {
+        guard let cacheURL = urls[cacheType] else { return -1 }
+        return directorySize(url: cacheURL)
+    }
+
+    private func directorySize(url: URL) -> Int {
+        let contents: [URL]
+        do {
+            contents = try FileManager.default.contentsOfDirectory(at: url, includingPropertiesForKeys: [.fileSizeKey, .isDirectoryKey])
+        } catch {
+            return 0
+        }
+
+        var size: Int = 0
+
+        for url in contents {
+            let isDirectoryResourceValue: URLResourceValues
+            do {
+                isDirectoryResourceValue = try url.resourceValues(forKeys: [.isDirectoryKey])
+            } catch {
+                continue
+            }
+
+            if isDirectoryResourceValue.isDirectory == true {
+                size += directorySize(url: url)
+            } else {
+                let fileSizeResourceValue: URLResourceValues
+                do {
+                    fileSizeResourceValue = try url.resourceValues(forKeys: [.fileSizeKey])
+                } catch {
+                    continue
+                }
+
+                size += fileSizeResourceValue.fileSize ?? 0
+            }
+        }
+        return size
+    }
 }

@@ -9,6 +9,8 @@ import SwiftUI
 
 struct MenuCommands: Commands {
     @State var viewModel: MainWindowViewModel
+    @Environment(\.dismiss) var dismiss
+    @Environment(\.dismissWindow) var dismissWindow
 
     var body: some Commands {
         // Remove undo/redo
@@ -54,11 +56,11 @@ struct MenuCommands: Commands {
 
             Divider()
 
-            Button("Close") {
+            Button("Close Archive") {
                 viewModel.closeButton()
             }
-            .keyboardShortcut("w", modifiers: [.command])
-            .disabled(viewModel.disableClose)
+            .keyboardShortcut("w", modifiers: [.command, .shift])
+            .disabled(viewModel.disableCloseArchive)
         }
 
         CommandGroup(after: .pasteboard) {

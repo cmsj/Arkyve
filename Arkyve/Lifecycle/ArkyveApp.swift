@@ -13,6 +13,7 @@ import os
 struct ArkyveApp: App {
     @NSApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
     @State var viewModel = MainWindowViewModel()
+    @StateObject var settingsManager = SettingsManager()
 
     init() {
 #if DEBUG
@@ -39,5 +40,11 @@ struct ArkyveApp: App {
             LogWindowView()
         }
         .defaultLaunchBehavior(.suppressed)
+
+        Settings() {
+            SettingsView()
+                .environment(viewModel)
+                .environmentObject(settingsManager)
+        }
     }
 }

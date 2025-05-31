@@ -37,9 +37,10 @@ class MainWindowViewModel {
 
     var disableNew: Bool { disableUI }
     var disableOpen: Bool { disableUI }
+    var disableCloseWindow: Bool { disableUI }
     var disableAdd: Bool { disableUI || archive == nil }
     var disableRevert: Bool { disableUI || archive?.dirty != true || archive?.existsOnDisk != true }
-    var disableClose: Bool { disableUI || archive == nil }
+    var disableCloseArchive: Bool { disableUI || archive == nil }
     var disableSave: Bool { disableUI || archive?.dirty != true || archive?.format.canWrite == false }
     var disableSaveAs: Bool { disableUI || archive == nil }
     var disableQuicklook: Bool { disableUI || selectedEntries.isEmpty }

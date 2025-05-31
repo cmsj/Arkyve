@@ -602,6 +602,12 @@
         }
       }
     },
+    "Advanced" : {
+
+    },
+    "Always" : {
+
+    },
     "An archive file to extract" : {
 
     },
@@ -1924,6 +1930,15 @@
         }
       }
     },
+    "Default behaviours for new archives:" : {
+
+    },
+    "Default format:" : {
+
+    },
+    "Default name:" : {
+
+    },
     "Delete" : {
       "localizations" : {
         "ar" : {
@@ -2261,6 +2276,9 @@
           }
         }
       }
+    },
+    "Expand folders:" : {
+
     },
     "Extract ${entryPaths} from ${inputFile} to ${destinationFolder}" : {
 
@@ -2778,6 +2796,9 @@
     "Find" : {
 
     },
+    "General" : {
+
+    },
     "GID" : {
       "localizations" : {
         "ar" : {
@@ -3018,6 +3039,9 @@
           }
         }
       }
+    },
+    "If archive contains only one folder" : {
+
     },
     "If this is true, extracted entries will be placed in the equivalent folder hierarchy as they were in the archive. If this is false, the chosen entries will be extracted without any additional parent folders" : {
 
@@ -4345,6 +4369,9 @@
         }
       }
     },
+    "New Archive Name (required)" : {
+
+    },
     "New Folder" : {
       "localizations" : {
         "ar" : {
@@ -5254,6 +5281,9 @@
         }
       }
     },
+    "Reset all settings to defaults" : {
+
+    },
     "Retain full path" : {
 
     },
@@ -5578,6 +5608,12 @@
           }
         }
       }
+    },
+    "Save new archives to:" : {
+
+    },
+    "Select new location" : {
+
     },
     "SetGID" : {
 
@@ -6341,6 +6377,9 @@
           }
         }
       }
+    },
+    "This will reset all General and Advanced settings to their default values." : {
+
     },
     "UID" : {
       "localizations" : {
@@ -8313,6 +8352,9 @@
           }
         }
       }
+    },
+    "When opening an archive:" : {
+
     },
     "Working..." : {
 

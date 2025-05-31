@@ -42,7 +42,8 @@ extension Archive {
 class Archive: Identifiable {
     let id: UUID = UUID()
     static var newFilePath: String {
-        SettingsManager.shared.newFolderURL.appending(path: SettingsManager.shared.newArchiveName).path
+        let settingsManager = SettingsManager()
+        return settingsManager.newFolderURL.appending(path: settingsManager.newArchiveName).path
     }
 
     var URL: URL
@@ -50,8 +51,8 @@ class Archive: Identifiable {
     var name: String
     var entries: [ArchiveEntry] = []
     var root: ArchiveEntry = ArchiveEntry(isRoot: true)
-    var format: libarchiveFormat = SettingsManager.shared.newArchiveFormat
-    var filters: [libarchiveFilter] = SettingsManager.shared.newArchiveFilters
+    var format: libarchiveFormat = SettingsManager().newArchiveFormat.libarchiveFormat
+    var filters: [libarchiveFilter] = SettingsManager().newArchiveFilters
     var cacheURL: URL
     private(set) var dirty: Bool = false
 
@@ -105,9 +106,14 @@ class Archive: Identifiable {
         self.filters = filters
 
         // If we only have one child and it's a directory, let's expand it for a better UX
-        let shouldExpand = !SettingsManager.shared.dontExpandSingleRootFolder
+        let shouldExpand = SettingsManager().expandSingleRootFolder
         if shouldExpand, self.root.children?.count == 1, self.root.children?.first?.type == .directory {
             self.root.children?.first?.isExpanded = true
+        }
+
+        let alwaysExpand = SettingsManager().expandAllFolders
+        if alwaysExpand {
+            self.entries.forEach { $0.isExpanded = true }
         }
     }
 
@@ -327,6 +333,10 @@ class Archive: Identifiable {
             let entry = ArchiveEntry(entryHeader)
             parentEntry.children?.append(entry)
             entries.append(entry)
+
+            if SettingsManager().expandAllFolders {
+                entry.isExpanded = true
+            }
             return entry.id
         }
 

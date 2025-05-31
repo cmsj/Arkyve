@@ -6,55 +6,51 @@
 //
 
 import Foundation
+import SwiftUI
 
+final class SettingsManager: ObservableObject {
+    enum Keys: String, CaseIterable {
+        case newFolderURL
+        case newArchiveName
+        case newArchiveFormat
+        case expandSingleRootFolder
+        case expandAllFolders
 
+        var id: String { "\(self)" }
 
-struct SettingsManager {
-    static let shared = SettingsManager()
-
-    var newFolderURL: URL {
-        get {
-            UserDefaults.standard.url(forKey: "newFolderURL") ?? FileManager.default.urls(for: .downloadsDirectory, in: .userDomainMask).first!
-        }
-        set(url) {
-            UserDefaults.standard.setValue(url, forKey: "newFolderURL")
-        }
-    }
-
-    var newArchiveName: String {
-        get {
-            UserDefaults.standard.string(forKey: "newArchiveName") ?? "Untitled"
-        }
-        set(name) {
-            UserDefaults.standard.setValue(name, forKey:"newArchiveName")
-        }
-    }
-
-    var newArchiveFormat: libarchiveFormat {
-        get {
-            let rawValue = Int32(UserDefaults.standard.integer(forKey: "newArchiveFormat"))
-            if rawValue == 0 {
-                return .ZIP
+        var defaultValue: Any {
+            switch(self) {
+            case .newFolderURL:
+                return FileManager.default.urls(for: .downloadsDirectory, in: .userDomainMask).first!
+            case .newArchiveName:
+                return "Untitled"
+            case .newArchiveFormat:
+                return ArkyveFormats.zip
+            case .expandSingleRootFolder:
+                return true
+            case .expandAllFolders:
+                return false
             }
-            return libarchiveFormat(rawValue: rawValue) ?? .ZIP
         }
-        set(format) {
-            UserDefaults.standard.setValue(Int(format.rawValue), forKey: "newArchiveFormat")
-        }
+    }
+
+    @AppStorage(Keys.newFolderURL.id) var newFolderURL: URL = Keys.newFolderURL.defaultValue as! URL
+    @AppStorage(Keys.newArchiveName.id) var newArchiveName: String = Keys.newArchiveName.defaultValue as! String
+    @AppStorage(Keys.newArchiveFormat.id) var newArchiveFormat: ArkyveFormats = Keys.newArchiveFormat.defaultValue as! ArkyveFormats
+    @AppStorage(Keys.expandSingleRootFolder.id) var expandSingleRootFolder: Bool = Keys.expandSingleRootFolder.defaultValue as! Bool
+    @AppStorage(Keys.expandAllFolders.id) var expandAllFolders: Bool = Keys.expandAllFolders.defaultValue as! Bool
+
+    func resetToDefaults() {
+        newFolderURL = Keys.newFolderURL.defaultValue as! URL
+        newArchiveName = Keys.newArchiveName.defaultValue as! String
+        newArchiveFormat = Keys.newArchiveFormat.defaultValue as! ArkyveFormats
+        expandSingleRootFolder = Keys.expandSingleRootFolder.defaultValue as! Bool
+        expandAllFolders = Keys.expandAllFolders.defaultValue as! Bool
     }
 
     var newArchiveFilters: [libarchiveFilter] {
         get {
-            ArkyveFormats.initFromlibarchiveFormatForSaving(newArchiveFormat).libarchiveFilters
-        }
-    }
-
-    var dontExpandSingleRootFolder: Bool {
-        get {
-            UserDefaults.standard.bool(forKey: "dontExpandSingleRootFolder")
-        }
-        set(expand) {
-            UserDefaults.standard.setValue(expand, forKey: "dontExpandSingleRootFolder")
+            newArchiveFormat.libarchiveFilters
         }
     }
 }

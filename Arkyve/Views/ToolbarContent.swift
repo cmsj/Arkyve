@@ -67,7 +67,7 @@ struct ToolbarContentView: CustomizableToolbarContent {
                     .padding()
             }
             .help("Close this archive")
-            .disabled(viewModel.disableClose)
+            .disabled(viewModel.disableCloseArchive)
         }
 
         ToolbarItem(id: "divider") {

@@ -8,7 +8,7 @@
 
 import UniformTypeIdentifiers
 
-enum ArkyveFormats: Int32, Identifiable, CaseIterable {
+enum ArkyveFormats: Int, Identifiable, CaseIterable {
     var id: RawValue { rawValue }
 
     // Order matters here, because NSSavePanel will show the order we select here (after filtering it to saveable formats)

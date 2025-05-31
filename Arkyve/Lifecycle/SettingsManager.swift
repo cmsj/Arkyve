@@ -48,4 +48,13 @@ struct SettingsManager {
             ArkyveFormats.initFromlibarchiveFormatForSaving(newArchiveFormat).libarchiveFilters
         }
     }
+
+    var dontExpandSingleRootFolder: Bool {
+        get {
+            UserDefaults.standard.bool(forKey: "dontExpandSingleRootFolder")
+        }
+        set(expand) {
+            UserDefaults.standard.setValue(expand, forKey: "dontExpandSingleRootFolder")
+        }
+    }
 }

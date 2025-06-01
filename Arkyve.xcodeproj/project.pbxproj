@@ -10,10 +10,10 @@
 		4F10848E2C262396007DCC39 /* ArkyveLog.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F10848D2C262393007DCC39 /* ArkyveLog.swift */; };
 		4F1084922C262D5D007DCC39 /* LogWindowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F1084912C262D5D007DCC39 /* LogWindowView.swift */; };
 		4F14A83F2DEB298700D46397 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F14A83E2DEB298700D46397 /* SettingsView.swift */; };
-		4F14A8412DEB690700D46397 /* Int64.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F14A8402DEB690500D46397 /* Int64.swift */; };
-		4F14A8422DEB690700D46397 /* Int64.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F14A8402DEB690500D46397 /* Int64.swift */; };
-		4F14A8432DEB690700D46397 /* Int64.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F14A8402DEB690500D46397 /* Int64.swift */; };
-		4F14A8442DEB690700D46397 /* Int64.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F14A8402DEB690500D46397 /* Int64.swift */; };
+		4F14A8412DEB690700D46397 /* Int.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F14A8402DEB690500D46397 /* Int.swift */; };
+		4F14A8422DEB690700D46397 /* Int.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F14A8402DEB690500D46397 /* Int.swift */; };
+		4F14A8432DEB690700D46397 /* Int.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F14A8402DEB690500D46397 /* Int.swift */; };
+		4F14A8442DEB690700D46397 /* Int.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F14A8402DEB690500D46397 /* Int.swift */; };
 		4F14DAF32D78A8070080D7AA /* mode_t.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F688A5B2D7666FE003B5D60 /* mode_t.swift */; };
 		4F22BDC92CAE95750079FAC0 /* libarchiveFormat.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F22BDC82CAE95490079FAC0 /* libarchiveFormat.swift */; };
 		4F22BDCB2CAE95820079FAC0 /* libarchiveFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F22BDCA2CAE95820079FAC0 /* libarchiveFilter.swift */; };
@@ -177,7 +177,7 @@
 		4F10848D2C262393007DCC39 /* ArkyveLog.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArkyveLog.swift; sourceTree = "<group>"; };
 		4F1084912C262D5D007DCC39 /* LogWindowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogWindowView.swift; sourceTree = "<group>"; };
 		4F14A83E2DEB298700D46397 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
-		4F14A8402DEB690500D46397 /* Int64.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Int64.swift; sourceTree = "<group>"; };
+		4F14A8402DEB690500D46397 /* Int.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Int.swift; sourceTree = "<group>"; };
 		4F22BDC82CAE95490079FAC0 /* libarchiveFormat.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = libarchiveFormat.swift; sourceTree = "<group>"; };
 		4F22BDCA2CAE95820079FAC0 /* libarchiveFilter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = libarchiveFilter.swift; sourceTree = "<group>"; };
 		4F344ECD2C335224006E1D9F /* SettingsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsManager.swift; sourceTree = "<group>"; };
@@ -502,7 +502,7 @@
 		4FD4BA542C07C57C00082C13 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
-				4F14A8402DEB690500D46397 /* Int64.swift */,
+				4F14A8402DEB690500D46397 /* Int.swift */,
 				4FCF03E42DD4904C0084E1F6 /* NSImage.swift */,
 				4F6E856C2DC53DF9001FB62F /* dev_t.swift */,
 				4F7121862C0F48EB000EB268 /* Array.swift */,
@@ -681,7 +681,7 @@
 				4F14DAF32D78A8070080D7AA /* mode_t.swift in Sources */,
 				4FCF03E52DD4904F0084E1F6 /* NSImage.swift in Sources */,
 				4F41C41E2D1B5A320011DAAB /* Array.swift in Sources */,
-				4F14A8412DEB690700D46397 /* Int64.swift in Sources */,
+				4F14A8412DEB690700D46397 /* Int.swift in Sources */,
 				4F41C41D2D1B58AA0011DAAB /* Date.swift in Sources */,
 				4FD4508B2DBADE2F001D5420 /* FileManager.swift in Sources */,
 			);
@@ -700,7 +700,7 @@
 				4F76994D2DDFE9AD0070BA1F /* SettingsManager.swift in Sources */,
 				4F76994F2DDFE9DC0070BA1F /* Array.swift in Sources */,
 				4F76993E2DDFE5F20070BA1F /* libarchiveHeader.swift in Sources */,
-				4F14A8442DEB690700D46397 /* Int64.swift in Sources */,
+				4F14A8442DEB690700D46397 /* Int.swift in Sources */,
 				4F7699412DDFE6110070BA1F /* ArkyveFormats.swift in Sources */,
 				4F76993F2DDFE5F90070BA1F /* libarchiveFilter.swift in Sources */,
 				4F7699472DDFE6AF0070BA1F /* ArchiveEntryExtractable.swift in Sources */,
@@ -727,7 +727,7 @@
 				4F7699752DE0BBA40070BA1F /* libarchiveFD.swift in Sources */,
 				4F7699802DE0C5B10070BA1F /* HideViewModifier.swift in Sources */,
 				4F7699762DE0BBA40070BA1F /* libarchiveFilter.swift in Sources */,
-				4F14A8422DEB690700D46397 /* Int64.swift in Sources */,
+				4F14A8422DEB690700D46397 /* Int.swift in Sources */,
 				4F76997E2DE0BC260070BA1F /* Array.swift in Sources */,
 				4F7699772DE0BBA40070BA1F /* libarchiveFormat.swift in Sources */,
 				4F76996E2DE0BB930070BA1F /* Archive.swift in Sources */,
@@ -763,7 +763,7 @@
 				4F688A5C2D7666FE003B5D60 /* mode_t.swift in Sources */,
 				4FD96DF02DBE5C8A00194E95 /* UTType.swift in Sources */,
 				4FD4BA562C07C58E00082C13 /* Date.swift in Sources */,
-				4F14A8432DEB690700D46397 /* Int64.swift in Sources */,
+				4F14A8432DEB690700D46397 /* Int.swift in Sources */,
 				4FBB81512DC4F40800EC2C83 /* ArkyveProgressState.swift in Sources */,
 				4FED41E52D237674003BA92B /* FileManager.swift in Sources */,
 				4F22BDCB2CAE95820079FAC0 /* libarchiveFilter.swift in Sources */,

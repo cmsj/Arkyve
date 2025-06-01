@@ -1,9 +1,11 @@
 //
-//  Int64.swift
+//  Int.swift
 //  Arkyve
 //
 //  Created by Chris Jones on 31/05/2025.
 //
+
+import Foundation
 
 extension Int {
     var human: String {

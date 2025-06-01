@@ -314,12 +314,9 @@ struct libarchiveTestsClaudeFuyo {
         let archive = libarchiveWrapper(url: nonExistentURL)
 
         // Attempt to read a non-existent archive should throw an error
-        do {
+        await #expect(throws: ArkyveError.self, performing: {
             _ = try await archive.readEntriesFormatFilters()
-            #expect(Bool(false), "Expected an error but none was thrown")
-        } catch {
-            #expect(error is ArkyveError)
-        }
+        })
 
         // Attempt to load a non-existent archive should throw an error
         do {
@@ -339,12 +336,9 @@ struct libarchiveTestsClaudeFuyo {
         let archive = libarchiveWrapper(url: invalidArchiveURL)
 
         // Attempt to read an invalid archive should throw an error
-        do {
+        await #expect(throws: ArkyveError.self, performing: {
             _ = try await archive.readEntriesFormatFilters()
-            #expect(Bool(false), "Expected an error but none was thrown")
-        } catch {
-            #expect(error is ArkyveError)
-        }
+        })
 
         // Attempt to load an invalid archive should throw an error
         do {

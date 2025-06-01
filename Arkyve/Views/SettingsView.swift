@@ -162,7 +162,7 @@ struct SettingsBehavioursView: View {
                 GridRow {
                     Button("Reset all settings to defaults") {
                         let alert = NSAlert.init()
-                        let saveButton = alert.addButton(withTitle: "Cancel")
+                        alert.addButton(withTitle: "Cancel")
                         alert.addButton(withTitle: "Reset")
                         alert.buttons.last?.hasDestructiveAction = true
                         alert.informativeText = "Are you sure you want to reset all settings to defaults?"

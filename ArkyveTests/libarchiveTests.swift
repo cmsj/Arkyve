@@ -196,6 +196,7 @@ import Foundation
             throw TestError("Unable to find new folder entry")
         }
         folderEntry.name = "Test folder"
+        try archive.processEntryRename(folderEntry)
 
         guard let testTxtURL = bundle.url(forResource: "test", withExtension: "txt") else {
             throw TestError("Unable to find test.txt in bundle")
@@ -214,6 +215,47 @@ import Foundation
         archive = try await loader.loadArchive()
         #expect(archive.name == archiveName)
         #expect(archive.entries.count == 3)
+
+        var entrySizes: [String:Int64] = [:]
+        archive.entries.forEach { entry in
+            if entry.type == .directory {
+                // Directories show up in archives as 0 bytes, but on APFS as 96 bytes
+                entrySizes[entry.path] = 96
+            } else {
+                entrySizes[entry.path] = entry.size
+            }
+        }
+
+
+        // Extract the archive and verify the written files
+        let tempFolderURL = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString)
+        try FileManager.default.createDirectory(at: tempFolderURL, withIntermediateDirectories: true)
+
+        let (exists, isFolder) = FileManager.default.fileExistsAndIsDirectory(atPath: tempFolderURL.path)
+        #expect(exists == true)
+        #expect(isFolder == true)
+
+        let tempFolderPathComponents = tempFolderURL.pathComponents
+
+        let writtenURLs = try await archive.extract(toFolder: tempFolderURL, archiveIsNew: !archive.existsOnDisk)
+        #expect(writtenURLs.count == archive.entries.count)
+
+        try writtenURLs.forEach { url in
+            #expect(FileManager.default.fileExists(atPath: url.path))
+            let urlAttributes = try FileManager.default.attributesOfItem(atPath: url.path)
+
+            guard let fileSize = urlAttributes[.size] as? Int64 else {
+                throw TestError("Unable to fetch file size for \(url)")
+            }
+
+            let expectedEntryPathComponents = url.pathComponents.subtractPath(tempFolderPathComponents)
+            guard let expectedEntryPath = expectedEntryPathComponents?.joined(separator: "/") else {
+                throw TestError("Unable to construct expected entry path from \(url) vs \(tempFolderPathComponents)")
+            }
+
+            #expect(entrySizes[expectedEntryPath] == Int64(fileSize), "\(url)")
+        }
+
     }
 //    @Test func testLibarchiveWrapperExtractEntries() async throws {
 //        let testURL = URL(fileURLWithPath: "/tmp/test_extract")

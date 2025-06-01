@@ -28,6 +28,23 @@ import Foundation
             #expect("noextension".deletingPathExtension == "noextension")
             #expect(".hidden".deletingPathExtension == ".hidden")
         }
+
+        @Test func incrementTrailingInteger() async throws {
+            var name = "test1"
+
+            #expect(name.incrementTrailingInteger() == false)
+            #expect(name == "test1")
+
+            name.filenameMustDuplicate()
+            #expect(name == "test1 copy")
+
+            name.filenameMustDuplicate()
+            #expect(name == "test1 copy 2")
+
+            name.filenameMustDuplicate()
+            #expect(name == "test1 copy 3")
+
+        }
     }
 
     @Suite("Date Extensions") struct DateTests {

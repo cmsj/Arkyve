@@ -105,7 +105,33 @@ import Foundation
         let format = libarchiveFormat.ZIP
         #expect(format.id == format.rawValue)
     }
-    
+
+    @Test func testLibarchiveFormatAsArkyveFormat() async {
+        libarchiveFormat.allCases.forEach { format in
+            let arkyveFormat = format.asArkyveFormat
+
+            let baseFormat: libarchiveFormat
+            switch format {
+            case .AR_BSD, .AR_GNU:
+                baseFormat = .AR
+            case .CPIO_SVR4_CRC, .CPIO_SVR4_NOCRC, .CPIO_PWB, .CPIO_POSIX, .CPIO_BIN_BE, .CPIO_BIN_LE, .CPIO_AFIO_LARGE:
+                baseFormat = .CPIO
+            case .ISO9660_RR:
+                baseFormat = .ISO9660
+            case .RAR_V5:
+                baseFormat = .RAR
+            case .SHAR_BASE, .SHAR_DUMP:
+                baseFormat = .SHAR
+            case .TAR_USTAR, .TAR_GNUTAR, .TAR, .TAR_PAX_INTERCHANGE:
+                baseFormat = .TAR_PAX_RESTRICTED
+            case .Empty, .MTREE, .Unknown:
+                return
+            default:
+                baseFormat = format
+            }
+            #expect(arkyveFormat?.libarchiveFormat == baseFormat)
+        }
+    }
     // MARK: - libarchiveHeader Tests
     
     @Test func testLibarchiveHeaderInitialization() async {

@@ -699,9 +699,13 @@ actor libarchiveWrapper {
                 throw .init(.writeArchive, msg: String(localized: "Internal error: Attempted to write unexpected item: \(flatEntry.header.name)"))
             case .file:
                 // Open the file from the filesystem if we can
+                let fileURL = URL(fileURLWithPath: flatEntry.header.source.path)
+                _ = fileURL.startAccessingSecurityScopedResource()
+                defer { fileURL.stopAccessingSecurityScopedResource() }
+
                 let fileHandle: FileHandle?
                 do {
-                    fileHandle = try FileHandle(forReadingFrom: URL(fileURLWithPath: flatEntry.header.source.path))
+                    fileHandle = try FileHandle(forReadingFrom: fileURL)
                 } catch {
                     throw .init(.writeArchive, msg: String(localized: "Unable to open file: \(flatEntry.header.name) \(error.localizedDescription)"))
                 }

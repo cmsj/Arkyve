@@ -35,10 +35,10 @@ extension MainWindowViewModel {
         archive.setDirty()
     }
 
-    func newArchive() {
+    func newArchive() throws(ArkyveError) {
         showErrors.clear()
 
-        archive = Archive()
+        archive = try? Archive()
         selectedEntries = []
         quickLookURL = nil
         quickLookItems = []

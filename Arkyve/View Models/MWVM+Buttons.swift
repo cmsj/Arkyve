@@ -14,7 +14,11 @@ extension MainWindowViewModel {
             return
         }
 
-        newArchive()
+        do {
+            try newArchive()
+        } catch {
+            showErrors.err(error)
+        }
     }
 
     func openButton() {

@@ -295,7 +295,7 @@ actor libarchiveWrapper {
 
     func loadArchive(entryLimit: Int = -1) async throws(ArkyveError) -> sending Archive {
         AKTrace("loadArchive() for \(path)")
-        let archive = Archive(url: self.url)
+        let archive = try Archive(url: self.url)
         let archiveFormat: libarchiveFormat
         let archiveFilters: [libarchiveFilter]
         let archiveEntries: [libarchiveHeader]

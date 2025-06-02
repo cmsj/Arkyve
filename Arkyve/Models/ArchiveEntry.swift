@@ -200,10 +200,10 @@ class ArchiveEntry: Identifiable {
     }
 
     // Helper to create a new ArchiveEntry from a URL on the local filesystem
-    convenience init?(from url: URL, pathInArchiveComponents: [String]) {
+    convenience init?(from url: URL, pathInArchiveComponents: [String]) throws {
         let attrs: [FileAttributeKey : Any]
 
-        ScopedURLManager.shared.append(url, forOperation: .addFiles)
+        try ScopedURLManager.shared.store(url, forOperation: .addFiles)
 
         do {
             attrs = try FileManager.default.attributesOfItem(atPath: url.path)

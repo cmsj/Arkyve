@@ -16,6 +16,9 @@
 		4F14A8442DEB690700D46397 /* Int.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F14A8402DEB690500D46397 /* Int.swift */; };
 		4F14DAF32D78A8070080D7AA /* mode_t.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F688A5B2D7666FE003B5D60 /* mode_t.swift */; };
 		4F2083A22DED907B004213AA /* UTType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FD96DEF2DBE5C8A00194E95 /* UTType.swift */; };
+		4F2083B22DEE5DA4004213AA /* ScopedURLManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F2083B12DEE5DA4004213AA /* ScopedURLManager.swift */; };
+		4F2083B32DEE5DA4004213AA /* ScopedURLManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F2083B12DEE5DA4004213AA /* ScopedURLManager.swift */; };
+		4F2083B42DEE5DA4004213AA /* ScopedURLManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F2083B12DEE5DA4004213AA /* ScopedURLManager.swift */; };
 		4F22BDC92CAE95750079FAC0 /* libarchiveFormat.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F22BDC82CAE95490079FAC0 /* libarchiveFormat.swift */; };
 		4F22BDCB2CAE95820079FAC0 /* libarchiveFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F22BDCA2CAE95820079FAC0 /* libarchiveFilter.swift */; };
 		4F344ECE2C335224006E1D9F /* SettingsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F344ECD2C335224006E1D9F /* SettingsManager.swift */; };
@@ -177,6 +180,7 @@
 		4F1084912C262D5D007DCC39 /* LogWindowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogWindowView.swift; sourceTree = "<group>"; };
 		4F14A83E2DEB298700D46397 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		4F14A8402DEB690500D46397 /* Int.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Int.swift; sourceTree = "<group>"; };
+		4F2083B12DEE5DA4004213AA /* ScopedURLManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScopedURLManager.swift; sourceTree = "<group>"; };
 		4F22BDC82CAE95490079FAC0 /* libarchiveFormat.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = libarchiveFormat.swift; sourceTree = "<group>"; };
 		4F22BDCA2CAE95820079FAC0 /* libarchiveFilter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = libarchiveFilter.swift; sourceTree = "<group>"; };
 		4F344ECD2C335224006E1D9F /* SettingsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsManager.swift; sourceTree = "<group>"; };
@@ -367,6 +371,7 @@
 				4F344ECD2C335224006E1D9F /* SettingsManager.swift */,
 				4F51B01A2DE9CC8500E972EE /* CacheManager.swift */,
 				4F344ECF2C335243006E1D9F /* AppDelegate.swift */,
+				4F2083B12DEE5DA4004213AA /* ScopedURLManager.swift */,
 			);
 			path = Lifecycle;
 			sourceTree = "<group>";
@@ -699,6 +704,7 @@
 				4F76993E2DDFE5F20070BA1F /* libarchiveHeader.swift in Sources */,
 				4F14A8442DEB690700D46397 /* Int.swift in Sources */,
 				4F7699412DDFE6110070BA1F /* ArkyveFormats.swift in Sources */,
+				4F2083B22DEE5DA4004213AA /* ScopedURLManager.swift in Sources */,
 				4F76993F2DDFE5F90070BA1F /* libarchiveFilter.swift in Sources */,
 				4F7699472DDFE6AF0070BA1F /* ArchiveEntryExtractable.swift in Sources */,
 				4F7699482DDFE6AF0070BA1F /* Archive.swift in Sources */,
@@ -717,6 +723,7 @@
 				4F76997C2DE0BC120070BA1F /* String.swift in Sources */,
 				4F76996B2DE0BB7F0070BA1F /* ArchiveEntry.swift in Sources */,
 				4F76996C2DE0BB930070BA1F /* ArchiveEntryType.swift in Sources */,
+				4F2083B32DEE5DA4004213AA /* ScopedURLManager.swift in Sources */,
 				4F76996D2DE0BB930070BA1F /* ArkyveError.swift in Sources */,
 				4F51B01E2DE9CCA500E972EE /* CacheManager.swift in Sources */,
 				4F7699732DE0BBA40070BA1F /* libarchiveHeader.swift in Sources */,
@@ -756,6 +763,7 @@
 				4F41C4032D1891230011DAAB /* libarchiveHeader.swift in Sources */,
 				4F10848E2C262396007DCC39 /* ArkyveLog.swift in Sources */,
 				4F7121892C0F48FD000EB268 /* String.swift in Sources */,
+				4F2083B42DEE5DA4004213AA /* ScopedURLManager.swift in Sources */,
 				4F7121972C0F6B4C000EB268 /* MainWindowViewModel.swift in Sources */,
 				4F688A5C2D7666FE003B5D60 /* mode_t.swift in Sources */,
 				4FD96DF02DBE5C8A00194E95 /* UTType.swift in Sources */,

@@ -115,6 +115,7 @@ extension MainWindowViewModel {
         print("HANDLING FILEURL DROPPED AT \(index ?? -1) on \(entryID?.uuidString ?? "unknown"): \(fileURL)")
 
         guard let archive = archive else { return }
+        guard let scopedURL = try? ScopedURLManager.shared.bookmarkScopedURL(fileURL) else { return }
 
         // 1. Find the new parent
         let newParent: ArchiveEntry
@@ -128,7 +129,7 @@ extension MainWindowViewModel {
         }
 
         do {
-            try archive.addFiles(from: [fileURL], parent: newParent)
+            try archive.addFiles(from: [scopedURL], parent: newParent)
             sort()
         } catch {
             showErrors.err(error)

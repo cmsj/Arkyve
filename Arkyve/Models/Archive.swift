@@ -10,37 +10,7 @@ import SwiftUI
 import Synchronization
 import UniformTypeIdentifiers
 
-final class ScopedURLManager: Sendable {
-    static let shared = ScopedURLManager()
 
-    let urlStore: Mutex<[URL]> = .init([])
-
-    func append(_ url: URL, forOperation: ArkyveError.ErrorKind) {
-        urlStore.withLock { urls in
-            urls.append(url)
-            let result = url.startAccessingSecurityScopedResource()
-            if !result {
-                AKTrace("Failed to start security scope for: \(url) (doing: \(forOperation))")
-            }
-        }
-    }
-
-    func remove(_ url: URL) {
-        urlStore.withLock { urls in
-            urls.removeAll { $0 == url }
-            url.stopAccessingSecurityScopedResource()
-        }
-    }
-
-    func clear() {
-        urlStore.withLock { urls in
-            urls.forEach {
-                $0.stopAccessingSecurityScopedResource()
-            }
-            urls.removeAll()
-        }
-    }
-}
 
 // MARK: Sorting
 extension Archive {
@@ -73,9 +43,9 @@ extension Archive {
 @Observable
 class Archive: Identifiable {
     let id: UUID = UUID()
-    static var newFilePath: String {
+    static var newFileURL: URL {
         let settingsManager = SettingsManager()
-        return settingsManager.newFolderURL.appending(path: settingsManager.newArchiveName).path
+        return settingsManager.newFolderURL.appending(path: settingsManager.newArchiveName)
     }
 
     var URL: URL
@@ -86,12 +56,11 @@ class Archive: Identifiable {
     var format: libarchiveFormat = SettingsManager().newArchiveFormat.libarchiveFormat
     var filters: [libarchiveFilter] = SettingsManager().newArchiveFilters
     var cacheURL: URL
-    var scopedURLs = ScopedURLManager()
     private(set) var dirty: Bool = false
 
     var isNew: Bool = false
     var existsOnDisk: Bool {
-        URL.path != Archive.newFilePath
+        URL != Archive.newFileURL
     }
     var offerTopDirectory: Bool {
         // Should extraction offer to create a directory?
@@ -104,8 +73,10 @@ class Archive: Identifiable {
         }
     }
 
-    init(url: URL) {
-        ScopedURLManager.shared.append(url, forOperation: .newArchive)
+    init(url: URL) throws(ArkyveError) {
+        if url != Archive.newFileURL {
+            try ScopedURLManager.shared.store(url, forOperation: .newArchive)
+        }
         self.URL = url
         self.path = url.path().removingPercentEncoding ?? "Unknown"
         self.name = url.lastPathComponent
@@ -115,9 +86,9 @@ class Archive: Identifiable {
     }
 
     // Create a new, empty archive
-    convenience init() {
-        let url = Foundation.URL(fileURLWithPath: Archive.newFilePath)
-        self.init(url: url)
+    convenience init() throws(ArkyveError) {
+        let url = Archive.newFileURL
+        try self.init(url: url)
         self.isNew = true
         self.setDirty()
     }
@@ -217,7 +188,7 @@ class Archive: Identifiable {
             let pathComponentsInArchive = targetEntry.pathComponents + [url.lastPathComponent]
 
             _ = url.startAccessingSecurityScopedResource()
-            guard let entry = ArchiveEntry(from: url, pathInArchiveComponents: pathComponentsInArchive) else {
+            guard let entry = try? ArchiveEntry(from: url, pathInArchiveComponents: pathComponentsInArchive) else {
                 throw .init(.entries, msg: String(localized: "Unable to add \(url.path)"))
             }
 
@@ -247,7 +218,7 @@ class Archive: Identifiable {
                     // NOTE: We are discarding the name of the directory here and replacing it with entry.name
                     // because we might have renamed it above while detecting dupes
                     dirPathComponents = [entry.name] + dirPathComponents.dropFirst()
-                    guard let entry = ArchiveEntry(from: fileURL,
+                    guard let entry = try? ArchiveEntry(from: fileURL,
                                                    pathInArchiveComponents: targetEntry.pathComponents + dirPathComponents) else {
                         throw .init(.entries, msg: String(localized: "Unable to add \(fileURL.path)"))
                     }

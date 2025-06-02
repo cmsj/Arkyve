@@ -18,6 +18,8 @@ struct ArkyveError: Error, Equatable, CustomLocalizedStringResourceConvertible {
         case entries = "Entries"
         case cancelled = "Cancelled"
         case rename = "Rename"
+        case urlCache = "URL Cache"
+        case scopedURLRefresh = "URL Bookmark Refresh"
         case unknown = "Unknown"
     }
 

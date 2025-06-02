@@ -54,6 +54,7 @@ extension MainWindowViewModel {
             defer { progressTask = nil }
 
             do {
+                _ = url.startAccessingSecurityScopedResource()
                 archive = try await libarchiveWrapper.loadArchive(at: url)
                 sort()
 
@@ -72,6 +73,7 @@ extension MainWindowViewModel {
         showErrors.clear()
         guard archive != nil else { return }
 
+        archive?.URL.stopAccessingSecurityScopedResource()
         archive = nil
         selectedEntries = []
         quickLookURL = nil

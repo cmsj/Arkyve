@@ -140,7 +140,10 @@ extension MainWindowViewModel {
                 }
 
                 let chosenEntries = archive.entries.filter { actualEntries.contains($0.id) }
+
+                _ = panel.url?.startAccessingSecurityScopedResource()
                 extractEntries(chosenEntries, archive: archive, destURL: destURL, retainFullPath: retainFullPath)
+                panel.url?.stopAccessingSecurityScopedResource()
             }
         }
     }
@@ -164,7 +167,9 @@ extension MainWindowViewModel {
                     destURL = destURL.appendingPathComponent(archive.name.deletingPathExtension)
                 }
 
+                _ = panel.url?.startAccessingSecurityScopedResource()
                 extractEntries(chosenEntries, archive: archive, destURL: destURL, retainFullPath: retainFullPath)
+                panel.url?.stopAccessingSecurityScopedResource()
             }
         }
     }

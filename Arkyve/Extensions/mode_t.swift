@@ -45,8 +45,6 @@ extension mode_t {
                 output += "-"
             }
             switch (self & (S_IXUSR | S_ISUID)) {
-            case 0:
-                output += "-"
             case S_IXUSR:
                 output += "x"
             case S_ISUID:
@@ -69,8 +67,6 @@ extension mode_t {
                 output += "-"
             }
             switch (self & (S_IXGRP | S_ISGID)) {
-            case 0:
-                output += "-"
             case S_IXGRP:
                 output += "x"
             case S_ISGID:
@@ -93,8 +89,6 @@ extension mode_t {
                 output += "-"
             }
             switch (self & (S_IXOTH | S_ISVTX)) {
-            case 0:
-                output += "-"
             case S_IXOTH:
                 output += "x"
             case S_ISVTX:

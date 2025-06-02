@@ -141,6 +141,10 @@ class Archive: Identifiable {
 
         entries.forEach { entry in
             if (entry.source.type == .Filesystem || entry.source.type == .InMemory) {
+                if entry.source.type == .Filesystem {
+                    let url = Foundation.URL(fileURLWithPath: entry.source.path)
+                    url.stopAccessingSecurityScopedResource()
+                }
                 // IF this entry started out as an item in our drop cache, we should now clean it up
                 if CacheManager.shared.isInDropCache(path: entry.source.path) {
                     dropCacheCleanups.append(entry.source.path)
@@ -179,6 +183,7 @@ class Archive: Identifiable {
         for url in urls {
             let pathComponentsInArchive = targetEntry.pathComponents + [url.lastPathComponent]
 
+            _ = url.startAccessingSecurityScopedResource()
             guard let entry = ArchiveEntry(from: url, pathInArchiveComponents: pathComponentsInArchive) else {
                 throw .init(.entries, msg: String(localized: "Unable to add \(url.path)"))
             }

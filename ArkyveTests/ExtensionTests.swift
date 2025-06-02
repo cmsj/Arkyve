@@ -7,6 +7,7 @@
 
 import Testing
 import Foundation
+import UniformTypeIdentifiers
 
 @Suite("Extensions") struct ExtensionTests {
     @Suite("String Extensions") struct StringTests {
@@ -171,50 +172,87 @@ import Foundation
             #expect(mode.IRUSR == false)
             mode.IRUSR = true
             #expect(mode.IRUSR == true)
+            mode.IRUSR = false
+            #expect(mode.IRUSR == false)
 
             #expect(mode.IWUSR == false)
             mode.IWUSR = true
             #expect(mode.IWUSR == true)
+            mode.IWUSR = false
+            #expect(mode.IWUSR == false)
 
             #expect(mode.IXUSR == false)
             mode.IXUSR = true
             #expect(mode.IXUSR == true)
+            mode.IXUSR = false
+            #expect(mode.IXUSR == false)
 
             #expect(mode.IRGRP == false)
             mode.IRGRP = true
             #expect(mode.IRGRP == true)
+            mode.IRGRP = false
+            #expect(mode.IRGRP == false)
 
             #expect(mode.IWGRP == false)
             mode.IWGRP = true
             #expect(mode.IWGRP == true)
+            mode.IWGRP = false
+            #expect(mode.IWGRP == false)
 
             #expect(mode.IXGRP == false)
             mode.IXGRP = true
             #expect(mode.IXGRP == true)
+            mode.IXGRP = false
+            #expect(mode.IXGRP == false)
 
             #expect(mode.IROTH == false)
             mode.IROTH = true
             #expect(mode.IROTH == true)
+            mode.IROTH = false
+            #expect(mode.IROTH == false)
 
             #expect(mode.IWOTH == false)
             mode.IWOTH = true
             #expect(mode.IWOTH == true)
+            mode.IWOTH = false
+            #expect(mode.IWOTH == false)
 
             #expect(mode.IXOTH == false)
             mode.IXOTH = true
             #expect(mode.IXOTH == true)
+            mode.IXOTH = false
+            #expect(mode.IXOTH == false)
 
             #expect(mode.ISUSR == false)
             mode.ISUSR = true
             #expect(mode.ISUSR == true)
+            mode.ISUSR = false
+            #expect(mode.ISUSR == false)
 
             #expect(mode.ISGRP == false)
             mode.ISGRP = true
             #expect(mode.ISGRP == true)
+            mode.ISGRP = false
+            #expect(mode.ISGRP == false)
 
             #expect(mode.ISVTX == false)
             mode.ISVTX = true
             #expect(mode.ISVTX == true)
+            mode.ISVTX = false
+            #expect(mode.ISVTX == false)
+
+            mode.IRUSR = true
+            mode.IWUSR = true
+            mode.IXUSR = true
+            mode.IRGRP = true
+            mode.IWGRP = true
+            mode.IXGRP = true
+            mode.IROTH = true
+            mode.IWOTH = true
+            mode.IXOTH = true
+            mode.ISUSR = true
+            mode.ISGRP = true
+            mode.ISVTX = true
 
             #expect(mode.accessibilityString == "User: read,  write,  execute, SetUID. Group: read,  write,  execute, SetGID. Other: read,  write,  execute, sticky")
         }
@@ -311,6 +349,72 @@ import Foundation
 
             foo = Int32.max
             #expect(foo.description == "7f, ffffff")
+        }
+    }
+
+    @Suite("UTType Extensions") struct UTTypeTests {
+        @Test func ensureUTTypes() async throws {
+            // Types we export
+            #expect(UTType.archiveEntryExtractable.isDeclared)
+            #expect(UTType.archiveEntryExtractable.identifier == "net.tenshu.Arkyve.ArchiveEntryExtractable")
+            #expect(UTType.ar.isDeclared)
+            #expect(UTType.ar.identifier == "net.tenshu.Arkyve.ar")
+            #expect(UTType.lha.isDeclared)
+            #expect(UTType.lha.identifier == "net.tenshu.Arkyve.lha")
+            #expect(UTType.lzh.isDeclared)
+            #expect(UTType.lzh.identifier == "net.tenshu.Arkyve.lzh")
+
+            // Types we import
+            #expect(UTType.rar.isDeclared)
+            #expect(UTType.cab.isDeclared)
+            #expect(UTType.targz.isDeclared)
+            #expect(UTType.tarxz.isDeclared)
+            #expect(UTType.xz.isDeclared)
+            #expect(UTType._7z.isDeclared)
+
+            // Public types we import
+            #expect(UTType.tarbz2.isDeclared)
+            #expect(UTType.iso.isDeclared)
+            #expect(UTType.cpio.isDeclared)
+
+            // Apple types we import
+            #expect(UTType.xar.isDeclared)
+            #expect(UTType.xip.isDeclared)
+            #expect(UTType.pkg.isDeclared)
+        }
+    }
+
+    @Suite("Int Extensions") struct IntTests {
+        @Test func human() async throws {
+            var testInt = -1
+            #expect(testInt.human == "--")
+
+            testInt = 0
+            #expect(testInt.human == "0 bytes")
+
+            testInt = 1
+            #expect(testInt.human == "1 bytes")
+
+            testInt = 1023
+            #expect(testInt.human == "1023 bytes")
+
+            testInt = 1024
+            #expect(testInt.human == "1 KB")
+
+            testInt = testInt * 1024
+            #expect(testInt.human == "1 MB")
+
+            testInt = testInt * 1024
+            #expect(testInt.human == "1 GB")
+
+            testInt = testInt * 1024
+            #expect(testInt.human == "1 TB")
+
+            testInt = testInt * 1024
+            #expect(testInt.human == "1 PB")
+
+            testInt = testInt * 1024
+            #expect(testInt.human == "1 EB")
         }
     }
 }

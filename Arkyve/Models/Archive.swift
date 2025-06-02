@@ -10,6 +10,38 @@ import SwiftUI
 import Synchronization
 import UniformTypeIdentifiers
 
+final class ScopedURLManager: Sendable {
+    static let shared = ScopedURLManager()
+
+    let urlStore: Mutex<[URL]> = .init([])
+
+    func append(_ url: URL, forOperation: ArkyveError.ErrorKind) {
+        urlStore.withLock { urls in
+            urls.append(url)
+            let result = url.startAccessingSecurityScopedResource()
+            if !result {
+                AKTrace("Failed to start security scope for: \(url) (doing: \(forOperation))")
+            }
+        }
+    }
+
+    func remove(_ url: URL) {
+        urlStore.withLock { urls in
+            urls.removeAll { $0 == url }
+            url.stopAccessingSecurityScopedResource()
+        }
+    }
+
+    func clear() {
+        urlStore.withLock { urls in
+            urls.forEach {
+                $0.stopAccessingSecurityScopedResource()
+            }
+            urls.removeAll()
+        }
+    }
+}
+
 // MARK: Sorting
 extension Archive {
     // Sort our entries and return a new value, munging keypaths appropriately for the various fields of ArchiveEntry which need to be passed to Table as Strings, but don't sort well as Strings (ie dates)
@@ -54,6 +86,7 @@ class Archive: Identifiable {
     var format: libarchiveFormat = SettingsManager().newArchiveFormat.libarchiveFormat
     var filters: [libarchiveFilter] = SettingsManager().newArchiveFilters
     var cacheURL: URL
+    var scopedURLs = ScopedURLManager()
     private(set) var dirty: Bool = false
 
     var isNew: Bool = false
@@ -71,18 +104,20 @@ class Archive: Identifiable {
         }
     }
 
-    init(URL: URL) {
-        self.URL = URL
-        self.path = URL.path().removingPercentEncoding ?? "Unknown"
-        self.name = URL.lastPathComponent
+    init(url: URL) {
+        ScopedURLManager.shared.append(url, forOperation: .newArchive)
+        self.URL = url
+        self.path = url.path().removingPercentEncoding ?? "Unknown"
+        self.name = url.lastPathComponent
         self.cacheURL = CacheManager.shared.urlForItem(cacheType: .read, itemName: _name)
 
-        AKTrace("Initialised for \(URL)")
+        AKTrace("Initialised for \(url)")
     }
 
     // Create a new, empty archive
     convenience init() {
-        self.init(URL: Foundation.URL(fileURLWithPath: Archive.newFilePath))
+        let url = Foundation.URL(fileURLWithPath: Archive.newFilePath)
+        self.init(url: url)
         self.isNew = true
         self.setDirty()
     }
@@ -136,18 +171,17 @@ class Archive: Identifiable {
         // So we'll update our entries to switch them to .Archive
         // Same for .InMemory directories
 
-        var dropCacheCleanups: [String] = []
-        defer { CacheManager.shared.removeCacheItems(cacheType: .drop, paths: dropCacheCleanups) }
+        var dropCacheCleanups: [URL] = []
+        defer { CacheManager.shared.removeCacheItems(cacheType: .drop, urls: dropCacheCleanups) }
 
         entries.forEach { entry in
             if (entry.source.type == .Filesystem || entry.source.type == .InMemory) {
                 if entry.source.type == .Filesystem {
-                    let url = Foundation.URL(fileURLWithPath: entry.source.path)
-                    url.stopAccessingSecurityScopedResource()
+                    ScopedURLManager.shared.remove(entry.source.url)
                 }
                 // IF this entry started out as an item in our drop cache, we should now clean it up
-                if CacheManager.shared.isInDropCache(path: entry.source.path) {
-                    dropCacheCleanups.append(entry.source.path)
+                if CacheManager.shared.isInDropCache(url: entry.source.url) {
+                    dropCacheCleanups.append(entry.source.url)
                 }
 
                 // Update our source to the archive path
@@ -170,7 +204,6 @@ class Archive: Identifiable {
     }
 
     func setClean() {
-        print("Marking archive as clean")
         setDirty(false)
     }
 

@@ -7,6 +7,7 @@
 
 struct ArkyveError: Error, Equatable, CustomLocalizedStringResourceConvertible {
     enum ErrorKind: String {
+        case newArchive = "New"
         case openArchive = "Open"
         case readArchive = "Read"
         case writeArchive = "Write"

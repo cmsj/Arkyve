@@ -295,7 +295,7 @@ actor libarchiveWrapper {
 
     func loadArchive(entryLimit: Int = -1) async throws(ArkyveError) -> sending Archive {
         AKTrace("loadArchive() for \(path)")
-        let archive = Archive(URL: self.url)
+        let archive = Archive(url: self.url)
         let archiveFormat: libarchiveFormat
         let archiveFilters: [libarchiveFilter]
         let archiveEntries: [libarchiveHeader]
@@ -397,7 +397,7 @@ actor libarchiveWrapper {
                                                                     withIntermediateDirectories: true,
                                                                     attributes: entry.fileManagerAttributes)
                         } else {
-                            try FileManager.default.copyItem(atPath: entry.source.path, toPath: outputURL.path)
+                            try FileManager.default.copyItem(at: entry.source.url, to: outputURL)
                         }
                         writtenURLs.append(outputURL)
                     case .Archive, .Root:
@@ -699,13 +699,9 @@ actor libarchiveWrapper {
                 throw .init(.writeArchive, msg: String(localized: "Internal error: Attempted to write unexpected item: \(flatEntry.header.name)"))
             case .file:
                 // Open the file from the filesystem if we can
-                let fileURL = URL(fileURLWithPath: flatEntry.header.source.path)
-                _ = fileURL.startAccessingSecurityScopedResource()
-                defer { fileURL.stopAccessingSecurityScopedResource() }
-
                 let fileHandle: FileHandle?
                 do {
-                    fileHandle = try FileHandle(forReadingFrom: fileURL)
+                    fileHandle = try FileHandle(forReadingFrom: flatEntry.header.source.url)
                 } catch {
                     throw .init(.writeArchive, msg: String(localized: "Unable to open file: \(flatEntry.header.name) \(error.localizedDescription)"))
                 }

@@ -201,10 +201,9 @@ class ArchiveEntry: Identifiable {
 
     // Helper to create a new ArchiveEntry from a URL on the local filesystem
     convenience init?(from url: URL, pathInArchiveComponents: [String]) {
-        _ = url.startAccessingSecurityScopedResource()
-        defer { url.stopAccessingSecurityScopedResource() }
-
         let attrs: [FileAttributeKey : Any]
+
+        ScopedURLManager.shared.append(url, forOperation: .addFiles)
 
         do {
             attrs = try FileManager.default.attributesOfItem(atPath: url.path)
@@ -213,7 +212,7 @@ class ArchiveEntry: Identifiable {
             return nil
         }
 
-        let source = ArchiveEntrySource(type: .Filesystem, path: url.path)
+        let source = ArchiveEntrySource(type: .Filesystem, path: url.path, url: url)
 
         guard var fileSize  = (attrs[FileAttributeKey.size] as? NSNumber)?.int64Value,
               let fileBtime = attrs[FileAttributeKey.creationDate] as? NSDate,

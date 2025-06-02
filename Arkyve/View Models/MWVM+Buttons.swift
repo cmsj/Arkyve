@@ -141,9 +141,7 @@ extension MainWindowViewModel {
 
                 let chosenEntries = archive.entries.filter { actualEntries.contains($0.id) }
 
-                _ = panel.url?.startAccessingSecurityScopedResource()
                 extractEntries(chosenEntries, archive: archive, destURL: destURL, retainFullPath: retainFullPath)
-                panel.url?.stopAccessingSecurityScopedResource()
             }
         }
     }
@@ -167,9 +165,7 @@ extension MainWindowViewModel {
                     destURL = destURL.appendingPathComponent(archive.name.deletingPathExtension)
                 }
 
-                _ = panel.url?.startAccessingSecurityScopedResource()
                 extractEntries(chosenEntries, archive: archive, destURL: destURL, retainFullPath: retainFullPath)
-                panel.url?.stopAccessingSecurityScopedResource()
             }
         }
     }
@@ -226,12 +222,6 @@ extension MainWindowViewModel {
 
                 Task {
                     AKTrace("Save As to \(destURL) (format: \(selectedArkyveFormat))")
-
-                    if !destURL.startAccessingSecurityScopedResource() {
-                        AKError("Unable to access security scope for \(destURL.path)")
-                        return
-                    }
-                    defer { destURL.stopAccessingSecurityScopedResource() }
 
                     if !archive.dirty && archive.format == selectedFormat && archive.filters == selectedFilters {
                         // This is a performance optimisation

@@ -257,6 +257,8 @@
 			</array>
 		</dict>
 	</array>
+	<key>NSAppDataUsageDescription</key>
+	<string>Arkyve requires access to archives you open/save, files you want to add to archives, and folders you want to extract archives into.</string>
 	<key>UTExportedTypeDeclarations</key>
 	<array>
 		<dict>

@@ -203,7 +203,7 @@ import Foundation
 
     @Test func testBigFunctionalTest() async throws {
         let bundle = Bundle(for: libarchiveTests.self)
-        var archive = Archive()
+        var archive = try Archive()
         let archiveName = "test-\(UUID().uuidString).zip"
         let archiveURL = FileManager.default.temporaryDirectory.appendingPathComponent(archiveName)
 

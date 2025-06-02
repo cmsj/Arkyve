@@ -374,7 +374,7 @@ struct ArchiveEntryTests {
         }
         NSLog("Set URL to: \(url)")
 
-        guard let entry = ArchiveEntry(from: url, pathInArchiveComponents: [url.lastPathComponent]) else {
+        guard let entry = try ArchiveEntry(from: url, pathInArchiveComponents: [url.lastPathComponent]) else {
             throw TestError("Unable to load entry")
         }
         #expect(entry.name == "hello.txt")

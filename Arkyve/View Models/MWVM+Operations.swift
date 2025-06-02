@@ -74,6 +74,13 @@ extension MainWindowViewModel {
         guard archive != nil else { return }
 
         archive?.URL.stopAccessingSecurityScopedResource()
+        archive?.entries.forEach { entry in
+            if entry.source.type == .Filesystem {
+                // If we haven't written .Filesystem entries out to an archive, we may need to release security scoping
+                let fileURL = URL(fileURLWithPath: entry.source.path)
+                fileURL.stopAccessingSecurityScopedResource()
+            }
+        }
         archive = nil
         selectedEntries = []
         quickLookURL = nil

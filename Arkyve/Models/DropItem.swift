@@ -18,10 +18,10 @@ enum DropItem: Codable, Transferable {
             var sourceURL: URL = url
             AKTrace("User dragged a file (proxy): \(sourceURL)")
 
+            _ = sourceURL.startAccessingSecurityScopedResource()
             if sourceURL.path.hasPrefix("/var") {
                 // We are likely receiving something in a weird private temporary folder
                 // (e.g. a screenshot preview drag). Copy it to our drop cache
-                _ = sourceURL.startAccessingSecurityScopedResource()
                 let origSourceURL = sourceURL
                 sourceURL = try CacheManager.shared.cacheDropURL(sourceURL)
                 origSourceURL.stopAccessingSecurityScopedResource()

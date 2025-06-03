@@ -33,7 +33,9 @@ class MainWindowViewModel {
     var postSavePromptClosure: (() -> Void)? = nil
 
     // MARK: - Disable various parts of the UI
-    var disableUI: Bool = false
+    var disableUI: Bool = false {
+        didSet { print("UI DISABLED: \(disableUI)") }
+    }
 
     var disableNew: Bool { disableUI }
     var disableOpen: Bool { disableUI }

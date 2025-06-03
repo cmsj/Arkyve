@@ -47,11 +47,12 @@ extension MainWindowViewModel {
     func openArchive(url: URL) async {
         showErrors.clear()
 
-        self.disableUI = true
-        defer { self.disableUI = false }
-
         progressTask = Task {
-            defer { progressTask = nil }
+            disableUI = true
+            defer {
+                disableUI = false
+                progressTask = nil
+            }
 
             do {
                 archive = try await libarchiveWrapper.loadArchive(at: url)
@@ -85,11 +86,13 @@ extension MainWindowViewModel {
         showErrors.clear()
 
         let loader = libarchiveWrapper(url: archive.URL)
-        self.disableUI = true
-        defer { self.disableUI = false }
 
         progressTask = Task {
-            defer { progressTask = nil }
+            disableUI = true
+            defer {
+                disableUI = false
+                progressTask = nil
+            }
 
             let (format, filters, headerMap) = archive.metadataForSaving(overrideFormat: overrideFormat, overrideFilters: overrideFilters)
 
@@ -162,10 +165,11 @@ extension MainWindowViewModel {
         }
 
         progressTask = Task {
-            defer { progressTask = nil }
-
-            self.disableUI = true
-            defer { self.disableUI = false }
+            disableUI = true
+            defer {
+                disableUI = false
+                progressTask = nil
+            }
 
             do {
                 let _ = try await archive.extract(extractables: extractableEntries, toFolder: destURL, retainFullPath: retainFullPath, archiveIsNew: !archive.existsOnDisk)

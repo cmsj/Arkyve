@@ -82,6 +82,9 @@ extension ArchiveViewModel {
             throw .init(.rename, msg: String(localized: "Filename must not be empty"))
         }
 
+        // We can bail early if nothing actually changed
+        guard entry.proposedName != entry.name else { return }
+
         // Get the parent's path components (if any)
         let parentPathComponents = entry.pathComponents.dropLast()
 

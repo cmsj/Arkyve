@@ -37,8 +37,8 @@ final class ScopedURLManager: Sendable {
                 let bookmarkData = try url.bookmarkData(options: options, includingResourceValuesForKeys: [])
                 urls.append(.init(url: url, bookmark: Bookmark(data: bookmarkData, options: options)))
                 AKTrace("Stored security scope for: \(url) (doing: \(forOperation))")
-                if !result {
-                    AKTrace("Failed to start security scope for: \(url) (doing: \(forOperation))")
+                if result {
+                    AKTrace("Started security scope for: \(url) (doing: \(forOperation))")
                 }
             }
         } catch {

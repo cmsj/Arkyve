@@ -59,6 +59,7 @@
 		4F1F24472DF7407D0019CA7D /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
 		4F2084132DEFA306004213AA /* Arkyve.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Arkyve.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4F2084212DEFA307004213AA /* ArkyveTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ArkyveTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		4F288CB02DF79ADA00A4E600 /* Arkyve.xctestplan */ = {isa = PBXFileReference; lastKnownFileType = text; path = Arkyve.xctestplan; sourceTree = "<group>"; };
 		4FA328722DF22D2B001B377C /* base.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = base.h; sourceTree = "<group>"; };
 		4FA328732DF22D2B001B377C /* bcj.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = bcj.h; sourceTree = "<group>"; };
 		4FA328742DF22D2B001B377C /* block.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = block.h; sourceTree = "<group>"; };
@@ -2404,6 +2405,7 @@
 		4F20840A2DEFA306004213AA = {
 			isa = PBXGroup;
 			children = (
+				4F288CB02DF79ADA00A4E600 /* Arkyve.xctestplan */,
 				4FA3316F2DF22D2B001B377C /* vendor */,
 				4F2084152DEFA306004213AA /* Arkyve */,
 				4F2084242DEFA307004213AA /* ArkyveTests */,
@@ -5971,7 +5973,7 @@
 					"-lzstd",
 					"-larchive",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = net.tenshu.Arkyve2.ArkyveQuickLookExtension;
+				PRODUCT_BUNDLE_IDENTIFIER = net.tenshu.Arkyve.ArkyveQuickLookExtension;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -6015,7 +6017,7 @@
 					"-lzstd",
 					"-larchive",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = net.tenshu.Arkyve2.ArkyveQuickLookExtension;
+				PRODUCT_BUNDLE_IDENTIFIER = net.tenshu.Arkyve.ArkyveQuickLookExtension;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -6060,7 +6062,7 @@
 					"-lzstd",
 					"-larchive",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = net.tenshu.Arkyve2.ArkyveExtractAction;
+				PRODUCT_BUNDLE_IDENTIFIER = net.tenshu.Arkyve.ArkyveExtractAction;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -6105,7 +6107,7 @@
 					"-lzstd",
 					"-larchive",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = net.tenshu.Arkyve2.ArkyveExtractAction;
+				PRODUCT_BUNDLE_IDENTIFIER = net.tenshu.Arkyve.ArkyveExtractAction;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -6348,7 +6350,7 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				MACOSX_DEPLOYMENT_TARGET = 15.5;
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = net.tenshu.Arkyve2Tests;
+				PRODUCT_BUNDLE_IDENTIFIER = net.tenshu.ArkyveTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				SWIFT_VERSION = 5.0;
@@ -6366,7 +6368,7 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				MACOSX_DEPLOYMENT_TARGET = 15.5;
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = net.tenshu.Arkyve2Tests;
+				PRODUCT_BUNDLE_IDENTIFIER = net.tenshu.ArkyveTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				SWIFT_VERSION = 5.0;

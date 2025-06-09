@@ -1,0 +1,29 @@
+{
+  "configurations" : [
+    {
+      "id" : "DE165D33-83DF-442D-99B6-D01D63C3B8F6",
+      "name" : "Test Scheme Action",
+      "options" : {
+
+      }
+    }
+  ],
+  "defaultOptions" : {
+    "codeCoverage" : false,
+    "targetForVariableExpansion" : {
+      "containerPath" : "container:Arkyve.xcodeproj",
+      "identifier" : "4F2084122DEFA306004213AA",
+      "name" : "Arkyve"
+    }
+  },
+  "testTargets" : [
+    {
+      "target" : {
+        "containerPath" : "container:Arkyve.xcodeproj",
+        "identifier" : "4F2084202DEFA307004213AA",
+        "name" : "ArkyveTests"
+      }
+    }
+  ],
+  "version" : 1
+}

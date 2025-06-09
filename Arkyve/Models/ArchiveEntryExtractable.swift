@@ -8,9 +8,8 @@ import SwiftUI
 import UniformTypeIdentifiers
 
 struct ArchiveEntryExtractable: Codable, Transferable {
-    let archiveURL: URL
+    let archiveURL: URL?
     let cacheURL: URL
-    let archviveIsNew: Bool
     let selectedPath: String
     let id: UUID
     let name: String
@@ -31,7 +30,7 @@ struct ArchiveEntryExtractable: Codable, Transferable {
         DataRepresentation(exportedContentType: .fileURL) { entryDraggable in
             let archiveURL = entryDraggable.archiveURL
             let cacheURL = entryDraggable.cacheURL
-            let archiveIsNew = entryDraggable.archviveIsNew
+            let archiveIsNew = entryDraggable.archiveURL == nil
 
             let loader = libarchiveWrapper(url: archiveURL)
 

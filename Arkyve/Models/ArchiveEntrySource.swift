@@ -5,6 +5,8 @@
 //  Created by Chris Jones on 26/12/2024.
 //
 
+import Foundation
+
 enum ArchiveEntrySourceType: Codable, CustomStringConvertible {
     case Archive
     case Filesystem
@@ -25,13 +27,13 @@ enum ArchiveEntrySourceType: Codable, CustomStringConvertible {
 
 struct ArchiveEntrySource: Codable, CustomStringConvertible {
     let type: ArchiveEntrySourceType
-    let path: String
+    let pathInArchive: String
     var url: URL = URL(fileURLWithPath: "/INVALID")
 
     var description: String {
         if type == .Filesystem {
             return "\(type): \(url)"
         }
-        return "\(type): \(path)"
+        return "\(type): \(pathInArchive)"
     }
 }

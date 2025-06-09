@@ -1,6 +1,0 @@
-brew "7zip"
-brew "lha"
-brew "dvdrtools"
-brew "xz"
-cask "rar"
-

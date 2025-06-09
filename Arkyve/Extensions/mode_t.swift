@@ -16,7 +16,7 @@ extension mode_t {
             // Type
             switch (self & S_IFMT) {
             case S_IFDIR:            /* directory */
-               output += "d"
+                output += "d"
             case S_IFCHR:            /* character special */
                 output += "c"
             case S_IFBLK:            /* block special */

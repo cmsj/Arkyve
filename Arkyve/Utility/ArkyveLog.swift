@@ -42,7 +42,7 @@ enum ArkyveLogType: Int, CaseIterable, Identifiable {
     }
 }
 
-struct ArkyveLogEntry: Identifiable {
+struct ArkyveLogEntry: Identifiable, Equatable, Hashable {
     let id = UUID()
     let logType: ArkyveLogType
     let msg: String
@@ -60,12 +60,14 @@ final class ArkyveLog: Sendable {
     static let shared = ArkyveLog()
 
     @ObservationIgnored
-    private let logger = Logger(subsystem: Bundle.main.bundleIdentifier!, category: "ArkyveLog")
+    nonisolated private let logger = Logger(subsystem: Bundle.main.bundleIdentifier!, category: "ArkyveLog")
 
     var entries: [ArkyveLogEntry] = []
 
     func log(_ level: ArkyveLogType, _ msg: String) {
-        logger.log(level: level.osLogType, "\(msg)")
+        if level != .Trace {
+            logger.log(level: level.osLogType, "\(msg)")
+        }
 
         entries.append(ArkyveLogEntry(logType: level, msg: msg))
         if entries.count > 100 {
@@ -97,5 +99,6 @@ func AKError(_ msg: String) {
 }
 
 func AKTrace(_ msg: String) {
+    NSLog(msg)
     AKLog(.Trace, msg)
 }

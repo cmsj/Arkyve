@@ -34,7 +34,7 @@ extension FileManager {
         if overwrite {
             try? self.removeItem(atPath: path)
         }
-        
+
         // Try to create the symbolic link
         try self.createSymbolicLink(atPath: path, withDestinationPath: destPath)
     }

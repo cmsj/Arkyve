@@ -10,31 +10,12 @@ import Quartz
 import SwiftUI
 import AppKit
 
-@Observable
-@MainActor
-class QuickLookExtensionViewModel {
-    var archive: Archive? = nil
-
-    var selectedEntries = Set<ArchiveEntry.ID>()
-    var sortOrder = [KeyPathComparator(\ArchiveEntry.name)]
-
-    var error: String = ""
-    var archiveName: String {
-        archive?.name ?? "No archive"
-    }
-    var formatString: String {
-        archive?.format.description ?? "Unknown format"
-    }
-
-    var didTruncateRead: Bool = false
-}
-
 struct QLTableRowTreeContent: TableRowContent {
-    let node: ArchiveEntry?
+    let node: ArchiveEntry
     @State private var isExpanded = true
 
     var tableRowBody: some TableRowContent<ArchiveEntry> {
-        ForEach(node?.children ?? []) { child in
+        ForEach(node.children ?? []) { child in
             if let _ = child.children {
                 @Bindable var child = child
                 DisclosureTableRow(child, isExpanded: $isExpanded) {
@@ -48,23 +29,20 @@ struct QLTableRowTreeContent: TableRowContent {
 }
 
 struct ArkyveQuickLookView: View {
-    @State private var viewModel = QuickLookExtensionViewModel()
+    @State var viewModel: ArchiveViewModel
     @ScaledMetric(relativeTo: .body) var iconSize: CGFloat = 16
     @AppStorage("QLArchiveEntryTableConfig") private var columnCustomization: TableColumnCustomization<ArchiveEntry>
-
-
-    var url: URL
 
     var body: some View {
         VStack {
             HStack {
                 Spacer()
-                Text(viewModel.error)
+                Text(viewModel.errors.error?.localizedDescription ?? "Unknown Error")
                 Spacer()
             }
             .padding([.top, .bottom], 2)
             .background(Color(#colorLiteral(red: 0.7470226884, green: 0, blue: 0, alpha: 0.5411817071)))
-            .hide(if: viewModel.error == "")
+            .hide(if: viewModel.errors.error == nil)
 
             HStack {
                 Spacer()
@@ -73,7 +51,7 @@ struct ArkyveQuickLookView: View {
             }
             .padding([.top, .bottom], 2)
             .background(.gray)
-            .hide(if: !viewModel.didTruncateRead)
+            .hide(if: !viewModel.didTruncate)
 
             Table(of: ArchiveEntry.self, selection: $viewModel.selectedEntries, sortOrder: $viewModel.sortOrder, columnCustomization: $columnCustomization) {
                 Group {
@@ -91,14 +69,14 @@ struct ArkyveQuickLookView: View {
                     }
                     .disabledCustomizationBehavior(.visibility)
                     .customizationID("name")
-                    
+
                     TableColumn("Size", value: \ArchiveEntry.sizeStringHuman) { entry in
                         Text(entry.sizeStringHuman)
                             .foregroundStyle(.secondary)
                     }
                     .customizationID("sizeStringHuman")
                     .alignment(.trailing)
-                    
+
                     TableColumn("Size (bytes)", value: \ArchiveEntry.sizeString) { entry in
                         Text(entry.sizeString)
                             .foregroundStyle(.secondary)
@@ -191,24 +169,7 @@ struct ArkyveQuickLookView: View {
                     .defaultVisibility(.hidden)
                 }
             } rows: {
-                QLTableRowTreeContent(node: viewModel.archive?.root)
-            }
-        }
-        .task {
-            do {
-                NSLog(".task(): Loading archive \(url)")
-                let loader = libarchiveWrapper(url: url)
-                viewModel.archive = try await loader.loadArchive(entryLimit: 150)
-                viewModel.didTruncateRead = await loader.didTruncateRead
-
-                viewModel.archive?.entries.forEach { entry in
-                    if entry.type == .directory {
-                        entry.isExpanded = true
-                    }
-                }
-            } catch {
-                NSLog(".task(): Encountered error: \(error.localizedDescription)")
-                viewModel.error = error.localizedDescription
+                QLTableRowTreeContent(node: viewModel.root)
             }
         }
     }
@@ -224,7 +185,10 @@ class PreviewViewController: NSViewController, QLPreviewingController {
 
     func preparePreviewOfFile(at url: URL) async throws {
         NSLog("preparePreviewOfFile(): Preparing SwiftUI view")
-        let swiftUIView = ArkyveQuickLookView(url: url)
+        let managerBase = ManagerManagerBase.shared
+        let viewModel = managerBase.createVM(url: url, truncateAt: 150)
+
+        let swiftUIView = ArkyveQuickLookView(viewModel: viewModel)
             .frame(minWidth: 100, idealWidth: .infinity, maxWidth: .infinity)
             .frame(minHeight: 100, idealHeight: .infinity, maxHeight: .infinity)
             .background(Color(NSColor.windowBackgroundColor))

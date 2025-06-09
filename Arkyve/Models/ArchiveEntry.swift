@@ -12,7 +12,7 @@ import SwiftUI
 
 @Observable
 class ArchiveEntry: Identifiable {
-    let id = UUID()
+    private(set) var id = UUID()
     var source: ArchiveEntrySource
     var children: [ArchiveEntry]? = nil
 
@@ -35,6 +35,7 @@ class ArchiveEntry: Identifiable {
 
     // Properties we will store for later use
     var name: String
+    var proposedName: String
     private(set) var path: String
     var pathComponents: [String] = [] {
         didSet {
@@ -147,11 +148,10 @@ class ArchiveEntry: Identifiable {
         get { symlinkTarget != nil ? "\(symlinkTarget!)" : "--"}
     }
 
-    let lock = Mutex(true)
-
     init(_ entry: libarchiveHeader) {
         source = entry.source
         name = entry.name
+        proposedName = entry.name
         pathComponents = entry.pathComponents
         path = entry.pathComponents.joined(separator: "/")
         size = entry.size
@@ -178,8 +178,9 @@ class ArchiveEntry: Identifiable {
         let name = pathBits.last ?? "Unknown"
         let pathComponents = pathBits
 
-        self.source = ArchiveEntrySource(type: .Synthetic, path: path)
+        self.source = ArchiveEntrySource(type: .Synthetic, pathInArchive: path)
         self.name = name
+        self.proposedName = name
         self.pathComponents = pathComponents
         self.path = path
         self.size = -1
@@ -190,8 +191,9 @@ class ArchiveEntry: Identifiable {
 
     // periphery:ignore:parameters isRoot
     init(isRoot: Bool) {
-        self.source = ArchiveEntrySource(type: .Root, path: "")
+        self.source = ArchiveEntrySource(type: .Root, pathInArchive: "")
         self.name = "root"
+        self.proposedName = "root"
         self.pathComponents = []
         self.path = ""
         self.size = -1
@@ -203,8 +205,6 @@ class ArchiveEntry: Identifiable {
     convenience init?(from url: URL, pathInArchiveComponents: [String]) throws {
         let attrs: [FileAttributeKey : Any]
 
-        try ScopedURLManager.shared.store(url, forOperation: .addFiles)
-
         do {
             attrs = try FileManager.default.attributesOfItem(atPath: url.path)
         } catch {
@@ -212,7 +212,7 @@ class ArchiveEntry: Identifiable {
             return nil
         }
 
-        let source = ArchiveEntrySource(type: .Filesystem, path: url.path, url: url)
+        let source = ArchiveEntrySource(type: .Filesystem, pathInArchive: url.path, url: url)
 
         guard var fileSize  = (attrs[FileAttributeKey.size] as? NSNumber)?.int64Value,
               let fileBtime = attrs[FileAttributeKey.creationDate] as? NSDate,
@@ -320,9 +320,7 @@ class ArchiveEntry: Identifiable {
                 let tmpEntry = ArchiveEntry(syntheticDirectory: synthPath)
                 syntheticEntries.append(tmpEntry)
 
-                self.lock.withLock { _ in
-                    self.children?.append(tmpEntry)
-                }
+                self.children?.append(tmpEntry)
                 syntheticEntries += try children?[children!.count - 1].addChildHierarchically(entry) ?? []
             }
             return syntheticEntries
@@ -338,13 +336,9 @@ class ArchiveEntry: Identifiable {
                     throw .init(.readArchive, msg: String(localized: "Internal error: Duplicate synthetic directory"))
                 }
                 entry.children = duplicate.children
-                self.lock.withLock { _ in
-                    _ = self.children?.remove(at: dispatchIndex)
-                }
+                _ = self.children?.remove(at: dispatchIndex)
             }
-            self.lock.withLock { _ in
-                children?.append(entry)
-            }
+            self.children?.append(entry)
             return syntheticEntries
         }
 
@@ -359,9 +353,7 @@ class ArchiveEntry: Identifiable {
             let tmpEntry = ArchiveEntry(syntheticDirectory: synthPath)
             syntheticEntries.append(tmpEntry)
 
-            self.lock.withLock { _ in
-                self.children?.append(tmpEntry)
-            }
+            self.children?.append(tmpEntry)
             syntheticEntries += try children?[children!.count - 1].addChildHierarchically(entry) ?? []
         }
 
@@ -387,10 +379,9 @@ class ArchiveEntry: Identifiable {
         return libarchiveHeader(source: source, type: type, path: path, name: name, pathComponents: pathComponents, size: size, atime: atime, ctime: ctime, mtime: mtime, btime: btime, uid: uid, gid: gid, perms: perms, symlinkTarget: symlinkTarget, rdev: rdev)
     }
 
-    func asExtractable(for archive: Archive) -> ArchiveEntryExtractable {
-        return ArchiveEntryExtractable(archiveURL: archive.URL,
-                                       cacheURL: archive.cacheURL,
-                                       archviveIsNew: !archive.existsOnDisk,
+    func asExtractable(from archiveURL: URL?, cacheURL: URL) -> ArchiveEntryExtractable {
+        return ArchiveEntryExtractable(archiveURL: archiveURL,
+                                       cacheURL: cacheURL,
                                        selectedPath: self.path,
                                        id: self.id,
                                        name: self.name,

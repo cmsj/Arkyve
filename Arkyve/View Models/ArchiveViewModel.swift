@@ -1,0 +1,226 @@
+//
+//  ArchiveViewModel.swift
+//  Arkyve
+//
+//  Created by Chris Jones on 03/06/2025.
+//
+
+import SwiftUI
+
+@MainActor
+func openArchiveFromURL(_ url: URL, openWindow: OpenWindowAction) {
+    let vm = ManagerManagerBase.shared.createVM(url: url)
+    openWindow(id: "archive", value: vm.id)
+    SettingsManager.shared.addRecent(url)
+}
+
+@MainActor
+func openArchiveFromPanel(openWindow: OpenWindowAction) {
+    let panel = NSOpenPanel()
+    panel.canChooseFiles = true
+    panel.canChooseDirectories = false
+    panel.allowsMultipleSelection = true
+    panel.allowedContentTypes = ArkyveFormats.utTypes
+
+    if panel.runModal() == .OK {
+        if let url = panel.url {
+            AKTrace("Open Menu: \(url)")
+            openArchiveFromURL(url, openWindow: openWindow)
+        }
+    }
+}
+
+@Observable
+@MainActor
+final class ArchiveViewModel: Identifiable {
+    let id: UUID
+
+    // MARK: - Managers
+    let settingsManager: SettingsManager
+    let scopedURLManager: ScopedURLManager
+    let cacheManager: CacheManager
+    var errors: ErrorManager = ErrorManager()
+    let tips = TipsManager()
+
+    // MARK: - Archive properties
+    var diskURL: URL?
+    var cacheURL: URL
+    var name: String
+    var entries: [ArchiveEntry] = []
+    var root = ArchiveEntry(isRoot: true)
+    var format: libarchiveFormat = SettingsManager().newArchiveFormat.libarchiveFormat
+    var filters: [libarchiveFilter] = SettingsManager().newArchiveFormat.libarchiveFilters
+    private(set) var dirty: Bool = false
+    var truncateAt: Int? = nil
+    private(set) var didTruncate: Bool = false
+    var offerTopDirectory: Bool {
+        // Should extraction offer to create a directory?
+        guard let children = root.children else { return false }
+        switch children.count {
+        case 0, 1:
+            return false
+        default:
+            return true
+        }
+    }
+
+    // MARK: - UI properties
+    weak var window: NSWindow? = nil
+    var selectedEntries = Set<ArchiveEntry.ID>()
+    var focusedEntry: UUID? = nil
+
+    var searchQuery: String = ""
+    var searchPresented: Bool = false
+
+    var sortOrder = [KeyPathComparator(\ArchiveEntry.name)]
+    var quickLookURL: URL?
+    var quickLookItems: [URL] = []
+
+    var progressTask: Task<Void, Never>? = nil
+
+    // MARK: - Disable various parts of the UI
+    var disableUI: Bool = false {
+        didSet { print("UI DISABLED: \(disableUI)") }
+    }
+
+    var disableNew: Bool { disableUI }
+    var disableOpen: Bool { disableUI }
+    var disableCloseWindow: Bool { disableUI }
+    var disableAdd: Bool { disableUI }
+    var disableRevert: Bool { disableUI || dirty != true || diskURL == nil }
+    var disableCloseArchive: Bool { disableUI }
+    var disableSave: Bool { disableUI || dirty != true || format.canWrite == false }
+    var disableSaveAs: Bool { disableUI }
+    var disableQuicklook: Bool { disableUI || selectedEntries.isEmpty }
+    var disableExtract: Bool { disableUI || selectedEntries.isEmpty }
+    var disableExtractAll: Bool { disableUI || entries.count == 0 }
+    var disableRename: Bool { disableUI || selectedEntries.count != 1 }
+    var disableDelete: Bool { disableUI || selectedEntries.isEmpty }
+    var disableNewFolder: Bool { disableUI }
+    var disableExpandCollapse: Bool { disableUI }
+    var disableTableView: Bool { disableUI }
+    var disableShare: Bool { disableUI || selectedEntries.isEmpty }
+    var disableSearchMenu: Bool { disableUI }
+
+    // MARK: - Dynamic UI text
+    var navSubtitleText: String { "\(dirty ? "(Unsaved)" : "")" }
+    var statusBarText: String {
+        if progressTask != nil { return "Working..." }
+
+        let text: String
+        if selectedEntries.count > 0 {
+            text = "\(selectedEntries.count) of \(entries.count) selected"
+        } else {
+            text = String(localized:"\(entries.count) items")
+        }
+        return text
+    }
+
+    init(id: UUID, settingsManager: SettingsManager, scopedURLManager: ScopedURLManager, cacheManager: CacheManager, diskURL: URL? = nil, truncateAt: Int? = nil) {
+        self.settingsManager = settingsManager
+        self.scopedURLManager = scopedURLManager
+        self.cacheManager = cacheManager
+
+        let name = diskURL?.lastPathComponent ?? settingsManager.newArchiveFilename
+
+        self.id = id
+        self.diskURL = diskURL
+        self.name = name
+        self.cacheURL =  cacheManager.urlForItem(cacheType: .read, itemName: name)
+        self.truncateAt = truncateAt
+
+        if let diskURL {
+            // We have a URL, so we can immediately load our archive
+            openArchive(url: diskURL, truncateAt: truncateAt)
+        } else {
+            AKTrace("\(id): ArchiveViewModel initialized without a disk URL")
+        }
+    }
+
+    deinit {
+        AKTrace("\(id): ArchiveViewModel deinit")
+    }
+
+    func setDirty(_ dirty: Bool = true) {
+        AKTrace("Marking archive \(dirty ? "dirty" : "clean")")
+        self.dirty = dirty
+    }
+
+    func setClean() {
+        setDirty(false)
+    }
+
+    func openArchive(url: URL, truncateAt: Int? = nil) {
+        AKTrace("\(id): ArchiveViewModel dispatching libarchive read for \(url)")
+
+        errors.clear()
+
+        progressTask = Task {
+            disableUI = true
+            var failed = true
+            defer {
+                disableUI = failed
+                progressTask = nil
+            }
+
+            do {
+                let (archiveFormat, archiveFilters, entries, root, didTruncate) = try await libarchiveWrapper.loadArchive(at: url, entryLimit: truncateAt ?? -1)
+                failed = false
+
+                if archiveFormat.canWrite == false {
+                    ReadOnlyStatus.event.sendDonation()
+                }
+
+                Task { @MainActor in
+                    self.format = archiveFormat
+                    self.filters = archiveFilters
+                    self.entries = entries
+                    self.root = root
+                    self.didTruncate = didTruncate
+
+                    // Ensure our UI is consistent
+                    self.setClean()
+                    sort()
+
+                    // Expand folders per our settings
+                    switch settingsManager.folderExpansion {
+                    case .always:
+                        self.entries.forEach { $0.isExpanded = true }
+                    case .oneOnly:
+                        if root.children?.count == 1, root.children?.first?.type == .directory {
+                            root.children?.first?.isExpanded = true
+                        }
+                    case .never:
+                        break
+                    }
+                }
+            } catch let error as ArkyveError {
+                errors.err(error)
+            } catch {
+                errors.err(.init(.openArchive, msg: error.localizedDescription))
+            }
+        }
+    }
+
+    // MARK: - Archive navigation
+    func entryForID(_ id: UUID) -> ArchiveEntry? {
+        if id == root.id { return root }
+        return entries.first { $0.id == id }
+    }
+
+    func parentForEntry(_ entry: ArchiveEntry) -> ArchiveEntry? {
+        return entries.first(where: { item in
+            item.children?.contains { $0.id == entry.id } ?? false
+        })
+    }
+
+    func rootEntryName() -> String? {
+        NSLog("rootEntryName(): \(root.children?.count ?? -1), \(root.children?.first?.path ?? "UNKNOWN")")
+        if let count = root.children?.count, count > 1 { return nil }
+        return root.children?.first?.pathComponents.last
+    }
+
+    func pathList() -> [String] {
+        return entries.map { $0.path }
+    }
+}

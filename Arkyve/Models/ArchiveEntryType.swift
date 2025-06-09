@@ -7,13 +7,7 @@
 
 import Darwin.sys
 
-extension ArchiveEntryType: CaseIterable {
-    public static var allCases: [ArchiveEntryType] {
-        [.unknown, .file, .directory, .socket, .symlink, .chardev, .blockdev, .fifo, .root]
-    }
-}
-
-enum ArchiveEntryType: String, Codable {
+enum ArchiveEntryType: String, Codable, CaseIterable {
     case unknown = "questionmark"
     case file = "doc"
     case directory = "folder"

@@ -100,7 +100,6 @@ struct SplashView: View {
                     .padding()
                 }
             }
-            .hide(if: settingsManager.recents.isEmpty)
         }
         .ignoresSafeArea()
         .frame(width: 800, height: 600)

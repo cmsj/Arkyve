@@ -57,8 +57,8 @@
 		4F1F240A2DF712C30019CA7D /* Quartz.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Quartz.framework; path = System/Library/Frameworks/Quartz.framework; sourceTree = SDKROOT; };
 		4F1F24462DF7407D0019CA7D /* ArkyveExtractAction.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = ArkyveExtractAction.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		4F1F24472DF7407D0019CA7D /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
-		4F2084132DEFA306004213AA /* Arkyve2.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Arkyve2.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		4F2084212DEFA307004213AA /* Arkyve2Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = Arkyve2Tests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		4F2084132DEFA306004213AA /* Arkyve.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Arkyve.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		4F2084212DEFA307004213AA /* ArkyveTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ArkyveTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		4FA328722DF22D2B001B377C /* base.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = base.h; sourceTree = "<group>"; };
 		4FA328732DF22D2B001B377C /* bcj.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = bcj.h; sourceTree = "<group>"; };
 		4FA328742DF22D2B001B377C /* block.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = block.h; sourceTree = "<group>"; };
@@ -2223,12 +2223,12 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
-		4F1F24032DF7011A0019CA7D /* Exceptions for "Arkyve" folder in "Arkyve2" target */ = {
+		4F1F24032DF7011A0019CA7D /* Exceptions for "Arkyve" folder in "Arkyve" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				Assets/Info.plist,
 			);
-			target = 4F2084122DEFA306004213AA /* Arkyve2 */;
+			target = 4F2084122DEFA306004213AA /* Arkyve */;
 		};
 		4F1F241C2DF712C40019CA7D /* Exceptions for "ArkyveQuickLookExtension" folder in "ArkyveQuickLookExtension" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
@@ -2344,16 +2344,16 @@
 		4F2084152DEFA306004213AA /* Arkyve */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
-				4F1F24032DF7011A0019CA7D /* Exceptions for "Arkyve" folder in "Arkyve2" target */,
+				4F1F24032DF7011A0019CA7D /* Exceptions for "Arkyve" folder in "Arkyve" target */,
 				4F1F24372DF713CF0019CA7D /* Exceptions for "Arkyve" folder in "ArkyveQuickLookExtension" target */,
 				4F1F245E2DF7409A0019CA7D /* Exceptions for "Arkyve" folder in "ArkyveExtractAction" target */,
 			);
 			path = Arkyve;
 			sourceTree = "<group>";
 		};
-		4F2084242DEFA307004213AA /* Arkyve2Tests */ = {
+		4F2084242DEFA307004213AA /* ArkyveTests */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
-			path = Arkyve2Tests;
+			path = ArkyveTests;
 			sourceTree = "<group>";
 		};
 /* End PBXFileSystemSynchronizedRootGroup section */
@@ -2406,7 +2406,7 @@
 			children = (
 				4FA3316F2DF22D2B001B377C /* vendor */,
 				4F2084152DEFA306004213AA /* Arkyve */,
-				4F2084242DEFA307004213AA /* Arkyve2Tests */,
+				4F2084242DEFA307004213AA /* ArkyveTests */,
 				4F1F240C2DF712C30019CA7D /* ArkyveQuickLookExtension */,
 				4F1F24492DF7407D0019CA7D /* ArkyveExtractAction */,
 				4F1F24092DF712C30019CA7D /* Frameworks */,
@@ -2417,8 +2417,8 @@
 		4F2084142DEFA306004213AA /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				4F2084132DEFA306004213AA /* Arkyve2.app */,
-				4F2084212DEFA307004213AA /* Arkyve2Tests.xctest */,
+				4F2084132DEFA306004213AA /* Arkyve.app */,
+				4F2084212DEFA307004213AA /* ArkyveTests.xctest */,
 				4F1F24082DF712C30019CA7D /* ArkyveQuickLookExtension.appex */,
 				4F1F24462DF7407D0019CA7D /* ArkyveExtractAction.appex */,
 			);
@@ -5760,9 +5760,9 @@
 			productReference = 4F1F24462DF7407D0019CA7D /* ArkyveExtractAction.appex */;
 			productType = "com.apple.product-type.app-extension";
 		};
-		4F2084122DEFA306004213AA /* Arkyve2 */ = {
+		4F2084122DEFA306004213AA /* Arkyve */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 4F2084352DEFA307004213AA /* Build configuration list for PBXNativeTarget "Arkyve2" */;
+			buildConfigurationList = 4F2084352DEFA307004213AA /* Build configuration list for PBXNativeTarget "Arkyve" */;
 			buildPhases = (
 				4F20840F2DEFA306004213AA /* Sources */,
 				4F2084102DEFA306004213AA /* Frameworks */,
@@ -5778,16 +5778,16 @@
 			fileSystemSynchronizedGroups = (
 				4F2084152DEFA306004213AA /* Arkyve */,
 			);
-			name = Arkyve2;
+			name = Arkyve;
 			packageProductDependencies = (
 			);
 			productName = Arkyve2;
-			productReference = 4F2084132DEFA306004213AA /* Arkyve2.app */;
+			productReference = 4F2084132DEFA306004213AA /* Arkyve.app */;
 			productType = "com.apple.product-type.application";
 		};
-		4F2084202DEFA307004213AA /* Arkyve2Tests */ = {
+		4F2084202DEFA307004213AA /* ArkyveTests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 4F2084382DEFA307004213AA /* Build configuration list for PBXNativeTarget "Arkyve2Tests" */;
+			buildConfigurationList = 4F2084382DEFA307004213AA /* Build configuration list for PBXNativeTarget "ArkyveTests" */;
 			buildPhases = (
 				4F20841D2DEFA307004213AA /* Sources */,
 				4F20841E2DEFA307004213AA /* Frameworks */,
@@ -5799,13 +5799,13 @@
 				4F2084232DEFA307004213AA /* PBXTargetDependency */,
 			);
 			fileSystemSynchronizedGroups = (
-				4F2084242DEFA307004213AA /* Arkyve2Tests */,
+				4F2084242DEFA307004213AA /* ArkyveTests */,
 			);
-			name = Arkyve2Tests;
+			name = ArkyveTests;
 			packageProductDependencies = (
 			);
 			productName = Arkyve2Tests;
-			productReference = 4F2084212DEFA307004213AA /* Arkyve2Tests.xctest */;
+			productReference = 4F2084212DEFA307004213AA /* ArkyveTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
 /* End PBXNativeTarget section */
@@ -5833,7 +5833,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 4F20840E2DEFA306004213AA /* Build configuration list for PBXProject "Arkyve2" */;
+			buildConfigurationList = 4F20840E2DEFA306004213AA /* Build configuration list for PBXProject "Arkyve" */;
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
@@ -5847,8 +5847,8 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				4F2084122DEFA306004213AA /* Arkyve2 */,
-				4F2084202DEFA307004213AA /* Arkyve2Tests */,
+				4F2084122DEFA306004213AA /* Arkyve */,
+				4F2084202DEFA307004213AA /* ArkyveTests */,
 				4F1F24072DF712C30019CA7D /* ArkyveQuickLookExtension */,
 				4F1F24452DF7407D0019CA7D /* ArkyveExtractAction */,
 			);
@@ -5930,7 +5930,7 @@
 		};
 		4F2084232DEFA307004213AA /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 4F2084122DEFA306004213AA /* Arkyve2 */;
+			target = 4F2084122DEFA306004213AA /* Arkyve */;
 			targetProxy = 4F2084222DEFA307004213AA /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
@@ -6239,7 +6239,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_ENTITLEMENTS = Arkyve/Assets/Arkyve2.entitlements;
+				CODE_SIGN_ENTITLEMENTS = Arkyve/Assets/Arkyve.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
@@ -6277,7 +6277,7 @@
 					"-lzstd",
 					"-larchive",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = net.tenshu.Arkyve2;
+				PRODUCT_BUNDLE_IDENTIFIER = net.tenshu.Arkyve;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				REGISTER_APP_GROUPS = YES;
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -6291,7 +6291,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_ENTITLEMENTS = Arkyve/Assets/Arkyve2.entitlements;
+				CODE_SIGN_ENTITLEMENTS = Arkyve/Assets/Arkyve.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
@@ -6329,7 +6329,7 @@
 					"-lzstd",
 					"-larchive",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = net.tenshu.Arkyve2;
+				PRODUCT_BUNDLE_IDENTIFIER = net.tenshu.Arkyve;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				REGISTER_APP_GROUPS = YES;
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -6352,7 +6352,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				SWIFT_VERSION = 5.0;
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Arkyve2.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Arkyve2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Arkyve.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Arkyve";
 			};
 			name = Debug;
 		};
@@ -6370,7 +6370,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				SWIFT_VERSION = 5.0;
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Arkyve2.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Arkyve2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Arkyve.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Arkyve";
 			};
 			name = Release;
 		};
@@ -6395,7 +6395,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		4F20840E2DEFA306004213AA /* Build configuration list for PBXProject "Arkyve2" */ = {
+		4F20840E2DEFA306004213AA /* Build configuration list for PBXProject "Arkyve" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				4F2084332DEFA307004213AA /* Debug */,
@@ -6404,7 +6404,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		4F2084352DEFA307004213AA /* Build configuration list for PBXNativeTarget "Arkyve2" */ = {
+		4F2084352DEFA307004213AA /* Build configuration list for PBXNativeTarget "Arkyve" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				4F2084362DEFA307004213AA /* Debug */,
@@ -6413,7 +6413,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		4F2084382DEFA307004213AA /* Build configuration list for PBXNativeTarget "Arkyve2Tests" */ = {
+		4F2084382DEFA307004213AA /* Build configuration list for PBXNativeTarget "ArkyveTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				4F2084392DEFA307004213AA /* Debug */,

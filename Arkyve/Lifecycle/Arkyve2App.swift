@@ -9,7 +9,7 @@ import SwiftUI
 import TipKit
 
 @main
-struct Arkyve2App: App {
+struct ArkyveApp: App {
     @Environment(\.openWindow) private var openWindow
     @Environment(\.dismissWindow) private var dismissWindow
     @State var managerManager = ManagerManagerBase.shared

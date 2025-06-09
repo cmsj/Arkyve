@@ -19,7 +19,7 @@
                BlueprintIdentifier = "4F1F24452DF7407D0019CA7D"
                BuildableName = "ArkyveExtractAction.appex"
                BlueprintName = "ArkyveExtractAction"
-               ReferencedContainer = "container:Arkyve2.xcodeproj">
+               ReferencedContainer = "container:Arkyve.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
          <BuildActionEntry
@@ -31,9 +31,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "4F2084122DEFA306004213AA"
-               BuildableName = "Arkyve2.app"
-               BlueprintName = "Arkyve2"
-               ReferencedContainer = "container:Arkyve2.xcodeproj">
+               BuildableName = "Arkyve.app"
+               BlueprintName = "Arkyve"
+               ReferencedContainer = "container:Arkyve.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -62,9 +62,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "4F2084122DEFA306004213AA"
-            BuildableName = "Arkyve2.app"
-            BlueprintName = "Arkyve2"
-            ReferencedContainer = "container:Arkyve2.xcodeproj">
+            BuildableName = "Arkyve.app"
+            BlueprintName = "Arkyve"
+            ReferencedContainer = "container:Arkyve.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </LaunchAction>
@@ -81,9 +81,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "4F2084122DEFA306004213AA"
-            BuildableName = "Arkyve2.app"
-            BlueprintName = "Arkyve2"
-            ReferencedContainer = "container:Arkyve2.xcodeproj">
+            BuildableName = "Arkyve.app"
+            BlueprintName = "Arkyve"
+            ReferencedContainer = "container:Arkyve.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>

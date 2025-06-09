@@ -1,6 +1,6 @@
 //
 //  FolderExpansionOptions.swift
-//  Arkyve2
+//  Arkyve
 //
 //  Created by Chris Jones on 09/06/2025.
 //

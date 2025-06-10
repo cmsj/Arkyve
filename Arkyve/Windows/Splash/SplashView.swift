@@ -7,102 +7,147 @@
 
 import SwiftUI
 
+struct WelcomeButton: View {
+    var iconName: String
+    var text: String
+
+    var body: some View {
+        HStack(spacing: 0) {
+            Image(systemName: iconName)
+                .font(.system(size: 16, weight: .medium))
+                .foregroundStyle(.secondary)
+                .padding(10)
+                .frame(width: 38)
+//                                        .border(.blue)
+            Text(text)
+                .font(.system(size: 14, weight: .medium))
+                .padding([.leading], 0)
+//                                        .border(.orange)
+            Spacer()
+        }
+        .background(
+            RoundedRectangle(
+                cornerRadius: 7,
+                style: .continuous
+            )
+            .fill(.gray.opacity(0.1))
+        )
+        .frame(width: 349, height: 35)
+        .padding([.bottom], 7)
+//        .border(.cyan)
+    }
+}
 struct SplashView: View {
     @Environment(\.openWindow) var openWindow
     @Environment(\.dismissWindow) var dismissWindow
     @State private var managerManager = ManagerManagerBase.shared
     @StateObject private var settingsManager = SettingsManager.shared
+    @State private var selection: URL?
+    private var homeDir: String
+    private var glowColor = Color(red: 0.2, green: 0.576, blue: 0.807, opacity: 0.6) // 3493CE
+
+
+    init() {
+        let pw = getpwuid(getuid())
+        let home = pw?.pointee.pw_dir
+        homeDir = FileManager.default.string(withFileSystemRepresentation: home!, length: Int(strlen(home!))).appending("/")
+    }
 
     var body: some View {
-        VStack {
-            VStack {
-                Spacer()
-                HStack {
-                    Text("Arkyve")
-                        .font(.system(size: 32))
-                        .padding([.bottom], 30)
-                        .allowsHitTesting(false)
-                }
-                HStack {
-                    Button {
-                        AKTrace("SplashView New Archive")
-                        openWindow(id: "archive")
-                    } label: {
-                        Text("New Archive")
-                            .font(.title2)
-                            .padding(20)
-                    }
-                    .buttonStyle(.borderedProminent)
-                    .clipShape(Capsule())
-
-                    Button {
-                        AKTrace("SplashView Open Archive")
-                        openArchiveFromPanel(openWindow: openWindow)
-                    } label: {
-                        Text("Open Archive...")
-                            .font(.title2)
-                            .padding(20)
-                    }
-                    .clipShape(Capsule())
-                }
-                .padding([.leading, .trailing, .bottom])
-            }
-            .frame(width: 800, height: 200)
-            .background {
-                Image("Logo")
-                    .frame(width: 800, height: 200, alignment: .center)
-                    .opacity(0.05)
-                    .mask(
-                        LinearGradient(gradient: Gradient(colors: [Color.black, Color.black, Color.black, Color.black.opacity(0)]), startPoint: .top, endPoint: .bottom)
-                    )
+        HStack(spacing: 0) {
+            ZStack {
+                Rectangle()
+                    .fill(.black.opacity(0.3))
                     .allowsHitTesting(false)
-            }
-
-            VStack {
-                Divider()
-                    .padding(.horizontal, 20)
-                    .padding([.bottom], 10)
-
-                Text("Recents:")
-                    .font(.title2)
-                    .foregroundStyle(.secondary)
+                VStack(spacing: 0) {
+                    VStack(spacing: 0) {
+                        Image("Logo")
+                            .resizable()
+                            .frame(width: 103, height: 103, alignment: .center)
+                            .clipShape(.buttonBorder)
+                            .shadow(color: glowColor, radius: 50)
+                            .padding([.top], 65)
+                        Text("Arkyve")
+                            .font(.system(size: 32))
+                            .fontWeight(.bold)
+                            .padding([.top], 14)
+                        Text("Version 1.0")
+                            .font(.system(size: 14))
+                            .foregroundStyle(.secondary)
+                    }
+                    .frame(height: 278)
                     .allowsHitTesting(false)
+//                    .border(.green)
+                    
+                    VStack(spacing: 0) {
+                        WelcomeButton(iconName: "plus.app",
+                                      text: "Create New Archive...")
+                        .onTapGesture {
+                            AKTrace("SplashView New Archive")
+                            openWindow(id: "archive")
+                        }
+                        
+                        WelcomeButton(iconName: "folder",
+                                      text: "Open Existing Archive...")
+                        .onTapGesture {
+                            AKTrace("SplashView Open Archive")
+                            openArchiveFromPanel(openWindow: openWindow)
+                        }
+                        
+                        WelcomeButton(iconName: "folder",
+                                      text: "Unused")
+                        .padding([.bottom], 41)
+                        .opacity(0)
+                        
+                    }
+                    .frame(height: 238)
+//                    .border(.yellow)
+                }
+                .frame(width: 460)
+            }
+//            .border(.red)
 
-                ScrollView {
-                    LazyVGrid(
-                        columns: [
-                            GridItem(.flexible(minimum: 50, maximum: .infinity)),
-                            GridItem(.flexible(minimum: 50, maximum: .infinity)),
-                            GridItem(.flexible(minimum: 50, maximum: .infinity))
-                        ],
-                        alignment: .center,
-                        spacing: 30
-                    ) {
+            ScrollViewReader { proxy in
+                VStack {
+                    List(selection: $selection) {
                         ForEach(settingsManager.recents, id: \.self) { recent in
-                            Button {
-                                AKTrace("SplashView Open Recent: \(recent)")
-                                openArchiveFromURL(recent, openWindow: openWindow)
-                            } label: {
-                                VStack {
-                                    Image(nsImage: NSWorkspace.shared.icon(forFile: recent.path))
-                                        .resizable()
-                                        .scaledToFit()
-                                        .frame(width: 64, height: 64)
+                            HStack {
+                                Image(nsImage: NSWorkspace.shared.icon(forFile: recent.path))
+                                    .resizable()
+                                    .scaledToFit()
+                                    .frame(width: 32, height: 32)
+                                VStack(alignment: .leading) {
                                     Text(recent.lastPathComponent)
                                         .fontWeight(.bold)
                                         .lineLimit(1)
                                         .allowsTightening(true)
+                                    Text(recent.path.replacing(homeDir, with: ""))
+                                        .foregroundStyle(.secondary)
+                                        .font(.caption)
+                                        .lineLimit(1)
+                                        .allowsTightening(true)
                                 }
                             }
-                            .buttonStyle(.borderless)
+                            .padding(.vertical, 4)
+                            .onTapGesture {
+                                selection = recent
+                            }
+                            .simultaneousGesture(TapGesture(count: 2).onEnded {
+                                AKTrace("Opening recent: \(recent)")
+                                openArchiveFromURL(recent, openWindow: openWindow)
+                            })
                         }
                     }
-                    .padding()
+                    .scrollContentBackground(.hidden)
+                    .ignoresSafeArea(.all)
+                }
+                .onAppear {
+                    proxy.scrollTo(settingsManager.recents.first, anchor: .top)
                 }
             }
         }
         .ignoresSafeArea()
-        .frame(width: 800, height: 600)
+        .frame(width: 741, height: 433)//461)
         .onChange(of: managerManager.vmStoreIsEmpty, initial: true) { wasEmpty, isEmpty in
             // NOTE: This is one half of a behaviour - the other half is an equivalent onChange in ArkyveApp
             if !isEmpty {

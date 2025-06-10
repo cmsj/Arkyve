@@ -2323,6 +2323,13 @@
 			);
 			target = 4F1F24452DF7407D0019CA7D /* ArkyveExtractAction */;
 		};
+		4F288D972DF8803400A4E600 /* Exceptions for "ArkyveTests" folder in "ArkyveTests" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = 4F2084202DEFA307004213AA /* ArkyveTests */;
+		};
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -2354,6 +2361,9 @@
 		};
 		4F2084242DEFA307004213AA /* ArkyveTests */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				4F288D972DF8803400A4E600 /* Exceptions for "ArkyveTests" folder in "ArkyveTests" target */,
+			);
 			path = ArkyveTests;
 			sourceTree = "<group>";
 		};
@@ -6348,6 +6358,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = VQCYSNZB89;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = ArkyveTests/Info.plist;
 				MACOSX_DEPLOYMENT_TARGET = 15.5;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = net.tenshu.ArkyveTests;
@@ -6366,6 +6377,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = VQCYSNZB89;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = ArkyveTests/Info.plist;
 				MACOSX_DEPLOYMENT_TARGET = 15.5;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = net.tenshu.ArkyveTests;

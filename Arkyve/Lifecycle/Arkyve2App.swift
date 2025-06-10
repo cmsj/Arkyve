@@ -8,8 +8,22 @@
 import SwiftUI
 import TipKit
 
+class AppDelegate: NSObject, NSApplicationDelegate {
+    func applicationShouldHandleReopen(_ sender: NSApplication, hasVisibleWindows flag: Bool) -> Bool {
+        if flag == false {
+            // User clicked on the dock icon, but we have no windows open, so open the splash window
+            AKTrace("Dock icon clicked while no windows are open, signalling Welcome window to open")
+            if let url = URL(string:"arkyve://splash") {
+                NSWorkspace.shared.open(url)
+            }
+        }
+        return true
+    }
+}
+
 @main
 struct ArkyveApp: App {
+    @NSApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
     @Environment(\.openWindow) private var openWindow
     @Environment(\.dismissWindow) private var dismissWindow
     @State var managerManager = ManagerManagerBase.shared
@@ -56,18 +70,18 @@ struct ArkyveApp: App {
             }
         }
 
-        Window("Recents Browser", id: "splash") {
+        Window("Welcome to Arkyve", id: "splash") {
             SplashView()
                 .containerBackground(.thickMaterial, for: .window)
                 .windowMinimizeBehavior(.disabled)
-                .windowFullScreenBehavior(.disabled)
                 .windowResizeBehavior(.disabled)
         }
-        .windowBackgroundDragBehavior(.enabled)
         .windowStyle(.hiddenTitleBar)
         .windowResizability(.contentSize)
+        .windowBackgroundDragBehavior(.enabled)
         .defaultLaunchBehavior(.suppressed)
         .restorationBehavior(.disabled)
+        .handlesExternalEvents(matching: Set(arrayLiteral: "splash"))
 
         UtilityWindow("Log viewer", id: "log-window") {
             LogWindowView()

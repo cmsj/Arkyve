@@ -2330,6 +2330,21 @@
 			);
 			target = 4F2084202DEFA307004213AA /* ArkyveTests */;
 		};
+		4FA6100F2DF9E3E600B4F884 /* Exceptions for "Arkyve" folder in "ArkyveTests" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Extensions/Array.swift,
+				Extensions/Date.swift,
+				Extensions/dev_t.swift,
+				Extensions/FileManager.swift,
+				Extensions/Int.swift,
+				Extensions/mode_t.swift,
+				Extensions/String.swift,
+				Extensions/UTType.swift,
+				Extensions/View.swift,
+			);
+			target = 4F2084202DEFA307004213AA /* ArkyveTests */;
+		};
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -2353,6 +2368,7 @@
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
 				4F1F24032DF7011A0019CA7D /* Exceptions for "Arkyve" folder in "Arkyve" target */,
+				4FA6100F2DF9E3E600B4F884 /* Exceptions for "Arkyve" folder in "ArkyveTests" target */,
 				4F1F24372DF713CF0019CA7D /* Exceptions for "Arkyve" folder in "ArkyveQuickLookExtension" target */,
 				4F1F245E2DF7409A0019CA7D /* Exceptions for "Arkyve" folder in "ArkyveExtractAction" target */,
 			);
@@ -6364,7 +6380,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = net.tenshu.ArkyveTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = NO;
-				SWIFT_VERSION = 5.0;
+				SWIFT_VERSION = 6.0;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Arkyve.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Arkyve";
 			};
 			name = Debug;
@@ -6383,7 +6399,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = net.tenshu.ArkyveTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = NO;
-				SWIFT_VERSION = 5.0;
+				SWIFT_VERSION = 6.0;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Arkyve.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Arkyve";
 			};
 			name = Release;

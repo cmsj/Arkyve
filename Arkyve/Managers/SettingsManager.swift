@@ -18,7 +18,7 @@ final class SettingsManager: ObservableObject {
         case newArchiveName
         case newArchiveFormat
         case folderExpansion
-        case recents
+        case recentsData
         case autoSplashWindow
         case iconSize
 #if DEBUG
@@ -37,8 +37,8 @@ final class SettingsManager: ObservableObject {
                 return ArkyveFormats.zip
             case .folderExpansion:
                 return FolderExpansionOptions.oneOnly
-            case .recents:
-                return []
+            case .recentsData:
+                return Data()
             case .autoSplashWindow:
                 return true
             case .iconSize:
@@ -55,12 +55,21 @@ final class SettingsManager: ObservableObject {
     @AppStorage(Keys.newArchiveName.id)   var newArchiveName: String          = Keys.newArchiveName.defaultValue as! String
     @AppStorage(Keys.newArchiveFormat.id) var newArchiveFormat: ArkyveFormats = Keys.newArchiveFormat.defaultValue as! ArkyveFormats
     @AppStorage(Keys.folderExpansion.id)  var folderExpansion: FolderExpansionOptions = Keys.folderExpansion.defaultValue as! FolderExpansionOptions
-    @AppStorage(Keys.recents.id)          var recents: [URL]                  = Keys.recents.defaultValue as! [URL]
+    @AppStorage(Keys.recentsData.id)      var recentsData: Data               = Keys.recentsData.defaultValue as! Data
     @AppStorage(Keys.autoSplashWindow.id) var autoSplashWindow: Bool          = Keys.autoSplashWindow.defaultValue as! Bool
     @AppStorage(Keys.iconSize.id)         var iconSize: Int                   = Keys.iconSize.defaultValue as! Int
 #if DEBUG
     @AppStorage(Keys.showDebugUI.id)      var showDebugUI: Bool               = Keys.showDebugUI.defaultValue as! Bool
 #endif
+
+    var recents: [URL] {
+        get {
+            (try? JSONDecoder().decode([URL].self, from: recentsData)) ?? []
+        }
+        set {
+            recentsData = (try? JSONEncoder().encode(newValue)) ?? Data()
+        }
+    }
 
     func resetToDefaults() {
         newFolderURL     = Keys.newFolderURL.defaultValue as! URL

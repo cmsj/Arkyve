@@ -45,7 +45,7 @@ struct IntentExtractSome: AppIntent {
 
     func perform() async throws -> some IntentResult & ReturnsValue<[URL]> {
         NSLog("perform(): Inspecting chosen destination folder: \(destinationFolder)")
-        guard var outputFolderURL = destinationFolder.fileURL else {
+        guard let outputFolderURL = destinationFolder.fileURL else {
             throw ArkyveError(.extract, msg: "Destination folder missing")
         }
         let (_, outputFolderIsDirectory) = FileManager.default.fileExistsAndIsDirectory(atPath: outputFolderURL.path)

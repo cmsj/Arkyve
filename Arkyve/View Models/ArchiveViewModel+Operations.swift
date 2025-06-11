@@ -263,6 +263,7 @@ extension ArchiveViewModel {
         entries.forEach { entry in
             if (entry.source.type == .Filesystem || entry.source.type == .InMemory) {
                 if entry.source.type == .Filesystem {
+                    // FIXME: This doesn't cover ScopedURLManager.dropSBM entries
                     scopedURLManager.remove(entry.source.url)
                 }
                 // IF this entry started out as an item in our drop cache, we should now clean it up

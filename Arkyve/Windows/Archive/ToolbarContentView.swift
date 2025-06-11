@@ -40,7 +40,7 @@ struct ToolbarContentView: CustomizableToolbarContent {
             Button {
                 viewModel.addButton()
             } label: {
-                Label("Add", image: "custom.document.badge.plus")
+                Label("Add", systemImage: "plus")
                     .symbolRenderingMode(renderingMode)
                     .padding()
             }
@@ -51,23 +51,13 @@ struct ToolbarContentView: CustomizableToolbarContent {
             Button {
                 viewModel.extractButton()
             } label: {
-                Label("Extract...", image: "custom.folder.badge.arrow.up")
+                Label("Extract...", image: "custom.arrow.down.rectangle.stack")
                     .symbolRenderingMode(renderingMode)
                     .padding()
             }
             .help("Extract selected files/folders")
             .disabled(viewModel.disableExtract)
         }
-        ToolbarItem(id: "Share") {
-            ShareLink(items: viewModel.extractablesForSelected(),
-                      subject: nil,
-                      message: nil,
-                      preview: { SharePreview($0.name, icon: $0.icon) }
-            )
-            .help("Share...")
-            .disabled(viewModel.disableShare)
-        }
-        // FIXME: Decide if we want this or not
         ToolbarItem(id: "Rename") {
             Button {
                 viewModel.renameButton()
@@ -89,6 +79,16 @@ struct ToolbarContentView: CustomizableToolbarContent {
             }
             .help("Delete selected files/folders")
             .disabled(viewModel.disableDelete)
+        }
+        ToolbarItem(id: "Share") {
+            ShareLink(items: viewModel.extractablesForSelected(),
+                      subject: nil,
+                      message: nil,
+                      preview: { SharePreview($0.name, icon: $0.icon) }
+            )
+            .symbolRenderingMode(.hierarchical)
+            .help("Share...")
+            .disabled(viewModel.disableShare)
         }
 
 //#if DEBUG

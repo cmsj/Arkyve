@@ -625,6 +625,9 @@ actor libarchiveWrapper {
             }
 
             // Read the entire entry's data into the buffer so we can write it out multiple times if necessary
+            guard header.size >= 0 else {
+                throw .init(.writeArchive, msg: String(localized: "Archive is corrupted, \(header.name) has an invalid item size"))
+            }
             rbuf = UnsafeMutableRawPointer.allocate(byteCount: Int(header.size), alignment: MemoryLayout<UInt8>.size)
             defer { rbuf.deallocate() }
 

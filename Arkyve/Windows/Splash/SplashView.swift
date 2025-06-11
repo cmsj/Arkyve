@@ -128,6 +128,7 @@ struct SplashView: View {
                                         .allowsTightening(true)
                                 }
                             }
+                            .listRowSeparator(.hidden)
                             .padding(.vertical, 4)
                             .onTapGesture {
                                 selection = recent

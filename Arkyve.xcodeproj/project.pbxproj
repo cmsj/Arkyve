@@ -2327,6 +2327,10 @@
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				Info.plist,
+				TestData/archives/helloworld.a,
+				TestData/Brewfile,
+				TestData/build.sh,
+				TestData/check_uttypes.swift,
 			);
 			target = 4F2084202DEFA307004213AA /* ArkyveTests */;
 		};
@@ -2346,6 +2350,16 @@
 			target = 4F2084202DEFA307004213AA /* ArkyveTests */;
 		};
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
+/* Begin PBXFileSystemSynchronizedGroupBuildPhaseMembershipExceptionSet section */
+		4FA6108A2DFA20D500B4F884 /* Exceptions for "ArkyveTests" folder in "Copy Bundle Resources" phase from "ArkyveTests" target */ = {
+			isa = PBXFileSystemSynchronizedGroupBuildPhaseMembershipExceptionSet;
+			buildPhase = 4F20841F2DEFA307004213AA /* Resources */;
+			membershipExceptions = (
+				TestData/archives/helloworld.a,
+			);
+		};
+/* End PBXFileSystemSynchronizedGroupBuildPhaseMembershipExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		4F1F240C2DF712C30019CA7D /* ArkyveQuickLookExtension */ = {
@@ -2379,6 +2393,7 @@
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
 				4F288D972DF8803400A4E600 /* Exceptions for "ArkyveTests" folder in "ArkyveTests" target */,
+				4FA6108A2DFA20D500B4F884 /* Exceptions for "ArkyveTests" folder in "Copy Bundle Resources" phase from "ArkyveTests" target */,
 			);
 			path = ArkyveTests;
 			sourceTree = "<group>";
@@ -6375,6 +6390,10 @@
 				DEVELOPMENT_TEAM = VQCYSNZB89;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = ArkyveTests/Info.plist;
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/ArkyveTests/TestData/archives",
+				);
 				MACOSX_DEPLOYMENT_TARGET = 15.5;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = net.tenshu.ArkyveTests;
@@ -6394,6 +6413,10 @@
 				DEVELOPMENT_TEAM = VQCYSNZB89;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = ArkyveTests/Info.plist;
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/ArkyveTests/TestData/archives",
+				);
 				MACOSX_DEPLOYMENT_TARGET = 15.5;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = net.tenshu.ArkyveTests;

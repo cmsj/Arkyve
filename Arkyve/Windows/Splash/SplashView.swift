@@ -71,7 +71,7 @@ struct SplashView: View {
                             .font(.system(size: 32))
                             .fontWeight(.bold)
                             .padding([.top], 14)
-                        Text("Version 1.0")
+                        Text("Version \(AppInfo.shared.version)")
                             .font(.system(size: 14))
                             .foregroundStyle(.secondary)
                     }

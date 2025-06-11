@@ -16,6 +16,15 @@ struct MenuCommands: Commands {
     @StateObject var settingsManager: SettingsManager
 
     var body: some Commands {
+        // About
+        CommandGroup(replacing: CommandGroupPlacement.appInfo) {
+            Button(action: {
+                openWindow(id: "about")
+            }) {
+                Text("About Arkyve")
+            }
+        }
+
         // Remove undo/redo
         CommandGroup(replacing: .undoRedo) {}
 

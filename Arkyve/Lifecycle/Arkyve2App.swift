@@ -92,5 +92,16 @@ struct ArkyveApp: App {
             SettingsView()
                 .environmentObject(settingsManager)
         }
+
+        Window("About Arkyve", id: "about") {
+            AboutView()
+                .containerBackground(.thickMaterial, for: .window)
+                .windowResizeBehavior(.disabled)
+        }
+        .windowStyle(.hiddenTitleBar)
+        .windowResizability(.contentSize)
+        .windowBackgroundDragBehavior(.enabled)
+        .defaultLaunchBehavior(.suppressed)
+        .restorationBehavior(.disabled)
     }
 }

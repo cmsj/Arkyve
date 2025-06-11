@@ -335,6 +335,57 @@ import UniformTypeIdentifiers
                 #expect(true, "Error was thrown as expected")
             }
         }
+
+        @Test func fileExistsAndIsDirectoryForFile() async throws {
+            let fm = FileManager.default
+            let tempDir = fm.temporaryDirectory
+            let filePath = tempDir.appendingPathComponent("testfile.txt").path
+
+            // Clean up any existing file
+            try? fm.removeItem(atPath: filePath)
+
+            // Create a test file
+            try "test content".write(toFile: filePath, atomically: true, encoding: .utf8)
+
+            // Test the file exists and is not a directory
+            let (exists, isDirectory) = fm.fileExistsAndIsDirectory(atPath: filePath)
+            #expect(exists == true)
+            #expect(isDirectory == false)
+
+            // Cleanup
+            try fm.removeItem(atPath: filePath)
+        }
+
+        @Test func fileExistsAndIsDirectoryForDirectory() async throws {
+            let fm = FileManager.default
+            let tempDir = fm.temporaryDirectory
+            let dirPath = tempDir.appendingPathComponent("testdir").path
+
+            // Clean up any existing directory
+            try? fm.removeItem(atPath: dirPath)
+
+            // Create a test directory
+            try fm.createDirectory(atPath: dirPath, withIntermediateDirectories: true)
+
+            // Test the directory exists and is a directory
+            let (exists, isDirectory) = fm.fileExistsAndIsDirectory(atPath: dirPath)
+            #expect(exists == true)
+            #expect(isDirectory == true)
+
+            // Cleanup
+            try fm.removeItem(atPath: dirPath)
+        }
+
+        @Test func fileExistsAndIsDirectoryForNonexistent() async throws {
+            let fm = FileManager.default
+            let tempDir = fm.temporaryDirectory
+            let nonexistentPath = tempDir.appendingPathComponent("nonexistent").path
+
+            // Test that a nonexistent path returns false for both values
+            let (exists, isDirectory) = fm.fileExistsAndIsDirectory(atPath: nonexistentPath)
+            #expect(exists == false)
+            #expect(isDirectory == false)
+        }
     }
 
     @Suite("dev_t Extensions") struct DevTTests {

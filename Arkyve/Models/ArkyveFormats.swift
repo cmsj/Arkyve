@@ -218,6 +218,8 @@ enum ArkyveFormats: Int, Identifiable, CaseIterable {
                 .targz
         case .tarbz2:
                 .tarbz2
+        case .tarxz:
+                .tarxz
         case .ar:
                 .ar
         case .lha:

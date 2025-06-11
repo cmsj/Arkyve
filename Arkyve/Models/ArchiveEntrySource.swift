@@ -25,7 +25,7 @@ enum ArchiveEntrySourceType: Codable, CustomStringConvertible {
     }
 }
 
-struct ArchiveEntrySource: Codable, CustomStringConvertible {
+struct ArchiveEntrySource: Codable, CustomStringConvertible, Equatable {
     let type: ArchiveEntrySourceType
     let pathInArchive: String
     var url: URL = URL(fileURLWithPath: "/INVALID")

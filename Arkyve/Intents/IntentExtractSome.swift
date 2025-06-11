@@ -32,9 +32,10 @@ struct IntentExtractSome: AppIntent {
     var retainFullPath: Bool
 
     @Parameter(title: "Destination Folder",
-               description: "The folder to extract the archive into. This should be specified as a path, e.g. /path/to/folder. The folder will be created if it does not already exist."
+               description: "The folder to extract the archive into. This should be specified as a path, e.g. /path/to/folder. The folder will be created if it does not already exist.",
+               supportedContentTypes: [.folder, .directory]
     )
-    var destinationFolder: String
+    var destinationFolder: IntentFile
 
     static var parameterSummary: some ParameterSummary {
         Summary("Extract \(\.$entryPaths) from \(\.$inputFile) to \(\.$destinationFolder)") {
@@ -44,7 +45,9 @@ struct IntentExtractSome: AppIntent {
 
     func perform() async throws -> some IntentResult & ReturnsValue<[URL]> {
         NSLog("perform(): Inspecting chosen destination folder: \(destinationFolder)")
-        let outputFolderURL = URL(fileURLWithPath: destinationFolder)
+        guard var outputFolderURL = destinationFolder.fileURL else {
+            throw ArkyveError(.extract, msg: "Destination folder missing")
+        }
         let (_, outputFolderIsDirectory) = FileManager.default.fileExistsAndIsDirectory(atPath: outputFolderURL.path)
         if !outputFolderIsDirectory {
             throw ArkyveError(.extract, msg: "Destination must be a folder")
@@ -64,6 +67,7 @@ struct IntentExtractSome: AppIntent {
 
             NSLog("extract(): Reading source archive: \(inputURL)")
             let archiveModel = await ManagerManagerBase.shared.createVM(url: inputURL)
+            try await archiveModel.waitForArchiveOpen()
 
             NSLog("extract(): Attempting to extract \(entryPaths.count) entries to \(outputFolderURL)")
             let writtenURLs = try await archiveModel.extract(paths: entryPaths, toFolder: outputFolderURL, retainFullPath: retainFullPath)

@@ -131,7 +131,8 @@ final class ArchiveViewModel: Identifiable {
 
         if let diskURL {
             // We have a URL, so we can immediately load our archive
-            openArchive(url: diskURL, truncateAt: truncateAt)
+            AKTrace("\(id): ArchiveViewmodel initialised with a disk URL, loading...")
+            openArchiveAsync(url: diskURL, truncateAt: truncateAt)
         } else {
             AKTrace("\(id): ArchiveViewModel initialized without a disk URL")
         }
@@ -150,7 +151,7 @@ final class ArchiveViewModel: Identifiable {
         setDirty(false)
     }
 
-    func openArchive(url: URL, truncateAt: Int? = nil) {
+    func openArchiveAsync(url: URL, truncateAt: Int? = nil) {
         AKTrace("\(id): ArchiveViewModel dispatching libarchive read for \(url)")
 
         errors.clear()
@@ -200,6 +201,26 @@ final class ArchiveViewModel: Identifiable {
                 errors.err(.init(.openArchive, msg: error.localizedDescription))
             }
         }
+    }
+
+    func waitForArchiveOpen() async throws {
+        NSLog("waitForArchiveOpen(): Sleeping until archive is loaded...")
+        var sleepIndex = 0
+        var timeoutIndex = 0
+        while progressTask != nil {
+            try await Task.sleep(for: .seconds(0.5))
+            sleepIndex += 1
+            if sleepIndex > 20 {
+                NSLog("waitForArchiveOpen(): Still sleeping...")
+                sleepIndex = 0
+                timeoutIndex += 1
+            }
+            if timeoutIndex > 30 {
+                NSLog("waitForArchiveOpen(): Giving up sleep after 5 minutes...")
+                throw ArkyveError(.extract, msg: "Timed out waiting for archive to load")
+            }
+        }
+        NSLog("waitForArchiveOpen(): Waking up after archive loaded.")
     }
 
     // MARK: - Archive navigation

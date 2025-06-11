@@ -115,7 +115,7 @@ extension ArchiveViewModel {
         guard let diskURL else { return }
 
         Task { @MainActor in
-            openArchive(url: diskURL)
+            openArchiveAsync(url: diskURL)
         }
     }
 

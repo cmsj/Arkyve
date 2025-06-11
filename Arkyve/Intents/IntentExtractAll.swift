@@ -23,9 +23,10 @@ struct IntentExtractAll: AppIntent {
     var inputFile: IntentFile
 
     @Parameter(title: "Destination Folder",
-               description: "The folder to extract the archive into. This should be specified as a path, e.g. /path/to/folder. The folder will be created if it does not already exist."
+               description: "The folder to extract the archive into. This should be specified as a path, e.g. /path/to/folder. The folder will be created if it does not already exist.",
+               supportedContentTypes: [.folder, .directory]
     )
-    var destinationFolder: String
+    var destinationFolder: IntentFile
 
     static var parameterSummary: some ParameterSummary {
         Summary("Extract \(\.$inputFile) to \(\.$destinationFolder)")
@@ -37,7 +38,9 @@ struct IntentExtractAll: AppIntent {
         var returnExtraTopLevelDirectory: Bool = false
 
         NSLog("perform(): Inspecting chosen destination folder: \(destinationFolder)")
-        var outputFolderURL = URL(fileURLWithPath: destinationFolder)
+        guard var outputFolderURL = destinationFolder.fileURL else {
+            throw ArkyveError(.extract, msg: "Destination folder missing")
+        }
         let (_, outputFolderIsDirectory) = FileManager.default.fileExistsAndIsDirectory(atPath: outputFolderURL.path)
         if !outputFolderIsDirectory {
             throw ArkyveError(.extract, msg: "Destination must be a folder")
@@ -57,6 +60,8 @@ struct IntentExtractAll: AppIntent {
 
             NSLog("extract(): Reading source archive: \(inputURL)")
             let archiveModel = await ManagerManagerBase.shared.createVM(url: inputURL)
+
+            try await archiveModel.waitForArchiveOpen()
 
             if await archiveModel.offerTopDirectory {
                 // We'll enforce an additional top-level directory since we have multiple root entries
@@ -83,7 +88,7 @@ struct IntentExtractAll: AppIntent {
                 let expectedRootEntryURL = outputFolderURL.appendingPathComponent(rootEntryName)
 
                 guard let returnURL = writtenURLs.first(where: { $0.path == expectedRootEntryURL.path }) else {
-                    NSLog("ERROR: Unable to find a matching written URL for the root archive entry")
+                    NSLog("ERROR: Unable to find a matching written URL for the root archive entry for: \(expectedRootEntryURL) in \(writtenURLs)")
                     throw ArkyveError(.extract, msg: "Unable to find a matching written URL for the first archive entry")
                 }
 

@@ -2415,6 +2415,7 @@
 		4F20840A2DEFA306004213AA = {
 			isa = PBXGroup;
 			children = (
+				4F2084142DEFA306004213AA /* Products */,
 				4F288CB02DF79ADA00A4E600 /* Arkyve.xctestplan */,
 				4FA3316F2DF22D2B001B377C /* vendor */,
 				4F2084152DEFA306004213AA /* Arkyve */,
@@ -2422,7 +2423,6 @@
 				4F1F240C2DF712C30019CA7D /* ArkyveQuickLookExtension */,
 				4F1F24492DF7407D0019CA7D /* ArkyveExtractAction */,
 				4F1F24092DF712C30019CA7D /* Frameworks */,
-				4F2084142DEFA306004213AA /* Products */,
 			);
 			sourceTree = "<group>";
 		};

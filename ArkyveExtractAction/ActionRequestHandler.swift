@@ -139,12 +139,12 @@ class ActionRequestHandler: NSObject, NSExtensionRequestHandling {
                             do {
                                 // Now we're in a Task we have an async context, so we can finally call our
                                 // extraction helper function from above
-                                archiveModel = await ManagerManagerBase.shared.createVM(url: url)
+                                archiveModel = await ManagerManager.shared.createVM(url: url)
                                 let writtenURL = try await extract(archiveModel)
-                                await ManagerManagerBase.shared.removeVM(archiveModel)
+                                await ManagerManager.shared.removeVM(archiveModel)
                                 completionHandler(writtenURL, false, nil)
                             } catch {
-                                await ManagerManagerBase.shared.removeVM(archiveModel)
+                                await ManagerManager.shared.removeVM(archiveModel)
                                 completionHandler(nil, false, error)
                             }
                         }

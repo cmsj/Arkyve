@@ -59,7 +59,7 @@ struct IntentExtractAll: AppIntent {
             defer { inputURL.stopAccessingSecurityScopedResource() }
 
             NSLog("extract(): Reading source archive: \(inputURL)")
-            let archiveModel = await ManagerManagerBase.shared.createVM(url: inputURL)
+            let archiveModel = await ManagerManager.shared.createVM(url: inputURL)
 
             try await archiveModel.waitForArchiveOpen()
 
@@ -75,7 +75,7 @@ struct IntentExtractAll: AppIntent {
 
             let writtenURLs = try await archiveModel.extract(toFolder: outputFolderURL, retainFullPath: true)
             let rootEntryName = await archiveModel.rootEntryName()
-            await ManagerManagerBase.shared.removeVM(archiveModel)
+            await ManagerManager.shared.removeVM(archiveModel)
 
             if returnExtraTopLevelDirectory {
                 NSLog("extract(): Returning extra top-level directory: \(outputFolderURL)")

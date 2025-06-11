@@ -185,7 +185,7 @@ class PreviewViewController: NSViewController, QLPreviewingController {
 
     func preparePreviewOfFile(at url: URL) async throws {
         NSLog("preparePreviewOfFile(): Preparing SwiftUI view")
-        let managerBase = ManagerManagerBase.shared
+        let managerBase = ManagerManager.shared
         let viewModel = managerBase.createVM(url: url, truncateAt: 150)
 
         let swiftUIView = ArkyveQuickLookView(viewModel: viewModel)

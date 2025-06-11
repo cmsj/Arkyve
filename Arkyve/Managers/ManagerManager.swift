@@ -8,15 +8,17 @@
 import Foundation
 
 @MainActor
-protocol ManagerManager: Sendable {
+protocol ManagerManagerProtocol: Sendable {
     func findOrCreateVM(_ id: UUID?) -> ArchiveViewModel
+    func createVM(url: URL, truncateAt: Int?) -> ArchiveViewModel
+    func removeVM(_ vm: ArchiveViewModel)
 }
 
 @Observable
 @MainActor
-final class ManagerManagerBase: ManagerManager, Sendable {
+final class ManagerManager: ManagerManagerProtocol, Sendable {
     /// Singleton instance
-    static let shared = ManagerManagerBase()
+    static let shared = ManagerManager()
 
     private var vmStore: [ArchiveViewModel] = []
     private var cmStore: [CacheManager] = []

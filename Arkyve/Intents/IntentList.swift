@@ -40,11 +40,11 @@ struct IntentList: AppIntent {
             defer { inputURL.stopAccessingSecurityScopedResource() }
 
             NSLog("extract(): Reading source archive: \(inputURL)")
-            let archiveModel = await ManagerManagerBase.shared.createVM(url: inputURL)
+            let archiveModel = await ManagerManager.shared.createVM(url: inputURL)
             try await archiveModel.waitForArchiveOpen()
 
             let archiveContents = await archiveModel.pathList()
-            await ManagerManagerBase.shared.removeVM(archiveModel)
+            await ManagerManager.shared.removeVM(archiveModel)
 
             return archiveContents
         }

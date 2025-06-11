@@ -9,7 +9,7 @@ import SwiftUI
 
 @MainActor
 func openArchiveFromURL(_ url: URL, openWindow: OpenWindowAction) {
-    let vm = ManagerManagerBase.shared.createVM(url: url)
+    let vm = ManagerManager.shared.createVM(url: url)
     openWindow(id: "archive", value: vm.id)
     SettingsManager.shared.addRecent(url)
 }

@@ -66,13 +66,13 @@ struct IntentExtractSome: AppIntent {
             defer { inputURL.stopAccessingSecurityScopedResource() }
 
             NSLog("extract(): Reading source archive: \(inputURL)")
-            let archiveModel = await ManagerManagerBase.shared.createVM(url: inputURL)
+            let archiveModel = await ManagerManager.shared.createVM(url: inputURL)
             try await archiveModel.waitForArchiveOpen()
 
             NSLog("extract(): Attempting to extract \(entryPaths.count) entries to \(outputFolderURL)")
             let writtenURLs = try await archiveModel.extract(paths: entryPaths, toFolder: outputFolderURL, retainFullPath: retainFullPath)
 
-            await ManagerManagerBase.shared.removeVM(archiveModel)
+            await ManagerManager.shared.removeVM(archiveModel)
             return writtenURLs
         }
         return .result(value: resultURL)

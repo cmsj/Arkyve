@@ -16,7 +16,7 @@ struct ArchiveView: View {
 
     init(id: UUID) {
         self.id = id
-        viewModel = ManagerManagerBase.shared.findOrCreateVM(id)
+        viewModel = ManagerManager.shared.findOrCreateVM(id)
     }
 
     var body: some View {
@@ -47,12 +47,12 @@ struct ArchiveView: View {
         // the window or quits the app, these will be called in different orders and the second iteration
         // typically doesn't work properly
         .onReceive(NotificationCenter.default.publisher(for: NSApplication.willTerminateNotification)) { value in
-            ManagerManagerBase.shared.isQuitting = true
+            ManagerManager.shared.isQuitting = true
 
             AKTrace("\(viewModel.id): NSApplication willTerminateNotification (dirty: \(viewModel.dirty))")
             if !viewModel.dirty {
                 dismissWindow()
-                ManagerManagerBase.shared.removeVM(viewModel)
+                ManagerManager.shared.removeVM(viewModel)
                 return
             }
 
@@ -86,7 +86,7 @@ struct ArchiveView: View {
             default:
                 // For any other response we will let ourselves close
                 dismissWindow()
-                ManagerManagerBase.shared.removeVM(viewModel)
+                ManagerManager.shared.removeVM(viewModel)
                 return
             }
 
@@ -110,7 +110,7 @@ struct ArchiveView: View {
                 } else {
                     print("User cancelled Save As requester")
                     dismissWindow()
-                    ManagerManagerBase.shared.removeVM(viewModel)
+                    ManagerManager.shared.removeVM(viewModel)
                     return
                 }
             }
@@ -142,7 +142,7 @@ struct ArchiveView: View {
 
             viewModel.setClean() // We need to do this regardless of the save outcome, or we'll double-prompt on exit
             dismissWindow()
-            ManagerManagerBase.shared.removeVM(viewModel)
+            ManagerManager.shared.removeVM(viewModel)
         }
         .onReceive(NotificationCenter.default.publisher(for: NSWindow.willCloseNotification)) { value in
             // This gets called for each of our windows whether they are open or now, so we need to discard things like Log Viewer
@@ -151,7 +151,7 @@ struct ArchiveView: View {
                 return
             }
 
-            if ManagerManagerBase.shared.isQuitting {
+            if ManagerManager.shared.isQuitting {
                 print("App is quitting, skipping willCloseNotification")
                 return
             }
@@ -185,7 +185,7 @@ struct ArchiveView: View {
             // Whatever happened, we are removing our VM
             AKTrace("\(viewModel.id): NSWindow.willCloseNotification scheduling VM for removal")
             Task { @MainActor in
-                ManagerManagerBase.shared.removeVM(viewModel)
+                ManagerManager.shared.removeVM(viewModel)
             }
         }
     }

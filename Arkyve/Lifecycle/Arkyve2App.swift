@@ -26,7 +26,7 @@ struct ArkyveApp: App {
     @NSApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
     @Environment(\.openWindow) private var openWindow
     @Environment(\.dismissWindow) private var dismissWindow
-    @State var managerManager = ManagerManagerBase.shared
+    @State var managerManager = ManagerManager.shared
     @StateObject var settingsManager = SettingsManager.shared
 
     init() {

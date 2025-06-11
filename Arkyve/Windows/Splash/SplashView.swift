@@ -40,7 +40,7 @@ struct WelcomeButton: View {
 struct SplashView: View {
     @Environment(\.openWindow) var openWindow
     @Environment(\.dismissWindow) var dismissWindow
-    @State private var managerManager = ManagerManagerBase.shared
+    @State private var managerManager = ManagerManager.shared
     @StateObject private var settingsManager = SettingsManager.shared
     @State private var selection: URL?
     private var homeDir: String

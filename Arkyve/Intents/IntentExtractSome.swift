@@ -67,7 +67,7 @@ struct IntentExtractSome: AppIntent {
 
             NSLog("extract(): Reading source archive: \(inputURL)")
             let archiveModel = await ManagerManager.shared.createVM(url: inputURL)
-            try await archiveModel.waitForArchiveOpen()
+            try await archiveModel.waitForArchiveProgressTask()
 
             NSLog("extract(): Attempting to extract \(entryPaths.count) entries to \(outputFolderURL)")
             let writtenURLs = try await archiveModel.extract(paths: entryPaths, toFolder: outputFolderURL, retainFullPath: retainFullPath)

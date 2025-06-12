@@ -199,6 +199,7 @@ extension ArchiveViewModel {
     func saveArchive(to: URL, overrideFormat: libarchiveFormat = .Unknown, overrideFilters: [libarchiveFilter] = [.None]) async {
         errors.clear()
 
+        AKTrace("\(id): Saving archive to: \(to)")
         let loader = libarchiveWrapper(url: diskURL)
 
         // We will write out the archive to a cache location and then move it into place only if we succeed

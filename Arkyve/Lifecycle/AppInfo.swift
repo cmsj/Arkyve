@@ -46,6 +46,10 @@ struct AppInfo: Sendable {
 
     var developer : String { return "my awesome name" }
 
+    var isRunningUnitTests: Bool {
+        ProcessInfo.processInfo.environment["XCTestSessionIdentifier"] != nil
+    }
+
     // MARK: - Private stuff
 
     // lets hold a reference to the Info.plist of the app as Dictionary

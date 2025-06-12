@@ -203,24 +203,24 @@ final class ArchiveViewModel: Identifiable {
         }
     }
 
-    func waitForArchiveOpen() async throws {
-        NSLog("waitForArchiveOpen(): Sleeping until archive is loaded...")
+    func waitForArchiveProgressTask() async throws {
+        NSLog("waitForArchiveProgressTask(): Sleeping until archive is loaded...")
         var sleepIndex = 0
         var timeoutIndex = 0
         while progressTask != nil {
             try await Task.sleep(for: .seconds(0.5))
             sleepIndex += 1
             if sleepIndex > 20 {
-                NSLog("waitForArchiveOpen(): Still sleeping...")
+                NSLog("waitForArchiveProgressTask(): Still sleeping...")
                 sleepIndex = 0
                 timeoutIndex += 1
             }
             if timeoutIndex > 30 {
-                NSLog("waitForArchiveOpen(): Giving up sleep after 5 minutes...")
+                NSLog("waitForArchiveProgressTask(): Giving up sleep after 5 minutes...")
                 throw ArkyveError(.extract, msg: "Timed out waiting for archive to load")
             }
         }
-        NSLog("waitForArchiveOpen(): Waking up after archive loaded.")
+        NSLog("waitForArchiveProgressTask(): Waking up after archive loaded.")
     }
 
     // MARK: - Archive navigation

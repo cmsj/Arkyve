@@ -61,7 +61,7 @@ struct IntentExtractAll: AppIntent {
             NSLog("extract(): Reading source archive: \(inputURL)")
             let archiveModel = await ManagerManager.shared.createVM(url: inputURL)
 
-            try await archiveModel.waitForArchiveOpen()
+            try await archiveModel.waitForArchiveProgressTask()
 
             if await archiveModel.offerTopDirectory {
                 // We'll enforce an additional top-level directory since we have multiple root entries

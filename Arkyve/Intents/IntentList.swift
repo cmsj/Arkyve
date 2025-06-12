@@ -41,7 +41,7 @@ struct IntentList: AppIntent {
 
             NSLog("extract(): Reading source archive: \(inputURL)")
             let archiveModel = await ManagerManager.shared.createVM(url: inputURL)
-            try await archiveModel.waitForArchiveOpen()
+            try await archiveModel.waitForArchiveProgressTask()
 
             let archiveContents = await archiveModel.pathList()
             await ManagerManager.shared.removeVM(archiveModel)

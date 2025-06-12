@@ -28,6 +28,10 @@ final class ManagerManager: ManagerManagerProtocol, Sendable {
         vmStore.count == 0
     }
 
+    var vmStoreCount: Int {
+        vmStore.count
+    }
+
     var isQuitting: Bool = false
 
     /// Create an ArchiveViewModel for a given URL
@@ -86,6 +90,13 @@ final class ManagerManager: ManagerManagerProtocol, Sendable {
             AKTrace("\(id): vmForID: Creating new VM")
             let vm = createVM(id: id, scopedURLManager: sbmForID(id), cacheManager: cmForID(id))
             return vm
+        }
+    }
+
+    // Technically private, but needed for testing
+    func removeAllVMs() {
+        for vm in vmStore {
+            removeVM(vm)
         }
     }
 

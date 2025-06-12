@@ -23,7 +23,7 @@ final class AppInfoTests {
     }
 
     @Test func testMinimumOSVersion() {
-        #expect(appInfo.minimumOSVersion == "(unknown minimum OSVersion)")
+        #expect(appInfo.minimumOSVersion == "15.5")
     }
 
     @Test func testCopyrightNotice() {
@@ -39,4 +39,8 @@ final class AppInfoTests {
     @Test func testDeveloper() {
         #expect(appInfo.developer == "my awesome name")
     }
-} 
+
+    @Test func testTestingDetection() {
+        #expect(appInfo.isRunningUnitTests == true)
+    }
+}

@@ -31,7 +31,7 @@ struct AppInfo: Sendable {
 
     /// Returns the minimum OS version defined in your project data.
     var minimumOSVersion : String {
-        return readFromInfoPlist(withKey: "MinimumOSVersion") ?? "(unknown minimum OSVersion)"
+        return readFromInfoPlist(withKey: "LSMinimumSystemVersion") ?? "(unknown minimum OSVersion)"
     }
 
     /// Returns the copyright notice eventually defined in your project data.

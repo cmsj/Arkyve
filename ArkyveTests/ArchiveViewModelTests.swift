@@ -123,4 +123,122 @@ final class ArchiveViewModelTests {
         #expect(viewModel.dirty)
         cleanup()
     }
+    
+    @Test("UI state management")
+    func testUIStateManagement() async throws {
+        viewModel = manager.createVM(url: testURL)
+        
+        // Test initial UI state
+        #expect(!viewModel.disableUI)
+        #expect(!viewModel.disableNew)
+        #expect(!viewModel.disableOpen)
+        #expect(!viewModel.disableCloseWindow)
+        #expect(!viewModel.disableAdd)
+        #expect(viewModel.disableRevert)
+        #expect(!viewModel.disableCloseArchive)
+        #expect(viewModel.disableSave)
+        #expect(!viewModel.disableSaveAs)
+        #expect(viewModel.disableQuicklook) // Initially true because no entries are selected
+        #expect(viewModel.disableExtract) // Initially true because no entries are selected
+        #expect(viewModel.disableExtractAll) // Initially true because entries are empty until loaded
+        
+        // Test UI state during loading
+        try await viewModel.waitForArchiveProgressTask()
+        
+        // Test UI state after loading
+        #expect(!viewModel.disableUI)
+        #expect(!viewModel.disableExtractAll) // Now false because entries are loaded
+        
+        // Test UI state with selected entries
+        viewModel.selectedEntries.insert(viewModel.entries.first!.id)
+        #expect(!viewModel.disableQuicklook)
+        #expect(!viewModel.disableExtract)
+        
+        cleanup()
+    }
+    
+    @Test("Dynamic UI text")
+    func testDynamicUIText() async throws {
+        viewModel = manager.createVM(url: testURL)
+        
+        // Test initial state
+        #expect(viewModel.navSubtitleText == "")
+        #expect(viewModel.statusBarText == "Working...")
+
+        // Test after loading
+        try await viewModel.waitForArchiveProgressTask()
+        #expect(viewModel.statusBarText == "\(viewModel.entries.count) items")
+        
+        // Test with selected entries
+        viewModel.selectedEntries.insert(viewModel.entries.first!.id)
+        #expect(viewModel.statusBarText == "1 of \(viewModel.entries.count) selected")
+        
+        // Test with dirty state
+        viewModel.setDirty()
+        #expect(viewModel.navSubtitleText == "(Unsaved)")
+        
+        cleanup()
+    }
+    
+    @Test("QuickLook functionality")
+    func testQuickLook() async throws {
+        viewModel = manager.createVM(url: testURL)
+        
+        try await viewModel.waitForArchiveProgressTask()
+        
+        // Test initial state
+        #expect(viewModel.quickLookURL == nil)
+        #expect(viewModel.quickLookItems.isEmpty)
+        
+        // Test with selected entry
+        viewModel.selectedEntries.insert(viewModel.entries.first!.id)
+        viewModel.extractForQuicklook()
+        
+        // Wait for extraction
+        while viewModel.quickLookItems.isEmpty {
+            try? await Task.sleep(nanoseconds: 100_000_000) // 0.1 seconds
+        }
+        
+        #expect(!viewModel.quickLookItems.isEmpty)
+        #expect(viewModel.quickLookURL != nil)
+        
+        // Test reset
+        viewModel.resetQuickLook()
+        #expect(viewModel.quickLookURL == nil)
+        #expect(viewModel.quickLookItems.isEmpty)
+        
+        cleanup()
+    }
+    
+//    @Test("Sort functionality")
+//    func testSort() async throws {
+//        viewModel = manager.createVM(url: testURL)
+//        
+//        try await viewModel.waitForArchiveProgressTask()
+//        
+//        // Sort by name in ascending order
+//        viewModel.sort(using: [KeyPathComparator(\ArchiveEntry.name, order: .forward)])
+//        let sortedByName = viewModel.entries.sorted { $0.name < $1.name }
+//        #expect(viewModel.entries.map { $0.name } == sortedByName.map { $0.name })
+//        
+//        // Sort by name in descending order
+//        viewModel.sort(using: [KeyPathComparator(\ArchiveEntry.name, order: .reverse)])
+//        let sortedByNameDesc = viewModel.entries.sorted { $0.name > $1.name }
+//        #expect(viewModel.entries.map { $0.name } == sortedByNameDesc.map { $0.name })
+//        
+//        cleanup()
+//    }
+    
+    @Test("Error handling")
+    func testErrorHandling() async throws {
+        // Test with non-existent file
+        let nonExistentURL = URL(fileURLWithPath: "/nonexistent/file.zip")
+        viewModel = manager.createVM(url: nonExistentURL)
+        
+        try await viewModel.waitForArchiveProgressTask()
+        
+        #expect(viewModel.errors.error != nil)
+        
+        cleanup()
+    }
 } 

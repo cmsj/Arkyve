@@ -13,7 +13,8 @@
       "containerPath" : "container:Arkyve.xcodeproj",
       "identifier" : "4F2084122DEFA306004213AA",
       "name" : "Arkyve"
-    }
+    },
+    "testExecutionOrdering" : "random"
   },
   "testTargets" : [
     {

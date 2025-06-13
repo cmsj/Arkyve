@@ -218,10 +218,13 @@ final class ArchiveViewModel: Identifiable {
             }
             if timeoutIndex > 30 {
                 NSLog("waitForArchiveProgressTask(): Giving up sleep after 5 minutes...")
-                throw ArkyveError(.extract, msg: "Timed out waiting for archive to load")
+                throw ArkyveError(.extract, msg: "Timed out waiting for task to complete")
             }
         }
-        NSLog("waitForArchiveProgressTask(): Waking up after archive loaded.")
+        NSLog("waitForArchiveProgressTask(): Waking up after task completed.")
+        if let error = errors.error {
+            throw error
+        }
     }
 
     // MARK: - Archive navigation

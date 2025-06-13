@@ -12,7 +12,7 @@ import UniformTypeIdentifiers
 struct IntentExtractAll: AppIntent {
 
     static let title: LocalizedStringResource = "Extract with Arkyve"
-    static let description = IntentDescription("Extracts an archive to a given destination folder. Supports .zip, .7z, .rar, .iso, .cpio, .tar.gz, .tar.bz, .tar.xz, .lha, .lzh, .cab, .a, .xip, .xar, .pkg.")
+    static let description = IntentDescription("Extracts an archive to a given destination folder. Supports .zip, .7z, .rar, .iso, .cpio, .tar.gz, .tar.bz, .tar.xz, .lha, .lzh, .cab, .a, .xip, .xar, .pkg")
     static let openAppWhenRun: Bool = false
 
     @Parameter(title: "Archive File",

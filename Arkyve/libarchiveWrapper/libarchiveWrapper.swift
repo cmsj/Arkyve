@@ -625,16 +625,15 @@ actor libarchiveWrapper {
             }
 
             // Read the entire entry's data into the buffer so we can write it out multiple times if necessary
-            guard header.size >= 0 else {
-                throw .init(.writeArchive, msg: String(localized: "Archive is corrupted, \(header.name) has an invalid item size"))
-            }
-            rbuf = UnsafeMutableRawPointer.allocate(byteCount: Int(header.size), alignment: MemoryLayout<UInt8>.size)
+            let dataSize = Swift.max(Int(header.size), 0)
+
+            rbuf = UnsafeMutableRawPointer.allocate(byteCount: dataSize, alignment: MemoryLayout<UInt8>.size)
             defer { rbuf.deallocate() }
 
             while true {
-                rsize = archive_read_data(readArchiveFD.archive, rbuf, Int(header.size))
+                rsize = archive_read_data(readArchiveFD.archive, rbuf, dataSize)
                 if rsize == 0 {
-                    rsize = Int(header.size)
+                    rsize = dataSize
                     break
                 }
                 if rsize < 0 {

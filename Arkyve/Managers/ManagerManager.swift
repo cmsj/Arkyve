@@ -32,6 +32,7 @@ final class ManagerManager: ManagerManagerProtocol, Sendable {
         vmStore.count
     }
 
+    var lastDefaultID: UUID? = nil
     var isQuitting: Bool = false
 
     /// Create an ArchiveViewModel for a given URL
@@ -48,7 +49,15 @@ final class ManagerManager: ManagerManagerProtocol, Sendable {
         vm.diskURL = url
         return vm
     }
-    
+
+    func reInitVM(_ vmID: UUID, for url: URL) {
+        guard let vm = vmStore.first(where: { $0.id == vmID }) else {
+            AKError("Unable to locate matching view model for \(url)")
+            return
+        }
+        vm.reinit(for: url)
+    }
+
     /// Clean up and destroy an ArchiveViewModel
     /// - Parameter vm: The view model to delete
     func removeVM(_ vm: ArchiveViewModel) {

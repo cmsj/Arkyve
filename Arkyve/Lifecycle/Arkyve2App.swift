@@ -44,12 +44,18 @@ struct ArkyveApp: App {
                 .environmentObject(settingsManager)
                 .onOpenURL { url in
                     AKTrace("System opened URL: \(url)")
-                    openWindow(id: "archive", value: managerManager.createVM(url: url).id)
+                    guard let lastDefaultID = managerManager.lastDefaultID else {
+                        AKError("Unable to find lastDefaultID")
+                        return
+                    }
+                    managerManager.reInitVM(lastDefaultID, for: url)
                     settingsManager.addRecent(url)
                 }
         } defaultValue: {
             AKTrace("WindowGroup default content initialiser")
-            return UUID()
+            let newID = UUID()
+            managerManager.lastDefaultID = newID
+            return newID
         }
         .defaultLaunchBehavior(.suppressed)
         .restorationBehavior(.disabled)

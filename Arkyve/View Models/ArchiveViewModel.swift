@@ -143,6 +143,13 @@ final class ArchiveViewModel: Identifiable {
         AKTrace("\(id): ArchiveViewModel deinit")
     }
 
+    func reinit(for url: URL) {
+        let name = url.lastPathComponent
+        self.diskURL = url
+        self.name = name
+        openArchiveAsync(url: url)
+    }
+
     func setDirty(_ dirty: Bool = true) {
         AKTrace("Marking archive \(dirty ? "dirty" : "clean")")
         self.dirty = dirty

@@ -26,6 +26,7 @@ func openArchiveFromPanel(openWindow: OpenWindowAction) {
         if let url = panel.url {
             AKTrace("Open Menu: \(url)")
             openArchiveFromURL(url, openWindow: openWindow)
+            // FIXME: Should we call addRecent() here?
         }
     }
 }

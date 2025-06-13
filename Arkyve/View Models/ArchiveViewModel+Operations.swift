@@ -196,7 +196,7 @@ extension ArchiveViewModel {
         setDirty()
     }
 
-    func saveArchive(to: URL, overrideFormat: libarchiveFormat = .Unknown, overrideFilters: [libarchiveFilter] = [.None]) async {
+    func saveArchive(to: URL, overrideFormat: libarchiveFormat = .Unknown, overrideFilters: [libarchiveFilter] = [.None], addToRecents: Bool = true) async {
         errors.clear()
 
         AKTrace("\(id): Saving archive to: \(to)")
@@ -230,7 +230,7 @@ extension ArchiveViewModel {
                 }
 
                 // Update our metadata now we've saved to the final location
-                didSave(to: to, format: format, filters: filters)
+                didSave(to: to, format: format, filters: filters, addToRecents: addToRecents)
             } catch let error as ArkyveError {
                 errors.err(error)
             } catch {
@@ -253,7 +253,7 @@ extension ArchiveViewModel {
         return (format, filters, headerMap)
     }
 
-    func didSave(to: URL, format toFormat: libarchiveFormat, filters toFilters: [libarchiveFilter]) {
+    func didSave(to: URL, format toFormat: libarchiveFormat, filters toFilters: [libarchiveFilter], addToRecents: Bool = true) {
         // Having written the archive, we should no longer have any entries of source type .Filesystem
         // So we'll update our entries to switch them to .Archive
         // Same for .InMemory directories
@@ -283,7 +283,10 @@ extension ArchiveViewModel {
 
         setClean()
         diskURL = to
-        settingsManager.addRecent(to)
+
+        if addToRecents {
+            settingsManager.addRecent(to)
+        }
     }
 
     func copyArchive(to: URL) {

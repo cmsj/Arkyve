@@ -62,7 +62,10 @@ struct IntentCreate: AppIntent {
         let vm = await ManagerManager.shared.findOrCreateVM()
         let inputFiles = filesToAdd.compactMap { $0.fileURL }
         try await vm.addFiles(from: inputFiles)
-        await vm.saveArchive(to: outputURL, overrideFormat: format.arkyveFormat.libarchiveFormat, overrideFilters: format.arkyveFormat.libarchiveFilters)
+        await vm.saveArchive(to: outputURL,
+                             overrideFormat: format.arkyveFormat.libarchiveFormat,
+                             overrideFilters: format.arkyveFormat.libarchiveFilters,
+                             addToRecents: false)
         try await vm.waitForArchiveProgressTask()
 
         return .result(value: IntentFile(fileURL: outputURL))

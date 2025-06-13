@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
-    <dict>
-        <key>CFBundleIconFile</key>
-        <string>icon</string>
-        <key>NSExtension</key>
-        <dict>
-            <key>NSExtensionAttributes</key>
-            <dict>
-                <key>NSExtensionActivationRule</key>
-                <string>SUBQUERY (
+<dict>
+	<key>CFBundleIconFile</key>
+	<string></string>
+	<key>NSExtension</key>
+	<dict>
+		<key>NSExtensionAttributes</key>
+		<dict>
+			<key>NSExtensionActivationRule</key>
+			<string>SUBQUERY (
                     extensionItems,
                     $extensionItem,
                     SUBQUERY (
@@ -17,46 +17,48 @@
                     $attachment,
 
                     (
-                    ANY $attachment.registeredTypeIdentifiers UTI-CONFORMS-TO "com.apple.installer-package-archive"
-                    || ANY $attachment.registeredTypeIdentifiers UTI-CONFORMS-TO "com.apple.webarchive"
-                    || ANY $attachment.registeredTypeIdentifiers UTI-CONFORMS-TO "public.tar-archive"
-                    || ANY $attachment.registeredTypeIdentifiers UTI-CONFORMS-TO "org.tukaani.tar-xz-archive"
-                    || ANY $attachment.registeredTypeIdentifiers UTI-CONFORMS-TO "org.tukaani.xz-archive"
-                    || ANY $attachment.registeredTypeIdentifiers UTI-CONFORMS-TO "public.tar-bzip2-archive"
-                    || ANY $attachment.registeredTypeIdentifiers UTI-CONFORMS-TO "org.gnu.gnu-zip-tar-archive"
-                    || ANY $attachment.registeredTypeIdentifiers UTI-CONFORMS-TO "public.bzip2-archive"
-                    || ANY $attachment.registeredTypeIdentifiers UTI-CONFORMS-TO "org.gnu.gnu-zip-archive"
-                    || ANY $attachment.registeredTypeIdentifiers UTI-CONFORMS-TO "public.zip-archive"
-                    || ANY $attachment.registeredTypeIdentifiers UTI-CONFORMS-TO "com.apple.xip-archive"
-                    || ANY $attachment.registeredTypeIdentifiers UTI-CONFORMS-TO "com.apple.xar-archive"
-                    || ANY $attachment.registeredTypeIdentifiers UTI-CONFORMS-TO "public.cpio-archive"
-                    || ANY $attachment.registeredTypeIdentifiers UTI-CONFORMS-TO "public.iso-image"
-                    || ANY $attachment.registeredTypeIdentifiers UTI-CONFORMS-TO "org.7-zip.7-zip-archive"
-                    || ANY $attachment.registeredTypeIdentifiers UTI-CONFORMS-TO "com.microsoft.cab"
-                    || ANY $attachment.registeredTypeIdentifiers UTI-CONFORMS-TO "net.tenshu.Arkyve.lzh"
-                    || ANY $attachment.registeredTypeIdentifiers UTI-CONFORMS-TO "net.tenshu.Arkyve.ar"
-                    || ANY $attachment.registeredTypeIdentifiers UTI-CONFORMS-TO "net.tenshu.Arkyve.lha"
-                    || ANY $attachment.registeredTypeIdentifiers UTI-CONFORMS-TO "com.rarlab.rar-archive"
+                    ANY $attachment.registeredTypeIdentifiers UTI-CONFORMS-TO &quot;com.apple.installer-package-archive&quot;
+                    || ANY $attachment.registeredTypeIdentifiers UTI-CONFORMS-TO &quot;com.apple.webarchive&quot;
+                    || ANY $attachment.registeredTypeIdentifiers UTI-CONFORMS-TO &quot;public.tar-archive&quot;
+                    || ANY $attachment.registeredTypeIdentifiers UTI-CONFORMS-TO &quot;org.tukaani.tar-xz-archive&quot;
+                    || ANY $attachment.registeredTypeIdentifiers UTI-CONFORMS-TO &quot;org.tukaani.xz-archive&quot;
+                    || ANY $attachment.registeredTypeIdentifiers UTI-CONFORMS-TO &quot;public.tar-bzip2-archive&quot;
+                    || ANY $attachment.registeredTypeIdentifiers UTI-CONFORMS-TO &quot;org.gnu.gnu-zip-tar-archive&quot;
+                    || ANY $attachment.registeredTypeIdentifiers UTI-CONFORMS-TO &quot;public.bzip2-archive&quot;
+                    || ANY $attachment.registeredTypeIdentifiers UTI-CONFORMS-TO &quot;org.gnu.gnu-zip-archive&quot;
+                    || ANY $attachment.registeredTypeIdentifiers UTI-CONFORMS-TO &quot;public.zip-archive&quot;
+                    || ANY $attachment.registeredTypeIdentifiers UTI-CONFORMS-TO &quot;com.apple.xip-archive&quot;
+                    || ANY $attachment.registeredTypeIdentifiers UTI-CONFORMS-TO &quot;com.apple.xar-archive&quot;
+                    || ANY $attachment.registeredTypeIdentifiers UTI-CONFORMS-TO &quot;public.cpio-archive&quot;
+                    || ANY $attachment.registeredTypeIdentifiers UTI-CONFORMS-TO &quot;public.iso-image&quot;
+                    || ANY $attachment.registeredTypeIdentifiers UTI-CONFORMS-TO &quot;org.7-zip.7-zip-archive&quot;
+                    || ANY $attachment.registeredTypeIdentifiers UTI-CONFORMS-TO &quot;com.microsoft.cab&quot;
+                    || ANY $attachment.registeredTypeIdentifiers UTI-CONFORMS-TO &quot;net.tenshu.Arkyve.lzh&quot;
+                    || ANY $attachment.registeredTypeIdentifiers UTI-CONFORMS-TO &quot;net.tenshu.Arkyve.ar&quot;
+                    || ANY $attachment.registeredTypeIdentifiers UTI-CONFORMS-TO &quot;net.tenshu.Arkyve.lha&quot;
+                    || ANY $attachment.registeredTypeIdentifiers UTI-CONFORMS-TO &quot;com.rarlab.rar-archive&quot;
                     )
                     ).@count == $extensionItem.attachments.@count
                     ).@count == 1</string>
-                <key>NSExtensionServiceAllowsFinderPreviewItem</key>
-                <true/>
-                <key>NSExtensionServiceAllowsTouchBarItem</key>
-                <true/>
-                <key>NSExtensionServiceFinderPreviewIconName</key>
-                <string>NSActionTemplate</string>
-                <key>NSExtensionServiceRoleType</key>
-                <string>NSExtensionServiceRoleTypeEditor</string>
-                <key>NSExtensionServiceTouchBarBezelColorName</key>
-                <string>TouchBarBezel</string>
-                <key>NSExtensionServiceTouchBarIconName</key>
-                <string>NSActionTemplate</string>
-            </dict>
-            <key>NSExtensionPointIdentifier</key>
-            <string>com.apple.services</string>
-            <key>NSExtensionPrincipalClass</key>
-            <string>$(PRODUCT_MODULE_NAME).ActionRequestHandler</string>
-        </dict>
-    </dict>
+			<key>NSExtensionServiceAllowsFinderPreviewItem</key>
+			<true/>
+			<key>NSExtensionServiceAllowsTouchBarItem</key>
+			<true/>
+			<key>NSExtensionServiceFinderPreviewIconName</key>
+			<string>arrow.down</string>
+			<key>NSExtensionServiceFinderPreviewLabel</key>
+			<string>Extract with Arkyve</string>
+			<key>NSExtensionServiceRoleType</key>
+			<string>NSExtensionServiceRoleTypeEditor</string>
+			<key>NSExtensionServiceTouchBarBezelColorName</key>
+			<string>TouchBarBezel</string>
+			<key>NSExtensionServiceTouchBarIconName</key>
+			<string>arrow.down</string>
+		</dict>
+		<key>NSExtensionPointIdentifier</key>
+		<string>com.apple.services</string>
+		<key>NSExtensionPrincipalClass</key>
+		<string>$(PRODUCT_MODULE_NAME).ActionRequestHandler</string>
+	</dict>
+</dict>
 </plist>

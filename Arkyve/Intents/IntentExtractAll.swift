@@ -23,7 +23,7 @@ struct IntentExtractAll: AppIntent {
     var inputFile: IntentFile
 
     @Parameter(title: "Destination Folder",
-               description: "The folder to extract the archive into. This should be specified as a path, e.g. /path/to/folder. The folder will be created if it does not already exist.",
+               description: "The folder to extract the archive into",
                supportedContentTypes: [.folder, .directory]
     )
     var destinationFolder: IntentFile

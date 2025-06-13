@@ -11,13 +11,12 @@ import UniformTypeIdentifiers
 
 
 struct IntentCreate: AppIntent {
-    static let title: LocalizedStringResource = "Create an archive from some files"
-    static let description = IntentDescription("Create a new compressed archive and add some files to it. Supports .zip, .7z, .iso, .cpio, .tar, .tar.gz, .tar.bz, .tar.xz, .xar")
+    static let title: LocalizedStringResource = "Create an archive"
+    static let description = IntentDescription("Create a new compressed archive and optionally add some files to it. Supports creating archives in these formats: .zip, .7z, .iso, .cpio, .tar, .tar.gz, .tar.bz, .tar.xz, .xar")
     static let openAppWhenRun: Bool = false
 
     @Parameter(title: "Archive Filename",
                description: "The name of the archive you want to create (with no file extension).",
-//               inputConnectionBehavior: .connectToPreviousIntentResult
     )
     var archiveFilename: String
 
@@ -26,7 +25,7 @@ struct IntentCreate: AppIntent {
                supportedContentTypes: [.folder, .directory, .data],
                inputConnectionBehavior: .connectToPreviousIntentResult
     )
-    var filesToAdd: [IntentFile]
+    var filesToAdd: [IntentFile]?
 
     @Parameter(title: "Archive Format",
                description: "The type of archive you want to create",
@@ -34,7 +33,7 @@ struct IntentCreate: AppIntent {
     var format: IntentArchiveFormat
 
     @Parameter(title: "Destination Folder",
-               description: "The folder to extract the archive into. This should be specified as a path, e.g. /path/to/folder. The folder will be created if it does not already exist.",
+               description: "The folder to create the archive in",
                supportedContentTypes: [.folder, .directory]
     )
     var destinationFolder: IntentFile
@@ -60,8 +59,9 @@ struct IntentCreate: AppIntent {
         let outputURL = outputFolderURL.appendingPathComponent(fullArchiveFilename)
 
         let vm = await ManagerManager.shared.findOrCreateVM()
-        let inputFiles = filesToAdd.compactMap { $0.fileURL }
-        try await vm.addFiles(from: inputFiles)
+        if let inputFiles = filesToAdd?.compactMap({ $0.fileURL }) {
+            try await vm.addFiles(from: inputFiles)
+        }
         await vm.saveArchive(to: outputURL,
                              overrideFormat: format.arkyveFormat.libarchiveFormat,
                              overrideFilters: format.arkyveFormat.libarchiveFilters,

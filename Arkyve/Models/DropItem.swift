@@ -21,7 +21,6 @@ enum DropItem: Codable, Transferable {
             // FIXME: In Testflight I'm seeing the non-caching path get permission denied errors. Is our security scoped access going away?
             try ScopedURLManager.dropSBM.store(sourceURL, forOperation: .drop) // This should fix ^^
 
-            // FIXME: The above and below SBM stores are never cleared up, and we currently don't have a way to know when it's safe to - it would be after an archive write?
             if sourceURL.path.hasPrefix("/var") {
                 // We are likely receiving something in a weird private temporary folder
                 // (e.g. a screenshot preview drag). Copy it to our drop cache

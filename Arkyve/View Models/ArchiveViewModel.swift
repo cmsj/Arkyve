@@ -32,7 +32,6 @@ func openArchiveFromPanel(openWindow: OpenWindowAction, wasSplash: Bool = false)
             AKTrace("Open Menu: \(url)")
             openArchiveFromURL(url, openWindow: openWindow)
             return
-            // FIXME: Should we call addRecent() here?
         }
     }
 

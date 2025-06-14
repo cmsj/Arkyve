@@ -4,11 +4,11 @@
     "version" : 1
   },
   "properties" : {
-    "symbol-rendering-intent" : "hierarchical"
+    "symbol-rendering-intent" : "template"
   },
   "symbols" : [
     {
-      "filename" : "custom.square.and.arrow.down.slash.svg",
+      "filename" : "custom.arrow.down.rectangle.stack.svg",
       "idiom" : "universal"
     }
   ]

@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>CFBundleIconFile</key>
-	<string></string>
+	<string>AppIcon</string>
 	<key>NSExtension</key>
 	<dict>
 		<key>NSExtensionAttributes</key>
@@ -45,7 +45,7 @@
 			<key>NSExtensionServiceAllowsTouchBarItem</key>
 			<true/>
 			<key>NSExtensionServiceFinderPreviewIconName</key>
-			<string>AppIcon</string>
+			<string>custom.arrow.down.rectangle.stack</string>
 			<key>NSExtensionServiceFinderPreviewLabel</key>
 			<string>Extract with Arkyve</string>
 			<key>NSExtensionServiceRoleType</key>
@@ -53,7 +53,7 @@
 			<key>NSExtensionServiceTouchBarBezelColorName</key>
 			<string>TouchBarBezel</string>
 			<key>NSExtensionServiceTouchBarIconName</key>
-			<string>AppIcon</string>
+			<string>custom.arrow.down.rectangle.stack</string>
 		</dict>
 		<key>NSExtensionPointIdentifier</key>
 		<string>com.apple.services</string>

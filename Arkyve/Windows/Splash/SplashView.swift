@@ -40,6 +40,8 @@ struct WelcomeButton: View {
 struct SplashView: View {
     @Environment(\.openWindow) var openWindow
     @Environment(\.dismissWindow) var dismissWindow
+    @Environment(\.colorScheme) var colorScheme: ColorScheme
+
     @State private var managerManager = ManagerManager.shared
     @StateObject private var settingsManager = SettingsManager.shared
     @State private var selection: URL?
@@ -57,7 +59,7 @@ struct SplashView: View {
         HStack(spacing: 0) {
             ZStack {
                 Rectangle()
-                    .fill(.black.opacity(0.3))
+                    .fill(colorScheme == .dark ? .black.opacity(0.3) : .white)
                     .allowsHitTesting(false)
                 VStack(spacing: 0) {
                     VStack(spacing: 0) {
@@ -65,7 +67,7 @@ struct SplashView: View {
                             .resizable()
                             .frame(width: 103, height: 103, alignment: .center)
                             .clipShape(.buttonBorder)
-                            .shadow(color: glowColor, radius: 50)
+                            .shadow(color: colorScheme == .dark ? glowColor : .clear, radius: 50)
                             .padding([.top], 65)
                         Text("Arkyve")
                             .font(.system(size: 32))

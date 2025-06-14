@@ -102,6 +102,10 @@ final class ManagerManager: ManagerManagerProtocol, Sendable {
         }
     }
 
+    func findVM(_ possibleURL: URL) -> ArchiveViewModel? {
+        return vmStore.first(where: { $0.diskURL == possibleURL })
+    }
+
     func findVM(_ vmID: UUID) -> ArchiveViewModel? {
         return vmStore.first(where: { $0.id == vmID })
     }

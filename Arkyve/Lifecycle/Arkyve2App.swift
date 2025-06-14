@@ -73,7 +73,6 @@ struct ArkyveApp: App {
             }
         }
 
-        // FIXME: If we open this manually from the Window menu, the window is completely unresponsive
         Window("Welcome to Arkyve", id: "splash") {
             SplashView()
                 .containerBackground(.thickMaterial, for: .window)

@@ -9,10 +9,14 @@ import SwiftUI
 
 @MainActor
 func openArchiveFromURL(_ url: URL, openWindow: OpenWindowAction) {
-    // FIXME: This should check if the URL is already open and focus that window instead
-    let vm = ManagerManager.shared.createVM(url: url)
-    openWindow(id: "archive", value: vm.id)
-    SettingsManager.shared.addRecent(url)
+    var vm: ArchiveViewModel?
+    vm = ManagerManager.shared.findVM(url)
+
+    if vm == nil {
+        vm = ManagerManager.shared.createVM(url: url)
+        SettingsManager.shared.addRecent(url)
+    }
+    openWindow(id: "archive", value: vm!.id)
 }
 
 @MainActor

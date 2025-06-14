@@ -7,7 +7,7 @@ final class ArchiveEntryPasteboardWriterTests {
     @Test func testInitialization() {
         // Test initialization with entry
         let entry = ArchiveEntry(isRoot: true)
-        let entryExtractable = entry.asExtractable(from: nil, cacheURL: URL(fileURLWithPath: "/dev/null"))
+        let entryExtractable = entry.asExtractable(from: nil, cacheURL: URL(fileURLWithPath: "/dev/null"), vmID: UUID())
         let writer = ArchiveEntryPasteboardWriter(entry: entryExtractable)
         
         #expect(writer.entry?.name == entryExtractable.name)
@@ -34,7 +34,7 @@ final class ArchiveEntryPasteboardWriterTests {
     
     @Test func testPasteboardPropertyList() {
         // Test with entry
-        let entry = ArchiveEntry(isRoot: true).asExtractable(from: nil, cacheURL: URL(fileURLWithPath: "/dev/null"))
+        let entry = ArchiveEntry(isRoot: true).asExtractable(from: nil, cacheURL: URL(fileURLWithPath: "/dev/null"), vmID: UUID())
         let writer = ArchiveEntryPasteboardWriter(entry: entry)
         
         // Test archiveEntryExtractable type

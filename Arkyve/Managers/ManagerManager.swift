@@ -102,6 +102,10 @@ final class ManagerManager: ManagerManagerProtocol, Sendable {
         }
     }
 
+    func findVM(_ vmID: UUID) -> ArchiveViewModel? {
+        return vmStore.first(where: { $0.id == vmID })
+    }
+
     // Technically private, but needed for testing
     func removeAllVMs() {
         for vm in vmStore {

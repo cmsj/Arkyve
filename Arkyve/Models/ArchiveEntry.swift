@@ -379,8 +379,8 @@ class ArchiveEntry: Identifiable {
         return libarchiveHeader(source: source, type: type, path: path, name: name, pathComponents: pathComponents, size: size, atime: atime, ctime: ctime, mtime: mtime, btime: btime, uid: uid, gid: gid, perms: perms, symlinkTarget: symlinkTarget, rdev: rdev)
     }
 
-    func asExtractable(from archiveURL: URL?, cacheURL: URL) -> ArchiveEntryExtractable {
-        return ArchiveEntryExtractable(archiveURL: archiveURL,
+    func asExtractable(from archiveURL: URL?, cacheURL: URL, vmID: UUID) -> ArchiveEntryExtractable {
+        return ArchiveEntryExtractable(vmID: vmID, archiveURL: archiveURL,
                                        cacheURL: cacheURL,
                                        selectedPath: self.path,
                                        id: self.id,

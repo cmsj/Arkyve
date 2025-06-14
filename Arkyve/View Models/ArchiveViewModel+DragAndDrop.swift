@@ -42,6 +42,39 @@ extension ArchiveViewModel {
     func handleEntryDrop(at index: Int? = nil, on entryID: UUID? = nil, entryExtractable: ArchiveEntryExtractable) {
         print("HANDLING ENTRY DROPPED at \(index ?? -1) on \(entryID?.uuidString ?? "unknown"): \(entryExtractable)")
 
+        // Check if this is a drag coming from another window, if it is we will extract it from that archive and then treat it as a file drop
+        if entryExtractable.vmID != self.id {
+            AKTrace("\(self.id): Handling entry drop from another window, extracting to cache...")
+            guard let vendorVM = ManagerManager.shared.findVM(entryExtractable.vmID) else {
+                self.errors.err(.init(.drop, msg: "Unable to find source archive for \(entryExtractable.name)"))
+                return
+            }
+
+            // Make a unique directory to cache this item into
+            do {
+                let dropCacheURL = try cacheManager.mkdir(ofType: .drop, name: UUID().uuidString)
+                Task {
+                    do {
+                        let writtenURLs = try await vendorVM.extract(extractables: [entryExtractable], toFolder: dropCacheURL, retainFullPath: true)
+                        if let firstURL = writtenURLs.first {
+                            try ScopedURLManager.dropSBM.store(firstURL, forOperation: .drop)
+                            self.handleFileURLDrop(at: index, on: entryID, fileURL: firstURL)
+                        }
+                    } catch {
+                        self.errors.err(.init(.drop, msg: error.localizedDescription))
+                    }
+                }
+                return
+            } catch let error as ArkyveError {
+                self.errors.err(error)
+                return
+            } catch {
+                self.errors.err(.init(.drop, msg: error.localizedDescription))
+                return
+            }
+
+        }
+
         // Find the (new?) parent for the entries we're handling
         let newParent: ArchiveEntry
         if let newParentEntryID = entryID, newParentEntryID != root.id {
@@ -112,7 +145,10 @@ extension ArchiveViewModel {
     func handleFileURLDrop(at index: Int? = nil, on entryID: UUID? = nil, fileURL: URL) {
         print("HANDLING FILEURL DROPPED AT \(index ?? -1) on \(entryID?.uuidString ?? "unknown"): \(fileURL)")
 
-        guard let scopedURL = try? ScopedURLManager.dropSBM.bookmarkScopedURL(fileURL) else { return }
+        guard let scopedURL = try? ScopedURLManager.dropSBM.bookmarkScopedURL(fileURL) else {
+            errors.err(.init(.drop, msg: "Unable to find URL bookmark for \(fileURL)"))
+            return
+        }
 
         // 1. Find the new parent
         let newParent: ArchiveEntry

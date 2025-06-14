@@ -108,6 +108,7 @@ extension ArchiveViewModel {
 
     func addFiles(from urls: [URL], parent: ArchiveEntry? = nil) throws (ArkyveError) {
         guard urls.count > 0 else { return }
+        AKTrace("\(self.id): Adding \(urls.count)")
 
         var newEntries: [ArchiveEntry] = []
         let targetEntry = parent ?? root
@@ -337,7 +338,7 @@ extension ArchiveViewModel {
                 }
             }
 
-            let extractableEntry = entry.asExtractable(from: diskURL, cacheURL: cacheURL)
+            let extractableEntry = entry.asExtractable(from: diskURL, cacheURL: cacheURL, vmID: self.id)
             extractableEntries.append(extractableEntry)
         }
 
@@ -367,7 +368,7 @@ extension ArchiveViewModel {
     func extract(paths: [String], toFolder: URL,
                  retainFullPath:Bool = false) async throws(ArkyveError) -> [URL] {
         let extractables = entries.compactMap { entry in
-            paths.contains(entry.path) ? entry.asExtractable(from: diskURL, cacheURL: cacheURL) : nil
+            paths.contains(entry.path) ? entry.asExtractable(from: diskURL, cacheURL: cacheURL, vmID: self.id) : nil
         }
 
         return try await extract(extractables: extractables, toFolder: toFolder,
@@ -376,14 +377,14 @@ extension ArchiveViewModel {
 
     func extract(entries: [ArchiveEntry], toFolder: URL,
                  retainFullPath: Bool = false) async throws(ArkyveError) -> [URL] {
-        let extractables = entries.map { $0.asExtractable(from: diskURL, cacheURL: cacheURL) }
+        let extractables = entries.map { $0.asExtractable(from: diskURL, cacheURL: cacheURL, vmID: self.id) }
         return try await extract(extractables: extractables, toFolder: toFolder,
                                  retainFullPath: retainFullPath)
     }
 
     func extract(toFolder: URL, retainFullPath: Bool = false) async throws(ArkyveError) -> [URL] {
         guard let rootEntries = root.children else { throw ArkyveError(.extract, msg: "Unable to find archive contents")}
-        let extractables = rootEntries.map { $0.asExtractable(from: diskURL, cacheURL: cacheURL) }
+        let extractables = rootEntries.map { $0.asExtractable(from: diskURL, cacheURL: cacheURL, vmID: self.id) }
 
         return try await extract(extractables: extractables, toFolder: toFolder,
                                  retainFullPath: retainFullPath)
@@ -430,7 +431,7 @@ extension ArchiveViewModel {
     func extractablesForSelected() -> [ArchiveEntryExtractable] {
         let extractables = selectedEntries.compactMap { entryID in
             if let first = entries.first(where: { $0.id == entryID }) {
-                return first.asExtractable(from: diskURL, cacheURL: cacheURL)
+                return first.asExtractable(from: diskURL, cacheURL: cacheURL, vmID: self.id)
             } else {
                 return nil
             }

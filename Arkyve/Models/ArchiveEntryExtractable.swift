@@ -8,6 +8,7 @@ import SwiftUI
 import UniformTypeIdentifiers
 
 struct ArchiveEntryExtractable: Codable, Transferable {
+    let vmID: UUID
     let archiveURL: URL?
     let cacheURL: URL
     let selectedPath: String

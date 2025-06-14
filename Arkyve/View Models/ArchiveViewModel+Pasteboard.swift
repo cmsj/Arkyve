@@ -41,7 +41,7 @@ extension ArchiveViewModel {
         guard entryIDs.count > 0 else { return [] }
 
         let items = entries.filter { entryIDs.contains($0.id) }.map {
-            var extractable = $0.asExtractable(from: diskURL, cacheURL: cacheURL)
+            var extractable = $0.asExtractable(from: diskURL, cacheURL: cacheURL, vmID: self.id)
             extractable.isCopied = true
             return extractable
         }

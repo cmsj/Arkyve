@@ -86,6 +86,7 @@ struct SplashView: View {
                                       text: "Create New Archive...")
                         .onTapGesture {
                             AKTrace("SplashView New Archive")
+                            dismissWindow()
                             openWindow(id: "archive")
                         }
                         
@@ -93,7 +94,8 @@ struct SplashView: View {
                                       text: "Open Existing Archive...")
                         .onTapGesture {
                             AKTrace("SplashView Open Archive")
-                            openArchiveFromPanel(openWindow: openWindow)
+                            dismissWindow()
+                            openArchiveFromPanel(openWindow: openWindow, wasSplash: true)
                         }
                         
                         WelcomeButton(iconName: "folder",
@@ -137,6 +139,7 @@ struct SplashView: View {
                             }
                             .simultaneousGesture(TapGesture(count: 2).onEnded {
                                 AKTrace("Opening recent: \(recent)")
+                                dismissWindow()
                                 openArchiveFromURL(recent, openWindow: openWindow)
                             })
                         }
@@ -151,12 +154,6 @@ struct SplashView: View {
         }
         .ignoresSafeArea()
         .frame(width: 741, height: 433)//461)
-        .onChange(of: managerManager.vmStoreIsEmpty, initial: true) { wasEmpty, isEmpty in
-            // NOTE: This is one half of a behaviour - the other half is an equivalent onChange in ArkyveApp
-            if !isEmpty {
-                dismissWindow()
-            }
-        }
         .onChange(of: settingsManager.autoSplashWindow) { oldValue, newValue in
             // NOTE: This is one half of a behaviour - the other half is an equivalent onChange in ArkyveApp
             if newValue == false && managerManager.vmStoreIsEmpty {

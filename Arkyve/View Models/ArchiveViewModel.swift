@@ -16,7 +16,7 @@ func openArchiveFromURL(_ url: URL, openWindow: OpenWindowAction) {
 }
 
 @MainActor
-func openArchiveFromPanel(openWindow: OpenWindowAction) {
+func openArchiveFromPanel(openWindow: OpenWindowAction, wasSplash: Bool = false) {
     let panel = NSOpenPanel()
     panel.canChooseFiles = true
     panel.canChooseDirectories = false
@@ -27,8 +27,14 @@ func openArchiveFromPanel(openWindow: OpenWindowAction) {
         if let url = panel.url {
             AKTrace("Open Menu: \(url)")
             openArchiveFromURL(url, openWindow: openWindow)
+            return
             // FIXME: Should we call addRecent() here?
         }
+    }
+
+    // Something didn't go right, bring back the splash window
+    if wasSplash {
+        openWindow(id: "splash")
     }
 }
 

@@ -59,9 +59,6 @@ struct ArkyveApp: App {
         }
         .defaultLaunchBehavior(.suppressed)
         .restorationBehavior(.disabled)
-        .commands {
-            MenuCommands(settingsManager: settingsManager)
-        }
         .onChange(of: managerManager.vmStoreIsEmpty, initial: true) { wasEmpty, isEmpty in
             // NOTE: This is one half of a behaviour - the other half is an equivalent onChange in SplashView
             if isEmpty && settingsManager.autoSplashWindow && !AppInfo.shared.isRunningUnitTests {
@@ -99,11 +96,23 @@ struct ArkyveApp: App {
             SettingsView()
                 .environmentObject(settingsManager)
         }
+        .commands {
+            MenuCommands(settingsManager: settingsManager)
+        }
 
         Window("About Arkyve", id: "about") {
             AboutView()
                 .containerBackground(.thickMaterial, for: .window)
                 .windowResizeBehavior(.disabled)
+        }
+        .commands {
+            CommandGroup(replacing: .singleWindowList) {
+                Button(action: {
+                    openWindow(id: "splash")
+                }) {
+                    Text("Welcome to Arkyve")
+                }
+            }
         }
         .windowStyle(.hiddenTitleBar)
         .windowResizability(.contentSize)

@@ -16,6 +16,13 @@ struct MenuCommands: Commands {
     @StateObject var settingsManager: SettingsManager
 
     var body: some Commands {
+        CommandGroup(replacing: .singleWindowList) {
+            Button(action: {
+                openWindow(id: "splash")
+            }) {
+                Text("Welcome to Arkyve")
+            }
+        }
         // About
         CommandGroup(replacing: CommandGroupPlacement.appInfo) {
             Button(action: {

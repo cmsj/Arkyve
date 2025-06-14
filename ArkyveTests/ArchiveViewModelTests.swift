@@ -235,8 +235,10 @@ final class ArchiveViewModelTests {
         let nonExistentURL = URL(fileURLWithPath: "/nonexistent/file.zip")
         viewModel = manager.createVM(url: nonExistentURL)
         
-        try await viewModel.waitForArchiveProgressTask()
-        
+        try await #expect(throws: ArkyveError.self) {
+            try await self.viewModel.waitForArchiveProgressTask()
+        }
+
         #expect(viewModel.errors.error != nil)
         
         cleanup()

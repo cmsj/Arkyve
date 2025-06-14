@@ -29,8 +29,8 @@ final class libarchiveFDTests {
     @Test func testOpenReadWithValidPath() async {
         // Create a temporary file for testing
         let tempDir = FileManager.default.temporaryDirectory
-        let testFile = tempDir.appendingPathComponent("test.tar")
-        
+        let testFile = tempDir.appendingPathComponent("test1.tar")
+
         // Create a simple tar file for testing
         let process = Process()
         process.executableURL = URL(fileURLWithPath: "/usr/bin/tar")
@@ -55,13 +55,13 @@ final class libarchiveFDTests {
     @Test func testOpenWriteWithInvalidPath() {
         var fd = libarchiveFD(type: .write)
         #expect(throws: ArkyveError.self) {
-            try fd.openWrite(at: URL(fileURLWithPath: "/nonexistent/path/test.tar"), format: .TAR_PAX_RESTRICTED, filters: [.None])
+            try fd.openWrite(at: URL(fileURLWithPath: "/nonexistent/path/test2.tar"), format: .TAR_PAX_RESTRICTED, filters: [.None])
         }
     }
     
     @Test func testOpenWriteWithValidPath() {
         let tempDir = FileManager.default.temporaryDirectory
-        let testFile = tempDir.appendingPathComponent("test.tar")
+        let testFile = tempDir.appendingPathComponent("test3.tar")
         
         var fd = libarchiveFD(type: .write)
         try? fd.openWrite(at: testFile, format: .TAR_PAX_RESTRICTED, filters: [.None])

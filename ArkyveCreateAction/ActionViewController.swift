@@ -44,7 +44,13 @@ func processContext(_ context: NSExtensionContext, archiveName: String, archiveF
     for attachment in inputAttachments {
         dispatchGroup.enter()
 
-        _ = attachment.loadInPlaceFileRepresentation(forTypeIdentifier: "public.data", completionHandler: { (url, inPlace, error) in
+        // We need to operate on mutliple UTTypes, so rather than repeat all this code
+        // for ~20 types of archive, just grab the UTType of the incoming NSItemProvider and
+        // use that to load the FileRepresentation
+        guard let attachmentTypeID = attachment.registeredTypeIdentifiers.first else { continue }
+        NSLog("beginRequest(): Discovered source type identifier: \(attachmentTypeID)")
+
+        _ = attachment.loadInPlaceFileRepresentation(forTypeIdentifier: attachmentTypeID, completionHandler: { (url, inPlace, error) in
             guard let url else {
                 NSLog("processContext(): Unable to get URL for attachment: \(error?.localizedDescription ?? "UNKNOWN ERROR")")
                 return
@@ -65,7 +71,13 @@ func processContext(_ context: NSExtensionContext, archiveName: String, archiveF
         Task.detached {
             NSLog("processContext(): In detached task, saving archive...")
             await vm.saveArchive(to: writtenURL)
-            completionHandler(writtenURL, false, nil)
+            do {
+                try await vm.waitForArchiveProgressTask()
+                await ManagerManager.shared.removeAllVMs()
+                completionHandler(writtenURL, false, nil)
+            } catch {
+                completionHandler(nil, false, error)
+            }
         }
         return nil
     })
@@ -75,6 +87,8 @@ func processContext(_ context: NSExtensionContext, archiveName: String, archiveF
         let outputItem = NSExtensionItem()
         outputItem.attachments = inputAttachments + [itemProvider]
         context.completeRequest(returningItems: [outputItem], completionHandler: nil)
+
+//        ManagerManager.shared.removeAllVMs()
     }
 }
 
@@ -83,12 +97,23 @@ struct CreateActionView: View {
     var extensionContext: NSExtensionContext?
     @State var archiveName: String = ""
     @State var archiveFormat: ArkyveFormats = .zip
+    @State var isRunning: Bool = false
+
+    func compress() {
+        isRunning = true
+        if let extensionContext {
+            try? processContext(extensionContext, archiveName: archiveName, archiveFormat: archiveFormat)
+        }
+    }
 
     var body: some View {
         VStack {
             Text("Unable to proceed")
                 .hide(if: extensionContext != nil)
             TextField("Archive Name:", text: $archiveName)
+                .onSubmit {
+                    compress()
+                }
             Picker("Format:", selection: $archiveFormat) {
                 ForEach(ArkyveFormats.writeableCases, id: \.self) { format in
                     Text(format.description)
@@ -96,16 +121,17 @@ struct CreateActionView: View {
                 }
             }
             HStack {
+                ProgressView()
+                    .controlSize(.small)
+                    .hide(if: !isRunning)
                 Spacer()
                 Button("Cancel") {
                     extensionContext?.cancelRequest(withError: NSError(domain: NSCocoaErrorDomain, code: NSUserCancelledError))
                 }
                 Button("Compress") {
-                    if let extensionContext {
-                        try? processContext(extensionContext, archiveName: archiveName, archiveFormat: archiveFormat)
-                    }
+                    compress()
                 }
-                .disabled(extensionContext == nil)
+                .disabled(extensionContext == nil || isRunning)
             }
         }
         .padding()

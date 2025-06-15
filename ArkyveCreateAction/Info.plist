@@ -9,7 +9,7 @@
 		<key>NSExtensionAttributes</key>
 		<dict>
 			<key>NSExtensionActivationRule</key>
-            <string>SUBQUERY (
+			<string>SUBQUERY (
                 extensionItems,
                 $extensionItem,
                 SUBQUERY (
@@ -18,6 +18,8 @@
 
                 (
                 ANY $attachment.registeredTypeIdentifiers UTI-CONFORMS-TO &quot;public.data&quot;
+                || ANY $attachment.registeredTypeIdentifiers UTI-CONFORMS-TO &quot;public.folder&quot;
+                || ANY $attachment.registeredTypeIdentifiers UTI-CONFORMS-TO &quot;public.directory&quot;
                 )
                 ).@count == $extensionItem.attachments.@count
                 ).@count == 1</string>
@@ -33,8 +35,8 @@
 			<string>TouchBarBezel</string>
 			<key>NSExtensionServiceTouchBarIconName</key>
 			<string>NSActionTemplate</string>
-            <key>NSExtensionServiceFinderPreviewLabel</key>
-            <string>Compress with Arkyve</string>
+			<key>NSExtensionServiceFinderPreviewLabel</key>
+			<string>Compress with Arkyve</string>
 		</dict>
 		<key>NSExtensionPointIdentifier</key>
 		<string>com.apple.ui-services</string>

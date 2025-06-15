@@ -2366,6 +2366,45 @@
 			);
 			target = 4FD56AE72DFE8E8E00F709E0 /* ArkyveCreateAction */;
 		};
+		4FE22C832DFEFEC50066DD6C /* Exceptions for "Arkyve" folder in "ArkyveCreateAction" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Extensions/Array.swift,
+				Extensions/Date.swift,
+				Extensions/dev_t.swift,
+				Extensions/FileManager.swift,
+				Extensions/FocusedValues.swift,
+				Extensions/Int.swift,
+				Extensions/mode_t.swift,
+				Extensions/String.swift,
+				Extensions/UTType.swift,
+				Extensions/View.swift,
+				libarchiveWrapper/libarchiveFD.swift,
+				libarchiveWrapper/libarchiveFilter.swift,
+				libarchiveWrapper/libarchiveFormat.swift,
+				libarchiveWrapper/libarchiveHeader.swift,
+				libarchiveWrapper/libarchiveWrapper.swift,
+				Managers/CacheManager.swift,
+				Managers/ErrorManager.swift,
+				Managers/ManagerManager.swift,
+				Managers/ScopedURLManager.swift,
+				Managers/SettingsManager.swift,
+				Managers/TipsManager.swift,
+				Models/ArchiveEntry.swift,
+				Models/ArchiveEntryExtractable.swift,
+				Models/ArchiveEntryFlat.swift,
+				Models/ArchiveEntrySource.swift,
+				Models/ArchiveEntryType.swift,
+				Models/ArkyveFormats.swift,
+				Models/FolderExpansionOptions.swift,
+				Models/Tips.swift,
+				Utility/ArkyveError.swift,
+				Utility/ArkyveLog.swift,
+				"View Models/ArchiveViewModel.swift",
+				"View Models/ArchiveViewModel+Operations.swift",
+			);
+			target = 4FD56AE72DFE8E8E00F709E0 /* ArkyveCreateAction */;
+		};
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedGroupBuildPhaseMembershipExceptionSet section */
@@ -2402,6 +2441,7 @@
 				4FA6100F2DF9E3E600B4F884 /* Exceptions for "Arkyve" folder in "ArkyveTests" target */,
 				4F1F24372DF713CF0019CA7D /* Exceptions for "Arkyve" folder in "ArkyveQuickLookExtension" target */,
 				4F1F245E2DF7409A0019CA7D /* Exceptions for "Arkyve" folder in "ArkyveExtractAction" target */,
+				4FE22C832DFEFEC50066DD6C /* Exceptions for "Arkyve" folder in "ArkyveCreateAction" target */,
 			);
 			path = Arkyve;
 			sourceTree = "<group>";
@@ -2480,10 +2520,10 @@
 			children = (
 				4F288CB02DF79ADA00A4E600 /* Arkyve.xctestplan */,
 				4F2084152DEFA306004213AA /* Arkyve */,
+				4FD56AE92DFE8E8E00F709E0 /* ArkyveCreateAction */,
 				4F1F24492DF7407D0019CA7D /* ArkyveExtractAction */,
 				4F1F240C2DF712C30019CA7D /* ArkyveQuickLookExtension */,
 				4F2084242DEFA307004213AA /* ArkyveTests */,
-				4FD56AE92DFE8E8E00F709E0 /* ArkyveCreateAction */,
 				4F1F24092DF712C30019CA7D /* Frameworks */,
 				4F2084142DEFA306004213AA /* Products */,
 				4FA3316F2DF22D2B001B377C /* vendor */,
@@ -6517,6 +6557,7 @@
 				DEVELOPMENT_TEAM = VQCYSNZB89;
 				ENABLE_HARDENED_RUNTIME = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				HEADER_SEARCH_PATHS = "${PROJECT_DIR}/vendor/include";
 				INFOPLIST_FILE = ArkyveCreateAction/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = ArkyveCreateAction;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
@@ -6525,13 +6566,30 @@
 					"@executable_path/../Frameworks",
 					"@executable_path/../../../../Frameworks",
 				);
+				LIBRARY_SEARCH_PATHS = (
+					"${PROJECT_DIR}/vendor/lib/${CONFIGURATION}",
+					/usr/lib,
+				);
 				MACOSX_DEPLOYMENT_TARGET = 15.5;
 				MARKETING_VERSION = 1.0;
+				OTHER_LDFLAGS = (
+					"-lz",
+					"-lbz2",
+					"-lexpat",
+					"-liconv",
+					"-lxml2",
+					"-lb2",
+					"-llz4",
+					"-llzma",
+					"-lzstd",
+					"-larchive",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = net.tenshu.Arkyve.ArkyveCreateAction;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				SWIFT_EMIT_LOC_STRINGS = YES;
-				SWIFT_VERSION = 5.0;
+				SWIFT_OBJC_BRIDGING_HEADER = Arkyve/libarchiveWrapper/libarchive_Bridge.h;
+				SWIFT_VERSION = 6.0;
 			};
 			name = Debug;
 		};
@@ -6545,6 +6603,7 @@
 				DEVELOPMENT_TEAM = VQCYSNZB89;
 				ENABLE_HARDENED_RUNTIME = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				HEADER_SEARCH_PATHS = "${PROJECT_DIR}/vendor/include";
 				INFOPLIST_FILE = ArkyveCreateAction/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = ArkyveCreateAction;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
@@ -6553,13 +6612,30 @@
 					"@executable_path/../Frameworks",
 					"@executable_path/../../../../Frameworks",
 				);
+				LIBRARY_SEARCH_PATHS = (
+					"${PROJECT_DIR}/vendor/lib/${CONFIGURATION}",
+					/usr/lib,
+				);
 				MACOSX_DEPLOYMENT_TARGET = 15.5;
 				MARKETING_VERSION = 1.0;
+				OTHER_LDFLAGS = (
+					"-lz",
+					"-lbz2",
+					"-lexpat",
+					"-liconv",
+					"-lxml2",
+					"-lb2",
+					"-llz4",
+					"-llzma",
+					"-lzstd",
+					"-larchive",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = net.tenshu.Arkyve.ArkyveCreateAction;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				SWIFT_EMIT_LOC_STRINGS = YES;
-				SWIFT_VERSION = 5.0;
+				SWIFT_OBJC_BRIDGING_HEADER = Arkyve/libarchiveWrapper/libarchive_Bridge.h;
+				SWIFT_VERSION = 6.0;
 			};
 			name = Release;
 		};

@@ -54,21 +54,22 @@ struct ArkyveLogEntry: Identifiable, Equatable, Hashable {
     }
 }
 
+extension Logger {
+    /// Using your bundle identifier is a great way to ensure a unique identifier.
+    private static let subsystem = Bundle.main.bundleIdentifier!
+
+    /// Logs for Arkyve
+    static let arkyve = Logger(subsystem: subsystem, category: "ArkyveLog")
+}
+
 @Observable
 @MainActor
 final class ArkyveLog: Sendable {
     static let shared = ArkyveLog()
 
-    @ObservationIgnored
-    nonisolated private let logger = Logger(subsystem: Bundle.main.bundleIdentifier!, category: "ArkyveLog")
-
     var entries: [ArkyveLogEntry] = []
 
     func log(_ level: ArkyveLogType, _ msg: String) {
-        if level != .Trace {
-            logger.log(level: level.osLogType, "\(msg)")
-        }
-
         entries.append(ArkyveLogEntry(logType: level, msg: msg))
         if entries.count > 100 {
             entries.removeFirst()
@@ -87,18 +88,21 @@ func AKLog(_ level: ArkyveLogType, _ msg: String) {
 }
 
 func AKInfo(_ msg: String) {
+    Logger.arkyve.info("\(msg)")
     AKLog(.Info, msg)
 }
 
 func AKWarning(_ msg: String) {
+    Logger.arkyve.warning("\(msg)")
     AKLog(.Warning, msg)
 }
 
 func AKError(_ msg: String) {
+    Logger.arkyve.error("\(msg)")
     AKLog(.Error, msg)
 }
 
 func AKTrace(_ msg: String) {
-    NSLog(msg)
+    Logger.arkyve.debug("\(msg)")
     AKLog(.Trace, msg)
 }

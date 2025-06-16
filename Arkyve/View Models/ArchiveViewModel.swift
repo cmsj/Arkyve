@@ -88,6 +88,7 @@ final class ArchiveViewModel: Identifiable {
     var quickLookItems: [URL] = []
 
     var progressTask: Task<Void, Never>? = nil
+    var isCancelling: Bool = false
 
     // MARK: - Disable various parts of the UI
     var disableUI: Bool = false {
@@ -116,8 +117,11 @@ final class ArchiveViewModel: Identifiable {
     // MARK: - Dynamic UI text
     var navSubtitleText: String { "\(dirty ? "(Unsaved)" : "")" }
     var statusBarText: String {
+        if isCancelling {
+            return "Cancelling.."
+        }
+
         if let progressTask {
-            if progressTask.isCancelled { return "Cancelling..." }
             return "Working..."
         }
 
@@ -177,17 +181,12 @@ final class ArchiveViewModel: Identifiable {
 
         errors.clear()
 
-        progressTask = Task {
-            disableUI = true
-            var failed = true
-            defer {
-                disableUI = failed
-                progressTask = nil
-            }
+        withProgressTask { [self] in
+            var didFail = true
 
             do {
                 let (archiveFormat, archiveFilters, entries, root, didTruncate) = try await libarchiveWrapper.loadArchive(at: url, entryLimit: truncateAt ?? -1)
-                failed = false
+                didFail = false
 
                 if archiveFormat.canWrite == false {
                     ReadOnlyStatus.event.sendDonation()
@@ -220,6 +219,12 @@ final class ArchiveViewModel: Identifiable {
                 errors.err(error)
             } catch {
                 errors.err(.init(.openArchive, msg: error.localizedDescription))
+            }
+
+            if didFail {
+                Task { @MainActor in
+                    self.disableUI = true
+                }
             }
         }
     }

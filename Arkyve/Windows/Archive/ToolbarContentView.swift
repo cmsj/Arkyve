@@ -24,6 +24,7 @@ struct ToolbarContentView: CustomizableToolbarContent {
 
         ToolbarItem(id: "cancel") {
             Button {
+                viewModel.isCancelling = true
                 viewModel.progressTask?.cancel()
             } label: {
                 Label("Stop", systemImage: "stop.circle")

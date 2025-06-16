@@ -34,6 +34,18 @@ extension ArchiveViewModel {
         root.sort(using: newSort)
     }
 
+    func withProgressTask(_ task: @escaping () async -> Void) {
+        disableUI = true
+
+        progressTask = Task {
+            await task()
+
+            disableUI = false
+            progressTask = nil
+            isCancelling = false
+        }
+    }
+
     func newFolder(at parentID: UUID) -> UUID? {
         if let parentEntry = self.entryForID(parentID), parentEntry.children != nil {
             let name = "Untitled Folder"
@@ -206,13 +218,7 @@ extension ArchiveViewModel {
         // We will write out the archive to a cache location and then move it into place only if we succeed
         let writeCacheURL = cacheManager.urlForItem(cacheType: .write, itemName: to.lastPathComponent)
 
-        progressTask = Task {
-            disableUI = true
-            defer {
-                disableUI = false
-                progressTask = nil
-            }
-
+        withProgressTask { [self] in
             let (format, filters, headerMap) = metadataForSaving(overrideFormat: overrideFormat, overrideFilters: overrideFilters)
 
             do {
@@ -293,12 +299,7 @@ extension ArchiveViewModel {
     func copyArchive(to: URL) {
         guard let diskURL else { return }
 
-        progressTask = Task {
-            disableUI = true
-            defer {
-                disableUI = false
-                progressTask = nil
-            }
+        withProgressTask { [self] in
             do {
                 AKTrace("Copying \(diskURL) to \(to)")
                 try FileManager.default.copyItem(at: diskURL, to: to)
@@ -366,19 +367,13 @@ extension ArchiveViewModel {
             return
         }
 
-        progressTask = Task {
-            disableUI = true
-            defer {
-                disableUI = false
-                progressTask = nil
-            }
-
+        withProgressTask {
             do {
-                let _ = try await extractSome(extractables: extractableEntries, toFolder: destURL, retainFullPath: retainFullPath)
+                let _ = try await self.extractSome(extractables: extractableEntries, toFolder: destURL, retainFullPath: retainFullPath)
             } catch let error as ArkyveError {
-                errors.err(error)
+                self.errors.err(error)
             } catch {
-                errors.err(.init(.extract, msg: error.localizedDescription))
+                self.errors.err(.init(.extract, msg: error.localizedDescription))
             }
         }
     }

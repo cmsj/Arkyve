@@ -58,8 +58,8 @@ final class ArchiveViewModelTests {
         defer { try? FileManager.default.removeItem(at: tempDir) }
         
         // Extract all entries
-        let extractedURLs = try await viewModel.extract(toFolder: tempDir)
-        
+        let extractedURLs = try await viewModel.extractAll(toFolder: tempDir)
+
         #expect(!extractedURLs.isEmpty)
         #expect(FileManager.default.fileExists(atPath: tempDir.appendingPathComponent("helloworld").appendingPathComponent("hello.txt").path))
         cleanup()
@@ -77,7 +77,7 @@ final class ArchiveViewModelTests {
         defer { try? FileManager.default.removeItem(at: tempFile) }
         
         // Save the archive
-        await viewModel.saveArchive(to: tempFile)
+        viewModel.saveArchiveWithTask(to: tempFile)
 
         try await viewModel.waitForArchiveProgressTask()
 
@@ -235,7 +235,7 @@ final class ArchiveViewModelTests {
         let nonExistentURL = URL(fileURLWithPath: "/nonexistent/file.zip")
         viewModel = manager.createVM(url: nonExistentURL)
         
-        try await #expect(throws: ArkyveError.self) {
+        await #expect(throws: ArkyveError.self) {
             try await self.viewModel.waitForArchiveProgressTask()
         }
 

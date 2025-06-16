@@ -55,7 +55,7 @@ extension ArchiveViewModel {
                 let dropCacheURL = try cacheManager.mkdir(ofType: .drop, name: UUID().uuidString)
                 Task {
                     do {
-                        let writtenURLs = try await vendorVM.extract(extractables: [entryExtractable], toFolder: dropCacheURL, retainFullPath: true)
+                        let writtenURLs = try await vendorVM.extractSome(extractables: [entryExtractable], toFolder: dropCacheURL, retainFullPath: true)
                         if let firstURL = writtenURLs.first {
                             try ScopedURLManager.dropSBM.store(firstURL, forOperation: .drop)
                             self.handleFileURLDrop(at: index, on: entryID, fileURL: firstURL)

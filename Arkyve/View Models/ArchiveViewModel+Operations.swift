@@ -197,7 +197,7 @@ extension ArchiveViewModel {
         setDirty()
     }
 
-    func saveArchive(to: URL, overrideFormat: libarchiveFormat = .Unknown, overrideFilters: [libarchiveFilter] = [.None], addToRecents: Bool = true) async {
+    func saveArchiveWithTask(to: URL, overrideFormat: libarchiveFormat = .Unknown, overrideFilters: [libarchiveFilter] = [.None], addToRecents: Bool = true) {
         errors.clear()
 
         AKTrace("\(id): Saving archive to: \(to)")
@@ -293,16 +293,35 @@ extension ArchiveViewModel {
     func copyArchive(to: URL) {
         guard let diskURL else { return }
 
-        do {
-            AKTrace("Copying \(diskURL) to \(to)")
-            try FileManager.default.copyItem(at: diskURL, to: to)
-            didSave(to: to, format: format, filters: filters)
-        } catch {
-            errors.err(.init(.writeArchive, msg: error.localizedDescription))
+        progressTask = Task {
+            disableUI = true
+            defer {
+                disableUI = false
+                progressTask = nil
+            }
+            do {
+                AKTrace("Copying \(diskURL) to \(to)")
+                try FileManager.default.copyItem(at: diskURL, to: to)
+                didSave(to: to, format: format, filters: filters)
+            } catch {
+                errors.err(.init(.writeArchive, msg: error.localizedDescription))
+            }
         }
     }
 
-    func extractEntries(_ chosenEntries: [ArchiveEntry], destURL: URL, retainFullPath: Bool) {
+    // MARK: - Helper methods for extraction
+    func extractablesForPaths(_ paths: [String]) -> [ArchiveEntryExtractable] {
+        return entries.compactMap { entry in
+            paths.contains(entry.path) ? entry.asExtractable(from: diskURL, cacheURL: cacheURL, vmID: self.id) : nil
+        }
+    }
+
+    func extractablesForEntries(_ entries: [ArchiveEntry]) -> [ArchiveEntryExtractable] {
+        entries.map { $0.asExtractable(from: diskURL, cacheURL: cacheURL, vmID: self.id) }
+    }
+
+    // MARK: - Extraction methods
+    func extractEntriesWithConfirmation(_ chosenEntries: [ArchiveEntry], destURL: URL, retainFullPath: Bool) {
         var extractableEntries: [ArchiveEntryExtractable] = []
         var overwriteAll = false
 
@@ -355,7 +374,7 @@ extension ArchiveViewModel {
             }
 
             do {
-                let _ = try await extract(extractables: extractableEntries, toFolder: destURL, retainFullPath: retainFullPath)
+                let _ = try await extractSome(extractables: extractableEntries, toFolder: destURL, retainFullPath: retainFullPath)
             } catch let error as ArkyveError {
                 errors.err(error)
             } catch {
@@ -364,37 +383,19 @@ extension ArchiveViewModel {
         }
     }
 
-    // MARK: - Helper methods for extraction
-    func extract(paths: [String], toFolder: URL,
-                 retainFullPath:Bool = false) async throws(ArkyveError) -> [URL] {
-        let extractables = entries.compactMap { entry in
-            paths.contains(entry.path) ? entry.asExtractable(from: diskURL, cacheURL: cacheURL, vmID: self.id) : nil
-        }
-
-        return try await extract(extractables: extractables, toFolder: toFolder,
-                                 retainFullPath: retainFullPath)
-    }
-
-    func extract(entries: [ArchiveEntry], toFolder: URL,
-                 retainFullPath: Bool = false) async throws(ArkyveError) -> [URL] {
-        let extractables = entries.map { $0.asExtractable(from: diskURL, cacheURL: cacheURL, vmID: self.id) }
-        return try await extract(extractables: extractables, toFolder: toFolder,
-                                 retainFullPath: retainFullPath)
-    }
-
-    func extract(toFolder: URL, retainFullPath: Bool = false) async throws(ArkyveError) -> [URL] {
-        guard let rootEntries = root.children else { throw ArkyveError(.extract, msg: "Unable to find archive contents")}
-        let extractables = rootEntries.map { $0.asExtractable(from: diskURL, cacheURL: cacheURL, vmID: self.id) }
-
-        return try await extract(extractables: extractables, toFolder: toFolder,
-                                 retainFullPath: retainFullPath)
-    }
-
-    func extract(extractables: [ArchiveEntryExtractable], toFolder: URL,
+    func extractSome(extractables: [ArchiveEntryExtractable], toFolder: URL,
                  retainFullPath: Bool = false) async throws(ArkyveError) -> [URL] {
         let loader = libarchiveWrapper(url: diskURL)
         return try await loader.extract(extractables, toFolder: toFolder,
                                         retainFullPath: retainFullPath, archiveIsNew: diskURL == nil)
+    }
+
+    func extractAll(toFolder: URL, retainFullPath: Bool = false) async throws(ArkyveError) -> [URL] {
+        guard let rootEntries = root.children else { throw ArkyveError(.extract, msg: "Unable to find archive contents")}
+        let extractables = extractablesForEntries(rootEntries)
+
+        return try await extractSome(extractables: extractables, toFolder: toFolder,
+                                 retainFullPath: retainFullPath)
     }
 
     func resetQuickLook() {
@@ -408,7 +409,8 @@ extension ArchiveViewModel {
 
         Task {
             do {
-                quickLookItems += try await extract(entries: chosenEntries, toFolder: cacheURL)
+                let extractables = extractablesForEntries(chosenEntries)
+                quickLookItems += try await extractSome(extractables: extractables, toFolder: cacheURL)
                 if !quickLookItems.isEmpty {
                     quickLookURL = quickLookItems.first
                 }

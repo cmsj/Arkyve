@@ -73,7 +73,7 @@ struct IntentExtractAll: AppIntent {
 
             NSLog("extract(): Attempting to extract to \(outputFolderURL)")
 
-            let writtenURLs = try await archiveModel.extract(toFolder: outputFolderURL, retainFullPath: true)
+            let writtenURLs = try await archiveModel.extractAll(toFolder: outputFolderURL, retainFullPath: true)
             let rootEntryName = await archiveModel.rootEntryName()
             await ManagerManager.shared.removeVM(archiveModel)
 

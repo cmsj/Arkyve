@@ -29,6 +29,8 @@ extension ArchiveViewModel {
         }
 
         if let newFolderID = newFolder(at: parentEntryID) {
+            // The MainActor tasks here are a way to defer something to after the UI has ticked,
+            // so it notices the state changing sequentially
             Task { @MainActor in
                 selectedEntries = [newFolderID]
                 entryForID(parentEntryID)?.isExpanded = true
@@ -72,10 +74,8 @@ extension ArchiveViewModel {
             return
         }
 
-        Task {
-            guard let diskURL else { return }
-            await saveArchive(to: diskURL)
-        }
+        guard let diskURL else { return }
+        saveArchiveWithTask(to: diskURL)
     }
 
     func saveAsButton() {
@@ -96,16 +96,14 @@ extension ArchiveViewModel {
                     AKWarning("Unable to activate scoped URL bookmark: \(destURL) for .writeArchive. Attempting to continue")
                 }
 
-                Task {
-                    AKTrace("Save As to \(destURL) (format: \(selectedArkyveFormat))")
+                AKTrace("Save As to \(destURL) (format: \(selectedArkyveFormat))")
 
-                    if !dirty && format == selectedFormat && filters == selectedFilters {
-                        // This is a performance optimisation
-                        // The archive/format/filters haven't changed, so just copy the existing file
-                        copyArchive(to: destURL)
-                    } else {
-                        await saveArchive(to: destURL, overrideFormat: selectedFormat, overrideFilters: selectedFilters)
-                    }
+                if !dirty && format == selectedFormat && filters == selectedFilters {
+                    // This is a performance optimisation
+                    // The archive/format/filters haven't changed, so just copy the existing file
+                    copyArchive(to: destURL)
+                } else {
+                    saveArchiveWithTask(to: destURL, overrideFormat: selectedFormat, overrideFilters: selectedFilters)
                 }
             }
         }
@@ -114,8 +112,9 @@ extension ArchiveViewModel {
     func revertButton() {
         guard let diskURL else { return }
 
+        // FIXME: Confirm that we show an "Are you sure?" alert here
         Task { @MainActor in
-            openArchiveAsync(url: diskURL)
+            openArchiveWithTask(url: diskURL)
         }
     }
 
@@ -156,7 +155,7 @@ extension ArchiveViewModel {
 
                 let chosenEntries = entries.filter { actualEntries.contains($0.id) }
 
-                extractEntries(chosenEntries, destURL: destURL, retainFullPath: retainFullPath)
+                extractEntriesWithConfirmation(chosenEntries, destURL: destURL, retainFullPath: retainFullPath)
             }
         }
     }
@@ -164,8 +163,7 @@ extension ArchiveViewModel {
     func extractAllButton() {
         guard let chosenEntries = root.children else { return }
 
-        let overrideTopDirectory = chosenEntries.count == 1 ? false : true
-        guard let panel = prepareExtractPanel(overrideTopDirectory: overrideTopDirectory) else { return }
+        guard let panel = prepareExtractPanel(overrideTopDirectory: offerTopDirectory) else { return }
         panel.prompt = "Extract All"
 
         if panel.runModal() == .OK {
@@ -179,7 +177,7 @@ extension ArchiveViewModel {
                     destURL = destURL.appendingPathComponent(name.deletingPathExtension)
                 }
 
-                extractEntries(chosenEntries, destURL: destURL, retainFullPath: retainFullPath)
+                extractEntriesWithConfirmation(chosenEntries, destURL: destURL, retainFullPath: retainFullPath)
             }
         }
     }

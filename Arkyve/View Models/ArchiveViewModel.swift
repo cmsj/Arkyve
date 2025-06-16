@@ -116,7 +116,10 @@ final class ArchiveViewModel: Identifiable {
     // MARK: - Dynamic UI text
     var navSubtitleText: String { "\(dirty ? "(Unsaved)" : "")" }
     var statusBarText: String {
-        if progressTask != nil { return "Working..." }
+        if let progressTask {
+            if progressTask.isCancelled { return "Cancelling..." }
+            return "Working..."
+        }
 
         let text: String
         if selectedEntries.count > 0 {
@@ -143,7 +146,7 @@ final class ArchiveViewModel: Identifiable {
         if let diskURL {
             // We have a URL, so we can immediately load our archive
             AKTrace("\(id): ArchiveViewmodel initialised with a disk URL, loading...")
-            openArchiveAsync(url: diskURL, truncateAt: truncateAt)
+            openArchiveWithTask(url: diskURL, truncateAt: truncateAt)
         } else {
             AKTrace("\(id): ArchiveViewModel initialized without a disk URL")
         }
@@ -157,7 +160,7 @@ final class ArchiveViewModel: Identifiable {
         let name = url.lastPathComponent
         self.diskURL = url
         self.name = name
-        openArchiveAsync(url: url)
+        openArchiveWithTask(url: url)
     }
 
     func setDirty(_ dirty: Bool = true) {
@@ -169,7 +172,7 @@ final class ArchiveViewModel: Identifiable {
         setDirty(false)
     }
 
-    func openArchiveAsync(url: URL, truncateAt: Int? = nil) {
+    func openArchiveWithTask(url: URL, truncateAt: Int? = nil) {
         AKTrace("\(id): ArchiveViewModel dispatching libarchive read for \(url)")
 
         errors.clear()

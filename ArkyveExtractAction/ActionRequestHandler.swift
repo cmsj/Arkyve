@@ -43,7 +43,7 @@ func extract(_ archiveModel: ArchiveViewModel) async throws -> URL? {
 
     NSLog("extract(): Attempting to extract to \(outputFolderURL)")
 
-    let writtenURLs = try await archiveModel.extract(toFolder: outputFolderURL, retainFullPath: true)
+    let writtenURLs = try await archiveModel.extractAll(toFolder: outputFolderURL, retainFullPath: true)
 
     if returnExtraTopLevelDirectory {
         NSLog("extract(): Returning extra top-level directory: \(outputFolderURL)")

@@ -70,9 +70,10 @@ func processContext(_ context: NSExtensionContext, archiveName: String, archiveF
                                             loadHandler: { completionHandler in
         Task.detached {
             NSLog("processContext(): In detached task, saving archive...")
-            await vm.saveArchive(to: writtenURL)
             do {
+                await vm.saveArchiveWithTask(to: writtenURL)
                 try await vm.waitForArchiveProgressTask()
+
                 await ManagerManager.shared.removeAllVMs()
                 completionHandler(writtenURL, false, nil)
             } catch {

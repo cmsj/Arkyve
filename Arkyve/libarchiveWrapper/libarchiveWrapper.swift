@@ -639,6 +639,9 @@ actor libarchiveWrapper {
                 if rsize < 0 {
                     throw .init(.writeArchive, msg: String(localized: "Failed to read source archive"))
                 }
+                if Task.isCancelled {
+                    throw .init(.cancelled, msg: "")
+                }
             }
 
             // Iterate over all of the keys that relate to this archive entry and write a new header/data section for each
@@ -660,6 +663,9 @@ actor libarchiveWrapper {
                     if wsize < 0 {
                         let errorString = String(cString: archive_error_string(writeArchiveFD.archive))
                         throw .init(.writeArchive, msg: String(localized: "Failed to write data: \(errorString)"))
+                    }
+                    if Task.isCancelled {
+                        throw .init(.cancelled, msg: "")
                     }
                 }
 

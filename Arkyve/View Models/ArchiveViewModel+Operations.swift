@@ -296,14 +296,14 @@ extension ArchiveViewModel {
         }
     }
 
-    func copyArchive(to: URL) {
+    func copyArchive(to: URL, addToRecents: Bool = true) {
         guard let diskURL else { return }
 
         withProgressTask { [self] in
             do {
                 AKTrace("Copying \(diskURL) to \(to)")
                 try FileManager.default.copyItem(at: diskURL, to: to)
-                didSave(to: to, format: format, filters: filters)
+                didSave(to: to, format: format, filters: filters, addToRecents: addToRecents)
             } catch {
                 errors.err(.init(.writeArchive, msg: error.localizedDescription))
             }

@@ -127,7 +127,8 @@ final class ArchiveViewModelTests {
     @Test("UI state management")
     func testUIStateManagement() async throws {
         viewModel = manager.createVM(url: testURL)
-        
+        try await viewModel.waitForArchiveProgressTask()
+
         // Test initial UI state
         #expect(!viewModel.disableUI)
         #expect(!viewModel.disableNew)
@@ -140,8 +141,8 @@ final class ArchiveViewModelTests {
         #expect(!viewModel.disableSaveAs)
         #expect(viewModel.disableQuicklook) // Initially true because no entries are selected
         #expect(viewModel.disableExtract) // Initially true because no entries are selected
-        #expect(viewModel.disableExtractAll) // Initially true because entries are empty until loaded
-        
+        #expect(!viewModel.disableExtractAll)
+
         // Test UI state during loading
         try await viewModel.waitForArchiveProgressTask()
         

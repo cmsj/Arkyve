@@ -32,7 +32,6 @@ struct TableView: View {
                             .scaledToFit()
                             .frame(height: CGFloat(settingsManager.iconSize))
                         TextField(entry.name, text: $entry.proposedName)
-                        // FIXME: There is one bug left in this behaviour - unvalidted values persist if the user simply clicks off the row
                             .focused($renameEntryFocus, equals: entry.id)
                             .onSubmit {
                                 do {
@@ -44,6 +43,10 @@ struct TableView: View {
                             .onExitCommand{
                                 entry.proposedName = entry.name
                                 renameEntryFocus = nil
+                            }
+                            .onChange(of: renameEntryFocus) { _, newValue in
+                                // This is here to catch scenarios where the user has entered an invalid name, but then clicked off the row without submitting
+                                entry.proposedName = entry.name
                             }
                     }
                     .accessibilityElement()

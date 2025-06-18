@@ -4,7 +4,7 @@
     "version" : 1
   },
   "properties" : {
-    "symbol-rendering-intent" : "hierarchical"
+    "symbol-rendering-intent" : "template"
   },
   "symbols" : [
     {

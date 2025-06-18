@@ -121,7 +121,7 @@ final class ArchiveViewModel: Identifiable {
             return "Cancelling.."
         }
 
-        if let progressTask {
+        if progressTask != nil {
             return "Working..."
         }
 

@@ -110,11 +110,26 @@ extension ArchiveViewModel {
     }
 
     func revertButton() {
-        guard let diskURL else { return }
+        guard let diskURL, dirty == true else { return }
 
-        // FIXME: Confirm that we show an "Are you sure?" alert here
-        Task { @MainActor in
-            openArchiveWithTask(url: diskURL)
+        let alert = NSAlert()
+        alert.addButton(withTitle: "Cancel")
+        alert.addButton(withTitle: "Revert Archive")
+        alert.buttons.last?.hasDestructiveAction = true
+        alert.alertStyle = .critical
+        alert.messageText = "Revert without saving?"
+        alert.informativeText = "\(name) has unsaved changes, do you want to revert it without saving?"
+
+        let response = alert.runModal()
+
+        // runModal() has various return values, we are going to ignore any that aren't specific button presses
+        switch response {
+        case .alertSecondButtonReturn:
+            // Revert to on-disk archive
+            reinit(for: diskURL)
+        default:
+            // Any other path means we're not reverting
+            break
         }
     }
 

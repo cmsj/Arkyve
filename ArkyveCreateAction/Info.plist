@@ -1,47 +1,55 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
-<dict>
-	<key>CFBundleIconFile</key>
-	<string>icon</string>
-	<key>NSExtension</key>
-	<dict>
-		<key>NSExtensionAttributes</key>
-		<dict>
-			<key>NSExtensionActivationRule</key>
-			<string>SUBQUERY (
-                extensionItems,
-                $extensionItem,
-                SUBQUERY (
-                $extensionItem.attachments,
-                $attachment,
+    <dict>
+        <key>CFBundleIcons</key>
+        <dict>
+            <key>CFBundlePrimaryIcon</key>
+            <dict>
+                <key>CFBundleIconName</key>
+                <string>Icon_Template</string>
+                <key>CFBundleIconFile</key>
+                <string>Compress</string>
+            </dict>
+        </dict>
+        <key>NSExtension</key>
+        <dict>
+            <key>NSExtensionAttributes</key>
+            <dict>
+                <key>NSExtensionActivationRule</key>
+                <string>SUBQUERY (
+                    extensionItems,
+                    $extensionItem,
+                    SUBQUERY (
+                    $extensionItem.attachments,
+                    $attachment,
 
-                (
-                ANY $attachment.registeredTypeIdentifiers UTI-CONFORMS-TO &quot;public.data&quot;
-                || ANY $attachment.registeredTypeIdentifiers UTI-CONFORMS-TO &quot;public.folder&quot;
-                || ANY $attachment.registeredTypeIdentifiers UTI-CONFORMS-TO &quot;public.directory&quot;
-                )
-                ).@count == $extensionItem.attachments.@count
-                ).@count == 1</string>
-			<key>NSExtensionServiceAllowsFinderPreviewItem</key>
-			<true/>
-			<key>NSExtensionServiceAllowsTouchBarItem</key>
-			<true/>
-			<key>NSExtensionServiceFinderPreviewIconName</key>
-			<string>AppIcon</string>
-			<key>NSExtensionServiceRoleType</key>
-			<string>NSExtensionServiceRoleTypeEditor</string>
-			<key>NSExtensionServiceTouchBarBezelColorName</key>
-			<string>TouchBarBezel</string>
-			<key>NSExtensionServiceTouchBarIconName</key>
-			<string>AppIcon</string>
-			<key>NSExtensionServiceFinderPreviewLabel</key>
-			<string>Compress</string>
-		</dict>
-		<key>NSExtensionPointIdentifier</key>
-		<string>com.apple.ui-services</string>
-		<key>NSExtensionPrincipalClass</key>
-		<string>$(PRODUCT_MODULE_NAME).ActionViewController</string>
-	</dict>
-</dict>
+                    (
+                    ANY $attachment.registeredTypeIdentifiers UTI-CONFORMS-TO &quot;public.data&quot;
+                    || ANY $attachment.registeredTypeIdentifiers UTI-CONFORMS-TO &quot;public.folder&quot;
+                    || ANY $attachment.registeredTypeIdentifiers UTI-CONFORMS-TO &quot;public.directory&quot;
+                    )
+                    ).@count == $extensionItem.attachments.@count
+                    ).@count == 1</string>
+                <key>NSExtensionServiceAllowsFinderPreviewItem</key>
+                <true/>
+                <key>NSExtensionServiceAllowsTouchBarItem</key>
+                <true/>
+                <key>NSExtensionServiceFinderPreviewIconName</key>
+                <string>Icon_Template</string>
+                <key>NSExtensionServiceRoleType</key>
+                <string>NSExtensionServiceRoleTypeEditor</string>
+                <key>NSExtensionServiceTouchBarBezelColorName</key>
+                <string>TouchBarBezel</string>
+                <key>NSExtensionServiceTouchBarIconFile</key>
+                <string>Icon_Template</string>
+                <key>NSExtensionServiceFinderPreviewLabel</key>
+                <string>Compress</string>
+            </dict>
+            <key>NSExtensionPointIdentifier</key>
+            <string>com.apple.ui-services</string>
+            <key>NSExtensionPrincipalClass</key>
+            <string>$(PRODUCT_MODULE_NAME).ActionViewController</string>
+        </dict>
+    </dict>
 </plist>

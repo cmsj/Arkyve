@@ -1,13 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
-<dict>
-	<key>NSExtension</key>
-	<dict>
-		<key>NSExtensionAttributes</key>
-		<dict>
-			<key>NSExtensionActivationRule</key>
-			<string>SUBQUERY (
+    <dict>
+        <key>CFBundleIcons</key>
+        <dict>
+            <key>CFBundlePrimaryIcon</key>
+            <dict>
+                <key>CFBundleIconName</key>
+                <string>Icon_Template</string>
+                <key>CFBundleIconFile</key>
+                <string>Extract</string>
+            </dict>
+        </dict>
+        <key>NSExtension</key>
+        <dict>
+            <key>NSExtensionAttributes</key>
+            <dict>
+                <key>NSExtensionActivationRule</key>
+                <string>SUBQUERY (
                     extensionItems,
                     $extensionItem,
                     SUBQUERY (
@@ -38,25 +48,25 @@
                     )
                     ).@count == $extensionItem.attachments.@count
                     ).@count == 1</string>
-			<key>NSExtensionServiceAllowsFinderPreviewItem</key>
-			<true/>
-			<key>NSExtensionServiceFinderPreviewIconName</key>
-			<string>AppIcon</string>
-			<key>NSExtensionServiceAllowsTouchBarItem</key>
-			<true/>
-			<key>NSExtensionServiceTouchBarIconName</key>
-			<string>extract_action</string>
-			<key>NSExtensionServiceFinderPreviewLabel</key>
-			<string>Extract</string>
-			<key>NSExtensionServiceRoleType</key>
-			<string>NSExtensionServiceRoleTypeEditor</string>
-			<key>NSExtensionServiceTouchBarBezelColorName</key>
-			<string>TouchBarBezel</string>
-		</dict>
-		<key>NSExtensionPointIdentifier</key>
-		<string>com.apple.services</string>
-		<key>NSExtensionPrincipalClass</key>
-		<string>$(PRODUCT_MODULE_NAME).ActionRequestHandler</string>
-	</dict>
-</dict>
+                <key>NSExtensionServiceAllowsFinderPreviewItem</key>
+                <true/>
+                <key>NSExtensionServiceAllowsTouchBarItem</key>
+                <true/>
+                <key>NSExtensionServiceFinderPreviewIconName</key>
+                <string>Icon_Template</string>
+                <key>NSExtensionServiceRoleType</key>
+                <string>NSExtensionServiceRoleTypeEditor</string>
+                <key>NSExtensionServiceTouchBarBezelColorName</key>
+                <string>TouchBarBezel</string>
+                <key>NSExtensionServiceTouchBarIconFile</key>
+                <string>Icon_Template</string>
+                <key>NSExtensionServiceFinderPreviewLabel</key>
+                <string>Extract</string>
+            </dict>
+            <key>NSExtensionPointIdentifier</key>
+            <string>com.apple.services</string>
+            <key>NSExtensionPrincipalClass</key>
+            <string>$(PRODUCT_MODULE_NAME).ActionRequestHandler</string>
+        </dict>
+    </dict>
 </plist>

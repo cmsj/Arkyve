@@ -11,6 +11,17 @@
                 <key>CFBundleIconFile</key>
                 <string>Compress</string>
             </dict>
+<!--            <key>ISGraphicIconConfiguration</key>-->
+<!--            <dict>-->
+<!--                <key>ISRenderingMode</key>-->
+<!--                <string>automatic</string>-->
+<!--                <key>ISSymbolName</key>-->
+<!--                <string>rectangle.compress.vertical</string>-->
+<!--                <key>ISEnclosureColor</key>-->
+<!--                <string>gray</string>-->
+<!--                <key>ISSymbolColor</key>-->
+<!--                <string>white</string>-->
+<!--            </dict>-->
         </dict>
         <key>NSExtension</key>
         <dict>
@@ -45,6 +56,12 @@
                 <string>Icon_Template</string>
                 <key>NSExtensionServiceFinderPreviewLabel</key>
                 <string>Compress</string>
+                <key>NSExtensionServiceAllowsToolbarItem</key>
+                <true/>
+                <key>NSExtensionServiceToolbarIconFile</key>
+                <string>Icon_Template</string>
+                <key>NSExtensionServiceToolbarPaletteLabel</key>
+                <string>Extract</string>
             </dict>
             <key>NSExtensionPointIdentifier</key>
             <string>com.apple.ui-services</string>

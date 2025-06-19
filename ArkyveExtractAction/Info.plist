@@ -4,6 +4,17 @@
     <dict>
         <key>CFBundleIcons</key>
         <dict>
+<!--            <key>ISGraphicIconConfiguration</key>-->
+<!--            <dict>-->
+<!--                <key>ISRenderingMode</key>-->
+<!--                <string>automatic</string>-->
+<!--                <key>ISSymbolName</key>-->
+<!--                <string>rectangle.stack</string>-->
+<!--                <key>ISEnclosureColor</key>-->
+<!--                <string>gray</string>-->
+<!--                <key>ISSymbolColor</key>-->
+<!--                <string>white</string>-->
+<!--            </dict>-->
             <key>CFBundlePrimaryIcon</key>
             <dict>
                 <key>CFBundleIconName</key>
@@ -61,6 +72,12 @@
                 <key>NSExtensionServiceTouchBarIconFile</key>
                 <string>Icon_Template</string>
                 <key>NSExtensionServiceFinderPreviewLabel</key>
+                <string>Extract</string>
+                <key>NSExtensionServiceAllowsToolbarItem</key>
+                <true/>
+                <key>NSExtensionServiceToolbarIconFile</key>
+                <string>Icon_Template</string>
+                <key>NSExtensionServiceToolbarPaletteLabel</key>
                 <string>Extract</string>
             </dict>
             <key>NSExtensionPointIdentifier</key>

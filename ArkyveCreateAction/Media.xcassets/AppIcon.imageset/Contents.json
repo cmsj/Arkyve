@@ -1,17 +1,17 @@
 {
   "images" : [
     {
-      "filename" : "extract@1x 1.png",
+      "filename" : "icon_16x16.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
-      "filename" : "extract@2x 1.png",
+      "filename" : "icon_16x16@2x.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
-      "filename" : "extract@3x 1.png",
+      "filename" : "ActionLogo@2x.png",
       "idiom" : "universal",
       "scale" : "3x"
     }
@@ -19,8 +19,5 @@
   "info" : {
     "author" : "xcode",
     "version" : 1
-  },
-  "properties" : {
-    "template-rendering-intent" : "template"
   }
 }

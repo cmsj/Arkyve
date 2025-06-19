@@ -28,15 +28,15 @@
 			<key>NSExtensionServiceAllowsTouchBarItem</key>
 			<true/>
 			<key>NSExtensionServiceFinderPreviewIconName</key>
-			<string>NSActionTemplate</string>
+			<string>AppIcon</string>
 			<key>NSExtensionServiceRoleType</key>
 			<string>NSExtensionServiceRoleTypeEditor</string>
 			<key>NSExtensionServiceTouchBarBezelColorName</key>
 			<string>TouchBarBezel</string>
 			<key>NSExtensionServiceTouchBarIconName</key>
-			<string>NSActionTemplate</string>
+			<string>AppIcon</string>
 			<key>NSExtensionServiceFinderPreviewLabel</key>
-			<string>Compress with Arkyve</string>
+			<string>Compress</string>
 		</dict>
 		<key>NSExtensionPointIdentifier</key>
 		<string>com.apple.ui-services</string>

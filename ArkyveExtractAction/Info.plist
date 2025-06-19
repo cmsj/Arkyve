@@ -2,8 +2,6 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>CFBundleIconFile</key>
-	<string>AppIcon</string>
 	<key>NSExtension</key>
 	<dict>
 		<key>NSExtensionAttributes</key>
@@ -42,18 +40,18 @@
                     ).@count == 1</string>
 			<key>NSExtensionServiceAllowsFinderPreviewItem</key>
 			<true/>
+			<key>NSExtensionServiceFinderPreviewIconName</key>
+			<string>AppIcon</string>
 			<key>NSExtensionServiceAllowsTouchBarItem</key>
 			<true/>
-			<key>NSExtensionServiceFinderPreviewIconName</key>
-			<string>custom.arrow.down.rectangle.stack</string>
+			<key>NSExtensionServiceTouchBarIconName</key>
+			<string>extract_action</string>
 			<key>NSExtensionServiceFinderPreviewLabel</key>
-			<string>Extract with Arkyve</string>
+			<string>Extract</string>
 			<key>NSExtensionServiceRoleType</key>
 			<string>NSExtensionServiceRoleTypeEditor</string>
 			<key>NSExtensionServiceTouchBarBezelColorName</key>
 			<string>TouchBarBezel</string>
-			<key>NSExtensionServiceTouchBarIconName</key>
-			<string>custom.arrow.down.rectangle.stack</string>
 		</dict>
 		<key>NSExtensionPointIdentifier</key>
 		<string>com.apple.services</string>

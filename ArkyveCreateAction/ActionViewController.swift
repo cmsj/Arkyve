@@ -88,8 +88,6 @@ func processContext(_ context: NSExtensionContext, archiveName: String, archiveF
         let outputItem = NSExtensionItem()
         outputItem.attachments = inputAttachments + [itemProvider]
         context.completeRequest(returningItems: [outputItem], completionHandler: nil)
-
-//        ManagerManager.shared.removeAllVMs()
     }
 }
 
@@ -166,24 +164,5 @@ class ActionViewController: NSViewController {
 
         // Insert code here to customize the view
         NSLog("Input Items = %@", self.extensionContext!.inputItems as NSArray)
-    
-//        let sharedItem = self.extensionContext!.inputItems[0] as! NSExtensionItem
-//        let text = sharedItem.attributedContentText?.string
-
     }
-
-//    @IBAction func send(_ sender: AnyObject?) {
-//        // Note: The extension information in the Info.plist is set to accept any type of content, but this example code only handles text. You should declare the specific types to be supported by your extension in the extension's Info.plist and then make sure to handle all your supported types.
-//        let outputItem = NSExtensionItem()
-//        outputItem.attributedContentText = self.myTextView.attributedString()
-//    
-//        let outputItems = [outputItem]
-//        self.extensionContext!.completeRequest(returningItems: outputItems, completionHandler: nil)
-//    }
-//
-//    @IBAction func cancel(_ sender: AnyObject?) {
-//        let cancelError = NSError(domain: NSCocoaErrorDomain, code: NSUserCancelledError, userInfo: nil)
-//        self.extensionContext!.cancelRequest(withError: cancelError)
-//    }
-
 }

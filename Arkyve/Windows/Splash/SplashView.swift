@@ -147,7 +147,7 @@ struct SplashView: View {
                     .scrollContentBackground(.hidden)
                     .ignoresSafeArea(.all)
                 }
-                .onAppear {
+                .onChange(of: settingsManager.recents, initial: true) {
                     proxy.scrollTo(settingsManager.recents.first, anchor: .top)
                 }
             }

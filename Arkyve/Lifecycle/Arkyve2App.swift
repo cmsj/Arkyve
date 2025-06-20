@@ -50,6 +50,7 @@ struct ArkyveApp: App {
                     }
                     managerManager.reInitVM(lastDefaultID, for: url)
                     settingsManager.addRecent(url)
+                    dismissWindow(id: "splash")
                 }
         } defaultValue: {
             AKTrace("WindowGroup default content initialiser")

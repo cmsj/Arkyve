@@ -112,6 +112,12 @@ struct SettingsPathsView: View {
                         .labelsHidden()
                         .gridColumnAlignment(.leading)
                     }
+                    GridRow {
+                        Text("Use relative dates:")
+                        Toggle(isOn: $settingsManager.relativeDates, label: {})
+                            .labelsHidden()
+                            .gridColumnAlignment(.leading)
+                    }
                 }
                 Spacer()
             }

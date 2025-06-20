@@ -21,6 +21,7 @@ final class SettingsManager: ObservableObject {
         case recentsData
         case autoSplashWindow
         case iconSize
+        case relativeDates
 #if DEBUG
         case showDebugUI
 #endif
@@ -43,6 +44,8 @@ final class SettingsManager: ObservableObject {
                 return true
             case .iconSize:
                 return 16
+            case .relativeDates:
+                return true
 #if DEBUG
             case .showDebugUI:
                 return true
@@ -58,6 +61,7 @@ final class SettingsManager: ObservableObject {
     @AppStorage(Keys.recentsData.id)      var recentsData: Data               = Keys.recentsData.defaultValue as! Data
     @AppStorage(Keys.autoSplashWindow.id) var autoSplashWindow: Bool          = Keys.autoSplashWindow.defaultValue as! Bool
     @AppStorage(Keys.iconSize.id)         var iconSize: Int                   = Keys.iconSize.defaultValue as! Int
+    @AppStorage(Keys.relativeDates.id)    var relativeDates: Bool             = Keys.relativeDates.defaultValue as! Bool
 #if DEBUG
     @AppStorage(Keys.showDebugUI.id)      var showDebugUI: Bool               = Keys.showDebugUI.defaultValue as! Bool
 #endif
@@ -78,6 +82,7 @@ final class SettingsManager: ObservableObject {
         folderExpansion  = Keys.folderExpansion.defaultValue as! FolderExpansionOptions
         autoSplashWindow = Keys.autoSplashWindow.defaultValue as! Bool
         iconSize         = Keys.iconSize.defaultValue as! Int
+        relativeDates    = Keys.relativeDates.defaultValue as! Bool
     }
 
     var newArchiveFilename: String {

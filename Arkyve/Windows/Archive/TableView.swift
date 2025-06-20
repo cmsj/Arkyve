@@ -78,7 +78,7 @@ struct TableView: View {
             Group {
                 TableColumn("Date Modified", value: \ArchiveEntry.mtime.finderFormatted) { entry in
                     @Bindable var entry = entry
-                    Text(entry.mtime.finderFormatted)
+                    Text(settingsManager.relativeDates ? entry.mtime.finderFormattedRelative : entry.mtime.finderFormatted)
                         .foregroundStyle(.secondary)
                         .popover(isPresented: $entry.mtimePopoverShowing, arrowEdge: .bottom) {
                             DateEditorView(selection: $entry.mtime, label: "Date Modified")
@@ -90,13 +90,13 @@ struct TableView: View {
                             viewModel.setDirty()
                         }
                         .accessibilityLabel("Date Modified")
-                        .accessibilityValue(entry.mtime.finderFormatted)
+                        .accessibilityValue(settingsManager.relativeDates ? entry.mtime.finderFormattedRelative : entry.mtime.finderFormatted)
                 }
                 .customizationID("mtime")
 
                 TableColumn("Date Changed", value: \ArchiveEntry.ctime.finderFormatted) { entry in
                     @Bindable var entry = entry
-                    Text(entry.ctime.finderFormatted)
+                    Text(settingsManager.relativeDates ? entry.ctime.finderFormattedRelative : entry.ctime.finderFormatted)
                         .foregroundStyle(.secondary)
                         .popover(isPresented: $entry.ctimePopoverShowing, arrowEdge: .bottom) {
                             DateEditorView(selection: $entry.ctime, label: "Date Changed")
@@ -108,14 +108,14 @@ struct TableView: View {
                             viewModel.setDirty()
                         }
                         .accessibilityLabel("Date Changed")
-                        .accessibilityValue(entry.ctime.finderFormatted)
+                        .accessibilityValue(settingsManager.relativeDates ? entry.ctime.finderFormattedRelative : entry.ctime.finderFormatted)
                 }
                 .customizationID("ctime")
                 .defaultVisibility(.hidden)
 
                 TableColumn("Date Accessed", value: \ArchiveEntry.atime.finderFormatted) { entry in
                     @Bindable var entry = entry
-                    Text(entry.atime.finderFormatted)
+                    Text(settingsManager.relativeDates ? entry.atime.finderFormattedRelative : entry.atime.finderFormatted)
                         .foregroundStyle(.secondary)
                         .popover(isPresented: $entry.atimePopoverShowing, arrowEdge: .bottom) {
                             DateEditorView(selection: $entry.atime, label: "Date Access")
@@ -127,14 +127,14 @@ struct TableView: View {
                             viewModel.setDirty()
                         }
                         .accessibilityLabel("Date Accessed")
-                        .accessibilityValue(entry.atime.finderFormatted)
+                        .accessibilityValue(settingsManager.relativeDates ? entry.atime.finderFormattedRelative : entry.atime.finderFormatted)
                 }
                 .customizationID("atime")
                 .defaultVisibility(.hidden)
 
                 TableColumn("Date Created", value: \ArchiveEntry.btime.finderFormatted) { entry in
                     @Bindable var entry = entry
-                    Text(entry.btime.finderFormatted)
+                    Text(settingsManager.relativeDates ? entry.btime.finderFormattedRelative : entry.btime.finderFormatted)
                         .foregroundStyle(.secondary)
                         .popover(isPresented: $entry.btimePopoverShowing, arrowEdge: .bottom) {
                             DateEditorView(selection: $entry.btime, label: "Date Changed")
@@ -146,7 +146,7 @@ struct TableView: View {
                             viewModel.setDirty()
                         }
                         .accessibilityLabel("Date Created")
-                        .accessibilityValue(entry.btime.finderFormatted)
+                        .accessibilityValue(settingsManager.relativeDates ? entry.btime.finderFormattedRelative : entry.btime.finderFormatted)
                 }
                 .customizationID("btime")
                 .defaultVisibility(.hidden)

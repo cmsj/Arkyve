@@ -9,6 +9,9 @@ import Foundation
 
 /// An extension on `Date` that provides formatting and initialization utilities.
 extension Date {
+    static let localizedToday = String(localized: "Today at")
+    static let localizedYesterday = String(localized: "Yesterday at")
+
     /// Returns a user-friendly formatted string representation of the date.
     ///
     /// The date is formatted as "d MMM yyyy 'at' HH:mm" (e.g., "29 May 2024 at 14:30").
@@ -21,6 +24,25 @@ extension Date {
             let formatter = DateFormatter()
 
             formatter.dateFormat = "d MMM yyyy 'at' HH:mm"
+            return formatter.string(from: self)
+        }
+    }
+
+    var finderFormattedRelative: String {
+        get {
+            if self == Date(timeIntervalSince1970: 0) { return "--" }
+            let formatter = DateFormatter()
+
+            let calendar = Calendar.current
+
+            if calendar.isDateInToday(self) {
+                formatter.dateFormat = "'\(Date.localizedToday)' HH:mm"
+            } else if calendar.isDateInYesterday(self) {
+                formatter.dateFormat = "'\(Date.localizedYesterday)' HH:mm"
+            } else {
+                formatter.dateFormat = "d MMM yyyy 'at' HH:mm"
+            }
+
             return formatter.string(from: self)
         }
     }

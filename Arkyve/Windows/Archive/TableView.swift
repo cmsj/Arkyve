@@ -213,7 +213,7 @@ struct TableView: View {
                 TableColumn("Path (Debug)", value: \ArchiveEntry.path)
                     .customizationID("path")
                     .defaultVisibility(.hidden)
-                TableColumn("ID", value: \ArchiveEntry.id.uuidString)
+                TableColumn("ID (Debug)", value: \ArchiveEntry.id.uuidString)
                     .customizationID("id")
                     .defaultVisibility(.hidden)
             }

@@ -1,13 +1,9 @@
 {
+  "appDescription" : "Arkyve is a macOS application for interacting with compressed archives (such as zip files). It can create new archives, add files to archives, rename files within archives, extract files\/folders from archives, etc.",
   "catalogURLs" : [
-    "Arkyve\/Localizable.xcstrings"
+    "Arkyve\/Assets\/Localizable.xcstrings"
   ],
   "targetLanguages" : [
-    {
-      "components" : {
-        "languageCode" : "ja"
-      }
-    },
     {
       "components" : {
         "languageCode" : "de"
@@ -15,57 +11,7 @@
     },
     {
       "components" : {
-        "languageCode" : "es"
-      }
-    },
-    {
-      "components" : {
-        "languageCode" : "he"
-      }
-    },
-    {
-      "components" : {
-        "languageCode" : "fr"
-      }
-    },
-    {
-      "components" : {
-        "languageCode" : "zh"
-      }
-    },
-    {
-      "components" : {
-        "languageCode" : "tr"
-      }
-    },
-    {
-      "components" : {
         "languageCode" : "en"
-      }
-    },
-    {
-      "components" : {
-        "languageCode" : "ru"
-      }
-    },
-    {
-      "components" : {
-        "languageCode" : "nl"
-      }
-    },
-    {
-      "components" : {
-        "languageCode" : "ar"
-      }
-    },
-    {
-      "components" : {
-        "languageCode" : "it"
-      }
-    },
-    {
-      "components" : {
-        "languageCode" : "ko"
       }
     }
   ]

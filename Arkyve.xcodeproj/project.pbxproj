@@ -2369,6 +2369,7 @@
 		4FE22C832DFEFEC50066DD6C /* Exceptions for "Arkyve" folder in "ArkyveCreateAction" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
+				Assets/Localizable.xcstrings,
 				Extensions/Array.swift,
 				Extensions/Date.swift,
 				Extensions/dev_t.swift,
@@ -6339,6 +6340,7 @@
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = macosx;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
 			name = Debug;
@@ -6396,6 +6398,7 @@
 				MTL_FAST_MATH = YES;
 				SDKROOT = macosx;
 				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_EMIT_LOC_STRINGS = YES;
 			};
 			name = Release;
 		};

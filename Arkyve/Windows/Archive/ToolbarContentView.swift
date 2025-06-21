@@ -45,7 +45,7 @@ struct ToolbarContentView: CustomizableToolbarContent {
                     .symbolRenderingMode(renderingMode)
                     .padding()
             }
-            .help("Add files to this archive")
+            .help("Add files/folders to this archive")
             .disabled(viewModel.disableAdd)
         }
         ToolbarItem(id: "Extract") {

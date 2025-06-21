@@ -1,0 +1,2539 @@
+{
+  "sourceLanguage" : "en",
+  "strings" : {
+    "" : {
+
+    },
+    "%@ already exists" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "%@ ist bereits vorhanden"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "%@ already exists"
+          }
+        }
+      }
+    },
+    "%@: %@" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "%1$@: %2$@"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$@: %2$@"
+          }
+        }
+      }
+    },
+    "%lld items" : {
+      "localizations" : {
+        "de" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "needs_review",
+                  "value" : "%lld Elemente"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "needs_review",
+                  "value" : "%lld Elemente"
+                }
+              }
+            }
+          }
+        },
+        "en" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld item"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "needs_review",
+                  "value" : "%lld items"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "7-Zip archive" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "7-Zip-Archiv"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "7-Zip archive"
+          }
+        }
+      }
+    },
+    "A 7-Zip archive" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Ein 7-Zip-Archiv"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "A 7-Zip archive"
+          }
+        }
+      }
+    },
+    "A CPIO archive" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Ein CPIO-Archiv"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "A CPIO archive"
+          }
+        }
+      }
+    },
+    "A tar archive in the PAX Restricted format" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Ein Tar-Archiv im PAX Restricted-Format"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "A tar archive in the PAX Restricted format"
+          }
+        }
+      }
+    },
+    "A tar archive in the PAX Restricted format, compressed with bzip2" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Ein tar-Archiv im PAX Restricted-Format, mit bzip2 komprimiert"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "A tar archive in the PAX Restricted format, compressed with bzip2"
+          }
+        }
+      }
+    },
+    "A tar archive in the PAX Restricted format, compressed with gzip" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Ein tar-Archiv im PAX-Eingeschränkt-Format, komprimiert mit gzip"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "A tar archive in the PAX Restricted format, compressed with gzip"
+          }
+        }
+      }
+    },
+    "A tar archive in the PAX Restricted format, compressed with xz" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Ein tar-Archiv im PAX Restricted-Format, mit xz komprimiert"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "A tar archive in the PAX Restricted format, compressed with xz"
+          }
+        }
+      }
+    },
+    "A Xar archive" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Ein Xar-Archiv"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "A Xar archive"
+          }
+        }
+      }
+    },
+    "A ZIP archive" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Ein ZIP-Archiv"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "A ZIP archive"
+          }
+        }
+      }
+    },
+    "About Arkyve" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Über Arkyve"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "About Arkyve"
+          }
+        }
+      }
+    },
+    "Add" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Hinzufügen"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Add"
+          }
+        }
+      }
+    },
+    "Add files to an archive" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Dateien zu einem Archiv hinzufügen"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Add files to an archive"
+          }
+        }
+      }
+    },
+    "Add files/folders to an existing archive. Supports archives in these formats: .zip, .7z, .iso, .cpio, .tar, .tar.gz, .tar.bz, .tar.xz, .xar" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Dateien/Ordner zu einem bestehenden Archiv hinzufügen. Unterstützt Archive in diesen Formaten: .zip, .7z, .iso, .cpio, .tar, .tar.gz, .tar.bz, .tar.xz, .xar"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Add files/folders to an existing archive. Supports archives in these formats: .zip, .7z, .iso, .cpio, .tar, .tar.gz, .tar.bz, .tar.xz, .xar"
+          }
+        }
+      }
+    },
+    "Add files/folders to this archive" : {
+
+    },
+    "Add files/folders to: ${inputArchive}" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Dateien/Ordner zu ${inputArchive} hinzufügen"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Add files/folders to: ${inputArchive}"
+          }
+        }
+      }
+    },
+    "Add Files/Folders..." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Dateien/Ordner hinzufügen..."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Add Files/Folders..."
+          }
+        }
+      }
+    },
+    "Advanced" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Erweitert"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Advanced"
+          }
+        }
+      }
+    },
+    "An archive file to extract" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Eine zu extrahierende Archivdatei"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "An archive file to extract"
+          }
+        }
+      }
+    },
+    "An archive file to list" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Eine Archivdatei zum Anzeigen"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "An archive file to list"
+          }
+        }
+      }
+    },
+    "An ISO image file" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Eine ISO-Abbilddatei"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "An ISO image file"
+          }
+        }
+      }
+    },
+    "Archive" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Archiv"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Archive"
+          }
+        }
+      }
+    },
+    "Archive File" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Archivdatei"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Archive File"
+          }
+        }
+      }
+    },
+    "Archive Filename" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Archivdateiname"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Archive Filename"
+          }
+        }
+      }
+    },
+    "Archive Format" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Archivformat"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Archive Format"
+          }
+        }
+      }
+    },
+    "Archive Name:" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Archivname:"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Archive Name:"
+          }
+        }
+      }
+    },
+    "Arkyve" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Arkyve"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Arkyve"
+          }
+        }
+      }
+    },
+    "Arkyve would not be possible without the incredible work of Tim Kientzle and all the contributors to libarchive." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Arkyve wäre nicht möglich ohne die unglaubliche Arbeit von Tim Kientzle und allen Mitwirkenden an libarchive."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Arkyve would not be possible without the incredible work of Tim Kientzle and all the contributors to libarchive."
+          }
+        }
+      }
+    },
+    "Cancel" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Abbrechen"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Cancel"
+          }
+        }
+      }
+    },
+    "Clear Logs" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Logs löschen"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Clear Logs"
+          }
+        }
+      }
+    },
+    "Clear Menu" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Menü löschen"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Clear Menu"
+          }
+        }
+      }
+    },
+    "Close" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Schließen"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Close"
+          }
+        }
+      }
+    },
+    "Collapse all" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Alle einklappen"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Collapse all"
+          }
+        }
+      }
+    },
+    "Compress" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Komprimieren"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Compress"
+          }
+        }
+      }
+    },
+    "Convert ${inputArchive} to ${destinationFolder}/${outputArchiveFilename}${format}" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Konvertiere ${inputArchive} in ${destinationFolder}/${outputArchiveFilename}${format}"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Convert ${inputArchive} to ${destinationFolder}/${outputArchiveFilename}${format}"
+          }
+        }
+      }
+    },
+    "Convert an archive to a different format" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Ein Archiv in ein anderes Format umwandeln"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Convert an archive to a different format"
+          }
+        }
+      }
+    },
+    "Copy" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Kopieren"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Copy"
+          }
+        }
+      }
+    },
+    "Could not open %@ (%d)" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Konnte %1$@ (%2$d) nicht öffnen"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Could not open %1$@ (%2$d)"
+          }
+        }
+      }
+    },
+    "CPIO archive" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "CPIO-Archiv"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "CPIO archive"
+          }
+        }
+      }
+    },
+    "Create ${destinationFolder}/${archiveFilename}${format}" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Erstelle ${destinationFolder}/${archiveFilename}${format}"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Create ${destinationFolder}/${archiveFilename}${format}"
+          }
+        }
+      }
+    },
+    "Create a new compressed archive and optionally add some files to it. Supports creating archives in these formats: .zip, .7z, .iso, .cpio, .tar, .tar.gz, .tar.bz, .tar.xz, .xar" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Erstellen Sie ein neues komprimiertes Archiv und fügen Sie optional einige Dateien hinzu. Unterstützt das Erstellen von Archiven in diesen Formaten: .zip, .7z, .iso, .cpio, .tar, .tar.gz, .tar.bz, .tar.xz, .xar"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Create a new compressed archive and optionally add some files to it. Supports creating archives in these formats: .zip, .7z, .iso, .cpio, .tar, .tar.gz, .tar.bz, .tar.xz, .xar"
+          }
+        }
+      }
+    },
+    "Create a new compressed archive with the contents of an existing archive. Supports creating archives in these formats: .zip, .7z, .iso, .cpio, .tar, .tar.gz, .tar.bz, .tar.xz, .xar. Supports existing archives in these formats: .zip, .7z, .rar, .iso, .cpio, .tar.gz, .tar.bz, .tar.xz, .lha, .lzh, .cab, .a, .xip, .xar, .pkg" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Erstellen Sie ein neues komprimiertes Archiv mit dem Inhalt eines vorhandenen Archivs. Unterstützt das Erstellen von Archiven in diesen Formaten: .zip, .7z, .iso, .cpio, .tar, .tar.gz, .tar.bz, .tar.xz, .xar. Unterstützt vorhandene Archive in diesen Formaten: .zip, .7z, .rar, .iso, .cpio, .tar.gz, .tar.bz, .tar.xz, .lha, .lzh, .cab, .a, .xip, .xar, .pkg."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Create a new compressed archive with the contents of an existing archive. Supports creating archives in these formats: .zip, .7z, .iso, .cpio, .tar, .tar.gz, .tar.bz, .tar.xz, .xar. Supports existing archives in these formats: .zip, .7z, .rar, .iso, .cpio, .tar.gz, .tar.bz, .tar.xz, .lha, .lzh, .cab, .a, .xip, .xar, .pkg"
+          }
+        }
+      }
+    },
+    "Create an archive" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Archiv erstellen"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Create an archive"
+          }
+        }
+      }
+    },
+    "Cut" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Ausschneiden"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Cut"
+          }
+        }
+      }
+    },
+    "Date Accessed" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Zugriffsdatum"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Date Accessed"
+          }
+        }
+      }
+    },
+    "Date Changed" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Datum geändert"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Date Changed"
+          }
+        }
+      }
+    },
+    "Date Created" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Erstellungsdatum"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Date Created"
+          }
+        }
+      }
+    },
+    "Date Modified" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Änderungsdatum"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Date Modified"
+          }
+        }
+      }
+    },
+    "Default format:" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Standardformat:"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Default format:"
+          }
+        }
+      }
+    },
+    "Default name:" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Standardname:"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Default name:"
+          }
+        }
+      }
+    },
+    "Delete" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Löschen"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Delete"
+          }
+        }
+      }
+    },
+    "Delete selected files/folders" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Ausgewählte Dateien/Ordner löschen"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Delete selected files/folders"
+          }
+        }
+      }
+    },
+    "Destination Folder" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Zielordner"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Destination Folder"
+          }
+        }
+      }
+    },
+    "Entry Paths" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Eintragspfade"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Entry Paths"
+          }
+        }
+      }
+    },
+    "Execute" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Ausführen"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Execute"
+          }
+        }
+      }
+    },
+    "Existing archive to convert" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Vorhandenes Archiv zum Konvertieren"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Existing archive to convert"
+          }
+        }
+      }
+    },
+    "Expand all" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Alle erweitern"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Expand all"
+          }
+        }
+      }
+    },
+    "Expand folders:" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Ordner aufklappen:"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Expand folders:"
+          }
+        }
+      }
+    },
+    "Extract ${entryPaths} from ${inputFile} to ${destinationFolder}" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Extrahiere ${entryPaths} aus ${inputFile} in ${destinationFolder}"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Extract ${entryPaths} from ${inputFile} to ${destinationFolder}"
+          }
+        }
+      }
+    },
+    "Extract ${inputFile} to ${destinationFolder}" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Entpacke ${inputFile} in ${destinationFolder}"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Extract ${inputFile} to ${destinationFolder}"
+          }
+        }
+      }
+    },
+    "Extract All..." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Alle entpacken..."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Extract All..."
+          }
+        }
+      }
+    },
+    "Extract selected files/folders" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Ausgewählte Dateien/Ordner entpacken"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Extract selected files/folders"
+          }
+        }
+      }
+    },
+    "Extract some files from archive" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Extract some files from archive"
+          }
+        }
+      }
+    },
+    "Extract with Arkyve" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Mit Arkyve entpacken"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Extract with Arkyve"
+          }
+        }
+      }
+    },
+    "Extract..." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Entpacken..."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Extract..."
+          }
+        }
+      }
+    },
+    "Extracts an archive to a given destination folder. Supports .zip, .7z, .rar, .iso, .cpio, .tar.gz, .tar.bz, .tar.xz, .lha, .lzh, .cab, .a, .xip, .xar, .pkg" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Extrahiert ein Archiv in einen angegebenen Zielordner. Unterstützt .zip, .7z, .rar, .iso, .cpio, .tar.gz, .tar.bz, .tar.xz, .lha, .lzh, .cab, .a, .xip, .xar, .pkg"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Extracts an archive to a given destination folder. Supports .zip, .7z, .rar, .iso, .cpio, .tar.gz, .tar.bz, .tar.xz, .lha, .lzh, .cab, .a, .xip, .xar, .pkg"
+          }
+        }
+      }
+    },
+    "Extracts some files from an archive to a given destination folder. Supports .zip, .7z, .rar, .iso, .cpio, .tar.gz, .tar.bz, .tar.xz, .lha, .lzh, .cab, .a, .xip, .xar, .pkg." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Extrahiert einige Dateien aus einem Archiv in einen angegebenen Zielordner. Unterstützt .zip, .7z, .rar, .iso, .cpio, .tar.gz, .tar.bz, .tar.xz, .lha, .lzh, .cab, .a, .xip, .xar, .pkg."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Extracts some files from an archive to a given destination folder. Supports .zip, .7z, .rar, .iso, .cpio, .tar.gz, .tar.bz, .tar.xz, .lha, .lzh, .cab, .a, .xip, .xar, .pkg."
+          }
+        }
+      }
+    },
+    "Failed to open file for reading: %@" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Konnte Datei zum Lesen nicht öffnen: %@"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Failed to open file for reading: %@"
+          }
+        }
+      }
+    },
+    "Failed to read source archive" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Fehler beim Lesen des Quellarchivs"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Failed to read source archive"
+          }
+        }
+      }
+    },
+    "Failed to write data: %@" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Fehler beim Schreiben der Daten: %@"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Failed to write data: %@"
+          }
+        }
+      }
+    },
+    "Filename must not be empty" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Der Dateiname darf nicht leer sein."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Filename must not be empty"
+          }
+        }
+      }
+    },
+    "Files to add to the archive" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Dateien zum Archiv hinzufügen"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Files to add to the archive"
+          }
+        }
+      }
+    },
+    "Files/Folders you want to add to the new archive" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Dateien/Ordner, die Sie dem neuen Archiv hinzufügen möchten"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Files/Folders you want to add to the new archive"
+          }
+        }
+      }
+    },
+    "Filters: %@" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Filter: %@"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Filters: %@"
+          }
+        }
+      }
+    },
+    "Find" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Suchen"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Find"
+          }
+        }
+      }
+    },
+    "For new archives:" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Für neue Archive:"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "For new archives:"
+          }
+        }
+      }
+    },
+    "Format:" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Format:"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Format:"
+          }
+        }
+      }
+    },
+    "Format: %@" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Format: %@"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Format: %@"
+          }
+        }
+      }
+    },
+    "General" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Allgemein"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "General"
+          }
+        }
+      }
+    },
+    "GID" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Gruppen-ID"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "GID"
+          }
+        }
+      },
+      "shouldTranslate" : false
+    },
+    "Group:" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Gruppe:"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Group:"
+          }
+        }
+      }
+    },
+    "https://github.com/libarchive/libarchive/blob/master/COPYING" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "https://github.com/libarchive/libarchive/blob/master/COPYING"
+          }
+        }
+      }
+    },
+    "Icon size:" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Icon size:"
+          }
+        }
+      }
+    },
+    "ID (Debug)" : {
+      "shouldTranslate" : false
+    },
+    "If this is true, extracted entries will be placed in the equivalent folder hierarchy as they were in the archive. If this is false, the chosen entries will be extracted without any additional parent folders" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Wenn dies wahr ist, werden extrahierte Einträge in der entsprechenden Ordnerhierarchie platziert, wie sie im Archiv waren. Wenn dies falsch ist, werden die ausgewählten Einträge ohne zusätzliche übergeordnete Ordner extrahiert."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "If this is true, extracted entries will be placed in the equivalent folder hierarchy as they were in the archive. If this is false, the chosen entries will be extracted without any additional parent folders"
+          }
+        }
+      }
+    },
+    "Internal error, adding entry to edge node" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Interner Fehler, beim Hinzufügen eines Eintrags zu einem Edge-Knoten"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Internal error, adding entry to edge node"
+          }
+        }
+      }
+    },
+    "Internal error, adding entry to non-directory" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Interner Fehler, Eintrag zu einem Nicht-Verzeichnis hinzugefügt"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Internal error, adding entry to non-directory"
+          }
+        }
+      }
+    },
+    "Internal error: Attempted to write unexpected item: %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Internal error: Attempted to write unexpected item: %@"
+          }
+        }
+      }
+    },
+    "Internal error: Duplicate synthetic directory" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Interner Fehler: Doppelt synthetisches Verzeichnis"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Internal error: Duplicate synthetic directory"
+          }
+        }
+      }
+    },
+    "Internal error: header map inconsistency" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Interner Fehler: Header-Zuordnungsinkonsistenz"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Internal error: header map inconsistency"
+          }
+        }
+      }
+    },
+    "Internal error: Header map inconsistency" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Interner Fehler: Inkonsistenz in der Header-Zuordnung"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Internal error: Header map inconsistency"
+          }
+        }
+      }
+    },
+    "Internal error: mapEntryKey not found" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Interner Fehler: mapEntryKey nicht gefunden"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Internal error: mapEntryKey not found"
+          }
+        }
+      }
+    },
+    "ISO image" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "ISO-Image"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "ISO image"
+          }
+        }
+      }
+    },
+    "Items" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Elemente"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Items"
+          }
+        }
+      }
+    },
+    "Kind" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Art"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Kind"
+          }
+        }
+      }
+    },
+    "Level" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Stufe"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Level"
+          }
+        }
+      }
+    },
+    "List archive contents" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Archivinhalt anzeigen"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "List archive contents"
+          }
+        }
+      }
+    },
+    "List the contents of ${inputFile}" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "List the contents of ${inputFile}"
+          }
+        }
+      }
+    },
+    "Lists the contents of an archive. Supports .zip, .7z, .rar, .iso, .cpio, .tar.gz, .tar.bz, .tar.xz, .lha, .lzh, .cab, .a, .xip, .xar, .pkg." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Lists the contents of an archive. Supports .zip, .7z, .rar, .iso, .cpio, .tar.gz, .tar.bz, .tar.xz, .lha, .lzh, .cab, .a, .xip, .xar, .pkg."
+          }
+        }
+      }
+    },
+    "Log viewer" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Log viewer"
+          }
+        }
+      }
+    },
+    "Major/Minor" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Major/Minor"
+          }
+        }
+      }
+    },
+    "Memory allocation failed" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Memory allocation failed"
+          }
+        }
+      }
+    },
+    "Message" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Message"
+          }
+        }
+      }
+    },
+    "Minimum level" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Minimum level"
+          }
+        }
+      }
+    },
+    "Name" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Name"
+          }
+        }
+      }
+    },
+    "New Archive Name (required)" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "New Archive Name (required)"
+          }
+        }
+      }
+    },
+    "New Folder" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "New Folder"
+          }
+        }
+      }
+    },
+    "Open Recent" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Open Recent"
+          }
+        }
+      }
+    },
+    "Open..." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Open..."
+          }
+        }
+      }
+    },
+    "Other:" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Other:"
+          }
+        }
+      }
+    },
+    "Path (Debug)" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Path (Debug)"
+          }
+        }
+      },
+      "shouldTranslate" : false
+    },
+    "Paths within the archive to extract" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Paths within the archive to extract"
+          }
+        }
+      }
+    },
+    "Permissions" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Permissions"
+          }
+        }
+      }
+    },
+    "POSIX Permissions" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "POSIX Permissions"
+          }
+        }
+      }
+    },
+    "Quick Look" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Quick Look"
+          }
+        }
+      }
+    },
+    "Quick Look%@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Quick Look%@"
+          }
+        }
+      }
+    },
+    "R" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "R"
+          }
+        }
+      },
+      "shouldTranslate" : false
+    },
+    "Read" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Read"
+          }
+        }
+      }
+    },
+    "Read-only archive" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Read-only archive"
+          }
+        }
+      }
+    },
+    "Rename selected file/folder" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Rename selected file/folder"
+          }
+        }
+      }
+    },
+    "Rename..." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Rename..."
+          }
+        }
+      }
+    },
+    "Reset all settings to defaults" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Reset all settings to defaults"
+          }
+        }
+      }
+    },
+    "Retain full path" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Retain full path"
+          }
+        }
+      }
+    },
+    "Revert to Saved" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Revert to Saved"
+          }
+        }
+      }
+    },
+    "S" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "S"
+          }
+        }
+      },
+      "shouldTranslate" : false
+    },
+    "Save" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Save"
+          }
+        }
+      }
+    },
+    "Save As..." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Save As..."
+          }
+        }
+      }
+    },
+    "Save new archives to:" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Save new archives to:"
+          }
+        }
+      }
+    },
+    "Select new location" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Select new location"
+          }
+        }
+      }
+    },
+    "SetGID" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "SetGID"
+          }
+        }
+      }
+    },
+    "SetUID" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "SetUID"
+          }
+        }
+      }
+    },
+    "Share..." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Share..."
+          }
+        }
+      }
+    },
+    "Show debug UI" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Show debug UI"
+          }
+        }
+      },
+      "shouldTranslate" : false
+    },
+    "Show splash screen:" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Show splash screen:"
+          }
+        }
+      }
+    },
+    "Size" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Size"
+          }
+        }
+      }
+    },
+    "Size (bytes)" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Size (bytes)"
+          }
+        }
+      }
+    },
+    "Size mismatch during write, expected %lld bytes but wrote %lld bytes" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Size mismatch during write, expected %1$lld bytes but wrote %2$lld bytes"
+          }
+        }
+      }
+    },
+    "Source (Debug)" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Source (Debug)"
+          }
+        }
+      },
+      "shouldTranslate" : false
+    },
+    "Sticky" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Sticky"
+          }
+        }
+      }
+    },
+    "Stop" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Stop"
+          }
+        }
+      }
+    },
+    "Stop the current task" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Stop the current task"
+          }
+        }
+      }
+    },
+    "Symlink Target" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Symlink Target"
+          }
+        }
+      }
+    },
+    "Synthetic" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Synthetic"
+          }
+        }
+      }
+    },
+    "Tar archive" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Tar archive"
+          }
+        }
+      }
+    },
+    "Tar archive (bzip2)" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Tar archive (bzip2)"
+          }
+        }
+      }
+    },
+    "Tar archive (gzip)" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Tar archive (gzip)"
+          }
+        }
+      }
+    },
+    "Tar archive (xz)" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Tar archive (xz)"
+          }
+        }
+      }
+    },
+    "The archive file you want to convert into a new format" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "The archive file you want to convert into a new format"
+          }
+        }
+      }
+    },
+    "The archive you want to add files to" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "The archive you want to add files to"
+          }
+        }
+      }
+    },
+    "The folder to create the archive in" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "The folder to create the archive in"
+          }
+        }
+      }
+    },
+    "The folder to extract the archive into" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "The folder to extract the archive into"
+          }
+        }
+      }
+    },
+    "The folder to extract the files into" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "The folder to extract the files into"
+          }
+        }
+      }
+    },
+    "The name of the archive you want to create (with no file extension)." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "The name of the archive you want to create (with no file extension)."
+          }
+        }
+      }
+    },
+    "The name of the new archive you want to create (with no file extension)." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "The name of the new archive you want to create (with no file extension)."
+          }
+        }
+      }
+    },
+    "The type of archive you want to create" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "The type of archive you want to create"
+          }
+        }
+      }
+    },
+    "This archive's format is read-only. Use Save As to select a writable format if you need to make changes." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "This archive's format is read-only. Use Save As to select a writable format if you need to make changes."
+          }
+        }
+      }
+    },
+    "This will reset all General and Advanced settings to their default values." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "This will reset all General and Advanced settings to their default values."
+          }
+        }
+      }
+    },
+    "Today at" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Today at"
+          }
+        }
+      }
+    },
+    "UID" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "UID"
+          }
+        }
+      },
+      "shouldTranslate" : false
+    },
+    "Unabe to read archive entry path" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Unabe to read archive entry path"
+          }
+        }
+      }
+    },
+    "Unable to add %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Unable to add %@"
+          }
+        }
+      }
+    },
+    "Unable to add filter: %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Unable to add filter: %@"
+          }
+        }
+      }
+    },
+    "Unable to create new entry" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Unable to create new entry"
+          }
+        }
+      }
+    },
+    "Unable to determine file path for %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Unable to determine file path for %@"
+          }
+        }
+      }
+    },
+    "Unable to fetch entry header" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Unable to fetch entry header"
+          }
+        }
+      }
+    },
+    "Unable to find new path for %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Unable to find new path for %@"
+          }
+        }
+      }
+    },
+    "Unable to open file: %@ %@" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Datei kann nicht geöffnet werden: %1$@ %2$@"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Unable to open file: %1$@ %2$@"
+          }
+        }
+      }
+    },
+    "Unable to open output archive: %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Unable to open output archive: %@"
+          }
+        }
+      }
+    },
+    "Unable to proceed" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Unable to proceed"
+          }
+        }
+      }
+    },
+    "Unable to read archive" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Unable to read archive"
+          }
+        }
+      }
+    },
+    "Unable to retrieve written URLs" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Unable to retrieve written URLs"
+          }
+        }
+      }
+    },
+    "Unable to set format: %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Unable to set format: %@"
+          }
+        }
+      }
+    },
+    "Unable to write to %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Unable to write to %@"
+          }
+        }
+      }
+    },
+    "Unexpected error adding children: %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Unexpected error adding children: %@"
+          }
+        }
+      }
+    },
+    "Use relative dates:" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Use relative dates:"
+          }
+        }
+      }
+    },
+    "User:" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "User:"
+          }
+        }
+      }
+    },
+    "UUID (Debug)" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "UUID (Debug)"
+          }
+        }
+      },
+      "shouldTranslate" : false
+    },
+    "Version %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Version %@"
+          }
+        }
+      }
+    },
+    "Version %@ (%@)" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Version %1$@ (%2$@)"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Version %1$@ (%2$@)"
+          }
+        }
+      }
+    },
+    "W" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "W"
+          }
+        }
+      },
+      "shouldTranslate" : false
+    },
+    "Welcome to Arkyve" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Welcome to Arkyve"
+          }
+        }
+      }
+    },
+    "When no archive is open:" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "When no archive is open:"
+          }
+        }
+      }
+    },
+    "When opening an archive:" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "When opening an archive:"
+          }
+        }
+      }
+    },
+    "When viewing an archive:" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "When viewing an archive:"
+          }
+        }
+      }
+    },
+    "Working..." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Working..."
+          }
+        }
+      }
+    },
+    "Write" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Write"
+          }
+        }
+      }
+    },
+    "X" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "X"
+          }
+        }
+      },
+      "shouldTranslate" : false
+    },
+    "Xar archive" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Xar archive"
+          }
+        }
+      }
+    },
+    "Yesterday at" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Yesterday at"
+          }
+        }
+      }
+    },
+    "You can view the license for libarchive here:" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "You can view the license for libarchive here:"
+          }
+        }
+      }
+    },
+    "Zero entries extracted" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Zero entries extracted"
+          }
+        }
+      }
+    },
+    "Zip archive" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Zip archive"
+          }
+        }
+      }
+    }
+  },
+  "version" : "1.0"
+}

@@ -83,6 +83,10 @@ enum libarchiveFormat: Int32, CaseIterable, Identifiable {
         }
         return false
     }
+
+    var canEncrypt: Bool {
+        self == .ZIP
+    }
 }
 
 extension libarchiveFormat: Comparable {

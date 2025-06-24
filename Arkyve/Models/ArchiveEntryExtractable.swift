@@ -10,6 +10,7 @@ import UniformTypeIdentifiers
 struct ArchiveEntryExtractable: Codable, Transferable {
     let vmID: UUID
     let archiveURL: URL?
+    let archivePassphrase: String?
     let cacheURL: URL
     let selectedPath: String
     let id: UUID
@@ -33,7 +34,7 @@ struct ArchiveEntryExtractable: Codable, Transferable {
             let cacheURL = entryDraggable.cacheURL
             let archiveIsNew = entryDraggable.archiveURL == nil
 
-            let loader = libarchiveWrapper(url: archiveURL)
+            let loader = libarchiveWrapper(url: archiveURL, passphrase: nil)
 
             do {
                 let writtenURLs = try await loader.extract([entryDraggable], toFolder: cacheURL, archiveIsNew: archiveIsNew)

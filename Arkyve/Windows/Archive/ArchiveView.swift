@@ -77,6 +77,8 @@ struct ArchiveView: View {
             var destURL = viewModel.diskURL ?? viewModel.settingsManager.newArchiveURL
             var (format, filters, headerMap) = viewModel.metadataForSaving()
             let skipRead = viewModel.diskURL == nil
+            let passphraseAtLoad = viewModel.passphraseAtLoad
+            var passphraseToSave: String? = viewModel.passphraseToSave
 
             let response = alert.runModal()
             switch response {
@@ -115,6 +117,26 @@ struct ArchiveView: View {
                 }
             }
 
+            if passphraseToSave != nil, passphraseToSave != "", !format.canEncrypt {
+                // User has a passphrase set, but is saving in a format that can't be encrypted
+                let alert = NSAlert()
+                alert.icon = NSImage(systemSymbolName: "lock.slash", accessibilityDescription: nil)
+                alert.messageText = "This archive cannot have a password"
+                alert.informativeText = "Arkyve supports passwords only for Zip archives. If you proceed with saving as '\(format.description)' the password will be ignored."
+                alert.addButton(withTitle: "Proceed")
+                alert.addButton(withTitle: "Cancel")
+                alert.buttons.first?.hasDestructiveAction = true
+
+                let alertResponse = alert.runModal()
+                if alertResponse == .alertFirstButtonReturn {
+                    passphraseToSave = nil
+                } else {
+                    dismissWindow()
+                    ManagerManager.shared.removeVM(viewModel)
+                    return
+                }
+            }
+
             // We have a semaphore here because the main thread is trying to quit, but we have to wait for writeArchive()
             // to complete on a background thread. This allows us to dispatch the detached task and then wait for the
             // semaphore to be signalled after the archive has been written.
@@ -126,11 +148,11 @@ struct ArchiveView: View {
                 print("In detached task")
                 defer { semaphore.signal() }
 
-                let loader = libarchiveWrapper(url: sourceURL)
+                let loader = libarchiveWrapper(url: sourceURL, passphrase: passphraseAtLoad)
 
                 do {
                     print("Saving archive")
-                    try await loader.writeArchive(headerMap: headerMap, to: destURL, format: format, filters: filters, skipRead: skipRead)
+                    try await loader.writeArchive(headerMap: headerMap, to: destURL, format: format, filters: filters, skipRead: skipRead, passphrase: passphraseToSave)
                 } catch {
                     // NOTE: This cannot use AKError() because the main thread is currently blocked on us, and will be dead before any further runloop ticks
                     print("FAILED TO SAVE ARCHIVE: \(error.localizedDescription)")

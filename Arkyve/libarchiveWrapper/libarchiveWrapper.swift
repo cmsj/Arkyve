@@ -10,7 +10,7 @@ import SwiftUI
 
 /// Wrapper for all libarchive activities
 actor libarchiveWrapper {
-    private var readArchiveFD = libarchiveFD(type: .read)
+    private var readArchiveFD: libarchiveFD
 
     private var url: URL?
     private var path: String {
@@ -40,8 +40,9 @@ actor libarchiveWrapper {
     }
 
     // MARK: Initialisers
-    init(url: URL? = nil) {
+    init(url: URL? = nil, passphrase: String?) {
         self.url = url
+        readArchiveFD = libarchiveFD(type: .read, passphrase: passphrase)
     }
 
     // MARK: Helper methods
@@ -194,10 +195,16 @@ actor libarchiveWrapper {
                 AKWarning("Discarding header for \(path) because it is not a supported type: \(type.userString)")
             }
 
+            let isEncryptedFlag = archive_entry_is_encrypted(entry) == 1 ? true : false
+            let isDataEncrypted = archive_entry_is_data_encrypted(entry) == 1 ? true : false
+            let isMetadataEncrypted = archive_entry_is_metadata_encrypted(entry) == 1 ? true : false
+
+            let isEncrypted = isEncryptedFlag || isDataEncrypted || isMetadataEncrypted
+
             headers.append(libarchiveHeader(
                 source: source, type: type, path: path, name: name,
                 pathComponents: pathComponents, size: size, atime: atime, ctime: ctime,
-                mtime: mtime, btime: btime, uid: uid, gid: gid, perms: perms, symlinkTarget: symlinkTarget, rdev: rdev))
+                mtime: mtime, btime: btime, uid: uid, gid: gid, perms: perms, symlinkTarget: symlinkTarget, rdev: rdev, isEncrypted: isEncrypted))
 
             if Task.isCancelled {
                 throw .init(.cancelled, msg: "")
@@ -290,8 +297,10 @@ actor libarchiveWrapper {
 
 
 
-    static func loadArchive(at url: URL, entryLimit: Int = -1) async throws(ArkyveError) -> sending (libarchiveFormat, [libarchiveFilter], [ArchiveEntry], ArchiveEntry, Bool) {
-        let loader = libarchiveWrapper(url: url)
+    static func loadArchive(at url: URL,
+                            entryLimit: Int = -1,
+                            passphrase: String?) async throws(ArkyveError) -> sending (libarchiveFormat, [libarchiveFilter], [ArchiveEntry], ArchiveEntry, Bool) {
+        let loader = libarchiveWrapper(url: url, passphrase: passphrase)
         return try await loader.loadArchive(entryLimit: entryLimit)
     }
 
@@ -301,35 +310,31 @@ actor libarchiveWrapper {
         let archiveFilters: [libarchiveFilter]
         let archiveEntries: [libarchiveHeader]
 
-        do {
-            (archiveFormat, archiveFilters, archiveEntries) = try await readEntriesFormatFilters(entryLimit: entryLimit)
+        (archiveFormat, archiveFilters, archiveEntries) = try await readEntriesFormatFilters(entryLimit: entryLimit)
 
-            let entries = archiveEntries.map { ArchiveEntry($0) }
-            AKTrace("loadArchive() found \(entries.count) entries")
-            let (rootItems, remainingAll) = entries.filterBothwise {
-                $0.path.countOccurrences(of: "/") == 0
-            }
-            let (remainingDirs, remainingFiles) = remainingAll.filterBothwise {
-                $0.type == .directory
-            }
-            let root = ArchiveEntry(isRoot: true)
+        let entries = archiveEntries.map { ArchiveEntry($0) }
+        AKTrace("loadArchive() found \(entries.count) entries")
+        let (rootItems, remainingAll) = entries.filterBothwise {
+            $0.path.countOccurrences(of: "/") == 0
+        }
+        let (remainingDirs, remainingFiles) = remainingAll.filterBothwise {
+            $0.type == .directory
+        }
+        let root = ArchiveEntry(isRoot: true)
 
-            var syntheticEntries: [ArchiveEntry] = []
+        var syntheticEntries: [ArchiveEntry] = []
 
-            try root.addChildrenHierarchically(rootItems)
-            syntheticEntries += try root.addChildrenHierarchically(remainingDirs)
-            syntheticEntries += try root.addChildrenHierarchically(remainingFiles)
+        try root.addChildrenHierarchically(rootItems)
+        syntheticEntries += try root.addChildrenHierarchically(remainingDirs)
+        syntheticEntries += try root.addChildrenHierarchically(remainingFiles)
 
-            let combinedEntries = entries + syntheticEntries
-            AKTrace("Loaded archive with format \(archiveFormat) and filters \(archiveFilters)")
-            return (archiveFormat, archiveFilters, combinedEntries, root, didTruncateRead)
+        let combinedEntries = entries + syntheticEntries
+        AKTrace("Loaded archive with format \(archiveFormat) and filters \(archiveFilters)")
+        return (archiveFormat, archiveFilters, combinedEntries, root, didTruncateRead)
 
 //#if DEBUG
 //            await Task.sleep(2000000000)
 //#endif
-        } catch {
-            throw error
-        }
     }
 
     @discardableResult func extract(_ extractableEntries: [ArchiveEntryExtractable],
@@ -422,7 +427,7 @@ actor libarchiveWrapper {
         var writtenURLs: [URL] = []
         var entryPtr: OpaquePointer?
 
-        try readArchiveFD.openRead(path: path)
+        try readArchiveFD.openRead(path: path, passphrase: extractableEntries.first?.archivePassphrase)
         defer { readArchiveFD.close() }
 
         // First create any synthetic directories we need to
@@ -498,8 +503,7 @@ actor libarchiveWrapper {
                         } catch {
                             throw .init(.extract, msg: error.localizedDescription)
                         }
-                        let result = archive_read_data_into_fd(
-                            readArchiveFD.archive, handle.fileDescriptor)
+                        let result = archive_read_data_into_fd(readArchiveFD.archive, handle.fileDescriptor)
                         if result != ARCHIVE_OK {
                             throw .init(.extract, msg: String(localized: "Unable to write to \(outputURL.path)"))
                         }
@@ -562,20 +566,20 @@ actor libarchiveWrapper {
     ///   - format: A libarchiveFormat describing the type of archive to write
     ///   - filters: An array of libarchiveFilter, describing which filters to apply to the archive
     func writeArchive(headerMap: [String: ArchiveEntryFlat],
-                             to: URL,
-                             format: libarchiveFormat,
-                             filters: [libarchiveFilter],
-                             skipRead: Bool = false) async throws(ArkyveError) {
+                      to: URL,
+                      format: libarchiveFormat,
+                      filters: [libarchiveFilter],
+                      skipRead: Bool = false, passphrase: String? = nil) async throws(ArkyveError) {
         var headerMap = headerMap
         var result: Int32 = ARCHIVE_OK
 
         if !skipRead {
-            try readArchiveFD.openRead(path: path)
+            try readArchiveFD.openRead(path: path, passphrase: readArchiveFD.passphrase)
         }
         defer { readArchiveFD.close() }
 
         var writeArchiveFD = libarchiveFD(type: .write)
-        try writeArchiveFD.openWrite(at: to, format: format, filters: filters)
+        try writeArchiveFD.openWrite(at: to, format: format, filters: filters, passphrase: passphrase)
         defer { writeArchiveFD.close() }
 
         var readEntry: OpaquePointer?

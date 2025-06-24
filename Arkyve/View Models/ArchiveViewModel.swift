@@ -58,6 +58,13 @@ final class ArchiveViewModel: Identifiable {
     var cacheURL: URL
     var name: String
     var entries: [ArchiveEntry] = []
+
+    // This whole thing is ridiculous. We need to store the passphrase used to load the archive and also store whatever is typed into the password sheet.
+    // It's also ridiculous to have a hasEncryptedEntries that serves almost no purpose, but that may be unavoidable.
+    var hasEncryptedEntries: Bool = false
+    var passphraseAtLoad: String = ""
+    var passphraseToSave: String = ""
+
     var root = ArchiveEntry(isRoot: true)
     var format: libarchiveFormat = SettingsManager().newArchiveFormat.libarchiveFormat
     var filters: [libarchiveFilter] = SettingsManager().newArchiveFormat.libarchiveFilters
@@ -113,6 +120,27 @@ final class ArchiveViewModel: Identifiable {
     var disableTableView: Bool { disableUI }
     var disableShare: Bool { disableUI || selectedEntries.isEmpty }
     var disableSearchMenu: Bool { disableUI }
+
+    var lockSymbol: String {
+        if hasEncryptedEntries {
+            if format == .ZIP {
+                return "lock"
+            } else {
+                return "lock.slash"
+            }
+        }
+        return "lock.open"
+    }
+    var lockHelp: String {
+        if hasEncryptedEntries {
+            if format == .ZIP {
+                return "Archive is encrypted"
+            } else {
+                return "Unsupported archive encryption"
+            }
+        }
+        return "Archive is not encrypted"
+    }
 
     // MARK: - Dynamic UI text
     var navSubtitleText: String { "\(dirty ? "(Unsaved)" : "")" }
@@ -185,7 +213,7 @@ final class ArchiveViewModel: Identifiable {
             var didFail = true
 
             do {
-                let (archiveFormat, archiveFilters, entries, root, didTruncate) = try await libarchiveWrapper.loadArchive(at: url, entryLimit: truncateAt ?? -1)
+                let (archiveFormat, archiveFilters, entries, root, didTruncate) = try await libarchiveWrapper.loadArchive(at: url, entryLimit: truncateAt ?? -1, passphrase: passphraseAtLoad)
                 didFail = false
 
                 if archiveFormat.canWrite == false {
@@ -198,6 +226,9 @@ final class ArchiveViewModel: Identifiable {
                     self.entries = entries
                     self.root = root
                     self.didTruncate = didTruncate
+                    if let _ = entries.first(where: { $0.isEncrypted }) {
+                        self.hasEncryptedEntries = true
+                    }
 
                     // Ensure our UI is consistent
                     self.setClean()

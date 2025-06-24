@@ -30,9 +30,9 @@ struct ArkyveApp: App {
     @StateObject var settingsManager = SettingsManager.shared
 
     init() {
-#if DEBUG
-        try? Tips.resetDatastore()
-#endif
+//#if DEBUG
+//        try? Tips.resetDatastore()
+//#endif
 
         try? Tips.configure()
     }

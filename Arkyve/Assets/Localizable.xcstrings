@@ -479,6 +479,9 @@
         }
       }
     },
+    "Arkyve can only apply passwords when saving as a Zip archive." : {
+
+    },
     "Arkyve would not be possible without the incredible work of Tim Kientzle and all the contributors to libarchive." : {
       "localizations" : {
         "de" : {
@@ -1785,6 +1788,9 @@
         }
       }
     },
+    "Remove Password" : {
+
+    },
     "Rename selected file/folder" : {
       "localizations" : {
         "en" : {
@@ -1885,6 +1891,9 @@
           }
         }
       }
+    },
+    "Set Password" : {
+
     },
     "SetGID" : {
       "localizations" : {
@@ -2148,6 +2157,12 @@
         }
       }
     },
+    "This archive contains encrypted entries, but it is not a Zip file, which is the only format for which Arkyve supports encryption." : {
+
+    },
+    "This archive is read-only" : {
+
+    },
     "This archive's format is read-only. Use Save As to select a writable format if you need to make changes." : {
       "localizations" : {
         "en" : {
@@ -2344,6 +2359,9 @@
           }
         }
       }
+    },
+    "Unsupported encrypted archive" : {
+
     },
     "Use relative dates:" : {
       "localizations" : {

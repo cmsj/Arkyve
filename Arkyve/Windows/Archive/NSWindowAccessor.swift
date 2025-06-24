@@ -13,7 +13,7 @@ struct NSWindowAccessor: NSViewRepresentable {
     func makeNSView(context: Context) -> NSView {
         let view = NSView()
         DispatchQueue.main.async {
-            print("Attaching NSWindow to viewModel")
+            print("\(viewModel.id): Attaching NSWindow to viewModel")
             viewModel.window = view.window   // << right after inserted in window
         }
         return view

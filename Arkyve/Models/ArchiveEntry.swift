@@ -148,6 +148,8 @@ class ArchiveEntry: Identifiable {
         get { symlinkTarget != nil ? "\(symlinkTarget!)" : "--"}
     }
 
+    var isEncrypted: Bool = false
+
     init(_ entry: libarchiveHeader) {
         source = entry.source
         name = entry.name
@@ -165,6 +167,7 @@ class ArchiveEntry: Identifiable {
         type = entry.type
         symlinkTarget = entry.symlinkTarget
         rdev = entry.rdev
+        isEncrypted = entry.isEncrypted
 
         if self.type == .directory {
             // If we're a directory, we have at least zero children
@@ -376,11 +379,11 @@ class ArchiveEntry: Identifiable {
     }
 
     func asHeader() -> libarchiveHeader {
-        return libarchiveHeader(source: source, type: type, path: path, name: name, pathComponents: pathComponents, size: size, atime: atime, ctime: ctime, mtime: mtime, btime: btime, uid: uid, gid: gid, perms: perms, symlinkTarget: symlinkTarget, rdev: rdev)
+        return libarchiveHeader(source: source, type: type, path: path, name: name, pathComponents: pathComponents, size: size, atime: atime, ctime: ctime, mtime: mtime, btime: btime, uid: uid, gid: gid, perms: perms, symlinkTarget: symlinkTarget, rdev: rdev, isEncrypted: isEncrypted)
     }
 
-    func asExtractable(from archiveURL: URL?, cacheURL: URL, vmID: UUID) -> ArchiveEntryExtractable {
-        return ArchiveEntryExtractable(vmID: vmID, archiveURL: archiveURL,
+    func asExtractable(from archiveURL: URL?, archivePassphrase: String?, cacheURL: URL, vmID: UUID) -> ArchiveEntryExtractable {
+        return ArchiveEntryExtractable(vmID: vmID, archiveURL: archiveURL, archivePassphrase: archivePassphrase,
                                        cacheURL: cacheURL,
                                        selectedPath: self.path,
                                        id: self.id,

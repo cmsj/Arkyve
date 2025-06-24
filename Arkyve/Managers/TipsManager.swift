@@ -9,4 +9,5 @@ import TipKit
 
 struct TipsManager {
     var readOnlyStatus = ReadOnlyStatus()
+    var encryptedNonZip = EncryptedNonZip()
 }

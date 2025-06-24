@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import AppKit
 
 /// Represents the type of file descriptor operation for libarchive.
 enum libarchiveFDType {
@@ -13,6 +14,14 @@ enum libarchiveFDType {
     case read
     /// Indicates a write operation on the archive.
     case write
+}
+
+class libarchiveFDWrapper {
+    var fd: libarchiveFD
+
+    init(fd: libarchiveFD) {
+        self.fd = fd
+    }
 }
 
 /// A wrapper around libarchive's file descriptor operations.
@@ -28,6 +37,13 @@ struct libarchiveFD {
     var type: libarchiveFDType = .read
     /// The URL for the write cache file.
     var writeCacheURL: URL? = nil
+
+    var passphrase: String? = nil
+
+    init(type: libarchiveFDType, passphrase: String? = nil) {
+        self.type = type
+        self.passphrase = passphrase
+    }
 
     /// Closes the archive and cleans up resources.
     ///
@@ -74,7 +90,7 @@ struct libarchiveFD {
     /// - Parameter path: The path to the archive file to open.
     /// - Throws: `ArkyveError` if the archive cannot be opened
     ///          or if memory allocation fails.
-    mutating func openRead(path: String) throws(ArkyveError) {
+    mutating func openRead(path: String, passphrase: String? = nil) throws(ArkyveError) {
         if fd >= 0 || archive != nil {
             close()
         }
@@ -87,6 +103,10 @@ struct libarchiveFD {
 
         archive_read_support_filter_all(archive)
         archive_read_support_format_all(archive)
+
+        if let passphrase {
+            archive_read_add_passphrase(archive, passphrase)
+        }
 
         fd = Darwin.open(path, O_RDONLY)
         if fd < 0 {
@@ -135,7 +155,7 @@ struct libarchiveFD {
     ///   - filters: An array of filters to apply to the archive.
     /// - Throws: `ArkyveError` if the archive cannot be created
     ///          or if memory allocation fails.
-    mutating func openWrite(at outputURL: URL, format: libarchiveFormat, filters: [libarchiveFilter]) throws(ArkyveError) {
+    mutating func openWrite(at outputURL: URL, format: libarchiveFormat, filters: [libarchiveFilter], passphrase: String? = nil) throws(ArkyveError) {
         var result: Int32
 
         archive = archive_write_new()
@@ -147,6 +167,12 @@ struct libarchiveFD {
         if (result != ARCHIVE_OK) {
             let errorString = String(cString: archive_error_string(archive))
             throw .init(.writeArchive, msg: String(localized: "Unable to set format: \(errorString)"))
+        }
+
+        if let passphrase, format == .ZIP {
+            AKTrace("Setting passphrase")
+            archive_write_set_options(archive, "zip:encryption=aes256")
+            archive_write_set_passphrase(archive, passphrase)
         }
 
         for filter in filters {

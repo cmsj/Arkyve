@@ -75,35 +75,42 @@ extension ArchiveViewModel {
         }
 
         guard let diskURL else { return }
-        saveArchiveWithTask(to: diskURL)
+        saveArchiveWithTask(to: diskURL, savePassphrase: self.passphraseToSave)
     }
 
     func saveAsButton() {
         let panel = prepareSaveAsPanel()
 
-        if panel.runModal() == .OK {
-            if let destURL = panel.url {
-                guard let selectedArkyveFormat = ArkyveFormats.initFromUTType(panel.currentContentType) else {
-                    AKError("Unable to determine which archive format the user selected")
-                    return
-                }
-                let selectedFormat = selectedArkyveFormat.libarchiveFormat
-                let selectedFilters = selectedArkyveFormat.libarchiveFilters
+        guard let window else {
+            AKError("Internal error: missing window reference")
+            return
+        }
 
-                do {
-                    try scopedURLManager.store(destURL, forOperation: .writeArchive)
-                } catch {
-                    AKWarning("Unable to activate scoped URL bookmark: \(destURL) for .writeArchive. Attempting to continue")
-                }
+        panel.beginSheetModal(for: window) { response in
+            if response == .OK {
+                if let destURL = panel.url {
+                    guard let selectedArkyveFormat = ArkyveFormats.initFromUTType(panel.currentContentType) else {
+                        AKError("Unable to determine which archive format the user selected")
+                        return
+                    }
+                    let selectedFormat = selectedArkyveFormat.libarchiveFormat
+                    let selectedFilters = selectedArkyveFormat.libarchiveFilters
 
-                AKTrace("Save As to \(destURL) (format: \(selectedArkyveFormat))")
+                    do {
+                        try self.scopedURLManager.store(destURL, forOperation: .writeArchive)
+                    } catch {
+                        AKWarning("Unable to activate scoped URL bookmark: \(destURL) for .writeArchive. Attempting to continue")
+                    }
 
-                if !dirty && format == selectedFormat && filters == selectedFilters {
-                    // This is a performance optimisation
-                    // The archive/format/filters haven't changed, so just copy the existing file
-                    copyArchive(to: destURL)
-                } else {
-                    saveArchiveWithTask(to: destURL, overrideFormat: selectedFormat, overrideFilters: selectedFilters)
+                    AKTrace("Save As to \(destURL) (format: \(selectedArkyveFormat))")
+
+                    if !self.dirty && self.format == selectedFormat && self.filters == selectedFilters {
+                        // This is a performance optimisation
+                        // The archive/format/filters haven't changed, so just copy the existing file
+                        self.copyArchive(to: destURL)
+                    } else {
+                        self.saveArchiveWithTask(to: destURL, overrideFormat: selectedFormat, overrideFilters: selectedFilters, savePassphrase: self.passphraseToSave)
+                    }
                 }
             }
         }

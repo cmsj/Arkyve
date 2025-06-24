@@ -29,3 +29,23 @@ struct ReadOnlyStatus: Tip {
         }
     }
 }
+
+struct EncryptedNonZip: Tip {
+    static let event: Event = Event(id: "didOpenEncryptedNonZip")
+
+    var title: Text {
+        Text("Unsupported encrypted archive")
+    }
+    var message: Text? {
+        Text("This archive contains encrypted entries, but it is not a Zip file, which is the only format for which Arkyve supports encryption.")
+    }
+    var image: Image? {
+        Image(systemName: "lock")
+    }
+
+    var rules: [Rule] {
+        #Rule(Self.event) {
+            $0.donations.count > 0
+        }
+    }
+}

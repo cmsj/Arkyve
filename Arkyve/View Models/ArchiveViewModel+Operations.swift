@@ -59,7 +59,7 @@ extension ArchiveViewModel {
                                                size: 0,
                                                atime: Date.now, ctime: Date.now, mtime: Date.now, btime: Date.now,
                                                uid: Int64(getuid()), gid: Int64(getgid()),
-                                               perms: mode_t.directory)
+                                               perms: mode_t.directory, isEncrypted: false)
             let entry = ArchiveEntry(entryHeader)
             parentEntry.children?.append(entry)
             entries.append(entry)
@@ -209,20 +209,51 @@ extension ArchiveViewModel {
         setDirty()
     }
 
-    func saveArchiveWithTask(to: URL, overrideFormat: libarchiveFormat = .Unknown, overrideFilters: [libarchiveFilter] = [.None], addToRecents: Bool = true) {
+    func saveArchiveWithTask(to: URL, overrideFormat: libarchiveFormat = .Unknown, overrideFilters: [libarchiveFilter] = [.None], addToRecents: Bool = true, savePassphrase: String? = nil) {
         errors.clear()
 
+        var savePassphrase = savePassphrase
+        let idealFormat = overrideFormat == .Unknown ? format : overrideFormat
+        let idealArkyveFormats = ArkyveFormats.initFromlibarchiveFormatForSaving(idealFormat)
+
+        let resolvedFormat = idealArkyveFormats.libarchiveFormat
+        let resolvedFilters = idealArkyveFormats.libarchiveFilters
+
+        guard resolvedFormat.canWrite else {
+            errors.err(.init(.writeArchive, msg: "Cannot save archive in format \(resolvedFormat.description)"))
+            return
+        }
+
+        if self.passphraseToSave != "" && !resolvedFormat.canEncrypt {
+            // User has a passphrase set, but is saving in a format that can't be encrypted
+            let alert = NSAlert()
+            alert.icon = NSImage(systemSymbolName: "lock.slash", accessibilityDescription: nil)
+            alert.messageText = "This archive cannot have a password"
+            alert.informativeText = "Arkyve supports passwords only for Zip archives. If you proceed with saving as '\(resolvedFormat.description)' the password will be ignored."
+            alert.addButton(withTitle: "Proceed")
+            alert.addButton(withTitle: "Cancel")
+            alert.buttons.first?.hasDestructiveAction = true
+
+            let alertResponse = alert.runModal()
+            if alertResponse == .alertFirstButtonReturn {
+                self.passphraseToSave = ""
+                savePassphrase = nil
+            } else {
+                return
+            }
+        }
+
         AKTrace("\(id): Saving archive to: \(to)")
-        let loader = libarchiveWrapper(url: diskURL)
+        let loader = libarchiveWrapper(url: diskURL, passphrase: passphraseAtLoad)
 
         // We will write out the archive to a cache location and then move it into place only if we succeed
         let writeCacheURL = cacheManager.urlForItem(cacheType: .write, itemName: to.lastPathComponent)
 
         withProgressTask { [self] in
-            let (format, filters, headerMap) = metadataForSaving(overrideFormat: overrideFormat, overrideFilters: overrideFilters)
+            let (_, _, headerMap) = metadataForSaving(overrideFormat: overrideFormat, overrideFilters: overrideFilters)
 
             do {
-                try await loader.writeArchive(headerMap: headerMap, to: writeCacheURL, format: format, filters: filters, skipRead: diskURL == nil)
+                try await loader.writeArchive(headerMap: headerMap, to: writeCacheURL, format: resolvedFormat, filters: resolvedFilters, skipRead: diskURL == nil, passphrase: savePassphrase)
 
                 AKTrace("Moving archive cache to final destination: \(writeCacheURL) -> \(to)")
                 do {
@@ -237,7 +268,7 @@ extension ArchiveViewModel {
                 }
 
                 // Update our metadata now we've saved to the final location
-                didSave(to: to, format: format, filters: filters, addToRecents: addToRecents)
+                didSave(to: to, format: resolvedFormat, filters: resolvedFilters, addToRecents: addToRecents, savePassphrase: savePassphrase)
             } catch let error as ArkyveError {
                 errors.err(error)
             } catch {
@@ -260,7 +291,7 @@ extension ArchiveViewModel {
         return (format, filters, headerMap)
     }
 
-    func didSave(to: URL, format toFormat: libarchiveFormat, filters toFilters: [libarchiveFilter], addToRecents: Bool = true) {
+    func didSave(to: URL, format toFormat: libarchiveFormat, filters toFilters: [libarchiveFilter], addToRecents: Bool = true, savePassphrase: String? = nil) {
         // Having written the archive, we should no longer have any entries of source type .Filesystem
         // So we'll update our entries to switch them to .Archive
         // Same for .InMemory directories
@@ -291,6 +322,15 @@ extension ArchiveViewModel {
         setClean()
         diskURL = to
 
+        if let savePassphrase, savePassphrase != "" {
+            self.passphraseAtLoad = savePassphrase
+            self.passphraseToSave = savePassphrase
+            self.hasEncryptedEntries = true
+        } else {
+            self.passphraseAtLoad = ""
+            self.hasEncryptedEntries = false
+        }
+
         if addToRecents {
             settingsManager.addRecent(to)
         }
@@ -313,12 +353,12 @@ extension ArchiveViewModel {
     // MARK: - Helper methods for extraction
     func extractablesForPaths(_ paths: [String]) -> [ArchiveEntryExtractable] {
         return entries.compactMap { entry in
-            paths.contains(entry.path) ? entry.asExtractable(from: diskURL, cacheURL: cacheURL, vmID: self.id) : nil
+            paths.contains(entry.path) ? entry.asExtractable(from: diskURL, archivePassphrase: passphraseAtLoad, cacheURL: cacheURL, vmID: self.id) : nil
         }
     }
 
     func extractablesForEntries(_ entries: [ArchiveEntry]) -> [ArchiveEntryExtractable] {
-        entries.map { $0.asExtractable(from: diskURL, cacheURL: cacheURL, vmID: self.id) }
+        entries.map { $0.asExtractable(from: diskURL, archivePassphrase: passphraseAtLoad, cacheURL: cacheURL, vmID: self.id) }
     }
 
     // MARK: - Extraction methods
@@ -358,7 +398,7 @@ extension ArchiveViewModel {
                 }
             }
 
-            let extractableEntry = entry.asExtractable(from: diskURL, cacheURL: cacheURL, vmID: self.id)
+            let extractableEntry = entry.asExtractable(from: diskURL, archivePassphrase: passphraseAtLoad, cacheURL: cacheURL, vmID: self.id)
             extractableEntries.append(extractableEntry)
         }
 
@@ -380,7 +420,7 @@ extension ArchiveViewModel {
 
     func extractSome(extractables: [ArchiveEntryExtractable], toFolder: URL,
                  retainFullPath: Bool = false) async throws(ArkyveError) -> [URL] {
-        let loader = libarchiveWrapper(url: diskURL)
+        let loader = libarchiveWrapper(url: diskURL, passphrase: passphraseAtLoad)
         return try await loader.extract(extractables, toFolder: toFolder,
                                         retainFullPath: retainFullPath, archiveIsNew: diskURL == nil)
     }
@@ -428,7 +468,7 @@ extension ArchiveViewModel {
     func extractablesForSelected() -> [ArchiveEntryExtractable] {
         let extractables = selectedEntries.compactMap { entryID in
             if let first = entries.first(where: { $0.id == entryID }) {
-                return first.asExtractable(from: diskURL, cacheURL: cacheURL, vmID: self.id)
+                return first.asExtractable(from: diskURL, archivePassphrase: passphraseAtLoad, cacheURL: cacheURL, vmID: self.id)
             } else {
                 return nil
             }

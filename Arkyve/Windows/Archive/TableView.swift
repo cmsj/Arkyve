@@ -262,6 +262,38 @@ struct TableView: View {
         .onChange(of: renameEntryFocus) { _, newValue in
             viewModel.focusedEntry = newValue
         }
+        .onChange(of: viewModel.hasEncryptedEntries, initial: true) { oldValue, newValue in
+            if newValue {
+                if viewModel.format != .ZIP {
+                    EncryptedNonZip.event.sendDonation()
+                    viewModel.disableUI = true
+                } else {
+                    if viewModel.passphraseAtLoad != "" {
+                        // We already seem to have the passphrase by other means
+                        return
+                    }
+                    let alert = NSAlert()
+                    alert.alertStyle = .warning
+                    alert.icon = NSImage(systemSymbolName: "lock", accessibilityDescription: nil)
+                    alert.messageText = "Encrypted archive"
+                    alert.informativeText = "This archive contains encrypted entries, please enter the passphrase:"
+                    alert.accessoryView = NSSecureTextField(frame: NSRect(x: 0, y: 0, width: 200, height: 22))
+                    alert.addButton(withTitle: "OK")
+                    alert.addButton(withTitle: "Cancel")
+
+                    let response = alert.runModal()
+                    switch response {
+                    case .alertFirstButtonReturn:
+                        let textField = alert.accessoryView as! NSSecureTextField
+                        viewModel.passphraseAtLoad = textField.stringValue
+                        viewModel.passphraseToSave = textField.stringValue
+                    default:
+                        viewModel.errors.err(ArkyveError(.needPassphrase, msg: "Unable to decrypt archive"))
+                        viewModel.disableUI = true
+                    }
+                }
+            }
+        }
     }
 }
 

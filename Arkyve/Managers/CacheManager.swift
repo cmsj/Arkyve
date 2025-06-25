@@ -116,4 +116,11 @@ struct CacheManager {
 
         return tempURL
     }
+
+    func removeAll(ofType: CacheType) {
+        if let cacheFolderURL = cacheURLs[ofType] {
+            try? FileManager.default.removeItem(at: cacheFolderURL)
+            try? FileManager.default.createDirectory(at: cacheFolderURL, withIntermediateDirectories: true)
+        }
+    }
 }

@@ -260,7 +260,8 @@ extension ArchiveViewModel {
                     _ = try FileManager.default.replaceItemAt(to, withItemAt: writeCacheURL, options: [.usingNewMetadataOnly])
                 } catch {
                     do {
-                        // FIXME: Add a comment here explaining why we retry with this call
+                        // This is a fallback for replaceItemAt() above, which will fail in situations such as the source and
+                        // destination files not being on the same volume.
                         try FileManager.default.moveItem(at: writeCacheURL, to: to)
                     } catch {
                         throw ArkyveError.init(.writeArchive, msg: error.localizedDescription)
@@ -302,7 +303,6 @@ extension ArchiveViewModel {
         entries.forEach { entry in
             if (entry.source.type == .Filesystem || entry.source.type == .InMemory) {
                 if entry.source.type == .Filesystem {
-                    // FIXME: This doesn't cover ScopedURLManager.dropSBM entries
                     scopedURLManager.remove(entry.source.url)
                 }
                 // IF this entry started out as an item in our drop cache, we should now clean it up

@@ -20,7 +20,7 @@ func openArchiveFromURL(_ url: URL, openWindow: OpenWindowAction) {
 }
 
 @MainActor
-func openArchiveFromPanel(openWindow: OpenWindowAction, wasSplash: Bool = false) {
+@discardableResult func openArchiveFromPanel(openWindow: OpenWindowAction, wasSplash: Bool = false) -> Bool {
     let panel = NSOpenPanel()
     panel.canChooseFiles = true
     panel.canChooseDirectories = false
@@ -31,7 +31,7 @@ func openArchiveFromPanel(openWindow: OpenWindowAction, wasSplash: Bool = false)
         if let url = panel.url {
             AKTrace("Open Menu: \(url)")
             openArchiveFromURL(url, openWindow: openWindow)
-            return
+            return true
         }
     }
 
@@ -39,6 +39,8 @@ func openArchiveFromPanel(openWindow: OpenWindowAction, wasSplash: Bool = false)
     if wasSplash {
         openWindow(id: "splash")
     }
+
+    return false
 }
 
 @Observable

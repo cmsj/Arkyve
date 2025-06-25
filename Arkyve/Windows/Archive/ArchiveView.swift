@@ -43,6 +43,9 @@ struct ArchiveView: View {
                 viewModel.errors.show = new != nil
             }
         }
+        .onAppear {
+            dismissWindow(id: "splash")
+        }
         // We need to react to both willTerminate and willClose because depending on whether the user closes
         // the window or quits the app, these will be called in different orders and the second iteration
         // typically doesn't work properly

@@ -48,6 +48,16 @@ struct ArkyveApp: App {
                         AKError("Unable to find lastDefaultID")
                         return
                     }
+
+                    if url.scheme == "arkyve" {
+                        // This is an internal URL scheme used for things like opening the splash window outside UI contexts
+                        // There is no useful progress we can make from here
+                        Task { @MainActor in
+                            dismissWindow(id: "archive", value: lastDefaultID)
+                        }
+                        return
+                    }
+
                     managerManager.reInitVM(lastDefaultID, for: url)
                     settingsManager.addRecent(url)
                     dismissWindow(id: "splash")
@@ -88,7 +98,7 @@ struct ArkyveApp: App {
         .windowBackgroundDragBehavior(.enabled)
         .defaultLaunchBehavior(.suppressed)
         .restorationBehavior(.disabled)
-        .handlesExternalEvents(matching: Set(arrayLiteral: "splash"))
+        .handlesExternalEvents(matching: Set(arrayLiteral: "splash")) // This is used by the app delegate
 
         UtilityWindow("Log viewer", id: "log-window") {
             LogWindowView()

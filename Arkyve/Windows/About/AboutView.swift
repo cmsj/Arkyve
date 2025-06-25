@@ -8,8 +8,6 @@
 import SwiftUI
 
 struct AboutView: View {
-    @Environment(\.openURL) var openURL
-    @Environment(\.dismissWindow) var dismissWindow
     private var glowColor = Color(red: 0.2, green: 0.576, blue: 0.807, opacity: 0.6) // 3493CE
 
     var body: some View {

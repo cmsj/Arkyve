@@ -5,7 +5,7 @@ import Foundation
 @Suite("libarchiveFD Tests")
 final class libarchiveFDTests {
     @Test func testInitialState() {
-        let fd = libarchiveFD()
+        let fd = libarchiveFD(type: .read)
         #expect(fd.fd == -1)
         #expect(fd.archive == nil)
         #expect(fd.type == .read)
@@ -13,14 +13,14 @@ final class libarchiveFDTests {
     }
     
     @Test func testCloseOnUninitialized() {
-        var fd = libarchiveFD()
+        var fd = libarchiveFD(type: .read)
         fd.close() // Should not crash
         #expect(fd.fd == -1)
         #expect(fd.archive == nil)
     }
     
     @Test func testOpenReadWithInvalidPath() {
-        var fd = libarchiveFD()
+        var fd = libarchiveFD(type: .read)
         #expect(throws: ArkyveError.self) {
             try fd.openRead(path: "/nonexistent/path")
         }
@@ -38,7 +38,7 @@ final class libarchiveFDTests {
         try? process.run()
         process.waitUntilExit()
         
-        var fd = libarchiveFD()
+        var fd = libarchiveFD(type: .read)
         try? fd.openRead(path: testFile.path)
         #expect(fd.fd >= 0)
         #expect(fd.archive != nil)

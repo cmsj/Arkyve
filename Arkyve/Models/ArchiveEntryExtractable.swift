@@ -25,6 +25,10 @@ struct ArchiveEntryExtractable: Codable, Transferable {
         NSWorkspace.shared.icon(for: utType).shareSheetPreviewIcon()
     }
 
+    var sharePreview: SharePreview<Image, Never> {
+        SharePreview(name, image: icon)
+    }
+
     static var transferRepresentation: some TransferRepresentation {
         CodableRepresentation(contentType: .archiveEntryExtractable)
         

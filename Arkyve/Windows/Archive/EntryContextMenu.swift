@@ -64,9 +64,7 @@ struct EntryContextMenu: View {
         // FIXME: ShareLink ignores .disabled() in a menu, so we wrap it in a conditional instead. FB17656789
         if !viewModel.disableShare {
             ShareLink(items: viewModel.extractablesForSelected(), subject: nil, message: nil, preview: {
-                let name = $0.name
-                let icon = $0.icon
-                return SharePreview(name, image: icon)
+                $0.sharePreview
             })
             .disabled(viewModel.disableShare)
         }

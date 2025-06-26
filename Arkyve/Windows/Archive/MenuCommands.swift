@@ -165,7 +165,7 @@ struct MenuCommands: Commands {
                 ShareLink(items: activeViewModel.extractablesForSelected(),
                           subject: nil,
                           message: nil,
-                          preview: { SharePreview($0.name, image: $0.icon) }
+                          preview: { $0.sharePreview }
                 )
                 .disabled(activeViewModel.disableShare)
             }

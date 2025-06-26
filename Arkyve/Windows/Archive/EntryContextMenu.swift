@@ -66,7 +66,7 @@ struct EntryContextMenu: View {
             ShareLink(items: viewModel.extractablesForSelected(), subject: nil, message: nil, preview: {
                 let name = $0.name
                 let icon = $0.icon
-                return SharePreview(name, icon: icon)
+                return SharePreview(name, image: icon)
             })
             .disabled(viewModel.disableShare)
         }

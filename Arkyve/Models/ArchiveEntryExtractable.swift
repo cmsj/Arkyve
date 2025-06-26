@@ -22,8 +22,7 @@ struct ArchiveEntryExtractable: Codable, Transferable {
 
     var utType: UTType
     var icon: Image {
-        Image(nsImage: NSWorkspace.shared.icon(for: utType))
-            .resizable()
+        NSWorkspace.shared.icon(for: utType).shareSheetPreviewIcon()
     }
 
     static var transferRepresentation: some TransferRepresentation {

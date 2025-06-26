@@ -104,7 +104,7 @@ extension ArchiveViewModel {
 
                     AKTrace("Save As to \(destURL) (format: \(selectedArkyveFormat))")
 
-                    if !self.dirty && self.format == selectedFormat && self.filters == selectedFilters {
+                    if self.diskURL != nil && !self.dirty && self.format == selectedFormat && self.filters == selectedFilters {
                         // This is a performance optimisation
                         // The archive/format/filters haven't changed, so just copy the existing file
                         self.copyArchive(to: destURL)

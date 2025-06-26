@@ -10,13 +10,8 @@ import SwiftUI
 
 extension NSImage {
     func shareSheetPreviewIcon() -> Image {
-        var imageRect = CGRect(x: 0, y: 0, width: 128, height: 128)
-        guard let imageRef = self.cgImage(forProposedRect: &imageRect, context: nil, hints: nil) else {
-            NSLog("Unable to fetch CGImage for proposed rect \(imageRect), returning original image")
-            return Image(nsImage: self)
-        }
-
-        let nsImage = NSImage(size: imageRect.size, flipped: false) { rect in
+        let nsImage = NSImage(size: CGSize(width: 128, height: 128), flipped: false) { rect in
+            // FIXME: This sucks because the background doesn't take on material properties.
             NSColor.windowBackgroundColor.set()
             NSBezierPath(rect: rect).fill()
             self.draw(in: rect)

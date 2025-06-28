@@ -7,9 +7,9 @@
 	<key>HPDBookAccessPath</key>
 	<string>index.html</string>
 	<key>HPDBookCSIndexPath</key>
-	<string>ArkyveHelp.cshelpindex</string>
+	<string>ArkyveHelp/ArkyveHelp.cshelpindex</string>
 	<key>HPDBookIndexPath</key>
-	<string>ArkyveHelp.helpindex</string>
+	<string>ArkyveHelp/ArkyveHelp.helpindex</string>
 	<key>HPDBookKBProduct</key>
 	<string>Arkyve1</string>
 	<key>HPDBookTitle</key>

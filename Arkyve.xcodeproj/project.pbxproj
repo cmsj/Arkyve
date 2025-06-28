@@ -2359,6 +2359,7 @@
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				"/Localized: Resources/index.html",
+				Resources/shared,
 			);
 			target = 4F5E6EC82E0F043800A3D9C4 /* ArkyveHelp */;
 		};
@@ -2480,6 +2481,9 @@
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
 				4F5E6ED52E0F064000A3D9C4 /* Exceptions for "ArkyveHelp" folder in "ArkyveHelp" target */,
+			);
+			explicitFolders = (
+				Resources/shared,
 			);
 			path = ArkyveHelp;
 			sourceTree = "<group>";

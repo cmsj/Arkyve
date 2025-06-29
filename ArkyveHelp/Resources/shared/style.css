@@ -61,3 +61,31 @@ tr {
 .greyed {
     background-color: var(--greyed);
 }
+
+.formats-table {
+    border-collapse: collapse;
+    margin: 25px 0;
+    font-size: 0.9em;
+    font-family: sans-serif;
+    min-width: 400px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+}
+
+.formats-table thead tr {
+    background-color: #FB891F;
+    color: #ffffff;
+    text-align: left;
+}
+
+.formats-table th,
+.formats-table td {
+    padding: 12px 15px;
+}
+
+.formats-table .yesno {
+    text-align: center;
+}
+
+.formats-table tbody tr {
+    border-bottom: 1px solid #dddddd;
+}

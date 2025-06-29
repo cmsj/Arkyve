@@ -2360,7 +2360,11 @@
 		4F5E6ED52E0F064000A3D9C4 /* Exceptions for "ArkyveHelp" folder in "ArkyveHelp" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
+				"/Localized: Resources/advanced.html",
+				"/Localized: Resources/existing.html",
+				"/Localized: Resources/formats.html",
 				"/Localized: Resources/index.html",
+				"/Localized: Resources/otherways.html",
 				Resources/shared,
 			);
 			target = 4F5E6EC82E0F043800A3D9C4 /* ArkyveHelp */;
@@ -2440,6 +2444,13 @@
 				TestData/archives/helloworld.a,
 			);
 		};
+		4FD7C3792E11712E00DCEF2E /* Exceptions for "ArkyveHelp" folder in "Compile Sources" phase from "ArkyveHelp" target */ = {
+			isa = PBXFileSystemSynchronizedGroupBuildPhaseMembershipExceptionSet;
+			buildPhase = 4F5E6EC52E0F043800A3D9C4 /* Sources */;
+			membershipExceptions = (
+				"/Localized: Resources/new.html",
+			);
+		};
 /* End PBXFileSystemSynchronizedGroupBuildPhaseMembershipExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -2484,6 +2495,7 @@
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
 				4F5E6ED52E0F064000A3D9C4 /* Exceptions for "ArkyveHelp" folder in "ArkyveHelp" target */,
+				4FD7C3792E11712E00DCEF2E /* Exceptions for "ArkyveHelp" folder in "Compile Sources" phase from "ArkyveHelp" target */,
 			);
 			explicitFolders = (
 				Resources/shared,
@@ -6039,6 +6051,7 @@
 					};
 					4F5E6EC82E0F043800A3D9C4 = {
 						CreatedOnToolsVersion = 16.4;
+						LastSwiftMigration = 1640;
 					};
 					4FD56AE72DFE8E8E00F709E0 = {
 						CreatedOnToolsVersion = 16.3;
@@ -6668,6 +6681,7 @@
 		4F5E6ECA2E0F043800A3D9C4 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
@@ -6684,6 +6698,8 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 6.0;
 				WRAPPER_EXTENSION = bundle;
 			};
 			name = Debug;
@@ -6691,6 +6707,7 @@
 		4F5E6ECB2E0F043800A3D9C4 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
@@ -6707,6 +6724,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 6.0;
 				WRAPPER_EXTENSION = bundle;
 			};
 			name = Release;

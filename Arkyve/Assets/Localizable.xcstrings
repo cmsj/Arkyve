@@ -1351,6 +1351,9 @@
         }
       }
     },
+    "Icon by " : {
+
+    },
     "Icon size:" : {
       "localizations" : {
         "en" : {
@@ -1605,6 +1608,9 @@
           }
         }
       }
+    },
+    "Matthew Skiles" : {
+      "shouldTranslate" : false
     },
     "Memory allocation failed" : {
       "localizations" : {

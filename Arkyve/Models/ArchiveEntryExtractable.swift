@@ -27,11 +27,22 @@ struct ArchiveEntryExtractable: Codable, Transferable {
 
     var sharePreview: SharePreview<Image, Never> {
         SharePreview(name, image: icon)
+        // This could be an alternative if FB18415902 is ever fixed. We'd also need to uncomment the extra
+        // DataRepresentation below.
+        // SharePreview(name, image: self)
     }
 
     static var transferRepresentation: some TransferRepresentation {
         CodableRepresentation(contentType: .archiveEntryExtractable)
-        
+            .visibility(.ownProcess)
+
+        // This could be used for SharePreview in the future
+//        DataRepresentation(exportedContentType: .png) { entryDraggable in
+//            let icon = NSWorkspace.shared.icon(for: entryDraggable.utType)
+//            return icon.asSimpleBitmapWithBackground(width: 128, height: 128, background: NSColor.windowBackgroundColor).asPNGData()
+//        }
+//        .visibility(.ownProcess)
+
         DataRepresentation(exportedContentType: .fileURL) { entryDraggable in
             let archiveURL = entryDraggable.archiveURL
             let cacheURL = entryDraggable.cacheURL

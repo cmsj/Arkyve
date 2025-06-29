@@ -45,7 +45,7 @@ func openArchiveFromURL(_ url: URL, openWindow: OpenWindowAction) {
 
 @Observable
 @MainActor
-final class ArchiveViewModel: Identifiable {
+final class ArchiveViewModel: Identifiable, WindowAccessorDelegate {
     let id: UUID
 
     // MARK: - Managers

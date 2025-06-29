@@ -47,7 +47,7 @@ struct StatusbarView: View {
                     .padding(.vertical, 5)
                 Spacer()
                 // This is just a neat place to hide a view that populates viewModel.window
-                NSWindowAccessor(viewModel: viewModel)
+                NSWindowAccessor(delegate: viewModel)
                     .frame(width: 0, height: 0)
 #if DEBUG
                 HStack {

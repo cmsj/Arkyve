@@ -47,7 +47,7 @@ struct SplashView: View {
     @State private var selection: URL?
     private var homeDir: String
     private var glowColor = Color(red: 0.2, green: 0.576, blue: 0.807, opacity: 0.6) // 3493CE
-
+    @State private var closeHover: Bool = false
 
     init() {
         let pw = getpwuid(getuid())
@@ -56,110 +56,120 @@ struct SplashView: View {
     }
 
     var body: some View {
-        HStack(spacing: 0) {
-            ZStack {
-                Rectangle()
-                    .fill(colorScheme == .dark ? .black.opacity(0.3) : .white)
-                    .allowsHitTesting(false)
-                VStack(spacing: 0) {
+        ZStack {
+            HStack(spacing: 0) {
+                ZStack {
+                    Rectangle()
+                        .fill(colorScheme == .dark ? .black.opacity(0.3) : .white)
+                        .allowsHitTesting(false)
                     VStack(spacing: 0) {
-                        Image("Logo")
-                            .resizable()
-                            .frame(width: 103, height: 103, alignment: .center)
-                            .clipShape(.buttonBorder)
-                            .shadow(color: colorScheme == .dark ? glowColor : .clear, radius: 50)
-                            .padding([.top], 65)
-                        Text("Arkyve")
-                            .font(.system(size: 32))
-                            .fontWeight(.bold)
-                            .padding([.top], 14)
-                        Text("Version \(AppInfo.shared.version)")
-                            .font(.system(size: 14))
-                            .foregroundStyle(.secondary)
-                    }
-                    .frame(height: 278)
-                    .allowsHitTesting(false)
-//                    .border(.green)
-                    
-                    VStack(spacing: 0) {
-                        WelcomeButton(iconName: "plus.app",
-                                      text: "Create New Archive...")
-                        .onTapGesture {
-                            AKTrace("SplashView New Archive")
-                            dismissWindow()
-                            openWindow(id: "archive")
+                        CloseButton()
+                            .position(x: 18, y: 32)
+                            .ignoresSafeArea()
+                        VStack(spacing: 0) {
+                            Image("Logo")
+                                .resizable()
+                                .frame(width: 103, height: 103, alignment: .center)
+                                .clipShape(.buttonBorder)
+                                .shadow(color: colorScheme == .dark ? glowColor : .clear, radius: 50)
+                                .padding([.top], 65)
+                            Text("Arkyve")
+                                .font(.system(size: 32))
+                                .fontWeight(.bold)
+                                .padding([.top], 14)
+                            Text("Version \(AppInfo.shared.version)")
+                                .font(.system(size: 14))
+                                .foregroundStyle(.secondary)
                         }
+                        .frame(height: 278)
+                        .allowsHitTesting(false)
+                        //                    .border(.green)
                         
-                        WelcomeButton(iconName: "folder",
-                                      text: "Open Existing Archive...")
-                        .onTapGesture {
-                            AKTrace("SplashView Open Archive")
-                            dismissWindow()
-                            openArchiveFromPanel(openWindow: openWindow, wasSplash: true)
-                        }
-                        
-                        WelcomeButton(iconName: "folder",
-                                      text: "Unused")
-                        .padding([.bottom], 41)
-                        .opacity(0)
-                        
-                    }
-                    .frame(height: 238)
-//                    .border(.yellow)
-                }
-                .frame(width: 460)
-            }
-//            .border(.red)
-
-            ScrollViewReader { proxy in
-                VStack {
-                    List(selection: $selection) {
-                        ForEach(settingsManager.recents, id: \.self) { recent in
-                            HStack {
-                                Image(nsImage: NSWorkspace.shared.icon(forFile: recent.path))
-                                    .resizable()
-                                    .scaledToFit()
-                                    .frame(width: 32, height: 32)
-                                VStack(alignment: .leading) {
-                                    Text(recent.lastPathComponent)
-                                        .fontWeight(.bold)
-                                        .lineLimit(1)
-                                        .allowsTightening(true)
-                                    Text(recent.path.replacing(homeDir, with: ""))
-                                        .foregroundStyle(.secondary)
-                                        .font(.caption)
-                                        .lineLimit(1)
-                                        .allowsTightening(true)
-                                }
-                            }
-                            .listRowSeparator(.hidden)
-                            .padding(.vertical, 4)
+                        VStack(spacing: 0) {
+                            WelcomeButton(iconName: "plus.app",
+                                          text: "Create New Archive...")
                             .onTapGesture {
-                                selection = recent
-                            }
-                            .simultaneousGesture(TapGesture(count: 2).onEnded {
-                                AKTrace("Opening recent: \(recent)")
+                                AKTrace("SplashView New Archive")
                                 dismissWindow()
-                                openArchiveFromURL(recent, openWindow: openWindow)
-                            })
+                                openWindow(id: "archive")
+                            }
+                            
+                            WelcomeButton(iconName: "folder",
+                                          text: "Open Existing Archive...")
+                            .onTapGesture {
+                                AKTrace("SplashView Open Archive")
+                                dismissWindow()
+                                openArchiveFromPanel(openWindow: openWindow, wasSplash: true)
+                            }
+                            
+                            WelcomeButton(iconName: "folder",
+                                          text: "Unused")
+                            .padding([.bottom], 41)
+                            .opacity(0)
+                            
                         }
+                        .frame(height: 238)
+                        //                    .border(.yellow)
                     }
-                    .scrollContentBackground(.hidden)
-                    .ignoresSafeArea(.all)
+                    .frame(width: 460)
                 }
-                .onChange(of: settingsManager.recents, initial: true) {
-                    proxy.scrollTo(settingsManager.recents.first, anchor: .top)
+                //            .border(.red)
+                
+                ScrollViewReader { proxy in
+                    VStack {
+                        List(selection: $selection) {
+                            ForEach(settingsManager.recents, id: \.self) { recent in
+                                HStack {
+                                    Image(nsImage: NSWorkspace.shared.icon(forFile: recent.path))
+                                        .resizable()
+                                        .scaledToFit()
+                                        .frame(width: 32, height: 32)
+                                    VStack(alignment: .leading) {
+                                        Text(recent.lastPathComponent)
+                                            .fontWeight(.bold)
+                                            .lineLimit(1)
+                                            .allowsTightening(true)
+                                        Text(recent.path.replacing(homeDir, with: ""))
+                                            .foregroundStyle(.secondary)
+                                            .font(.caption)
+                                            .lineLimit(1)
+                                            .allowsTightening(true)
+                                    }
+                                }
+                                .listRowSeparator(.hidden)
+                                .padding(.vertical, 4)
+                                .onTapGesture {
+                                    selection = recent
+                                }
+                                .simultaneousGesture(TapGesture(count: 2).onEnded {
+                                    AKTrace("Opening recent: \(recent)")
+                                    dismissWindow()
+                                    openArchiveFromURL(recent, openWindow: openWindow)
+                                })
+                            }
+                        }
+                        .scrollContentBackground(.hidden)
+                        .ignoresSafeArea(.all)
+                    }
+                    .onChange(of: settingsManager.recents, initial: true) {
+                        proxy.scrollTo(settingsManager.recents.first, anchor: .top)
+                    }
                 }
             }
-        }
-        .ignoresSafeArea()
-        .frame(width: 741, height: 433)//461)
-        .onChange(of: settingsManager.autoSplashWindow) { oldValue, newValue in
-            // NOTE: This is one half of a behaviour - the other half is an equivalent onChange in ArkyveApp
-            if newValue == false && managerManager.vmStoreIsEmpty {
-                print("Closing window")
-                dismissWindow()
+            .ignoresSafeArea()
+            .frame(width: 741, height: 433)//461)
+            .onChange(of: settingsManager.autoSplashWindow) { oldValue, newValue in
+                // NOTE: This is one half of a behaviour - the other half is an equivalent onChange in ArkyveApp
+                if newValue == false && managerManager.vmStoreIsEmpty {
+                    print("Closing window")
+                    dismissWindow()
+                }
             }
+            .onReceive(NotificationCenter.default.publisher(for: NSApplication.didBecomeActiveNotification), perform: { _ in
+                NSApp.mainWindow?.standardWindowButton(.zoomButton)?.isHidden = true
+                NSApp.mainWindow?.standardWindowButton(.closeButton)?.isHidden = true
+                NSApp.mainWindow?.standardWindowButton(.miniaturizeButton)?.isHidden = true
+            })
         }
     }
 }

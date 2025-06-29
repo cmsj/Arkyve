@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct AboutView: View {
-    private var glowColor = Color(red: 0.2, green: 0.576, blue: 0.807, opacity: 0.6) // 3493CE
+    private var glowColor = Color(red: 0.984, green: 0.537, blue: 0.122, opacity: 0.6) // FB891F
 
     var body: some View {
         HStack(spacing: 0) {
@@ -37,9 +37,23 @@ struct AboutView: View {
                         Text(AppInfo.shared.copyrightNotice)
                             .padding([.top, .bottom])
                             .allowsHitTesting(false)
+
                         Divider()
                             .padding()
                             .allowsHitTesting(false)
+
+                        HStack {
+                            Spacer()
+                            Text("Icon by ")
+                            Link("Matthew Skiles", destination: URL(string: "https://matthewskiles.com")!)
+                                .font(.system(size: 14))
+                            Spacer()
+                        }
+
+                        Divider()
+                            .padding()
+                            .allowsHitTesting(false)
+
                         VStack {
                             Text("Arkyve would not be possible without the incredible work of Tim Kientzle and all the contributors to libarchive.")
                                 .multilineTextAlignment(.center)
@@ -66,7 +80,7 @@ struct AboutView: View {
             //            .border(.red)
         }
         .ignoresSafeArea()
-        .frame(width: 460, height: 433)
+        .frame(width: 460, height: 500)
     }
 }
 

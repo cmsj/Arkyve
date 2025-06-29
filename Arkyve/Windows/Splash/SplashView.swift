@@ -53,7 +53,7 @@ struct SplashView: View {
     @StateObject private var settingsManager = SettingsManager.shared
     @State private var selection: URL?
     private var homeDir: String
-    private var glowColor = Color(red: 0.2, green: 0.576, blue: 0.807, opacity: 0.6) // 3493CE
+    private var glowColor = Color(red: 0.984, green: 0.537, blue: 0.122, opacity: 0.6) // FB891F
     @State private var closeHover: Bool = false
 
     init() {

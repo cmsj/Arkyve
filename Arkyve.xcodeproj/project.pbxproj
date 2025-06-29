@@ -2503,6 +2503,15 @@
 			path = ArkyveHelp;
 			sourceTree = "<group>";
 		};
+		4FBBFED02E11EF660047D525 /* Icon Upstream */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			explicitFolders = (
+				"macOS 15",
+				"macOS 26",
+			);
+			path = "Icon Upstream";
+			sourceTree = "<group>";
+		};
 		4FD56AE92DFE8E8E00F709E0 /* ArkyveCreateAction */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
@@ -2573,6 +2582,7 @@
 		4F20840A2DEFA306004213AA = {
 			isa = PBXGroup;
 			children = (
+				4FBBFED02E11EF660047D525 /* Icon Upstream */,
 				4F288CB02DF79ADA00A4E600 /* Arkyve.xctestplan */,
 				4F2084152DEFA306004213AA /* Arkyve */,
 				4FD56AE92DFE8E8E00F709E0 /* ArkyveCreateAction */,

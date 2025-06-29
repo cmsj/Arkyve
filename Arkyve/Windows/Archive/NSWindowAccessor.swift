@@ -7,14 +7,19 @@
 
 import SwiftUI
 
+@MainActor
+protocol WindowAccessorDelegate {
+    var window: NSWindow? { get set }
+}
+
 struct NSWindowAccessor: NSViewRepresentable {
-    @State var viewModel: ArchiveViewModel
+    @State var delegate: WindowAccessorDelegate
 
     func makeNSView(context: Context) -> NSView {
         let view = NSView()
         DispatchQueue.main.async {
-            print("\(viewModel.id): Attaching NSWindow to viewModel")
-            viewModel.window = view.window   // << right after inserted in window
+            print("Attaching NSWindow to WindowAccessorDelegate")
+            delegate.window = view.window
         }
         return view
     }

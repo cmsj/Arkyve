@@ -7,6 +7,12 @@
 
 import SwiftUI
 
+@MainActor
+@Observable
+final class SplashViewModel: WindowAccessorDelegate {
+    weak var window: NSWindow? = nil
+}
+
 struct WelcomeButton: View {
     var iconName: String
     var text: String
@@ -42,6 +48,7 @@ struct SplashView: View {
     @Environment(\.dismissWindow) var dismissWindow
     @Environment(\.colorScheme) var colorScheme: ColorScheme
 
+    @State var viewModel = SplashViewModel()
     @State private var managerManager = ManagerManager.shared
     @StateObject private var settingsManager = SettingsManager.shared
     @State private var selection: URL?
@@ -57,6 +64,9 @@ struct SplashView: View {
 
     var body: some View {
         ZStack {
+            // Hide an NSWindow accessing view that we need to use to hide our traffic lights buttons
+            NSWindowAccessor(delegate: viewModel)
+                .frame(width: 0, height: 0)
             HStack(spacing: 0) {
                 ZStack {
                     Rectangle()
@@ -165,11 +175,13 @@ struct SplashView: View {
                     dismissWindow()
                 }
             }
-            .onReceive(NotificationCenter.default.publisher(for: NSApplication.didBecomeActiveNotification), perform: { _ in
-                NSApp.mainWindow?.standardWindowButton(.zoomButton)?.isHidden = true
-                NSApp.mainWindow?.standardWindowButton(.closeButton)?.isHidden = true
-                NSApp.mainWindow?.standardWindowButton(.miniaturizeButton)?.isHidden = true
-            })
+            .onChange(of: viewModel.window) { _, _ in
+                // Hide the traffic light buttons if we now have a valid NSWindow
+                guard let window = viewModel.window else { return }
+                window.standardWindowButton(.closeButton)?.isHidden = true
+                window.standardWindowButton(.zoomButton)?.isHidden = true
+                window.standardWindowButton(.miniaturizeButton)?.isHidden = true
+            }
         }
     }
 }

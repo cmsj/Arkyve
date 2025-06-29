@@ -258,7 +258,7 @@
 		</dict>
 	</array>
 	<key>CFBundleHelpBookFolder</key>
-	<string>ArkyveHelp.bundle</string>
+	<string>ArkyveHelp.help</string>
 	<key>CFBundleHelpBookName</key>
 	<string>net.tenshu.ArkyveHelp</string>
 	<key>CFBundleIconName</key>

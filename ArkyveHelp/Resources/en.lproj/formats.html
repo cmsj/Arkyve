@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <title>Supported archive formats</title>
+        <meta name="keywords" content="archive, format, zip, rar, iso, lha, lzh, 7z, tar, tar.gz, tar.bz2, tar.xz" />
+        <meta name="description" content="Supported archive formats." />
+        <meta name="robots" content="index, anchors" />
+        <link href="../shared/style.css" rel="stylesheet" type="text/css" />
+    </head>
+    <body>
+        <a name="formats-table"></a>
+        <span><img src="../shared/images/Arkyve_Logo_Small.png" alt="" />&nbsp;&nbsp;</span>
+        <span class="header">Supported archive formats</span>
+        <p>Arkyve is powered by <a href="htto://libarchibr.org">libarchive</a> and therefore supports a number of different formats of archive.</p>
+        <p>For some of these formats, Arkyve can only open and read them, but not create/save them.</p>
+        <p>You can see the details of each supported format in the table below:</p>
+        <p>&nbsp;</p>
+        <table class="formats-table">
+            <thead>
+                <tr>
+                    <th>Format name</th>
+                    <th>Filename extension</th>
+                    <th>Compression variants</th>
+                    <th>Open/Read support</th>
+                    <th>Create/Save support</th>
+                    <th>Password support</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Zip</td>
+                    <td><pre>.zip</pre></td>
+                    <td>N/A</td>
+                    <td class="yesno">✅</td>
+                    <td class="yesno">✅</td>
+                    <td class="yesno">✅</td>
+                </tr>
+                <tr>
+                    <td>Tape ARchive</td>
+                    <td><pre>.tar/.tar.gz/.tar.bz2/.tar.xz</pre></td>
+                    <td>GZip, BZip2, XZ</td>
+                    <td class="yesno">✅</td>
+                    <td class="yesno">✅</td>
+                    <td class="yesno">❌</td>
+                </tr>
+                <tr>
+                    <td>7Zip</td>
+                    <td><pre>.7z</pre></td>
+                    <td>N/A</td>
+                    <td class="yesno">✅</td>
+                    <td class="yesno">✅</td>
+                    <td class="yesno">❌</td>
+                </tr>
+                <tr>
+                    <td>ISO Image</td>
+                    <td><pre>.iso</pre></td>
+                    <td>N/A</td>
+                    <td class="yesno">✅</td>
+                    <td class="yesno">✅</td>
+                    <td class="yesno">❌</td>
+                </tr>
+                <tr>
+                    <td>CPIO</td>
+                    <td><pre>.cpio</pre></td>
+                    <td>N/A</td>
+                    <td class="yesno">✅</td>
+                    <td class="yesno">✅</td>
+                    <td class="yesno">❌</td>
+                </tr>
+                <tr>
+                    <td>eXtensible ARchive</td>
+                    <td><pre>.xar</pre></td>
+                    <td>N/A</td>
+                    <td class="yesno">✅</td>
+                    <td class="yesno">✅</td>
+                    <td class="yesno">❌</td>
+                </tr>
+                <tr>
+                    <td>RAR</td>
+                    <td>.rar</td>
+                    <td>N/A</td>
+                    <td class="yesno">✅</td>
+                    <td class="yesno">❌</td>
+                    <td class="yesno">❌</td>
+                </tr>
+                <tr>
+                    <td>SHell ARchive</td>
+                    <td>.sh</td>
+                    <td>N/A</td>
+                    <td class="yesno">✅</td>
+                    <td class="yesno">❌</td>
+                    <td class="yesno">❌</td>
+                </tr>
+                <tr>
+                    <td>Library Archive</td>
+                    <td>.a</td>
+                    <td>N/A</td>
+                    <td class="yesno">✅</td>
+                    <td class="yesno">❌</td>
+                    <td class="yesno">❌</td>
+                </tr>
+                <tr>
+                    <td>Secure Archive</td>
+                    <td>.xip</td>
+                    <td>N/A</td>
+                    <td class="yesno">✅</td>
+                    <td class="yesno">❌</td>
+                    <td class="yesno">❌</td>
+                </tr>
+                <tr>
+                    <td>Installer Package</td>
+                    <td>.pkg</td>
+                    <td>N/A</td>
+                    <td class="yesno">✅</td>
+                    <td class="yesno">❌</td>
+                    <td class="yesno">❌</td>
+                </tr>
+                <tr>
+                    <td>LhA</td>
+                    <td>.lha</td>
+                    <td>N/A</td>
+                    <td class="yesno">✅</td>
+                    <td class="yesno">❌</td>
+                    <td class="yesno">❌</td>
+                </tr>
+                <tr>
+                    <td>LZH</td>
+                    <td>.lzh</td>
+                    <td>N/A</td>
+                    <td class="yesno">✅</td>
+                    <td class="yesno">❌</td>
+                    <td class="yesno">❌</td>
+                </tr>
+                <tr>
+                    <td>Microsoft Cabinet</td>
+                    <td>.cab</td>
+                    <td>N/A</td>
+                    <td class="yesno">✅</td>
+                    <td class="yesno">❌</td>
+                    <td class="yesno">❌</td>
+                </tr>
+                <tr>
+                    <td>Web Archive</td>
+                    <td>.webarchive</td>
+                    <td>N/A</td>
+                    <td class="yesno">✅</td>
+                    <td class="yesno">❌</td>
+                    <td class="yesno">❌</td>
+                </tr>
+            </tbody>
+        </table>
+    </body>
+</html>

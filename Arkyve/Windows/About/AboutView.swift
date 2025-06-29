@@ -8,13 +8,14 @@
 import SwiftUI
 
 struct AboutView: View {
+    @Environment(\.colorScheme) var colorScheme: ColorScheme
     private var glowColor = Color(red: 0.984, green: 0.537, blue: 0.122, opacity: 0.6) // FB891F
 
     var body: some View {
         HStack(spacing: 0) {
             ZStack {
                 Rectangle()
-                    .fill(.black.opacity(0.3))
+                    .fill(colorScheme == .dark ? .black.opacity(0.3) : .white)
                     .allowsHitTesting(false)
                 VStack(spacing: 0) {
                     VStack(spacing: 0) {
@@ -22,7 +23,7 @@ struct AboutView: View {
                             .resizable()
                             .frame(width: 103, height: 103, alignment: .center)
                             .clipShape(.buttonBorder)
-                            .shadow(color: glowColor, radius: 50)
+                            .shadow(color: colorScheme == .dark ? glowColor : .clear, radius: 50)
                             .padding([.top], 30)
                             .allowsHitTesting(false)
                         Text("Arkyve")

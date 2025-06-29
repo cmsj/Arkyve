@@ -1213,6 +1213,7 @@
       }
     },
     "Filters: %@" : {
+      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {
@@ -1277,6 +1278,7 @@
       }
     },
     "Format: %@" : {
+      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {
@@ -1363,9 +1365,6 @@
           }
         }
       }
-    },
-    "ID (Debug)" : {
-      "shouldTranslate" : false
     },
     "If this is true, extracted entries will be placed in the equivalent folder hierarchy as they were in the archive. If this is false, the chosen entries will be extracted without any additional parent folders" : {
       "localizations" : {
@@ -1703,6 +1702,7 @@
       }
     },
     "Path (Debug)" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -1932,6 +1932,7 @@
       }
     },
     "Show debug UI" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -1983,6 +1984,7 @@
       }
     },
     "Source (Debug)" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -2390,6 +2392,7 @@
       }
     },
     "UUID (Debug)" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {

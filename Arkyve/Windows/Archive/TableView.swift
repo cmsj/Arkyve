@@ -53,12 +53,14 @@ struct TableView: View {
                     .accessibilityLabel("Name")
                     .accessibilityValue(entry.name)
                 }
+                .width(ideal: 350)
                 .disabledCustomizationBehavior(.visibility)
                 .customizationID("name")
                 TableColumn("Size", value: \ArchiveEntry.sizeStringHuman) { entry in
                     Text(entry.sizeStringHuman)
                         .foregroundStyle(.secondary)
                 }
+                .width(ideal: 50)
                 .customizationID("sizeStringHuman")
                 .alignment(.trailing)
                 TableColumn("Size (bytes)", value: \ArchiveEntry.sizeString) { entry in
@@ -92,6 +94,7 @@ struct TableView: View {
                         .accessibilityLabel("Date Modified")
                         .accessibilityValue(settingsManager.relativeDates ? entry.mtime.finderFormattedRelative : entry.mtime.finderFormatted)
                 }
+                .width(ideal: 80)
                 .customizationID("mtime")
 
                 TableColumn("Date Changed", value: \ArchiveEntry.ctime.finderFormatted) { entry in

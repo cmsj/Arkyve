@@ -2546,13 +2546,6 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		4F5E6EC62E0F043800A3D9C4 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		4FD56AE52DFE8E8E00F709E0 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -5991,8 +5984,6 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 4F5E6ECC2E0F043800A3D9C4 /* Build configuration list for PBXNativeTarget "ArkyveHelp" */;
 			buildPhases = (
-				4F5E6EC52E0F043800A3D9C4 /* Sources */,
-				4F5E6EC62E0F043800A3D9C4 /* Frameworks */,
 				4F5E6EC72E0F043800A3D9C4 /* Resources */,
 				4F5E6ED92E0F078400A3D9C4 /* Re-index Help Book */,
 			);
@@ -6178,13 +6169,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 		4F20841D2DEFA307004213AA /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		4F5E6EC52E0F043800A3D9C4 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -6684,25 +6668,19 @@
 		4F5E6ECA2E0F043800A3D9C4 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = VQCYSNZB89;
 				ENABLE_USER_SCRIPT_SANDBOXING = NO;
-				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = ArkyveHelp/Info.plist;
-				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
-				INFOPLIST_KEY_NSPrincipalClass = "";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Bundles";
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = net.tenshu.ArkyveHelp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				SWIFT_EMIT_LOC_STRINGS = YES;
-				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				SWIFT_VERSION = 6.0;
 				WRAPPER_EXTENSION = help;
 			};
 			name = Debug;
@@ -6710,24 +6688,19 @@
 		4F5E6ECB2E0F043800A3D9C4 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = VQCYSNZB89;
 				ENABLE_USER_SCRIPT_SANDBOXING = NO;
-				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = ArkyveHelp/Info.plist;
-				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
-				INFOPLIST_KEY_NSPrincipalClass = "";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Bundles";
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = net.tenshu.ArkyveHelp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				SWIFT_EMIT_LOC_STRINGS = YES;
-				SWIFT_VERSION = 6.0;
 				WRAPPER_EXTENSION = help;
 			};
 			name = Release;

@@ -8,6 +8,8 @@
 	<string>index.html</string>
 	<key>HPDBookCSIndexPath</key>
 	<string>ArkyveHelp.cshelpindex</string>
+	<key>HPDBookIconPath</key>
+	<string>shared/images/Arkyve_Logo.png</string>
 	<key>HPDBookIndexPath</key>
 	<string>ArkyveHelp.helpindex</string>
 	<key>HPDBookKBProduct</key>

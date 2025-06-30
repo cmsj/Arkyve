@@ -74,6 +74,8 @@ struct ArkyveApp: App {
             // NOTE: This is one half of a behaviour - the other half is an equivalent onChange in SplashView
             if isEmpty && settingsManager.autoSplashWindow && !AppInfo.shared.isRunningUnitTests {
                 openWindow(id: "splash")
+            }
+            if isEmpty {
                 // We'll use this opportunity to clear any lingering cached things
                 ScopedURLManager.dropSBM.clear()
                 CacheManager.dropCache.removeAll(ofType: .drop)

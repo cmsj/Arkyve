@@ -56,7 +56,7 @@ func extract(_ archiveModel: ArchiveViewModel) async throws -> URL? {
         let expectedRootEntryURL = outputFolderURL.appendingPathComponent(rootEntryName)
 
         guard let returnURL = writtenURLs.first(where: { $0.path == expectedRootEntryURL.path }) else {
-            NSLog("ERROR: Unable to find a matching written URL for the root archive entry")
+            NSLog("ERROR: Unable to find a matching written URL for the root archive entry for: \(expectedRootEntryURL) in \(writtenURLs)")
             return nil
         }
 
@@ -67,7 +67,7 @@ func extract(_ archiveModel: ArchiveViewModel) async throws -> URL? {
 
 class ActionRequestHandler: NSObject, NSExtensionRequestHandling {
     func beginRequest(with context: NSExtensionContext) {
-        NSLog("beginRequest(): Starting up... (v21)")
+        NSLog("beginRequest(): Starting up... (v22)")
 
         // Get the input item
         guard let inputItem = context.inputItems.first as? NSExtensionItem else {
@@ -140,7 +140,10 @@ class ActionRequestHandler: NSObject, NSExtensionRequestHandling {
                                 // Now we're in a Task we have an async context, so we can finally call our
                                 // extraction helper function from above
                                 archiveModel = await ManagerManager.shared.createVM(url: url)
+                                try await archiveModel.waitForArchiveProgressTask()
+
                                 let writtenURL = try await extract(archiveModel)
+                                NSLog("beginRequest(): Task extract returned URL: \(writtenURL?.path ?? "nil")")
                                 await ManagerManager.shared.removeVM(archiveModel)
                                 completionHandler(writtenURL, false, nil)
                             } catch {

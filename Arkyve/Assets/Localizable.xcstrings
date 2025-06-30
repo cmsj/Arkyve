@@ -288,6 +288,7 @@
 
     },
     "Add files/folders to: ${inputArchive}" : {
+      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {
@@ -595,6 +596,7 @@
       }
     },
     "Convert ${inputArchive} to ${destinationFolder}/${outputArchiveFilename}${format}" : {
+      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {
@@ -675,6 +677,7 @@
       }
     },
     "Create ${destinationFolder}/${archiveFilename}${format}" : {
+      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {
@@ -979,6 +982,7 @@
       }
     },
     "Extract ${entryPaths} from ${inputFile} to ${destinationFolder}" : {
+      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {
@@ -995,6 +999,7 @@
       }
     },
     "Extract ${inputFile} to ${destinationFolder}" : {
+      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {
@@ -1570,6 +1575,7 @@
       }
     },
     "List the contents of ${inputFile}" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {

@@ -6137,12 +6137,12 @@
 			outputFileListPaths = (
 			);
 			outputPaths = (
-				"${BUILT_PRODUCTS_DIR}/${PRODUCT_NAME}.bundle/Contents/Resources/en.lproj/ArkyveHelp.cshelpindex",
-				"${BUILT_PRODUCTS_DIR}/${PRODUCT_NAME}.bundle/Contents/Resources/en.lproj/ArkyveHelp.helpindex",
+				"${BUILT_PRODUCTS_DIR}/${PRODUCT_NAME}.help/Contents/Resources/en.lproj/ArkyveHelp.cshelpindex",
+				"${BUILT_PRODUCTS_DIR}/${PRODUCT_NAME}.help/Contents/Resources/en.lproj/ArkyveHelp.helpindex",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "set -x\n\ncd \"${BUILT_PRODUCTS_DIR}/${PRODUCT_NAME}.bundle/Contents/Resources\"\n\nfor LANGUAGE in *.lproj;\ndo\n  pushd \"${LANGUAGE}\"\n  hiutil -I corespotlight -Caf \"${PRODUCT_NAME}.cshelpindex\" -vv .\n  hiutil -I lsm -Caf \"${PRODUCT_NAME}.helpindex\" -vv .\n  hiutil -I corespotlight -Tvf \"${PRODUCT_NAME}.cshelpindex\"\n  popd\ndone\n";
+			shellScript = "set -x\n\ncd \"${BUILT_PRODUCTS_DIR}/${PRODUCT_NAME}.help/Contents/Resources\"\n\nfor LANGUAGE in *.lproj;\ndo\n  pushd \"${LANGUAGE}\"\n  ls\n  hiutil -I corespotlight -Caf \"${PRODUCT_NAME}.cshelpindex\" -vv .\n  hiutil -I lsm -Caf \"${PRODUCT_NAME}.helpindex\" -vv .\n  hiutil -I corespotlight -Tvf \"${PRODUCT_NAME}.cshelpindex\"\n  popd\ndone\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 

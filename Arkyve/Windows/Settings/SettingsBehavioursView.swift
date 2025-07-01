@@ -101,5 +101,20 @@ struct SettingsBehavioursView: View {
             .padding(.vertical)
             Spacer()
         }
+        .overlay {
+            VStack {
+                Spacer()
+                HStack {
+                    Spacer()
+                    HelpLink(anchor: "advanced")
+                        .padding()
+                }
+            }
+        }
     }
+}
+
+#Preview {
+    SettingsView()
+        .environmentObject(SettingsManager.shared)
 }

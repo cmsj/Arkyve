@@ -2360,6 +2360,7 @@
 		4F5E6ED52E0F064000A3D9C4 /* Exceptions for "ArkyveHelp" folder in "ArkyveHelp" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
+				"/Localized: Resources/add.html",
 				"/Localized: Resources/advanced.html",
 				"/Localized: Resources/existing.html",
 				"/Localized: Resources/formats.html",

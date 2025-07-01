@@ -26,7 +26,7 @@ struct CacheManager {
     let baseURL: URL
     var cacheURLs: [CacheType: URL] = [:]
 
-    static let dropCache = CacheManager(for: UUID())
+    static let dropCache = CacheManager(for: UUID(uuidString: "00000000-0000-0000-0000-000000000000")!)
 
     init(for baseID: UUID) {
         self.baseID = baseID

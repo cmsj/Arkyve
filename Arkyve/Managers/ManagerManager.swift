@@ -71,15 +71,21 @@ final class ManagerManager: ManagerManagerProtocol, Sendable {
         vm.cacheManager.removeCacheDirectories()
         cmStore.removeAll { $0.baseID == id }
 
+        possibleAppTermination()
+    }
+
+    func possibleAppTermination() {
         if isQuitting && vmStoreIsEmpty {
             // We are terminating and we've run out of view models, let's clear the drag&drop cache/SBM
-            print("ManagerManager: App termination detected, clearing drag&drop cache/SBM")
-            
+            AKTrace("ManagerManager: App termination detected, clearing drag&drop cache/SBM")
+
             CacheManager.dropCache.removeCacheDirectories()
             ScopedURLManager.dropSBM.clear()
+        } else {
+            AKTrace("ManagerManager: App termination not finalised yet")
         }
     }
-    
+
     /// Return a previous ArchiveViewModel for a given ID, or create a new one for it
     /// - Parameter possibleID: A UUID representing the view model
     /// - Returns: A view model

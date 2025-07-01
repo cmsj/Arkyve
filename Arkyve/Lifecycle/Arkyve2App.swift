@@ -19,6 +19,14 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         }
         return true
     }
+
+    func applicationWillTerminate(_ aNotification: Notification) {
+        AKTrace("AppDelegate:applicationWillTerminate")
+        let managerManager = ManagerManager.shared
+        managerManager.isQuitting = true
+
+        managerManager.possibleAppTermination()
+    }
 }
 
 @main
@@ -75,6 +83,8 @@ struct ArkyveApp: App {
             if isEmpty && settingsManager.autoSplashWindow && !AppInfo.shared.isRunningUnitTests {
                 openWindow(id: "splash")
             }
+        }
+        .onChange(of: managerManager.vmStoreIsEmpty, initial: false) { wasEmpty, isEmpty in
             if isEmpty {
                 // We'll use this opportunity to clear any lingering cached things
                 ScopedURLManager.dropSBM.clear()

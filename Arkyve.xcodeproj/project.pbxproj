@@ -2365,6 +2365,7 @@
 				"/Localized: Resources/existing.html",
 				"/Localized: Resources/formats.html",
 				"/Localized: Resources/index.html",
+				"/Localized: Resources/new_folder.html",
 				"/Localized: Resources/new.html",
 				"/Localized: Resources/otherways.html",
 				Resources/shared,

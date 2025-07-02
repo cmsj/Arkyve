@@ -77,7 +77,7 @@ struct SplashView: View {
                             .position(x: 18, y: 32)
                             .ignoresSafeArea()
                         VStack(spacing: 0) {
-                            Image("Logo")
+                            Image(.arkyveLogo)
                                 .resizable()
                                 .frame(width: 103, height: 103, alignment: .center)
                                 .clipShape(.buttonBorder)

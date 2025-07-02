@@ -2363,6 +2363,7 @@
 				"/Localized: Resources/add.html",
 				"/Localized: Resources/advanced.html",
 				"/Localized: Resources/existing.html",
+				"/Localized: Resources/extracting.html",
 				"/Localized: Resources/formats.html",
 				"/Localized: Resources/index.html",
 				"/Localized: Resources/new_folder.html",

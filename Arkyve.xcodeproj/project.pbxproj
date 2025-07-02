@@ -2368,6 +2368,7 @@
 				"/Localized: Resources/new_folder.html",
 				"/Localized: Resources/new.html",
 				"/Localized: Resources/otherways.html",
+				"/Localized: Resources/saving.html",
 				Resources/shared,
 			);
 			target = 4F5E6EC82E0F043800A3D9C4 /* ArkyveHelp */;

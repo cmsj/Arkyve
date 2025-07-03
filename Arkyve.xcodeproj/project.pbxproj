@@ -2373,6 +2373,7 @@
 				"/Localized: Resources/otherways.html",
 				"/Localized: Resources/renaming.html",
 				"/Localized: Resources/saving.html",
+				"/Localized: Resources/settings.html",
 				"/Localized: Resources/shortcuts.html",
 				Resources/shared,
 			);

@@ -2369,6 +2369,7 @@
 				"/Localized: Resources/new_folder.html",
 				"/Localized: Resources/new.html",
 				"/Localized: Resources/otherways.html",
+				"/Localized: Resources/renaming.html",
 				"/Localized: Resources/saving.html",
 				Resources/shared,
 			);

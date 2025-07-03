@@ -2366,6 +2366,7 @@
 				"/Localized: Resources/extracting.html",
 				"/Localized: Resources/formats.html",
 				"/Localized: Resources/index.html",
+				"/Localized: Resources/metadata.html",
 				"/Localized: Resources/new_folder.html",
 				"/Localized: Resources/new.html",
 				"/Localized: Resources/otherways.html",

@@ -17,6 +17,8 @@ struct TableView: View {
     @AppStorage("ArchiveEntryTableConfig") private var columnCustomization: TableColumnCustomization<ArchiveEntry>
 
     @FocusState var renameEntryFocus: UUID?
+    @FocusState var uidEntryFocus: UUID?
+    @FocusState var gidEntryFocus: UUID?
 
     var body: some View {
         // NOTE: This @Bindable is an ugly hack: https://www.hackingwithswift.com/books/ios-swiftui/sharing-observable-objects-through-swiftuis-environment
@@ -175,14 +177,24 @@ struct TableView: View {
                 .customizationID("perms")
                 .defaultVisibility(.hidden)
                 TableColumn("UID", value: \ArchiveEntry.uidString) { entry in
-                    Text(entry.uidString)
+                    @Bindable var entry = entry
+                    TextField(entry.uidString, text: $entry.uidString)
+                        .focused($uidEntryFocus, equals: entry.id)
                         .foregroundStyle(.secondary)
+                        .onChange(of: entry.uid) {
+                            viewModel.setDirty()
+                        }
                 }
                 .customizationID("uid")
                 .defaultVisibility(.hidden)
                 TableColumn("GID", value: \ArchiveEntry.gidString) { entry in
-                    Text(entry.gidString)
+                    @Bindable var entry = entry
+                    TextField(entry.gidString, text: $entry.gidString)
+                        .focused($gidEntryFocus, equals: entry.id)
                         .foregroundStyle(.secondary)
+                        .onChange(of: entry.gid) {
+                            viewModel.setDirty()
+                        }
                 }
                 .customizationID("gid")
                 .defaultVisibility(.hidden)

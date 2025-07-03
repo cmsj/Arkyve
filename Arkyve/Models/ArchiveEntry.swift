@@ -117,9 +117,11 @@ class ArchiveEntry: Identifiable {
 
     var uidString: String {
         get { uid != nil ? "\(uid!)" : "--" }
+        set { uid = Int64(newValue) ?? nil }
     }
     var gidString: String {
         get { gid != nil ? "\(gid!)" : "--" }
+        set { gid = Int64(newValue) ?? nil }
     }
 
     var type: ArchiveEntryType

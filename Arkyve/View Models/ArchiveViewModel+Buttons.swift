@@ -43,6 +43,11 @@ extension ArchiveViewModel {
     }
 
     func addButton(on: ArchiveEntry.ID? = nil) {
+        guard let window else {
+            AKError("Internal error: missing window reference")
+            return
+        }
+
         var parentEntry = entryForID(on ?? root.id)
         if parentEntry != nil && parentEntry!.children == nil {
             parentEntry = parentForEntry(parentEntry!) ?? root
@@ -55,14 +60,18 @@ extension ArchiveViewModel {
         panel.canChooseDirectories = true
         panel.prompt = "Select files/folders to add"
 
-        if panel.runModal() == .OK {
-            do {
-                try scopedURLManager.store(panel.urls, forOperation: .addFiles)
-                try addFiles(from: panel.urls, parent: parentEntry)
-                sort()
-                parentEntry?.isExpanded = true
-            } catch {
-                errors.err(error)
+        panel.beginSheetModal(for: window) { response in
+            if response == .OK {
+                do {
+                    try self.scopedURLManager.store(panel.urls, forOperation: .addFiles)
+                    try self.addFiles(from: panel.urls, parent: parentEntry)
+                    self.sort()
+                    parentEntry?.isExpanded = true
+                } catch let error as ArkyveError {
+                    self.errors.err(error)
+                } catch {
+                    self.errors.err(.init(.addFiles, msg: error.localizedDescription))
+                }
             }
         }
     }

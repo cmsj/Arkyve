@@ -2364,6 +2364,7 @@
 				"/Localized: Resources/advanced.html",
 				"/Localized: Resources/existing.html",
 				"/Localized: Resources/extracting.html",
+				"/Localized: Resources/finder.html",
 				"/Localized: Resources/formats.html",
 				"/Localized: Resources/index.html",
 				"/Localized: Resources/metadata.html",
@@ -2372,6 +2373,7 @@
 				"/Localized: Resources/otherways.html",
 				"/Localized: Resources/renaming.html",
 				"/Localized: Resources/saving.html",
+				"/Localized: Resources/shortcuts.html",
 				Resources/shared,
 			);
 			target = 4F5E6EC82E0F043800A3D9C4 /* ArkyveHelp */;

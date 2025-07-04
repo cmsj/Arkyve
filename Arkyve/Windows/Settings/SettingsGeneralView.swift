@@ -38,13 +38,17 @@ struct SettingsPathsView: View {
                     }
                     GridRow {
                         Text("Default format:")
-                        Picker("", selection: $settingsManager.newArchiveFormat) {
-                            ForEach(ArkyveFormats.writeableCases, id: \.self) { format in
-                                Text(format.description)
-                                    .tag(format.rawValue)
+                        HStack {
+                            Picker("", selection: $settingsManager.newArchiveFormat) {
+                                ForEach(ArkyveFormats.writeableCases, id: \.self) { format in
+                                    Text(format.description)
+                                        .tag(format.rawValue)
+                                }
                             }
+                            .labelsHidden()
+
+                            HelpLink(anchor: "formats-table", book: "net.tenshu.ArkyveHelp")
                         }
-                        .labelsHidden()
                     }
                     GridRow {
                         Color.clear

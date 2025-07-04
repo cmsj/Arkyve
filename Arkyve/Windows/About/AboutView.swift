@@ -19,7 +19,7 @@ struct AboutView: View {
                     .allowsHitTesting(false)
                 VStack(spacing: 0) {
                     VStack(spacing: 0) {
-                        Image("Logo")
+                        Image(.arkyveLogo)
                             .resizable()
                             .frame(width: 103, height: 103, alignment: .center)
                             .clipShape(.buttonBorder)

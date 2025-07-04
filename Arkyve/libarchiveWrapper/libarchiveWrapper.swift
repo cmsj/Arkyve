@@ -241,10 +241,15 @@ actor libarchiveWrapper {
         try readArchiveFD.openRead(path: path)
         defer { readArchiveFD.close() }
 
-        let headers = try await readHeaders(entryLimit: entryLimit)
+        var headers = try await readHeaders(entryLimit: entryLimit)
         let format = readFormat()
         let filters = readFilters()
 
+        if format == .ISO9660 || format == .ISO9660_RR {
+            // ISO images always contain an extra header for "." that represents the root of the volume itself.
+            // We'll discard this here because it tends to significantly confuse matters later.
+            headers = headers.filter { $0.path != "." }
+        }
         return (format, filters, headers)
     }
 

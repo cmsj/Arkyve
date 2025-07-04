@@ -298,7 +298,7 @@ final class ArchiveViewModel: Identifiable, WindowAccessorDelegate {
     }
 
     func rootEntryName() -> String? {
-        NSLog("rootEntryName(): \(root.children?.count ?? -1), \(root.children?.first?.path ?? "UNKNOWN")")
+        NSLog("rootEntryName(): \(root.children?.count ?? -1) children, first path: \(root.children?.first?.path ?? "UNKNOWN")")
         if let count = root.children?.count, count > 1 { return nil }
         return root.children?.first?.pathComponents.last
     }

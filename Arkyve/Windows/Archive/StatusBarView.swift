@@ -18,7 +18,7 @@ struct StatusbarView: View {
 
         VStack {
             HStack {
-                Image("custom.pencil.slash")
+                Image(.customPencilSlash)
                     .foregroundStyle(.secondary)
                     .padding(7)
                     .padding(.leading, 2)

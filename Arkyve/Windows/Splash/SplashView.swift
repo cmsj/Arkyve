@@ -77,7 +77,7 @@ struct SplashView: View {
                             .position(x: 18, y: 32)
                             .ignoresSafeArea()
                         VStack(spacing: 0) {
-                            Image("Logo")
+                            Image(.arkyveLogo)
                                 .resizable()
                                 .frame(width: 103, height: 103, alignment: .center)
                                 .clipShape(.buttonBorder)
@@ -127,6 +127,11 @@ struct SplashView: View {
                 
                 ScrollViewReader { proxy in
                     VStack {
+                        Text("Recent archives:")
+                            .fontWeight(.bold)
+                            .textCase(.uppercase)
+                            .foregroundStyle(.secondary)
+                            .padding([.top])
                         List(selection: $selection) {
                             ForEach(settingsManager.recents, id: \.self) { recent in
                                 HStack {
@@ -159,15 +164,15 @@ struct SplashView: View {
                             }
                         }
                         .scrollContentBackground(.hidden)
-                        .ignoresSafeArea(.all)
                     }
+                    .ignoresSafeArea(.all)
                     .onChange(of: settingsManager.recents, initial: true) {
                         proxy.scrollTo(settingsManager.recents.first, anchor: .top)
                     }
                 }
             }
             .ignoresSafeArea()
-            .frame(width: 741, height: 433)//461)
+            .frame(width: 741, height: 433)
             .onChange(of: settingsManager.autoSplashWindow) { oldValue, newValue in
                 // NOTE: This is one half of a behaviour - the other half is an equivalent onChange in ArkyveApp
                 if newValue == false && managerManager.vmStoreIsEmpty {

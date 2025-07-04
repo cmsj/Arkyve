@@ -29,7 +29,6 @@ struct ToolbarContentView: CustomizableToolbarContent {
             } label: {
                 Label("Stop", systemImage: "stop.circle")
                     .symbolRenderingMode(renderingMode)
-                    .padding()
             }
             .disabled(viewModel.progressTask == nil)
             .help("Stop the current task")
@@ -43,7 +42,6 @@ struct ToolbarContentView: CustomizableToolbarContent {
             } label: {
                 Label("Add", systemImage: "plus")
                     .symbolRenderingMode(renderingMode)
-                    .padding()
             }
             .help("Add files/folders to this archive")
             .disabled(viewModel.disableAdd)
@@ -52,9 +50,8 @@ struct ToolbarContentView: CustomizableToolbarContent {
             Button {
                 viewModel.extractButton()
             } label: {
-                Label("Extract...", image: "custom.arrow.down.rectangle.stack")
+                Label("Extract", image: "custom.arrow.down.rectangle.stack")
                     .symbolRenderingMode(renderingMode)
-                    .padding()
             }
             .help("Extract selected files/folders")
             .disabled(viewModel.disableExtract)
@@ -63,9 +60,8 @@ struct ToolbarContentView: CustomizableToolbarContent {
             Button {
                 viewModel.renameButton()
             } label: {
-                Label("Rename...", systemImage: "character.cursor.ibeam")
+                Label("Rename", systemImage: "character.cursor.ibeam")
                     .symbolRenderingMode(.hierarchical)
-                    .padding()
             }
             .help("Rename selected file/folder")
             .disabled(viewModel.disableRename)
@@ -76,7 +72,6 @@ struct ToolbarContentView: CustomizableToolbarContent {
             } label: {
                 Label("Delete", systemImage: "trash")
                     .symbolRenderingMode(renderingMode)
-                    .padding()
             }
             .help("Delete selected files/folders")
             .disabled(viewModel.disableDelete)

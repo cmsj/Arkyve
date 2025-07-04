@@ -67,6 +67,7 @@ struct ArkyveQuickLookView: View {
                         .accessibilityLabel("Name")
                         .accessibilityValue(entry.name)
                     }
+                    .width(ideal: 100)
                     .disabledCustomizationBehavior(.visibility)
                     .customizationID("name")
 
@@ -74,6 +75,7 @@ struct ArkyveQuickLookView: View {
                         Text(entry.sizeStringHuman)
                             .foregroundStyle(.secondary)
                     }
+                    .width(ideal: 50)
                     .customizationID("sizeStringHuman")
                     .alignment(.trailing)
 
@@ -99,6 +101,7 @@ struct ArkyveQuickLookView: View {
                             .accessibilityLabel("Date Modified")
                             .accessibilityValue(entry.mtime.finderFormatted)
                     }
+                    .width(ideal: 150)
                     .customizationID("mtime")
 
                     TableColumn("Date Changed", value: \ArchiveEntry.ctime.finderFormatted) { entry in
@@ -171,6 +174,9 @@ struct ArkyveQuickLookView: View {
             } rows: {
                 QLTableRowTreeContent(node: viewModel.root)
             }
+        }
+        .onChange(of: viewModel.sortOrder) { _, _ in
+            viewModel.sort()
         }
     }
 }

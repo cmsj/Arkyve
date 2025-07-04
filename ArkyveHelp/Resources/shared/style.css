@@ -23,6 +23,26 @@ a {
     color: var(--link);
     text-decoration: none;
 }
+
+picture.screenshot {
+    display: inline-block;
+    width: 600px;
+}
+
+picture.screenshot img {
+    width: 100%;
+    height: auto;
+}
+
+picture.screenshot-highlight {
+    display: inline-block;
+    width: 100px;
+}
+picture.screenshpt-highlight img {
+    width: 100%;
+    height: auto;
+}
+
 .title {
     font-family: "Lucida Grande", Arial, Helvetica, sans-serif;
     font-weight: 700;

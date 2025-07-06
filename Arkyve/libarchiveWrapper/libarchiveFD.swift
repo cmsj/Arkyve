@@ -169,7 +169,7 @@ struct libarchiveFD {
             throw .init(.writeArchive, msg: String(localized: "Unable to set format: \(errorString)"))
         }
 
-        if let passphrase, format == .ZIP {
+        if let passphrase, passphrase != "", format == .ZIP {
             AKTrace("Setting passphrase")
             archive_write_set_options(archive, "zip:encryption=aes256")
             archive_write_set_passphrase(archive, passphrase)

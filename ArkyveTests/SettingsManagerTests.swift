@@ -33,10 +33,10 @@ final class SettingsManagerTests {
     
     func testRecentsManagement() {
         // Test adding and managing recent items
-        let url1 = URL(fileURLWithPath: "/test/path1")
-        let url2 = URL(fileURLWithPath: "/test/path2")
-        let url3 = URL(fileURLWithPath: "/test/path3")
-        
+        let url1 = URLBookmark(url: URL(fileURLWithPath: "/test/path1"), bookmarkData: Data())
+        let url2 = URLBookmark(url: URL(fileURLWithPath: "/test/path2"), bookmarkData: Data())
+        let url3 = URLBookmark(url: URL(fileURLWithPath: "/test/path3"), bookmarkData: Data())
+
         // Add URLs
         settingsManager.addRecent(url1)
         settingsManager.addRecent(url2)

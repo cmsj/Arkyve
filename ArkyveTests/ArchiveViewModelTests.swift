@@ -77,7 +77,7 @@ final class ArchiveViewModelTests {
         defer { try? FileManager.default.removeItem(at: tempFile) }
         
         // Save the archive
-        viewModel.saveArchiveWithTask(to: tempFile)
+        viewModel.saveArchiveWithTask(to: URLBookmark(url: tempFile, bookmarkData: Data()))
 
         try await viewModel.waitForArchiveProgressTask()
 

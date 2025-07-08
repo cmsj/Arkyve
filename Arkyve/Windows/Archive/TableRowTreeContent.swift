@@ -21,7 +21,7 @@ struct TableRowTreeContent: TableRowContent {
                 }
                 .draggable(child.asExtractable(from: viewModel.diskURL, archivePassphrase: viewModel.passphraseAtLoad, cacheURL: viewModel.cacheURL, vmID: viewModel.id))
                 .dropDestination(for: DropItem.self) { items in
-                    print("DisclosureTableRow: dropDestination")
+                    print("DisclosureTableRow: dropDestination, \(items.count) items")
                     viewModel.handleManyDrops(on: child.id, items: items)
                 }
             } else {

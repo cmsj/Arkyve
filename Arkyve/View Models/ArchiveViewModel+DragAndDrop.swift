@@ -145,7 +145,7 @@ extension ArchiveViewModel {
     func handleFileURLDrop(at index: Int? = nil, on entryID: UUID? = nil, fileURL: URL) {
         print("HANDLING FILEURL DROPPED AT \(index ?? -1) on \(entryID?.uuidString ?? "unknown"): \(fileURL)")
 
-        guard let scopedURL = try? ScopedURLManager.dropSBM.bookmarkScopedURL(fileURL) else {
+        guard let scopedURL = try? ScopedURLManager.dropSBM.bookmarkScopedURL(fileURL, forOperation: .drop) else {
             errors.err(.init(.drop, msg: "Unable to find URL bookmark for \(fileURL)"))
             return
         }

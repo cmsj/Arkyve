@@ -48,7 +48,7 @@ struct MenuCommands: Commands {
                         AKTrace("Open Recent Menu: \(url)")
                         openArchiveFromURL(url, openWindow: openWindow)
                     }) {
-                        Text(url.lastPathComponent)
+                        Text(url.url.lastPathComponent)
                     }
                 }
                 Divider()
@@ -58,6 +58,9 @@ struct MenuCommands: Commands {
                     Text("Clear Menu")
                 }
                 .disabled(settingsManager.recents.isEmpty)
+            }
+            .onAppear {
+                settingsManager.checkRecents()
             }
         }
 

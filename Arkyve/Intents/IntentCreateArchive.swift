@@ -62,7 +62,7 @@ struct IntentCreate: AppIntent {
         if let inputFiles = filesToAdd?.compactMap({ $0.fileURL }) {
             try await vm.addFiles(from: inputFiles)
         }
-        await vm.saveArchiveWithTask(to: outputURL,
+        await vm.saveArchiveWithTask(to: URLBookmark(url: outputURL, bookmarkData: Data()),
                              overrideFormat: format.arkyveFormat.libarchiveFormat,
                              overrideFilters: format.arkyveFormat.libarchiveFilters,
                              addToRecents: false)

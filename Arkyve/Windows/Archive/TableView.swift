@@ -247,7 +247,7 @@ struct TableView: View {
             viewModel.buildCuttable(entryIDs: viewModel.selectedEntries)
         })
         .onPasteCommand(of: [.archiveEntryExtractable, .fileURL], perform: { providers in
-            viewModel.processDrop(for: providers)
+            viewModel.processDrop(on: viewModel.selectedEntries.first, for: providers)
         })
         .opacity(isEnabled ? 1.0 : 0.5)
         .contextMenu(forSelectionType: ArchiveEntry.ID.self) { items in

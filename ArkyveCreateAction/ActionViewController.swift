@@ -71,7 +71,7 @@ func processContext(_ context: NSExtensionContext, archiveName: String, archiveF
         Task.detached {
             NSLog("processContext(): In detached task, saving archive...")
             do {
-                await vm.saveArchiveWithTask(to: writtenURL, addToRecents: false)
+                await vm.saveArchiveWithTask(to: URLBookmark(url: writtenURL, bookmarkData: Data()), addToRecents: false)
                 try await vm.waitForArchiveProgressTask()
 
                 await ManagerManager.shared.removeAllVMs()

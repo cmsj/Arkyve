@@ -51,7 +51,7 @@ struct SplashView: View {
     @State var viewModel = SplashViewModel()
     @State private var managerManager = ManagerManager.shared
     @StateObject private var settingsManager = SettingsManager.shared
-    @State private var selection: URL?
+    @State private var selection: URLBookmark?
     private var homeDir: String
     private var glowColor = Color(red: 0.984, green: 0.537, blue: 0.122, opacity: 0.6) // FB891F
     @State private var closeHover: Bool = false
@@ -135,16 +135,16 @@ struct SplashView: View {
                         List(selection: $selection) {
                             ForEach(settingsManager.recents, id: \.self) { recent in
                                 HStack {
-                                    Image(nsImage: NSWorkspace.shared.icon(forFile: recent.path))
+                                    Image(nsImage: NSWorkspace.shared.icon(forFile: recent.url.path))
                                         .resizable()
                                         .scaledToFit()
                                         .frame(width: 32, height: 32)
                                     VStack(alignment: .leading) {
-                                        Text(recent.lastPathComponent)
+                                        Text(recent.url.lastPathComponent)
                                             .fontWeight(.bold)
                                             .lineLimit(1)
                                             .allowsTightening(true)
-                                        Text(recent.path.replacing(homeDir, with: ""))
+                                        Text(recent.url.path.replacing(homeDir, with: ""))
                                             .foregroundStyle(.secondary)
                                             .font(.caption)
                                             .lineLimit(1)
@@ -186,6 +186,11 @@ struct SplashView: View {
                 window.standardWindowButton(.closeButton)?.isHidden = true
                 window.standardWindowButton(.zoomButton)?.isHidden = true
                 window.standardWindowButton(.miniaturizeButton)?.isHidden = true
+            }
+            .onAppear {
+                withAnimation {
+                    settingsManager.checkRecents()
+                }
             }
         }
     }

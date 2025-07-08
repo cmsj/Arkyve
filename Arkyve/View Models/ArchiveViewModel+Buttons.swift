@@ -84,7 +84,8 @@ extension ArchiveViewModel {
         }
 
         guard let diskURL else { return }
-        saveArchiveWithTask(to: diskURL, savePassphrase: self.passphraseToSave)
+        guard let bookmarkData = ScopedURLManager.bookmarkDataFromURL(diskURL) else { return }
+        saveArchiveWithTask(to: URLBookmark(url: diskURL, bookmarkData: bookmarkData), savePassphrase: self.passphraseToSave)
     }
 
     func saveAsButton() {
@@ -113,12 +114,15 @@ extension ArchiveViewModel {
 
                     AKTrace("Save As to \(destURL) (format: \(selectedArkyveFormat))")
 
+                    let bookmarkData = ScopedURLManager.bookmarkDataFromURL(destURL) ?? Data()
+                    let urlBookmark = URLBookmark(url: destURL, bookmarkData: bookmarkData)
+
                     if self.diskURL != nil && !self.dirty && self.format == selectedFormat && self.filters == selectedFilters {
                         // This is a performance optimisation
                         // The archive/format/filters haven't changed, so just copy the existing file
-                        self.copyArchive(to: destURL)
+                        self.copyArchive(to: urlBookmark)
                     } else {
-                        self.saveArchiveWithTask(to: destURL, overrideFormat: selectedFormat, overrideFilters: selectedFilters, savePassphrase: self.passphraseToSave)
+                        self.saveArchiveWithTask(to: urlBookmark, overrideFormat: selectedFormat, overrideFilters: selectedFilters, savePassphrase: self.passphraseToSave)
                     }
                 }
             }

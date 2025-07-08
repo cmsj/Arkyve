@@ -66,7 +66,7 @@ struct IntentConvertArchive: AppIntent {
         try await vm.waitForArchiveProgressTask()
 
         NSLog("perform(): Saving to \(outputURL) as \(format.arkyveFormat.description)")
-        await vm.saveArchiveWithTask(to: outputURL,
+        await vm.saveArchiveWithTask(to: URLBookmark(url: outputURL, bookmarkData: Data()),
                              overrideFormat: format.arkyveFormat.libarchiveFormat,
                              overrideFilters: format.arkyveFormat.libarchiveFilters,
                              addToRecents: false)

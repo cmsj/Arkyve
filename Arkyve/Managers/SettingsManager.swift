@@ -66,12 +66,17 @@ final class SettingsManager: ObservableObject {
     @AppStorage(Keys.showDebugUI.id)      var showDebugUI: Bool               = Keys.showDebugUI.defaultValue as! Bool
 #endif
 
-    var recents: [URL] {
+    var recents: [URLBookmark] {
         get {
-            (try? JSONDecoder().decode([URL].self, from: recentsData)) ?? []
+            if let decoded = try? JSONDecoder().decode([URLBookmark].self, from: recentsData) {
+//                NSLog("Decoded recents from: \(String(data: recentsData, encoding: .utf8)!)")
+                return decoded
+            }
+            return []
         }
         set {
             recentsData = (try? JSONEncoder().encode(newValue)) ?? Data()
+//            NSLog("Encoded recents to: \(String(data: recentsData, encoding: .utf8)!)")
         }
     }
 
@@ -93,8 +98,8 @@ final class SettingsManager: ObservableObject {
         return newFolderURL.appendingPathComponent(newArchiveFilename)
     }
 
-    func addRecent(_ url: URL) {
-        if let index = recents.firstIndex(of: url) {
+    func addRecent(_ url: URLBookmark) {
+        if let index = recents.firstIndex(where: { $0.url == url.url }) {
             // We're opening something already in recents, bump it to the top
             recents.remove(at: index)
         }
@@ -107,5 +112,9 @@ final class SettingsManager: ObservableObject {
 
     func clearRecents() {
         recents.removeAll()
+    }
+
+    func checkRecents() {
+        recents.removeAll { !FileManager.default.fileExists(atPath: $0.url.path) }
     }
 }

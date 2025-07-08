@@ -67,7 +67,11 @@ struct ArkyveApp: App {
                     }
 
                     managerManager.reInitVM(lastDefaultID, for: url)
-                    settingsManager.addRecent(url)
+                    if let bookmarkData = ScopedURLManager.bookmarkDataFromURL(url) {
+                        settingsManager.addRecent(URLBookmark(url: url, bookmarkData: bookmarkData))
+                    } else {
+                        AKError("Unable to store recent URL due to lack of bookmark data")
+                    }
                     dismissWindow(id: "splash")
                 }
         } defaultValue: {

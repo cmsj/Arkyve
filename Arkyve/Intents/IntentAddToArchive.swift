@@ -61,7 +61,7 @@ struct IntentAddToArchive: AppIntent {
 
         // Save the archive. We're overriding the format here to ensure we're saving in a variant we trust
         NSLog("perform(): Saving archive...")
-        await vm.saveArchiveWithTask(to: inputArchiveURL,
+        await vm.saveArchiveWithTask(to: URLBookmark(url: inputArchiveURL, bookmarkData: Data()),
                              overrideFormat: arkyveFormat.libarchiveFormat,
                              overrideFilters: arkyveFormat.libarchiveFilters,
                              addToRecents: false)

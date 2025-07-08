@@ -8,13 +8,21 @@
 import SwiftUI
 
 @MainActor
-func openArchiveFromURL(_ url: URL, openWindow: OpenWindowAction) {
+func openArchiveFromURL(_ requestedURL: URLBookmark, openWindow: OpenWindowAction) {
     var vm: ArchiveViewModel?
+
+    guard let url = ScopedURLManager.urlFromBookmarkData(requestedURL.bookmarkData, for: requestedURL.url) else {
+        AKError("Unable to restore URL from bookmark data")
+        return
+    }
+
+    let urlBookmark = URLBookmark(url: url, bookmarkData: requestedURL.bookmarkData)
+
     vm = ManagerManager.shared.findVM(url)
 
     if vm == nil {
-        vm = ManagerManager.shared.createVM(url: url)
-        SettingsManager.shared.addRecent(url)
+        vm = ManagerManager.shared.createVM(url: urlBookmark.url)
+        SettingsManager.shared.addRecent(urlBookmark)
     }
     openWindow(id: "archive", value: vm!.id)
 }
@@ -30,8 +38,13 @@ func openArchiveFromURL(_ url: URL, openWindow: OpenWindowAction) {
     if panel.runModal() == .OK {
         if let url = panel.url {
             AKTrace("Open Menu: \(url)")
-            openArchiveFromURL(url, openWindow: openWindow)
-            return true
+            if let bookmarkData = ScopedURLManager.bookmarkDataFromURL(url) {
+                let bookmark = URLBookmark(url: url, bookmarkData: bookmarkData)
+                openArchiveFromURL(bookmark, openWindow: openWindow)
+                return true
+            } else {
+                AKError("Unable to open archive from panel URL due to bookmark creation failure")
+            }
         }
     }
 

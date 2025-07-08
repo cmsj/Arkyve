@@ -209,7 +209,7 @@ extension ArchiveViewModel {
         setDirty()
     }
 
-    func saveArchiveWithTask(to: URL, overrideFormat: libarchiveFormat = .Unknown, overrideFilters: [libarchiveFilter] = [.None], addToRecents: Bool = true, savePassphrase: String? = nil) {
+    func saveArchiveWithTask(to: URLBookmark, overrideFormat: libarchiveFormat = .Unknown, overrideFilters: [libarchiveFilter] = [.None], addToRecents: Bool = true, savePassphrase: String? = nil) {
         errors.clear()
 
         var savePassphrase = savePassphrase
@@ -247,7 +247,7 @@ extension ArchiveViewModel {
         let loader = libarchiveWrapper(url: diskURL, passphrase: passphraseAtLoad)
 
         // We will write out the archive to a cache location and then move it into place only if we succeed
-        let writeCacheURL = cacheManager.urlForItem(cacheType: .write, itemName: to.lastPathComponent)
+        let writeCacheURL = cacheManager.urlForItem(cacheType: .write, itemName: to.url.lastPathComponent)
 
         withProgressTask { [self] in
             let (_, _, headerMap) = metadataForSaving(overrideFormat: overrideFormat, overrideFilters: overrideFilters)
@@ -257,12 +257,12 @@ extension ArchiveViewModel {
 
                 AKTrace("Moving archive cache to final destination: \(writeCacheURL) -> \(to)")
                 do {
-                    _ = try FileManager.default.replaceItemAt(to, withItemAt: writeCacheURL, options: [.usingNewMetadataOnly])
+                    _ = try FileManager.default.replaceItemAt(to.url, withItemAt: writeCacheURL, options: [.usingNewMetadataOnly])
                 } catch {
                     do {
                         // This is a fallback for replaceItemAt() above, which will fail in situations such as the source and
                         // destination files not being on the same volume.
-                        try FileManager.default.moveItem(at: writeCacheURL, to: to)
+                        try FileManager.default.moveItem(at: writeCacheURL, to: to.url)
                     } catch {
                         throw ArkyveError.init(.writeArchive, msg: error.localizedDescription)
                     }
@@ -292,7 +292,7 @@ extension ArchiveViewModel {
         return (format, filters, headerMap)
     }
 
-    func didSave(to: URL, format toFormat: libarchiveFormat, filters toFilters: [libarchiveFilter], addToRecents: Bool = true, savePassphrase: String? = nil) {
+    func didSave(to: URLBookmark, format toFormat: libarchiveFormat, filters toFilters: [libarchiveFilter], addToRecents: Bool = true, savePassphrase: String? = nil) {
         // Having written the archive, we should no longer have any entries of source type .Filesystem
         // So we'll update our entries to switch them to .Archive
         // Same for .InMemory directories
@@ -315,12 +315,12 @@ extension ArchiveViewModel {
             }
         }
 
-        name = to.lastPathComponent
+        name = to.url.lastPathComponent
         format = toFormat
         filters = toFilters
 
         setClean()
-        diskURL = to
+        diskURL = to.url
 
         if let savePassphrase, savePassphrase != "" {
             self.passphraseAtLoad = savePassphrase
@@ -332,17 +332,22 @@ extension ArchiveViewModel {
         }
 
         if addToRecents {
-            settingsManager.addRecent(to)
+            guard let bookmarkData = ScopedURLManager.bookmarkDataFromURL(to.url) else {
+                AKError("Unable to retrieve bookmark data in didSave")
+                return
+            }
+            let bookmark = URLBookmark(url: to.url, bookmarkData: bookmarkData)
+            settingsManager.addRecent(bookmark)
         }
     }
 
-    func copyArchive(to: URL, addToRecents: Bool = true) {
+    func copyArchive(to: URLBookmark, addToRecents: Bool = true) {
         guard let diskURL else { return }
 
         withProgressTask { [self] in
             do {
                 AKTrace("Copying \(diskURL) to \(to)")
-                try FileManager.default.copyItem(at: diskURL, to: to)
+                try FileManager.default.copyItem(at: diskURL, to: to.url)
                 didSave(to: to, format: format, filters: filters, addToRecents: addToRecents)
             } catch {
                 errors.err(.init(.writeArchive, msg: error.localizedDescription))

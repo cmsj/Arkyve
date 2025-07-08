@@ -8,20 +8,15 @@
 import Foundation
 import Synchronization
 
-struct Bookmark {
-    let data: Data
-    let options: URL.BookmarkCreationOptions
-}
-
-struct URLBookmark {
+struct URLBookmark: Codable, Hashable {
     let url: URL
-    let bookmark: Bookmark
+    let bookmarkData: Data
 }
 
 final class ScopedURLManager: Sendable {
-    let options: URL.BookmarkCreationOptions = [.withSecurityScope,
-                                                .securityScopeAllowOnlyReadAccess,
-                                                .withoutImplicitSecurityScope]
+    let options: URL.BookmarkCreationOptions = [.withSecurityScope]
+//                                                .securityScopeAllowOnlyReadAccess,
+//                                                .withoutImplicitSecurityScope]
     let urlStore: Mutex<[URLBookmark]> = .init([])
     let baseID: UUID
 
@@ -51,7 +46,7 @@ final class ScopedURLManager: Sendable {
                 }
                 let result = url.startAccessingSecurityScopedResource()
                 let bookmarkData = try url.bookmarkData(options: options, includingResourceValuesForKeys: [])
-                urls.append(.init(url: url, bookmark: Bookmark(data: bookmarkData, options: options)))
+                urls.append(.init(url: url, bookmarkData: bookmarkData))
                 AKTrace("\(baseID): Stored security scope for: \(url) (doing: \(forOperation))")
                 if result {
                     AKTrace("\(baseID): Started security scope for: \(url) (doing: \(forOperation))")
@@ -80,30 +75,52 @@ final class ScopedURLManager: Sendable {
         }
     }
 
-    func bookmarkScopedURL(_ requestedURL: URL) throws(ArkyveError) -> URL {
-        AKTrace("\(baseID): Fetching bookmarked scoped URL for \(requestedURL)")
-        var options = URL.BookmarkResolutionOptions()
+    static func bookmarkDataFromURL(_ url: URL) -> Data? {
+        do {
+            return try url.bookmarkData(options: [.withSecurityScope], includingResourceValuesForKeys: [])
+        } catch {
+            AKError("Unable to restore bookmark data for \(url): \(error.localizedDescription)")
+            return nil
+        }
+    }
 
-        guard let storedBookmark = urlStore.withLock({ urlBookmarks in
+    static func urlFromBookmarkData(_ data: Data, for requestedURL: URL) -> URL? {
+        var url: URL? = nil
+
+        do {
+            var stale = false
+            url = try URL(resolvingBookmarkData: data, options: [.withSecurityScope], relativeTo: nil, bookmarkDataIsStale: &stale)
+            if stale {
+                guard let freshData = bookmarkDataFromURL(requestedURL) else {
+                    throw ArkyveError(.scopedURLRefresh, msg: "Unable to refresh bookmark data for \(requestedURL)")
+                }
+                url = try URL(resolvingBookmarkData: freshData, options: [.withSecurityScope], relativeTo: nil, bookmarkDataIsStale: &stale)
+            }
+        } catch {
+            AKError("Unable to fetch URL from bookmark data for \(requestedURL): \(error.localizedDescription)")
+            return nil
+        }
+
+        return url
+    }
+
+    func bookmarkScopedURL(_ requestedURL: URL, forOperation: ArkyveError.ErrorKind) throws(ArkyveError) -> URL {
+        AKTrace("\(baseID): Fetching bookmarked scoped URL for \(requestedURL)")
+        let options: URL.BookmarkResolutionOptions = [.withSecurityScope]
+
+        guard let storedBookmarkData = urlStore.withLock({ urlBookmarks in
             urlBookmarks.first { urlBookmark in
                 urlBookmark.url == requestedURL
-            }?.bookmark
+            }?.bookmarkData
         }) else {
             throw .init(.urlCache, msg: "Unable to find bookmark for URL: \(requestedURL)")
-        }
-
-        if storedBookmark.options.contains(.withSecurityScope) {
-            options.insert(.withSecurityScope)
-        }
-        if storedBookmark.options.contains(.withoutImplicitSecurityScope) {
-            options.insert(.withoutImplicitStartAccessing)
         }
 
         var stale = false
         let scopedURL: URL
 
         do {
-            scopedURL = try URL(resolvingBookmarkData: storedBookmark.data,
+            scopedURL = try URL(resolvingBookmarkData: storedBookmarkData,
                                 options: options, relativeTo: nil,
                                 bookmarkDataIsStale: &stale)
         } catch {
@@ -112,7 +129,7 @@ final class ScopedURLManager: Sendable {
 
         if stale {
             let _ = scopedURL.startAccessingSecurityScopedResource()
-            try store(requestedURL, forOperation: .scopedURLRefresh)
+            try store(requestedURL, forOperation: forOperation)
         }
 
         _ = scopedURL.startAccessingSecurityScopedResource()

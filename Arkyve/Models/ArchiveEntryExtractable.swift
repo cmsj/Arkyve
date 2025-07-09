@@ -8,13 +8,14 @@ import SwiftUI
 import UniformTypeIdentifiers
 
 struct ArchiveEntryExtractable: Codable, Transferable {
-    let vmID: UUID
+    var vmID: UUID? = nil
     let archiveURL: URL?
-    let archivePassphrase: String?
-    let cacheURL: URL
+    var archivePassphrase: String? = nil
+    var cacheURL: URL? = nil
     let selectedPath: String
     let id: UUID
     let name: String
+    let flatSelf: ArchiveEntryFlat
     let entries: [ArchiveEntryFlat]
     var isCopied: Bool = false
 
@@ -43,7 +44,8 @@ struct ArchiveEntryExtractable: Codable, Transferable {
 //        }
 //        .visibility(.ownProcess)
 
-        DataRepresentation(exportedContentType: .fileURL) { entryDraggable in
+        FileRepresentation(contentType: .data, shouldAttemptToOpenInPlace: true) { entryDraggable in
+            AKTrace("User dragged a data FileRepresentation")
             let archiveURL = entryDraggable.archiveURL
             let cacheURL = entryDraggable.cacheURL
             let archiveIsNew = entryDraggable.archiveURL == nil
@@ -51,7 +53,7 @@ struct ArchiveEntryExtractable: Codable, Transferable {
             let loader = libarchiveWrapper(url: archiveURL, passphrase: nil)
 
             do {
-                let writtenURLs = try await loader.extract([entryDraggable], toFolder: cacheURL, archiveIsNew: archiveIsNew)
+                let writtenURLs = try await loader.extract([entryDraggable], toFolder: cacheURL!, archiveIsNew: archiveIsNew)
                 guard writtenURLs.count > 0 else {
                     throw ArkyveError(.extract, msg: String(localized: "Zero entries extracted"))
                 }
@@ -62,11 +64,30 @@ struct ArchiveEntryExtractable: Codable, Transferable {
                     throw ArkyveError(.entries, msg: String(localized: "Unable to retrieve written URLs"))
                 }
 
-                return firstURL.dataRepresentation
+                return SentTransferredFile(firstURL, allowAccessingOriginalFile: true)
             } catch let error as ArkyveError {
                 AKError(error.localizedDescription)
                 throw error
             }
+        } importing: { receivedFile in
+            var sourceURL: URL = receivedFile.file
+            AKTrace("User dragged a file (proxy): \(sourceURL)")
+
+            // FIXME: In Testflight I'm seeing the non-caching path get permission denied errors. Is our security scoped access going away?
+            try ScopedURLManager.dropSBM.store(sourceURL, forOperation: .drop) // This should fix ^^
+
+            if sourceURL.path.hasPrefix("/var") {
+                // We are likely receiving something in a weird private temporary folder
+                // (e.g. a screenshot preview drag). Copy it to our drop cache
+                AKTrace("Detected transient file in private cache folder, copying to drop cache: \(sourceURL)")
+                sourceURL = try CacheManager.dropCache.cacheDropURL(sourceURL)
+                try ScopedURLManager.dropSBM.store(sourceURL, forOperation: .drop)
+            }
+
+            guard let entry = try? ArchiveEntry(from: sourceURL, pathInArchiveComponents: []) else {
+                throw ArkyveError(.entries, msg: String(localized: "Unable to add \(sourceURL.path)"))
+            }
+            return entry.asExtractable(from: sourceURL, archivePassphrase: nil, cacheURL: nil, vmID: nil)
         }
     }
 }

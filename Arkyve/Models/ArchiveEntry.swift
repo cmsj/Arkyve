@@ -384,12 +384,13 @@ class ArchiveEntry: Identifiable {
         return libarchiveHeader(source: source, type: type, path: path, name: name, pathComponents: pathComponents, size: size, atime: atime, ctime: ctime, mtime: mtime, btime: btime, uid: uid, gid: gid, perms: perms, symlinkTarget: symlinkTarget, rdev: rdev, isEncrypted: isEncrypted)
     }
 
-    func asExtractable(from archiveURL: URL?, archivePassphrase: String?, cacheURL: URL, vmID: UUID) -> ArchiveEntryExtractable {
+    func asExtractable(from archiveURL: URL?, archivePassphrase: String?, cacheURL: URL? = nil, vmID: UUID? = nil) -> ArchiveEntryExtractable {
         return ArchiveEntryExtractable(vmID: vmID, archiveURL: archiveURL, archivePassphrase: archivePassphrase,
                                        cacheURL: cacheURL,
                                        selectedPath: self.path,
                                        id: self.id,
                                        name: self.name,
+                                       flatSelf: self.flatSelf(),
                                        entries: self.flatChildren(),
                                        utType: self.utType
         )

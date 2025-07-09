@@ -236,7 +236,7 @@ struct TableView: View {
         } rows: {
             TableRowTreeContent(viewModel: viewModel, node: viewModel.root)
         }
-        .dropDestination(for: DropItem.self) { items, _  in
+        .dropDestination(for: ArchiveEntryExtractable.self) { items, _  in
             print("Table: dropDestination")
             viewModel.handleManyDrops(items: items)
             return true

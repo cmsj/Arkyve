@@ -20,7 +20,7 @@ struct TableRowTreeContent: TableRowContent {
                     TableRowTreeContent(viewModel: viewModel, node: child)
                 }
                 .draggable(child.asExtractable(from: viewModel.diskURL, archivePassphrase: viewModel.passphraseAtLoad, cacheURL: viewModel.cacheURL, vmID: viewModel.id))
-                .dropDestination(for: DropItem.self) { items in
+                .dropDestination(for: ArchiveEntryExtractable.self) { items in
                     print("DisclosureTableRow: dropDestination, \(items.count) items")
                     viewModel.handleManyDrops(on: child.id, items: items)
                 }
@@ -29,9 +29,9 @@ struct TableRowTreeContent: TableRowContent {
                     .draggable(child.asExtractable(from: viewModel.diskURL, archivePassphrase: viewModel.passphraseAtLoad, cacheURL: viewModel.cacheURL, vmID: viewModel.id))
             }
         }
-        .onInsert(of: [.archiveEntryExtractable, .fileURL]) { index, providers in
-            print("TableRowTreeContent: onInsert")
-            viewModel.processDrop(at: index, on: node.id, for: providers)
-        }
+//        .onInsert(of: [.archiveEntryExtractable, .fileURL]) { index, providers in
+//            print("TableRowTreeContent: onInsert")
+//            viewModel.processDrop(at: index, on: node.id, for: providers)
+//        }
     }
 }

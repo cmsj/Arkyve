@@ -12,7 +12,8 @@ extension ArchiveViewModel {
     // MARK: - Drag and drop (high level)
     func processDrop(at index: Int? = nil, on entryID: ArchiveEntry.ID? = nil, for providers: [NSItemProvider]) {
         for provider in providers {
-            _ = provider.loadTransferable(type: DropItem.self, completionHandler: { result in
+            // This won't work for external things though?
+            _ = provider.loadTransferable(type: ArchiveEntryExtractable.self, completionHandler: { result in
                 Task { @MainActor in
                     switch result {
                     case .success(let item):
@@ -25,15 +26,14 @@ extension ArchiveViewModel {
         }
     }
 
-    func handleManyDrops(on entryID: UUID? = nil, items: [DropItem]) {
+    func handleManyDrops(on entryID: UUID? = nil, items: [ArchiveEntryExtractable]) {
         for item in items {
-            switch (item) {
-            case .entry(let entryExtractable):
-                handleEntryDrop(on: entryID, entryExtractable: entryExtractable)
-            case .file(let url):
-                handleFileURLDrop(on: entryID, fileURL: url)
-            default:
-                errors.err(.init(.drop, msg: "Unknown drop type"))
+            print("handleManyDrops: \(item)")
+            if item.vmID == nil {
+                print("handleManyDrops: GOT A NEW FILE")
+                handleFileURLDrop(on: entryID, fileURL: item.flatSelf.source.url)
+            } else {
+                handleEntryDrop(on: entryID, entryExtractable: item)
             }
         }
     }
@@ -42,10 +42,14 @@ extension ArchiveViewModel {
     func handleEntryDrop(at index: Int? = nil, on entryID: UUID? = nil, entryExtractable: ArchiveEntryExtractable) {
         print("HANDLING ENTRY DROPPED at \(index ?? -1) on \(entryID?.uuidString ?? "unknown"): \(entryExtractable)")
 
+        guard entryExtractable.vmID != nil else {
+            AKError("NIL VMID, UNABLE TO PROCEED: \(entryExtractable)")
+            return
+        }
         // Check if this is a drag coming from another window, if it is we will extract it from that archive and then treat it as a file drop
         if entryExtractable.vmID != self.id {
             AKTrace("\(self.id): Handling entry drop from another window, extracting to cache...")
-            guard let vendorVM = ManagerManager.shared.findVM(entryExtractable.vmID) else {
+            guard let vendorVM = ManagerManager.shared.findVM(entryExtractable.vmID ?? UUID()) else { // FIXME: Remove the ?? UUID()
                 self.errors.err(.init(.drop, msg: "Unable to find source archive for \(entryExtractable.name)"))
                 return
             }

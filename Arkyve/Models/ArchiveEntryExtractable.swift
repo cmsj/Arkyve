@@ -71,7 +71,7 @@ struct ArchiveEntryExtractable: Codable, Transferable {
             }
         } importing: { receivedFile in
             var sourceURL: URL = receivedFile.file
-            AKTrace("User dragged a file (proxy): \(sourceURL)")
+            AKTrace("User dropped a file (proxy): \(sourceURL)")
 
             // FIXME: In Testflight I'm seeing the non-caching path get permission denied errors. Is our security scoped access going away?
             try ScopedURLManager.dropSBM.store(sourceURL, forOperation: .drop) // This should fix ^^

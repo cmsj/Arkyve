@@ -1387,6 +1387,7 @@
       }
     },
     "Internal error, adding entry to edge node" : {
+      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {
@@ -1429,6 +1430,7 @@
       }
     },
     "Internal error: Duplicate synthetic directory" : {
+      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {

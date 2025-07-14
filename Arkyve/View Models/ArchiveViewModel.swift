@@ -88,8 +88,7 @@ final class ArchiveViewModel: Identifiable, WindowAccessorDelegate {
     private(set) var didTruncate: Bool = false
     var offerTopDirectory: Bool {
         // Should extraction offer to create a directory?
-        guard let children = root.children else { return false }
-        switch children.count {
+        switch root.children.count {
         case 0, 1:
             return false
         default:
@@ -254,8 +253,8 @@ final class ArchiveViewModel: Identifiable, WindowAccessorDelegate {
                     case .always:
                         self.entries.forEach { $0.isExpanded = true }
                     case .oneOnly:
-                        if root.children?.count == 1, root.children?.first?.type == .directory {
-                            root.children?.first?.isExpanded = true
+                        if root.children.count == 1, root.children.first?.type == .directory {
+                            root.children.first?.isExpanded = true
                         }
                     case .never:
                         break
@@ -306,14 +305,14 @@ final class ArchiveViewModel: Identifiable, WindowAccessorDelegate {
 
     func parentForEntry(_ entry: ArchiveEntry) -> ArchiveEntry? {
         return entries.first(where: { item in
-            item.children?.contains { $0.id == entry.id } ?? false
+            item.children.contains { $0.id == entry.id }
         })
     }
 
     func rootEntryName() -> String? {
-        NSLog("rootEntryName(): \(root.children?.count ?? -1) children, first path: \(root.children?.first?.path ?? "UNKNOWN")")
-        if let count = root.children?.count, count > 1 { return nil }
-        return root.children?.first?.pathComponents.last
+        NSLog("rootEntryName(): \(root.children.count) children, first path: \(root.children.first?.path ?? "UNKNOWN")")
+        if root.children.count > 1 { return nil }
+        return root.children.first?.pathComponents.last
     }
 
     func pathList() -> [String] {

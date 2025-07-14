@@ -47,7 +47,7 @@ extension ArchiveViewModel {
     }
 
     func newFolder(at parentID: UUID) -> UUID? {
-        if let parentEntry = self.entryForID(parentID), parentEntry.children != nil {
+        if let parentEntry = self.entryForID(parentID), parentEntry.canHostChildren {
             let name = "Untitled Folder"
             let pathComponents = parentEntry.pathComponents + [name]
             let path = pathComponents.joined(separator: "/")
@@ -61,7 +61,7 @@ extension ArchiveViewModel {
                                                uid: Int64(getuid()), gid: Int64(getgid()),
                                                perms: mode_t.directory, isEncrypted: false)
             let entry = ArchiveEntry(entryHeader)
-            parentEntry.children?.append(entry)
+            parentEntry.children.append(entry)
             entries.append(entry)
 
             if settingsManager.folderExpansion == .always {
@@ -189,14 +189,14 @@ extension ArchiveViewModel {
         // FIXME: We're removing from the tree here, but do we need to track all the children and remove them from self.entries too?
         // Remove entries from the root tree structure by traversing the tree
         func removeFromTree(_ node: ArchiveEntry) {
-            if node.children != nil {
-                // Remove any direct children that match
-                node.children?.removeAll { entriesToRemove.contains($0.id) }
+            guard node.canHostChildren else { return }
 
-                // Recursively check remaining children
-                for child in node.children ?? [] {
-                    removeFromTree(child)
-                }
+            // Remove any direct children that match
+            node.children.removeAll { entriesToRemove.contains($0.id) }
+
+            // Recursively check remaining children
+            for child in node.children {
+                removeFromTree(child)
             }
         }
 
@@ -431,7 +431,7 @@ extension ArchiveViewModel {
     }
 
     func extractAll(toFolder: URL, retainFullPath: Bool = false) async throws(ArkyveError) -> [URL] {
-        guard let rootEntries = root.children else { throw ArkyveError(.extract, msg: "Unable to find archive contents")}
+        let rootEntries = root.children
         let extractables = extractablesForEntries(rootEntries)
 
         return try await extractSome(extractables: extractables, toFolder: toFolder,
@@ -491,21 +491,21 @@ extension ArchiveViewModel {
             //                parent.children?.contains(where: { $0.id == entry.id }) ?? false
             //            })
             if let parent {
-                parent.children?.removeAll { $0.id == entry.id }
+                parent.children.removeAll { $0.id == entry.id }
                 return
             }
 
             // Except in the case of root level items, because archive.root isn't in archive.entries
-            if root.children?.first(where: { $0.id == entry.id }) != nil {
+            if root.children.first(where: { $0.id == entry.id }) != nil {
                 // We didn't find the parent in entries, which suggests it's a root item
-                root.children?.removeAll { $0.id == entry.id }
+                root.children.removeAll { $0.id == entry.id }
             }
         }
 
         func updateChildrenPathComponents(of entry: ArchiveEntry, replacing: [String], with: [String]) {
-            for child in entry.children ?? [] {
+            for child in entry.children {
                 child.pathComponents = child.pathComponents.replacing(replacing, with: with)
-                if child.children != nil {
+                if child.canHostChildren {
                     updateChildrenPathComponents(of: child, replacing: replacing, with: with)
                 }
             }
@@ -518,7 +518,7 @@ extension ArchiveViewModel {
         entry.pathComponents = newParent.pathComponents + [entry.name]
 
         // 5. Add to new parent
-        newParent.children?.append(entry)
+        newParent.children.append(entry)
 
         // Any child entries also need to have their path updated
         if entry.type == .directory {

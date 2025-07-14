@@ -49,7 +49,7 @@ extension ArchiveViewModel {
         }
 
         var parentEntry = entryForID(on ?? root.id)
-        if parentEntry != nil && parentEntry!.children == nil {
+        if parentEntry != nil && !parentEntry!.canHostChildren {
             parentEntry = parentForEntry(parentEntry!) ?? root
         }
 
@@ -196,8 +196,6 @@ extension ArchiveViewModel {
     }
 
     func extractAllButton() {
-        guard let chosenEntries = root.children else { return }
-
         guard let panel = prepareExtractPanel(overrideTopDirectory: offerTopDirectory) else { return }
         panel.prompt = "Extract All"
 
@@ -212,7 +210,7 @@ extension ArchiveViewModel {
                     destURL = destURL.appendingPathComponent(name.deletingPathExtension)
                 }
 
-                extractEntriesWithConfirmation(chosenEntries, destURL: destURL, retainFullPath: retainFullPath)
+                extractEntriesWithConfirmation(root.children, destURL: destURL, retainFullPath: retainFullPath)
             }
         }
     }

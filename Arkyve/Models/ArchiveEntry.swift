@@ -14,7 +14,10 @@ import SwiftUI
 class ArchiveEntry: Identifiable {
     private(set) var id = UUID()
     var source: ArchiveEntrySource
-    var children: [ArchiveEntry]? = nil
+    var children: [ArchiveEntry] = []//? = nil
+    var canHostChildren: Bool {
+        get { type.canHostChildren }
+    }
 
     // Archives don't always contain entries for directories, but the files in them still contain nested paths
     // We'll have to synthesize directories for those, and track which ones they are
@@ -301,22 +304,18 @@ class ArchiveEntry: Identifiable {
     }
 
     @discardableResult func addChildHierarchically(_ entry: ArchiveEntry) throws(ArkyveError) -> [ArchiveEntry] {
-        guard [.directory, .root].contains(self.type) else {
+        guard canHostChildren else {
             AKError("addChildHierarchically called on: \(self.type.userString)")
             throw .init(.entries, msg: String(localized: "Internal error, adding entry to non-directory"))
-        }
-        guard self.children != nil else {
-            AKError("addChildHierarchically found an uninitialised children array")
-            throw .init(.entries, msg: String(localized: "Internal error, adding entry to edge node"))
         }
 
         var syntheticEntries: [ArchiveEntry] = []
 
         // We're the root and the entry isn't a root item, so find which of our children's trees this entry belongs to and dispatch it to them to handle
         if type == .root && entry.pathComponents.count > 1 {
-            if let dispatchIndex = children?.firstIndex(where: { $0.type == .directory && $0.name == entry.pathComponents.first }) {
+            if let dispatchIndex = children.firstIndex(where: { $0.type == .directory && $0.name == entry.pathComponents.first }) {
                 // We have a child already that contains the next part of the item's path, so add it there
-                syntheticEntries += try children?[dispatchIndex].addChildHierarchically(entry) ?? []
+                syntheticEntries += try children[dispatchIndex].addChildHierarchically(entry)
             } else {
                 // We do not currently have a child that contains the next part of the item's path, so create a synthetic one
                 let synthPath = entry.pathComponents.first!
@@ -325,8 +324,8 @@ class ArchiveEntry: Identifiable {
                 let tmpEntry = ArchiveEntry(syntheticDirectory: synthPath)
                 syntheticEntries.append(tmpEntry)
 
-                self.children?.append(tmpEntry)
-                syntheticEntries += try children?[children!.count - 1].addChildHierarchically(entry) ?? []
+                self.children.append(tmpEntry)
+                syntheticEntries += try children[children.count - 1].addChildHierarchically(entry)
             }
             return syntheticEntries
         }
@@ -335,22 +334,20 @@ class ArchiveEntry: Identifiable {
         if pathComponents == entry.pathComponents.dropLast() || entry.pathComponents.count == 1 {
             // First we need to check if this entry is a directory because we might already have created a synthetic one.
             // If we have, we'll need to reparent its children to us and remove it.
-            if let dispatchIndex = children?.firstIndex(where: { $0.name == entry.name && $0.type == .directory && $0.source.type == .Synthetic }) {
+            if let dispatchIndex = children.firstIndex(where: { $0.name == entry.name && $0.type == .directory && $0.source.type == .Synthetic }) {
                 AKTrace("Replacing synthetic subdirectory \(entry.path)")
-                guard let duplicate = children?[dispatchIndex] else {
-                    throw .init(.readArchive, msg: String(localized: "Internal error: Duplicate synthetic directory"))
-                }
+                let duplicate = children[dispatchIndex]
                 entry.children = duplicate.children
-                _ = self.children?.remove(at: dispatchIndex)
+                _ = self.children.remove(at: dispatchIndex)
             }
-            self.children?.append(entry)
+            self.children.append(entry)
             return syntheticEntries
         }
 
         // This entry should belong to one of our children, figure out which to dispatch it to
         let relativePath = entry.pathComponents.subtractPath(pathComponents)
-        if let dispatchIndex = children?.firstIndex(where: { $0.type == .directory && $0.name == relativePath?.first }) {
-            syntheticEntries += try children?[dispatchIndex].addChildHierarchically(entry) ?? []
+        if let dispatchIndex = children.firstIndex(where: { $0.type == .directory && $0.name == relativePath?.first }) {
+            syntheticEntries += try children[dispatchIndex].addChildHierarchically(entry)
         } else {
             let synthPath = (self.pathComponents + [relativePath!.first!]).joined(separator: "/")
             AKTrace("Creating synthetic subdirectory \(synthPath)")
@@ -358,8 +355,8 @@ class ArchiveEntry: Identifiable {
             let tmpEntry = ArchiveEntry(syntheticDirectory: synthPath)
             syntheticEntries.append(tmpEntry)
 
-            self.children?.append(tmpEntry)
-            syntheticEntries += try children?[children!.count - 1].addChildHierarchically(entry) ?? []
+            self.children.append(tmpEntry)
+            syntheticEntries += try children[children.count - 1].addChildHierarchically(entry)
         }
 
         return syntheticEntries
@@ -373,7 +370,7 @@ class ArchiveEntry: Identifiable {
         var flatChildren: [ArchiveEntryFlat] = []
         flatChildren.append(self.flatSelf())
         
-        for child in self.children ?? [] {
+        for child in self.children {
             flatChildren.append(contentsOf: child.flatChildren())
         }
 
@@ -398,13 +395,13 @@ class ArchiveEntry: Identifiable {
 
     // Sort the tree at all levels
     func sort(using sortDetails: KeyPathComparator<ArchiveEntry>) {
-        guard self.children != nil else { return }
+        guard canHostChildren else { return }
 
         // First sort our children
-        self.children?.sort(using: sortDetails)
+        self.children.sort(using: sortDetails)
 
         // Now tell each of our children to sort their children, recursively
-        for child in self.children! {
+        for child in self.children {
             child.sort(using: sortDetails)
         }
     }

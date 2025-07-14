@@ -15,8 +15,8 @@ struct QLTableRowTreeContent: TableRowContent {
     @State private var isExpanded = true
 
     var tableRowBody: some TableRowContent<ArchiveEntry> {
-        ForEach(node.children ?? []) { child in
-            if let _ = child.children {
+        ForEach(node.children) { child in
+            if child.canHostChildren {
                 @Bindable var child = child
                 DisclosureTableRow(child, isExpanded: $isExpanded) {
                     QLTableRowTreeContent(node: child)

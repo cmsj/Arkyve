@@ -281,6 +281,10 @@
 	<key>UTExportedTypeDeclarations</key>
 	<array>
 		<dict>
+			<key>UTTypeConformsTo</key>
+			<array>
+				<string>public.json</string>
+			</array>
 			<key>UTTypeDescription</key>
 			<string>Internal type for drag/drop re-ordering</string>
 			<key>UTTypeIcons</key>

@@ -9,7 +9,7 @@ import SwiftUI
 import UniformTypeIdentifiers
 
 struct TableRowTreeContent: TableRowContent {
-    var viewModel: ArchiveViewModel
+    @Binding var viewModel: ArchiveViewModel
     var node: ArchiveEntry
 
     var tableRowBody: some TableRowContent<ArchiveEntry> {
@@ -17,7 +17,7 @@ struct TableRowTreeContent: TableRowContent {
             if let _ = child.children {
                 @Bindable var child = child
                 DisclosureTableRow(child, isExpanded: $child.isExpanded) {
-                    TableRowTreeContent(viewModel: viewModel, node: child)
+                    TableRowTreeContent(viewModel: $viewModel, node: child)
                 }
                 .draggable(child.asExtractable(from: viewModel.diskURL, archivePassphrase: viewModel.passphraseAtLoad, cacheURL: viewModel.cacheURL, vmID: viewModel.id))
                 .dropDestination(for: DropItem.self) { items in

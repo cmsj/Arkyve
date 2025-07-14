@@ -10,7 +10,7 @@ import QuickLook
 import UniformTypeIdentifiers
 
 struct TableView: View {
-    @Environment(ArchiveViewModel.self) var viewModel
+    @Binding var viewModel: ArchiveViewModel
     @Environment(\.isEnabled) var isEnabled
     @StateObject var settingsManager = SettingsManager.shared
 
@@ -21,8 +21,6 @@ struct TableView: View {
     @FocusState var gidEntryFocus: UUID?
 
     var body: some View {
-        // NOTE: This @Bindable is an ugly hack: https://www.hackingwithswift.com/books/ios-swiftui/sharing-observable-objects-through-swiftuis-environment
-        @Bindable var viewModel = viewModel
 
         Table(of: ArchiveEntry.self, selection: $viewModel.selectedEntries, sortOrder: $viewModel.sortOrder, columnCustomization: $columnCustomization) {
             Group {
@@ -234,7 +232,7 @@ struct TableView: View {
             }
 #endif
         } rows: {
-            TableRowTreeContent(viewModel: viewModel, node: viewModel.root)
+            TableRowTreeContent(viewModel: $viewModel, node: viewModel.root)
         }
         .dropDestination(for: DropItem.self) { items, _  in
             print("Table: dropDestination")

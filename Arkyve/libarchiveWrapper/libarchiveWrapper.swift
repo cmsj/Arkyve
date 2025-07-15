@@ -383,6 +383,11 @@ actor libarchiveWrapper {
                         entry.path.deletingPrefix(entryBasePath))
                 }
 
+                // Ensure our resulting outputURL has a final directory
+                do {
+                    try FileManager.default.createDirectory(at: outputURL.deletingLastPathComponent(), withIntermediateDirectories: true)
+                } catch { throw .init(.extract, msg: error.localizedDescription) }
+
                 do {
                     switch entry.source.type {
                     case .InMemory, .Synthetic:

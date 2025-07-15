@@ -23,8 +23,7 @@ struct ArchiveView: View {
         VStack(spacing: 0) {
             ErrorView()
                 .environment(viewModel)
-            TableView()
-                .environment(viewModel)
+            TableView(viewModel: $viewModel)
                 .disabled(viewModel.disableTableView)
             Spacer(minLength: 0)
             StatusbarView()

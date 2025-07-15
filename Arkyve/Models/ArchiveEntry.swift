@@ -15,6 +15,9 @@ class ArchiveEntry: Identifiable {
     private(set) var id = UUID()
     var source: ArchiveEntrySource
     var children: [ArchiveEntry]? = nil
+    var canHostChildren: Bool {
+        get { type.canHostChildren }
+    }
 
     // Archives don't always contain entries for directories, but the files in them still contain nested paths
     // We'll have to synthesize directories for those, and track which ones they are

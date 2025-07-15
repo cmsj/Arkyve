@@ -9,15 +9,15 @@ import SwiftUI
 import UniformTypeIdentifiers
 
 struct TableRowTreeContent: TableRowContent {
-    var viewModel: ArchiveViewModel
+    @Binding var viewModel: ArchiveViewModel
     var node: ArchiveEntry
 
     var tableRowBody: some TableRowContent<ArchiveEntry> {
         ForEach(node.children!.filter { viewModel.searchQuery == "" || $0.hasSelfOrChildrenMatching(viewModel.searchQuery)}) { child in
-            if let _ = child.children {
+            if child.canHostChildren {
                 @Bindable var child = child
                 DisclosureTableRow(child, isExpanded: $child.isExpanded) {
-                    TableRowTreeContent(viewModel: viewModel, node: child)
+                    TableRowTreeContent(viewModel: $viewModel, node: child)
                 }
                 .draggable(child.asExtractable(from: viewModel.diskURL, archivePassphrase: viewModel.passphraseAtLoad, cacheURL: viewModel.cacheURL, vmID: viewModel.id))
                 .dropDestination(for: DropItem.self) { items in

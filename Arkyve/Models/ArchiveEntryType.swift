@@ -63,4 +63,8 @@ enum ArchiveEntryType: String, Codable, CaseIterable {
             }
         }
     }
+
+    var canHostChildren: Bool {
+        self == .directory || self == .root
+    }
 }

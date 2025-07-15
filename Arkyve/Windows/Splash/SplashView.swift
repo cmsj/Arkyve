@@ -13,36 +13,7 @@ final class SplashViewModel: WindowAccessorDelegate {
     weak var window: NSWindow? = nil
 }
 
-struct WelcomeButton: View {
-    var iconName: String
-    var text: String
 
-    var body: some View {
-        HStack(spacing: 0) {
-            Image(systemName: iconName)
-                .font(.system(size: 16, weight: .medium))
-                .foregroundStyle(.secondary)
-                .padding(10)
-                .frame(width: 38)
-//                                        .border(.blue)
-            Text(text)
-                .font(.system(size: 14, weight: .medium))
-                .padding([.leading], 0)
-//                                        .border(.orange)
-            Spacer()
-        }
-        .background(
-            RoundedRectangle(
-                cornerRadius: 7,
-                style: .continuous
-            )
-            .fill(.gray.opacity(0.1))
-        )
-        .frame(width: 349, height: 35)
-        .padding([.bottom], 7)
-//        .border(.cyan)
-    }
-}
 struct SplashView: View {
     @Environment(\.openWindow) var openWindow
     @Environment(\.dismissWindow) var dismissWindow

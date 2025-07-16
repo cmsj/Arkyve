@@ -138,6 +138,8 @@ extension ArchiveViewModel {
             // We do this by adding " copy", and then an incrementing number, onto the filename until we stop hitting duplicates.
             while case let existingEntry = entries.first(where: { $0.path == entry.path }), existingEntry != nil {
                 entry.name.filenameMustDuplicate()
+                entry.proposedName = entry.name
+
                 let pathComponentsBase = entry.pathComponents.dropLast()
                 entry.pathComponents = pathComponentsBase + [entry.name]
 

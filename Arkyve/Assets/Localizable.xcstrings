@@ -482,7 +482,11 @@
     "Arkyve can only apply passwords when saving as a Zip archive." : {
 
     },
+    "Arkyve would not be possible without the incredible work of Tim Kientzle and all of the contributors to libarchive. You can view the license for libarchive here:" : {
+
+    },
     "Arkyve would not be possible without the incredible work of Tim Kientzle and all the contributors to libarchive." : {
+      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {
@@ -2541,6 +2545,7 @@
       }
     },
     "You can view the license for libarchive here:" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {

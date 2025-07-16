@@ -128,13 +128,22 @@ struct SplashView: View {
                                     selection = recent
                                 }
                                 .simultaneousGesture(TapGesture(count: 2).onEnded {
-                                    AKTrace("Opening recent: \(recent)")
+                                    AKTrace("Opening recent (tap): \(recent)")
                                     dismissWindow()
                                     openArchiveFromURL(recent, openWindow: openWindow)
                                 })
                             }
                         }
                         .scrollContentBackground(.hidden)
+                        .onKeyPress(.return) {
+                            if let selection {
+                                AKTrace("Opening recent (return): \(selection)")
+                                dismissWindow()
+                                openArchiveFromURL(selection, openWindow: openWindow)
+                                return .handled
+                            }
+                            return .ignored
+                        }
                     }
                     .ignoresSafeArea(.all)
                     .onChange(of: settingsManager.recents, initial: true) {

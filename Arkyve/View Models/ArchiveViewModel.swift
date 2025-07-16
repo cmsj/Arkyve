@@ -22,7 +22,9 @@ func openArchiveFromURL(_ requestedURL: URLBookmark, openWindow: OpenWindowActio
 
     if vm == nil {
         vm = ManagerManager.shared.createVM(url: urlBookmark.url)
-        SettingsManager.shared.addRecent(urlBookmark)
+        DispatchQueue.main.async {
+            SettingsManager.shared.addRecent(urlBookmark)
+        }
     }
     openWindow(id: "archive", value: vm!.id)
 }

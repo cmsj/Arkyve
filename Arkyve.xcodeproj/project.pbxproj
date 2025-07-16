@@ -6244,7 +6244,7 @@
 					"${PROJECT_DIR}/vendor/lib/${CONFIGURATION}",
 					/usr/lib,
 				);
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 1.1;
 				OTHER_LDFLAGS = (
 					"-lz",
 					"-lbz2",
@@ -6288,7 +6288,7 @@
 					"${PROJECT_DIR}/vendor/lib/${CONFIGURATION}",
 					/usr/lib,
 				);
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 1.1;
 				OTHER_LDFLAGS = (
 					"-lz",
 					"-lbz2",
@@ -6334,7 +6334,7 @@
 					"${PROJECT_DIR}/vendor/lib/${CONFIGURATION}",
 					/usr/lib,
 				);
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 1.1;
 				OTHER_LDFLAGS = (
 					"-lz",
 					"-lbz2",
@@ -6380,7 +6380,7 @@
 					"${PROJECT_DIR}/vendor/lib/${CONFIGURATION}",
 					/usr/lib,
 				);
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 1.1;
 				OTHER_LDFLAGS = (
 					"-lz",
 					"-lbz2",
@@ -6738,7 +6738,7 @@
 					/usr/lib,
 				);
 				MACOSX_DEPLOYMENT_TARGET = 15.5;
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 1.1;
 				OTHER_LDFLAGS = (
 					"-lz",
 					"-lbz2",
@@ -6784,7 +6784,7 @@
 					/usr/lib,
 				);
 				MACOSX_DEPLOYMENT_TARGET = 15.5;
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 1.1;
 				OTHER_LDFLAGS = (
 					"-lz",
 					"-lbz2",

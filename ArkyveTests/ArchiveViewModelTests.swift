@@ -118,9 +118,13 @@ final class ArchiveViewModelTests {
         let entryToRemove = viewModel.entries.first!
         
         viewModel.removeEntries([entryToRemove.id])
-        
-        #expect(viewModel.entries.count < initialCount)
-        #expect(viewModel.dirty)
+
+        #expect(entryToRemove.toDelete == true)
+
+        await MainActor.run {
+            #expect(viewModel.entries.count < initialCount)
+            #expect(viewModel.dirty)
+        }
         cleanup()
     }
     

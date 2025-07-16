@@ -195,7 +195,7 @@ extension ArchiveViewModel {
             }
         }
 
-        DispatchQueue.main.async { [self] in
+        Task { @MainActor in
             // FIXME: We're removing from the tree here, but do we need to track all the children and remove them from self.entries too?
             // Remove entries from the root tree structure by traversing the tree
             func removeFromTree(_ node: ArchiveEntry) {
@@ -496,7 +496,7 @@ extension ArchiveViewModel {
         // FIXME: Reparenting is separated into a two-phase process with toDelete and the async dispatch below, due to FB17404990
         entry.toDelete = true
 
-        DispatchQueue.main.async { [self] in
+        Task { @MainActor in
             // 3. Remove from current parent
             @MainActor func removeEntryFromParent(_ entry: ArchiveEntry) {
                 // Find the parent in the archive's entries. We don't need to walk the tree, we can iterate archive.entries

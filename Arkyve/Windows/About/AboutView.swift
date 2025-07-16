@@ -40,7 +40,7 @@ struct AboutView: View {
                             .allowsHitTesting(false)
 
                         Divider()
-                            .padding()
+                            .padding([.leading, .trailing, .bottom])
                             .allowsHitTesting(false)
 
                         HStack {
@@ -55,13 +55,19 @@ struct AboutView: View {
                             .padding()
                             .allowsHitTesting(false)
 
+                        Text("Huge thanks to the members of the AppKit Abusers slack server for their help and feedback, especially Helge Heß, Daniel Jalkut and Matthaus Woolard.")
+                            .multilineTextAlignment(.center)
+                            .padding([.leading, .trailing], 30)
+                            .allowsHitTesting(false)
+
+                        Divider()
+                            .padding()
+                            .allowsHitTesting(false)
+
                         VStack {
-                            Text("Arkyve would not be possible without the incredible work of Tim Kientzle and all the contributors to libarchive.")
+                            Text("Arkyve would not be possible without the incredible work of Tim Kientzle and all of the contributors to libarchive. You can view the license for libarchive here:")
                                 .multilineTextAlignment(.center)
                                 .padding([.leading, .trailing], 30)
-                                .allowsHitTesting(false)
-                            Text("You can view the license for libarchive here:")
-                                .multilineTextAlignment(.center)
                                 .allowsHitTesting(false)
                             Link("https://github.com/libarchive/libarchive/blob/master/COPYING", destination: URL(string: "https://github.com/libarchive/libarchive/blob/master/COPYING")!)
                                 .font(.system(size: 14))
@@ -73,7 +79,7 @@ struct AboutView: View {
                                 .padding([.top, .bottom], 8)
                                 .allowsHitTesting(false)
                         }
-                        .padding()
+                        .padding([.leading, .trailing])
                     }
                     //                    .border(.green)
                 }
@@ -81,7 +87,7 @@ struct AboutView: View {
             //            .border(.red)
         }
         .ignoresSafeArea()
-        .frame(width: 460, height: 500)
+        .frame(width: 600, height: 600)
     }
 }
 

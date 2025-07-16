@@ -185,30 +185,37 @@ extension ArchiveViewModel {
         self.setDirty()
     }
 
-    func removeEntries(_ entriesToRemove: Set<ArchiveEntry.ID>) {
-        guard entriesToRemove.count > 0 else { return }
+    func removeEntries(_ entryIDsToRemove: Set<ArchiveEntry.ID>) {
+        guard entryIDsToRemove.count > 0 else { return }
 
-        // FIXME: We're removing from the tree here, but do we need to track all the children and remove them from self.entries too?
-        // Remove entries from the root tree structure by traversing the tree
-        func removeFromTree(_ node: ArchiveEntry) {
-            if node.children != nil {
+        // FIXME: Removal is separated into a two-phase process with toDelete and the async dispatch below, due to FB17404990
+        entries.forEach {
+            if entryIDsToRemove.contains( $0.id ) {
+                $0.toDelete = true
+            }
+        }
+
+        DispatchQueue.main.async { [self] in
+            // FIXME: We're removing from the tree here, but do we need to track all the children and remove them from self.entries too?
+            // Remove entries from the root tree structure by traversing the tree
+            func removeFromTree(_ node: ArchiveEntry) {
                 // Remove any direct children that match
-                node.children?.removeAll { entriesToRemove.contains($0.id) }
+                node.children?.removeAll { entryIDsToRemove.contains($0.id) }
 
                 // Recursively check remaining children
                 for child in node.children ?? [] {
                     removeFromTree(child)
                 }
             }
+
+            removeFromTree(root)
+
+            // Remove entries from the entries array
+            entries.removeAll { entryIDsToRemove.contains($0.id) }
+
+            // Mark the archive as dirty since we've made changes
+            setDirty()
         }
-
-        removeFromTree(root)
-
-        // Remove entries from the entries array
-        entries.removeAll { entriesToRemove.contains($0.id) }
-
-        // Mark the archive as dirty since we've made changes
-        setDirty()
     }
 
     func saveArchiveWithTask(to: URLBookmark, overrideFormat: libarchiveFormat = .Unknown, overrideFilters: [libarchiveFilter] = [.None], addToRecents: Bool = true, savePassphrase: String? = nil) {
@@ -485,49 +492,56 @@ extension ArchiveViewModel {
     }
 
     func reparentEntry(_ entry: ArchiveEntry, to newParent: ArchiveEntry) {
-        // 3. Remove from current parent
-        func removeEntryFromParent(_ entry: ArchiveEntry) {
-            // Find the parent in the archive's entries. We don't need to walk the tree, we can iterate archive.entries
-            let parent = parentForEntry(entry)
-            //            entries.first(where: { parent in
-            //                parent.children?.contains(where: { $0.id == entry.id }) ?? false
-            //            })
-            if let parent {
-                parent.children?.removeAll { $0.id == entry.id }
-                return
-            }
 
-            // Except in the case of root level items, because archive.root isn't in archive.entries
-            if root.children?.first(where: { $0.id == entry.id }) != nil {
-                // We didn't find the parent in entries, which suggests it's a root item
-                root.children?.removeAll { $0.id == entry.id }
-            }
-        }
+        // FIXME: Reparenting is separated into a two-phase process with toDelete and the async dispatch below, due to FB17404990
+        entry.toDelete = true
 
-        func updateChildrenPathComponents(of entry: ArchiveEntry, replacing: [String], with: [String]) {
-            for child in entry.children ?? [] {
-                child.pathComponents = child.pathComponents.replacing(replacing, with: with)
-                if child.children != nil {
-                    updateChildrenPathComponents(of: child, replacing: replacing, with: with)
+        DispatchQueue.main.async { [self] in
+            // 3. Remove from current parent
+            @MainActor func removeEntryFromParent(_ entry: ArchiveEntry) {
+                // Find the parent in the archive's entries. We don't need to walk the tree, we can iterate archive.entries
+                let parent = parentForEntry(entry)
+                //            entries.first(where: { parent in
+                //                parent.children?.contains(where: { $0.id == entry.id }) ?? false
+                //            })
+                if let parent {
+                    parent.children?.removeAll { $0.id == entry.id }
+                    return
+                }
+
+                // Except in the case of root level items, because archive.root isn't in archive.entries
+                if root.children?.first(where: { $0.id == entry.id }) != nil {
+                    // We didn't find the parent in entries, which suggests it's a root item
+                    root.children?.removeAll { $0.id == entry.id }
                 }
             }
+
+            func updateChildrenPathComponents(of entry: ArchiveEntry, replacing: [String], with: [String]) {
+                for child in entry.children ?? [] {
+                    child.pathComponents = child.pathComponents.replacing(replacing, with: with)
+                    if child.children != nil {
+                        updateChildrenPathComponents(of: child, replacing: replacing, with: with)
+                    }
+                }
+            }
+
+            let originalParentPathComponents = Array(entry.pathComponents.dropLast())
+            removeEntryFromParent(entry)
+
+            // 4. Update pathComponents to the new parent + name
+            entry.pathComponents = newParent.pathComponents + [entry.name]
+
+            // 5. Add to new parent
+            entry.toDelete = false
+            newParent.children?.append(entry)
+
+            // Any child entries also need to have their path updated
+            if entry.type == .directory {
+                updateChildrenPathComponents(of: entry, replacing: originalParentPathComponents, with: newParent.pathComponents)
+            }
+
+            // Mark the archive as dirty since we've made changes
+            self.setDirty()
         }
-
-        let originalParentPathComponents = Array(entry.pathComponents.dropLast())
-        removeEntryFromParent(entry)
-
-        // 4. Update pathComponents to the new parent + name
-        entry.pathComponents = newParent.pathComponents + [entry.name]
-
-        // 5. Add to new parent
-        newParent.children?.append(entry)
-
-        // Any child entries also need to have their path updated
-        if entry.type == .directory {
-            updateChildrenPathComponents(of: entry, replacing: originalParentPathComponents, with: newParent.pathComponents)
-        }
-
-        // Mark the archive as dirty since we've made changes
-        setDirty()
     }
 }

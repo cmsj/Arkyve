@@ -13,7 +13,7 @@ struct TableRowTreeContent: TableRowContent {
     var node: ArchiveEntry
 
     var tableRowBody: some TableRowContent<ArchiveEntry> {
-        ForEach(node.children!.filter { viewModel.searchQuery == "" || $0.hasSelfOrChildrenMatching(viewModel.searchQuery)}) { child in
+        ForEach(node.children!.filter { !$0.toDelete && (viewModel.searchQuery == "" || $0.hasSelfOrChildrenMatching(viewModel.searchQuery)) }) { child in
             if child.canHostChildren {
                 @Bindable var child = child
                 DisclosureTableRow(child, isExpanded: $child.isExpanded) {

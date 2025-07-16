@@ -28,6 +28,7 @@ class ArchiveEntry: Identifiable {
         get { isSynthesized ? "Yes" : "No" }
     }
 
+    var toDelete: Bool = false
     var isExpanded: Bool = false
     var shouldFocus: Bool = false
     var permsPopoverShowing: Bool = false

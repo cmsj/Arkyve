@@ -300,8 +300,6 @@ actor libarchiveWrapper {
         return writeEntry
     } 
 
-
-
     static func loadArchive(at url: URL,
                             entryLimit: Int = -1,
                             passphrase: String?) async throws(ArkyveError) -> sending (libarchiveFormat, [libarchiveFilter], [ArchiveEntry], ArchiveEntry, Bool) {

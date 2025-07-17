@@ -33,6 +33,6 @@ struct LogWindowView: View {
     }
 }
 
-//#Preview {
-//    LogWindowView()
-//}
+#Preview {
+    LogWindowView()
+}

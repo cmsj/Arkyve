@@ -115,6 +115,6 @@ struct SettingsBehavioursView: View {
 }
 
 #Preview {
-    SettingsView()
+    SettingsBehavioursView()
         .environmentObject(SettingsManager.shared)
 }

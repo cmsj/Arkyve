@@ -96,3 +96,8 @@ struct SettingsPathsView: View {
         }
     }
 }
+
+#Preview {
+    SettingsPathsView()
+        .environmentObject(SettingsManager.shared)
+}

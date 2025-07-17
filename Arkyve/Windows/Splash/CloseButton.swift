@@ -22,3 +22,15 @@ public struct CloseButton: View {
             .onTapGesture { dismissWindow() }
     }
 }
+
+#Preview {
+    VStack {
+        Spacer()
+        HStack {
+            Spacer()
+            CloseButton()
+            Spacer()
+        }
+        Spacer()
+    }
+}

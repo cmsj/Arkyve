@@ -76,7 +76,7 @@ struct ArchiveView: View {
             viewModel.window?.makeKeyAndOrderFront(nil)
 
             let sourceURL = viewModel.diskURL
-            var destURL = viewModel.diskURL ?? viewModel.settingsManager.newArchiveURL
+            var destURL = viewModel.diskURL// ?? viewModel.settingsManager.newArchiveURL
             var (format, filters, headerMap) = viewModel.metadataForSaving()
             let skipRead = viewModel.diskURL == nil
             let passphraseAtLoad = viewModel.passphraseAtLoad
@@ -117,6 +117,11 @@ struct ArchiveView: View {
                     ManagerManager.shared.removeVM(viewModel)
                     return
                 }
+            }
+
+            guard let destURL else {
+                print("Unable to determine save location")
+                return
             }
 
             if passphraseToSave != nil, passphraseToSave != "", !format.canEncrypt {

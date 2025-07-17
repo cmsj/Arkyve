@@ -14,7 +14,7 @@ final class SettingsManager: ObservableObject {
     let maxRecents = 9
 
     enum Keys: String, CaseIterable {
-        case newFolderURL
+//        case newFolderURL
         case newArchiveName
         case newArchiveFormat
         case folderExpansion
@@ -30,8 +30,8 @@ final class SettingsManager: ObservableObject {
 
         var defaultValue: Any {
             switch(self) {
-            case .newFolderURL:
-                return FileManager.default.urls(for: .downloadsDirectory, in: .userDomainMask).first!
+//            case .newFolderURL:
+//                return FileManager.default.urls(for: .downloadsDirectory, in: .userDomainMask).first!
             case .newArchiveName:
                 return "Untitled"
             case .newArchiveFormat:
@@ -54,7 +54,7 @@ final class SettingsManager: ObservableObject {
         }
     }
 
-    @AppStorage(Keys.newFolderURL.id)     var newFolderURL: URL               = Keys.newFolderURL.defaultValue as! URL
+//    @AppStorage(Keys.newFolderURL.id)     var newFolderURL: URL               = Keys.newFolderURL.defaultValue as! URL
     @AppStorage(Keys.newArchiveName.id)   var newArchiveName: String          = Keys.newArchiveName.defaultValue as! String
     @AppStorage(Keys.newArchiveFormat.id) var newArchiveFormat: ArkyveFormats = Keys.newArchiveFormat.defaultValue as! ArkyveFormats
     @AppStorage(Keys.folderExpansion.id)  var folderExpansion: FolderExpansionOptions = Keys.folderExpansion.defaultValue as! FolderExpansionOptions
@@ -81,7 +81,7 @@ final class SettingsManager: ObservableObject {
     }
 
     func resetToDefaults() {
-        newFolderURL     = Keys.newFolderURL.defaultValue as! URL
+//        newFolderURL     = Keys.newFolderURL.defaultValue as! URL
         newArchiveName   = Keys.newArchiveName.defaultValue as! String
         newArchiveFormat = Keys.newArchiveFormat.defaultValue as! ArkyveFormats
         folderExpansion  = Keys.folderExpansion.defaultValue as! FolderExpansionOptions
@@ -94,9 +94,9 @@ final class SettingsManager: ObservableObject {
         return "\(newArchiveName).\(newArchiveFormat.ext)"
     }
 
-    var newArchiveURL: URL {
-        return newFolderURL.appendingPathComponent(newArchiveFilename)
-    }
+//    var newArchiveURL: URL {
+//        return newFolderURL.appendingPathComponent(newArchiveFilename)
+//    }
 
     func addRecent(_ url: URLBookmark) {
         if let index = recents.firstIndex(where: { $0.url == url.url }) {

@@ -2294,6 +2294,7 @@
 				Utility/ArkyveLog.swift,
 				"View Models/ArchiveViewModel.swift",
 				"View Models/ArchiveViewModel+Operations.swift",
+				"View Models/ArchiveViewModel+ProgressTasks.swift",
 				Windows/Archive/NSWindowAccessor.swift,
 			);
 			target = 4F1F24072DF712C30019CA7D /* ArkyveQuickLookExtension */;
@@ -2342,6 +2343,7 @@
 				Utility/ArkyveLog.swift,
 				"View Models/ArchiveViewModel.swift",
 				"View Models/ArchiveViewModel+Operations.swift",
+				"View Models/ArchiveViewModel+ProgressTasks.swift",
 				Windows/Archive/NSWindowAccessor.swift,
 			);
 			target = 4F1F24452DF7407D0019CA7D /* ArkyveExtractAction */;
@@ -2440,6 +2442,7 @@
 				Utility/ArkyveLog.swift,
 				"View Models/ArchiveViewModel.swift",
 				"View Models/ArchiveViewModel+Operations.swift",
+				"View Models/ArchiveViewModel+ProgressTasks.swift",
 				Windows/Archive/NSWindowAccessor.swift,
 			);
 			target = 4FD56AE72DFE8E8E00F709E0 /* ArkyveCreateAction */;

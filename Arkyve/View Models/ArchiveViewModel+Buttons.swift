@@ -216,4 +216,14 @@ extension ArchiveViewModel {
             }
         }
     }
+
+    func copyButton(entryIDs: Set<ArchiveEntry.ID>? = nil) async {
+        let extractables = buildCopyable(entryIDs: entryIDs ?? selectedEntries)
+        await extractablesToPasteboard(extractables: extractables)
+    }
+
+    func cutButton(entryIDs: Set<ArchiveEntry.ID>? = nil) async {
+        let extractables = buildCuttable(entryIDs: entryIDs ?? selectedEntries)
+        await extractablesToPasteboard(extractables: extractables)
+    }
 }

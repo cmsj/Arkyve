@@ -56,41 +56,6 @@ struct SettingsPathsView: View {
                             .gridCellUnsizedAxes([.horizontal, .vertical])
                             .padding(.vertical, 5)
                     }
-//                    GridRow {
-//                        Text("Save new archives to:")
-//                        Picker("", selection: $newFolderPicker) {
-//                            HStack {
-//                                Image(nsImage: icon)
-//                                    .resizable()
-//                                    .scaledToFit()
-//                                    .frame(height: iconSize)
-//                                Text(settingsManager.newFolderURL.lastPathComponent)
-//                            }
-//                            .tag(NewFolderPickerValues.url)
-//                            Divider()
-//                            Text("Select new location")
-//                                .tag(NewFolderPickerValues.select)
-//                        }
-//                        .labelsHidden()
-//                        .onChange(of: newFolderPicker, initial: true) {
-//                            if newFolderPicker == .select {
-//                                let panel = NSOpenPanel()
-//                                panel.canChooseFiles = false
-//                                panel.canChooseDirectories = true
-//                                panel.canCreateDirectories = true
-//                                panel.allowsMultipleSelection = false
-//
-//                                if panel.runModal() == .OK {
-//                                    if let url = panel.url {
-//                                        settingsManager.newFolderURL = url
-//                                    }
-//                                }
-//                            }
-//                            newFolderPicker = .url
-//                            icon = NSWorkspace.shared.icon(forFile: settingsManager.newFolderURL.path)
-//                            icon.size = .init(width: iconSize, height: iconSize)
-//                        }
-//                    }
                     GridRow {
                         Text("When viewing an archive:")
                             .foregroundStyle(.secondary)

@@ -15,7 +15,7 @@ final class AppInfoTests {
     }
 
     @Test func testVersion() {
-        #expect(appInfo.version == "1.1")
+        #expect(appInfo.version == "1.2")
     }
 
     @Test func testBuild() {

@@ -352,6 +352,7 @@ extension ArchiveViewModel {
         defer { cacheManager.removeCacheItems(cacheType: .drop, urls: dropCacheCleanups) }
 
         entries.forEach { entry in
+            // Any filesystem/inmemory entries are now in the archive, so update their source
             if (entry.source.type == .Filesystem || entry.source.type == .InMemory) {
                 if entry.source.type == .Filesystem {
                     scopedURLManager.remove(entry.source.url)
@@ -363,6 +364,14 @@ extension ArchiveViewModel {
 
                 // Update our source to the archive path
                 entry.source = .init(type: .Archive, pathInArchive: entry.path)
+            }
+
+            // Any archive entries that have changed path (either moved within the archive, or renamed)
+            // now need their source path updated
+            if entry.source.type == .Archive {
+                if entry.source.pathInArchive != entry.path {
+                    entry.source = .init(type: .Archive, pathInArchive: entry.path)
+                }
             }
         }
 

@@ -16,6 +16,12 @@ extension UTType {
     static var lha:     UTType { UTType(exportedAs: "net.tenshu.Arkyve.lha") }
     static var lzh:     UTType { UTType(exportedAs: "net.tenshu.Arkyve.lzh") }
 
+    // Pseudo archive types we export, because they otherwise don't exist
+    static var cb7:     UTType { UTType(exportedAs: "net.tenshu.Arkyve.cb7") }
+    static var cbr:     UTType { UTType(exportedAs: "net.tenshu.Arkyve.cbr") }
+    static var cbt:     UTType { UTType(exportedAs: "net.tenshu.Arkyve.cbt") }
+    static var cbz:     UTType { UTType(exportedAs: "net.tenshu.Arkyve.cbz") }
+
     // These are all exported by Archive Utility.app which is pre-installed, so we should be fine to import them
     static var rar:     UTType { UTType(importedAs: "com.rarlab.rar-archive") }
     static var cab:     UTType { UTType(importedAs: "com.microsoft.cab") }
@@ -28,6 +34,7 @@ extension UTType {
     static var tarbz2:  UTType { UTType(importedAs: "public.tar-bzip2-archive") }
     static var iso:     UTType { UTType(importedAs: "public.iso-image") }
     static var cpio:    UTType { UTType(importedAs: "public.cpio-archive") }
+    static var epub:    UTType { UTType(importedAs: "org.idpf.epub-container") }
 
     // Ditto
     static var xar:     UTType { UTType(importedAs: "com.apple.xar-archive") }

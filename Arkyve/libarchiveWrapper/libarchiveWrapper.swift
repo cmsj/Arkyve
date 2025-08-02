@@ -775,6 +775,11 @@ actor libarchiveWrapper {
             headerMap.removeValue(forKey: filePath)
         }
 
+        // Fourth, remove any synthetic entries that remain in the header map, since we don't care about them anymore
+        for filePath in headerMap.keys.filter({ headerMap[$0]?.header.source.type == .Synthetic }) {
+            headerMap.removeValue(forKey: filePath)
+        }
+
         if !headerMap.isEmpty {
             // FIXME: I'm nervous about this choice
             throw .init(.writeArchive, msg: "Internal error: Unprocessed entries found: \(headerMap.keys.joined(separator: ", "))")

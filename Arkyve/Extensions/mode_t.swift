@@ -8,7 +8,23 @@ import Darwin.sys
 
 extension mode_t {
     static let directory: mode_t = 0 | S_IFDIR | S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH
-
+    
+    /// Get the value of a given flag
+    /// - Parameter flag: A mode_t flag such as S_IRUSR, S_IWOTH, etc.
+    /// - Returns: A boolean if the flag is set
+    func getFlag(_ flag: mode_t) -> Bool {
+        (self & flag != 0)
+    }
+    
+    /// Sets the value of a given flag
+    /// - Parameters:
+    ///   - flag: A mode_t flag such as S_IRUSR, S_IWOTH, etc.
+    ///   - value: A boolean to set the flag's value to
+    mutating func setFlag(_ flag: mode_t, _ value: Bool) {
+        self = value ? self | flag : self & ~flag
+    }
+    
+    /// A string representation of mode_t, in the style of the output of ls, e.g. drwxr-xr-x
     var string: String {
         get {
             var output = ""
@@ -103,6 +119,7 @@ extension mode_t {
         }
     }
 
+    /// A representation of mode_t suitable for use by screen readers and other accessibility features
     var accessibilityString: String {
         get {
             var output = ""
@@ -115,61 +132,67 @@ extension mode_t {
         }
     }
 
-    func getFlag(_ flag: mode_t) -> Bool {
-        (self & flag != 0)
-    }
-
-    mutating func setFlag(_ flag: mode_t, _ value: Bool) {
-        self = value ? self | flag : self & ~flag
-    }
-
+    // MARK: - Flags relating to permissions for the owner
+    /// Get or set the read permission flag for the owner
     var IRUSR: Bool {
         get { self.getFlag(S_IRUSR) }
         set { self.setFlag(S_IRUSR, newValue) }
     }
+    /// Get or set the write permission flag for the owner
     var IWUSR: Bool {
         get { self.getFlag(S_IWUSR) }
         set { self.setFlag(S_IWUSR, newValue) }
     }
+    /// Get or set the execute permission flag for the owner
     var IXUSR: Bool {
         get { self.getFlag(S_IXUSR) }
         set { self.setFlag(S_IXUSR, newValue) }
     }
+    /// Get or set the setuid flag for the owner
     var ISUSR: Bool {
         get { self.getFlag(S_ISUID) }
         set { self.setFlag(S_ISUID, newValue) }
     }
 
+    // MARK: - Flags relating to permissions for the group
+    /// Get or set the read permission flag for the group
     var IRGRP: Bool {
         get { self.getFlag(S_IRGRP) }
         set { self.setFlag(S_IRGRP, newValue) }
     }
+    /// Get or set the write permission flag for the group
     var IWGRP: Bool {
         get { self.getFlag(S_IWGRP) }
         set { self.setFlag(S_IWGRP, newValue) }
     }
+    /// Get or set the execute permission flag for the group
     var IXGRP: Bool {
         get { self.getFlag(S_IXGRP) }
         set { self.setFlag(S_IXGRP, newValue) }
     }
+    /// Get or set the setgid flag for the group
     var ISGRP: Bool {
         get { self.getFlag(S_ISGID) }
         set { self.setFlag(S_ISGID, newValue) }
     }
 
+    // MARK: - Flags relating to permissions for others
+    /// Get or set the read permission flag for other users
     var IROTH: Bool {
         get { self.getFlag(S_IROTH) }
         set { self.setFlag(S_IROTH, newValue) }
     }
+    /// Get or set the write permission flag for other users
     var IWOTH: Bool {
         get { self.getFlag(S_IWOTH) }
         set { self.setFlag(S_IWOTH, newValue) }
     }
+    /// Get or set the execute permission flag for other users
     var IXOTH: Bool {
         get { self.getFlag(S_IXOTH) }
         set { self.setFlag(S_IXOTH, newValue) }
     }
-
+    /// Get or set the sticky flag
     var ISVTX: Bool {
         get { self.getFlag(S_ISVTX) }
         set { self.setFlag(S_ISVTX, newValue) }

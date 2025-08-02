@@ -36,3 +36,15 @@ struct WelcomeButton: View {
         })
     }
 }
+
+#Preview {
+    VStack {
+        Spacer()
+        HStack {
+            Spacer()
+            WelcomeButton(iconName: "folder", text: "Test button name")
+            Spacer()
+        }
+        Spacer()
+    }
+}

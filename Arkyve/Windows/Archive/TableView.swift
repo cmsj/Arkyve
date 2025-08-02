@@ -265,6 +265,13 @@ struct TableView: View {
                 return .ignored
             }
         })
+        .onKeyPress(.return, action: {
+            if renameEntryFocus == nil, viewModel.selectedEntries.count == 1, let selectedEntryID = viewModel.selectedEntries.first {
+                renameEntryFocus = selectedEntryID
+                return .handled
+            }
+            return .ignored
+        })
         .quickLookPreview($viewModel.quickLookURL, in: viewModel.quickLookItems)
         .onChange(of: viewModel.sortOrder) { _, _ in
             viewModel.sort()

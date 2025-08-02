@@ -27,16 +27,6 @@ extension ArchiveViewModel {
         pasteboard.writeObjects(writers)
     }
 
-    func copyButton(entryIDs: Set<ArchiveEntry.ID>? = nil) async {
-        let extractables = buildCopyable(entryIDs: entryIDs ?? selectedEntries)
-        await extractablesToPasteboard(extractables: extractables)
-    }
-
-    func cutButton(entryIDs: Set<ArchiveEntry.ID>? = nil) async {
-        let extractables = buildCuttable(entryIDs: entryIDs ?? selectedEntries)
-        await extractablesToPasteboard(extractables: extractables)
-    }
-
     func buildCopyable(entryIDs: Set<ArchiveEntry.ID>) -> [ArchiveEntryExtractable] {
         guard entryIDs.count > 0 else { return [] }
 

@@ -34,18 +34,6 @@ extension ArchiveViewModel {
         root.sort(using: newSort)
     }
 
-    func withProgressTask(_ task: @escaping () async -> Void) {
-        disableUI = true
-
-        progressTask = Task {
-            await task()
-
-            disableUI = false
-            progressTask = nil
-            isCancelling = false
-        }
-    }
-
     func newFolder(at parentID: UUID) -> UUID? {
         if let parentEntry = self.entryForID(parentID), parentEntry.children != nil {
             let name = "Untitled Folder"
@@ -218,6 +206,74 @@ extension ArchiveViewModel {
         }
     }
 
+    func reparentEntry(_ entry: ArchiveEntry, to newParent: ArchiveEntry) {
+        // FIXME: Reparenting is separated into a two-phase process with toDelete and the async dispatch below, due to FB17404990
+        entry.toDelete = true
+
+        Task { @MainActor in
+            // 3. Remove from current parent
+            @MainActor func removeEntryFromParent(_ entry: ArchiveEntry) {
+                // Find the parent in the archive's entries. We don't need to walk the tree, we can iterate archive.entries
+                let parent = parentForEntry(entry)
+                //            entries.first(where: { parent in
+                //                parent.children?.contains(where: { $0.id == entry.id }) ?? false
+                //            })
+                if let parent {
+                    parent.children?.removeAll { $0.id == entry.id }
+                    return
+                }
+
+                // Except in the case of root level items, because archive.root isn't in archive.entries
+                if root.children?.first(where: { $0.id == entry.id }) != nil {
+                    // We didn't find the parent in entries, which suggests it's a root item
+                    root.children?.removeAll { $0.id == entry.id }
+                }
+            }
+
+            func updateChildrenPathComponents(of entry: ArchiveEntry, replacing: [String], with: [String]) {
+                for child in entry.children ?? [] {
+                    child.pathComponents = child.pathComponents.replacing(replacing, with: with)
+                    if child.children != nil {
+                        updateChildrenPathComponents(of: child, replacing: replacing, with: with)
+                    }
+                }
+            }
+
+            let originalParentPathComponents = Array(entry.pathComponents.dropLast())
+            removeEntryFromParent(entry)
+
+            // 4. Update pathComponents to the new parent + name
+            entry.pathComponents = newParent.pathComponents + [entry.name]
+
+            // 5. Add to new parent
+            entry.toDelete = false
+            newParent.children?.append(entry)
+
+            // Any child entries also need to have their path updated
+            if entry.type == .directory {
+                updateChildrenPathComponents(of: entry, replacing: originalParentPathComponents, with: newParent.pathComponents)
+            }
+
+            // Mark the archive as dirty since we've made changes
+            self.setDirty()
+        }
+    }
+
+    // MARK: - Methods for saving archives
+    func metadataForSaving(overrideFormat: libarchiveFormat = .Unknown, overrideFilters: [libarchiveFilter] = [.None])
+    -> (libarchiveFormat, [libarchiveFilter], [String:ArchiveEntryFlat])
+    {
+        let format = overrideFormat == .Unknown ? format : overrideFormat
+        let filters = overrideFilters == [.None] ? filters : overrideFilters
+
+        let headerMap = entries.reduce(into: [String:ArchiveEntryFlat]()) { map, entry in
+            if entry.type == .root { return }
+            map[entry.path] = entry.flatSelf()
+        }
+
+        return (format, filters, headerMap)
+    }
+
     func saveArchiveWithTask(to: URLBookmark, overrideFormat: libarchiveFormat = .Unknown, overrideFilters: [libarchiveFilter] = [.None], addToRecents: Bool = true, savePassphrase: String? = nil) {
         errors.clear()
 
@@ -287,20 +343,6 @@ extension ArchiveViewModel {
         }
     }
 
-    func metadataForSaving(overrideFormat: libarchiveFormat = .Unknown, overrideFilters: [libarchiveFilter] = [.None])
-    -> (libarchiveFormat, [libarchiveFilter], [String:ArchiveEntryFlat])
-    {
-        let format = overrideFormat == .Unknown ? format : overrideFormat
-        let filters = overrideFilters == [.None] ? filters : overrideFilters
-
-        let headerMap = entries.reduce(into: [String:ArchiveEntryFlat]()) { map, entry in
-            if entry.type == .root { return }
-            map[entry.path] = entry.flatSelf()
-        }
-
-        return (format, filters, headerMap)
-    }
-
     func didSave(to: URLBookmark, format toFormat: libarchiveFormat, filters toFilters: [libarchiveFilter], addToRecents: Bool = true, savePassphrase: String? = nil) {
         // Having written the archive, we should no longer have any entries of source type .Filesystem
         // So we'll update our entries to switch them to .Archive
@@ -310,6 +352,7 @@ extension ArchiveViewModel {
         defer { cacheManager.removeCacheItems(cacheType: .drop, urls: dropCacheCleanups) }
 
         entries.forEach { entry in
+            // Any filesystem/inmemory entries are now in the archive, so update their source
             if (entry.source.type == .Filesystem || entry.source.type == .InMemory) {
                 if entry.source.type == .Filesystem {
                     scopedURLManager.remove(entry.source.url)
@@ -321,6 +364,14 @@ extension ArchiveViewModel {
 
                 // Update our source to the archive path
                 entry.source = .init(type: .Archive, pathInArchive: entry.path)
+            }
+
+            // Any archive entries that have changed path (either moved within the archive, or renamed)
+            // now need their source path updated
+            if entry.source.type == .Archive {
+                if entry.source.pathInArchive != entry.path {
+                    entry.source = .init(type: .Archive, pathInArchive: entry.path)
+                }
             }
         }
 
@@ -373,6 +424,18 @@ extension ArchiveViewModel {
 
     func extractablesForEntries(_ entries: [ArchiveEntry]) -> [ArchiveEntryExtractable] {
         entries.map { $0.asExtractable(from: diskURL, archivePassphrase: passphraseAtLoad, cacheURL: cacheURL, vmID: self.id) }
+    }
+
+    func extractablesForSelected() -> [ArchiveEntryExtractable] {
+        let extractables = selectedEntries.compactMap { entryID in
+            if let first = entries.first(where: { $0.id == entryID }) {
+                return first.asExtractable(from: diskURL, archivePassphrase: passphraseAtLoad, cacheURL: cacheURL, vmID: self.id)
+            } else {
+                return nil
+            }
+        }
+
+        return extractables
     }
 
     // MARK: - Extraction methods
@@ -445,103 +508,5 @@ extension ArchiveViewModel {
 
         return try await extractSome(extractables: extractables, toFolder: toFolder,
                                  retainFullPath: retainFullPath)
-    }
-
-    func resetQuickLook() {
-        quickLookURL = nil
-        quickLookItems = []
-    }
-
-    func extractForQuicklook() {
-        let chosenEntries = entries.filter { selectedEntries.contains($0.id) }
-        quickLookItems = []
-
-        Task {
-            do {
-                let extractables = extractablesForEntries(chosenEntries)
-                quickLookItems += try await extractSome(extractables: extractables, toFolder: cacheURL)
-                if !quickLookItems.isEmpty {
-                    quickLookURL = quickLookItems.first
-                }
-            } catch let error as ArkyveError {
-                errors.err(error)
-            } catch {
-                errors.err(.init(.extract, msg: error.localizedDescription))
-            }
-        }
-    }
-
-    func nameForQuickLook(items: Set<ArchiveEntry.ID>?) -> String {
-        let first = entries.first { entry in
-            entry.id == items?.first
-        }
-        guard let first, items?.count == 1 else { return "" }
-        return " \"\(first.name)\""
-    }
-
-    func extractablesForSelected() -> [ArchiveEntryExtractable] {
-        let extractables = selectedEntries.compactMap { entryID in
-            if let first = entries.first(where: { $0.id == entryID }) {
-                return first.asExtractable(from: diskURL, archivePassphrase: passphraseAtLoad, cacheURL: cacheURL, vmID: self.id)
-            } else {
-                return nil
-            }
-        }
-
-        return extractables
-    }
-
-    func reparentEntry(_ entry: ArchiveEntry, to newParent: ArchiveEntry) {
-
-        // FIXME: Reparenting is separated into a two-phase process with toDelete and the async dispatch below, due to FB17404990
-        entry.toDelete = true
-
-        Task { @MainActor in
-            // 3. Remove from current parent
-            @MainActor func removeEntryFromParent(_ entry: ArchiveEntry) {
-                // Find the parent in the archive's entries. We don't need to walk the tree, we can iterate archive.entries
-                let parent = parentForEntry(entry)
-                //            entries.first(where: { parent in
-                //                parent.children?.contains(where: { $0.id == entry.id }) ?? false
-                //            })
-                if let parent {
-                    parent.children?.removeAll { $0.id == entry.id }
-                    return
-                }
-
-                // Except in the case of root level items, because archive.root isn't in archive.entries
-                if root.children?.first(where: { $0.id == entry.id }) != nil {
-                    // We didn't find the parent in entries, which suggests it's a root item
-                    root.children?.removeAll { $0.id == entry.id }
-                }
-            }
-
-            func updateChildrenPathComponents(of entry: ArchiveEntry, replacing: [String], with: [String]) {
-                for child in entry.children ?? [] {
-                    child.pathComponents = child.pathComponents.replacing(replacing, with: with)
-                    if child.children != nil {
-                        updateChildrenPathComponents(of: child, replacing: replacing, with: with)
-                    }
-                }
-            }
-
-            let originalParentPathComponents = Array(entry.pathComponents.dropLast())
-            removeEntryFromParent(entry)
-
-            // 4. Update pathComponents to the new parent + name
-            entry.pathComponents = newParent.pathComponents + [entry.name]
-
-            // 5. Add to new parent
-            entry.toDelete = false
-            newParent.children?.append(entry)
-
-            // Any child entries also need to have their path updated
-            if entry.type == .directory {
-                updateChildrenPathComponents(of: entry, replacing: originalParentPathComponents, with: newParent.pathComponents)
-            }
-
-            // Mark the archive as dirty since we've made changes
-            self.setDirty()
-        }
     }
 }

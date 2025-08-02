@@ -36,6 +36,13 @@ enum ArkyveFormats: Int, Identifiable, CaseIterable {
     case bz2
     case xz
 
+    // Pseudo archive types
+    case epub
+    case cb7
+    case cbr
+    case cbt
+    case cbz
+
     var description: String {
         switch self {
         case .tar:
@@ -82,6 +89,16 @@ enum ArkyveFormats: Int, Identifiable, CaseIterable {
             "XZ Archive"
         case .raw:
             "Raw File"
+        case .epub:
+            "EPUB Book"
+        case .cb7:
+            "Comic Book Archive (7Zip)"
+        case .cbr:
+            "Comic Book Archive (RAR)"
+        case .cbt:
+            "Comic Book Archive (TAR)"
+        case .cbz:
+            "Comic Book Archive (Zip)"
         }
     }
 
@@ -131,6 +148,16 @@ enum ArkyveFormats: Int, Identifiable, CaseIterable {
             "xz"
         case .raw:
             ""
+        case .epub:
+            "epub"
+        case .cb7:
+            "cb7"
+        case .cbr:
+            "cbr"
+        case .cbt:
+            "cbt"
+        case .cbz:
+            "cbz"
         }
     }
 
@@ -145,7 +172,7 @@ enum ArkyveFormats: Int, Identifiable, CaseIterable {
 
     var libarchiveFormat: libarchiveFormat {
         switch self {
-        case .tar:
+        case .tar, .cbt:
             .TAR_PAX_RESTRICTED
         case .targz:
             .TAR_PAX_RESTRICTED
@@ -153,9 +180,9 @@ enum ArkyveFormats: Int, Identifiable, CaseIterable {
             .TAR_PAX_RESTRICTED
         case .tarxz:
             .TAR_PAX_RESTRICTED
-        case .zip:
+        case .zip, .epub, .cbz:
             .ZIP
-        case ._7z:
+        case ._7z, .cb7:
             ._7ZIP
         case .iso:
             .ISO9660
@@ -177,7 +204,7 @@ enum ArkyveFormats: Int, Identifiable, CaseIterable {
             .LHA
         case .cab:
             .CAB
-        case .rar:
+        case .rar, .cbr:
             .RAR
         case .warc:
             .WARC
@@ -228,6 +255,16 @@ enum ArkyveFormats: Int, Identifiable, CaseIterable {
                 .lzh
         case .rar:
                 .rar
+        case .epub:
+                .epub
+        case .cb7:
+                .cb7
+        case .cbr:
+                .cbr
+        case .cbt:
+                .cbt
+        case .cbz:
+                .cbz
         default:
             nil
         }
@@ -327,6 +364,16 @@ enum ArkyveFormats: Int, Identifiable, CaseIterable {
             return .xip
         case .pkg:
             return .pkg
+        case .epub:
+            return .epub
+        case .cb7:
+            return .cb7
+        case .cbr:
+            return .cbr
+        case .cbt:
+            return .cbt
+        case .cbz:
+            return .cbz
 
         default:
             return nil

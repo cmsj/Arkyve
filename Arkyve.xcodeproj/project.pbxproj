@@ -2294,6 +2294,7 @@
 				Utility/ArkyveLog.swift,
 				"View Models/ArchiveViewModel.swift",
 				"View Models/ArchiveViewModel+Operations.swift",
+				"View Models/ArchiveViewModel+ProgressTasks.swift",
 				Windows/Archive/NSWindowAccessor.swift,
 			);
 			target = 4F1F24072DF712C30019CA7D /* ArkyveQuickLookExtension */;
@@ -2342,6 +2343,7 @@
 				Utility/ArkyveLog.swift,
 				"View Models/ArchiveViewModel.swift",
 				"View Models/ArchiveViewModel+Operations.swift",
+				"View Models/ArchiveViewModel+ProgressTasks.swift",
 				Windows/Archive/NSWindowAccessor.swift,
 			);
 			target = 4F1F24452DF7407D0019CA7D /* ArkyveExtractAction */;
@@ -2440,6 +2442,7 @@
 				Utility/ArkyveLog.swift,
 				"View Models/ArchiveViewModel.swift",
 				"View Models/ArchiveViewModel+Operations.swift",
+				"View Models/ArchiveViewModel+ProgressTasks.swift",
 				Windows/Archive/NSWindowAccessor.swift,
 			);
 			target = 4FD56AE72DFE8E8E00F709E0 /* ArkyveCreateAction */;
@@ -6244,7 +6247,7 @@
 					"${PROJECT_DIR}/vendor/lib/${CONFIGURATION}",
 					/usr/lib,
 				);
-				MARKETING_VERSION = 1.1;
+				MARKETING_VERSION = 1.2;
 				OTHER_LDFLAGS = (
 					"-lz",
 					"-lbz2",
@@ -6288,7 +6291,7 @@
 					"${PROJECT_DIR}/vendor/lib/${CONFIGURATION}",
 					/usr/lib,
 				);
-				MARKETING_VERSION = 1.1;
+				MARKETING_VERSION = 1.2;
 				OTHER_LDFLAGS = (
 					"-lz",
 					"-lbz2",
@@ -6334,7 +6337,7 @@
 					"${PROJECT_DIR}/vendor/lib/${CONFIGURATION}",
 					/usr/lib,
 				);
-				MARKETING_VERSION = 1.1;
+				MARKETING_VERSION = 1.2;
 				OTHER_LDFLAGS = (
 					"-lz",
 					"-lbz2",
@@ -6380,7 +6383,7 @@
 					"${PROJECT_DIR}/vendor/lib/${CONFIGURATION}",
 					/usr/lib,
 				);
-				MARKETING_VERSION = 1.1;
+				MARKETING_VERSION = 1.2;
 				OTHER_LDFLAGS = (
 					"-lz",
 					"-lbz2",
@@ -6554,7 +6557,7 @@
 					"${PROJECT_DIR}/vendor/lib/${CONFIGURATION}",
 					/usr/lib,
 				);
-				MARKETING_VERSION = 1.1;
+				MARKETING_VERSION = 1.2;
 				OTHER_LDFLAGS = (
 					"-lz",
 					"-lbz2",
@@ -6606,7 +6609,7 @@
 					"${PROJECT_DIR}/vendor/lib/${CONFIGURATION}",
 					/usr/lib,
 				);
-				MARKETING_VERSION = 1.1;
+				MARKETING_VERSION = 1.2;
 				OTHER_LDFLAGS = (
 					"-lz",
 					"-lbz2",
@@ -6685,7 +6688,7 @@
 				INFOPLIST_FILE = ArkyveHelp/Info.plist;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Bundles";
-				MARKETING_VERSION = 1.1;
+				MARKETING_VERSION = 1.2;
 				PRODUCT_BUNDLE_IDENTIFIER = net.tenshu.ArkyveHelp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -6705,7 +6708,7 @@
 				INFOPLIST_FILE = ArkyveHelp/Info.plist;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Bundles";
-				MARKETING_VERSION = 1.1;
+				MARKETING_VERSION = 1.2;
 				PRODUCT_BUNDLE_IDENTIFIER = net.tenshu.ArkyveHelp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -6738,7 +6741,7 @@
 					/usr/lib,
 				);
 				MACOSX_DEPLOYMENT_TARGET = 15.5;
-				MARKETING_VERSION = 1.1;
+				MARKETING_VERSION = 1.2;
 				OTHER_LDFLAGS = (
 					"-lz",
 					"-lbz2",
@@ -6784,7 +6787,7 @@
 					/usr/lib,
 				);
 				MACOSX_DEPLOYMENT_TARGET = 15.5;
-				MARKETING_VERSION = 1.1;
+				MARKETING_VERSION = 1.2;
 				OTHER_LDFLAGS = (
 					"-lz",
 					"-lbz2",

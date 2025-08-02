@@ -300,8 +300,6 @@ actor libarchiveWrapper {
         return writeEntry
     } 
 
-
-
     static func loadArchive(at url: URL,
                             entryLimit: Int = -1,
                             passphrase: String?) async throws(ArkyveError) -> sending (libarchiveFormat, [libarchiveFilter], [ArchiveEntry], ArchiveEntry, Bool) {
@@ -774,6 +772,11 @@ actor libarchiveWrapper {
                 throw .init(.cancelled, msg: "")
             }
 
+            headerMap.removeValue(forKey: filePath)
+        }
+
+        // Fourth, remove any synthetic entries that remain in the header map, since we don't care about them anymore
+        for filePath in headerMap.keys.filter({ headerMap[$0]?.header.source.type == .Synthetic }) {
             headerMap.removeValue(forKey: filePath)
         }
 

@@ -68,17 +68,21 @@ struct StatusbarView: View {
     }
 }
 
-//#Preview {
-//    let viewModel = MainWindowViewModel()
-//
-//    VStack(spacing: 0) {
-//        Rectangle()
-//            .background(.white)
-//        StatusbarView()
-//            .environment(viewModel)
-//    }
-//    .task {
-//        try? await Task.sleep(for: .seconds(5))
-//        viewModel.newButton()
-//    }
-//}
+#Preview {
+    let settingsManager = SettingsManager.shared
+    let sbm = ScopedURLManager.dropSBM
+    let cacheManager = CacheManager.dropCache
+    let viewModel = ArchiveViewModel(id: UUID(uuidString: "00000000-0000-0000-0000-000000000000")!, settingsManager: settingsManager, scopedURLManager: sbm, cacheManager: cacheManager)
+
+    VStack(spacing: 0) {
+        Rectangle()
+            .background(.white)
+        StatusbarView()
+            .environment(viewModel)
+            .environmentObject(settingsManager)
+    }
+    .task {
+        try? await Task.sleep(for: .seconds(5))
+        viewModel.format = .LHA
+    }
+}

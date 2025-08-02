@@ -103,19 +103,23 @@ struct ToolbarContentView: CustomizableToolbarContent {
     }
 }
 
-//#Preview {
-//
-//    VStack {
-//        Spacer()
-//        HStack {
-//            Spacer()
-//            Text("Preview")
-//                .padding(300.0)
-//            Spacer()
-//        }
-//        Spacer()
-//    }
-//    .toolbar(id: "Preview") {
-//        ToolbarContentView(viewModel: MainWindowViewModel())
-//    }
-//}
+#Preview {
+    let settingsManager = SettingsManager.shared
+    let sbm = ScopedURLManager.dropSBM
+    let cacheManager = CacheManager.dropCache
+    let viewModel = ArchiveViewModel(id: UUID(uuidString: "00000000-0000-0000-0000-000000000000")!, settingsManager: settingsManager, scopedURLManager: sbm, cacheManager: cacheManager)
+
+    VStack {
+        Spacer()
+        HStack {
+            Spacer()
+            Text("Preview")
+                .padding(300.0)
+            Spacer()
+        }
+        Spacer()
+    }
+    .toolbar(id: "Preview") {
+        ToolbarContentView(viewModel: viewModel, settingsManager: settingsManager)
+    }
+}

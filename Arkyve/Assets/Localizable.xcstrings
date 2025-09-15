@@ -2217,6 +2217,9 @@
         }
       }
     },
+    "UI Disabled: %@" : {
+
+    },
     "UID" : {
       "localizations" : {
         "en" : {

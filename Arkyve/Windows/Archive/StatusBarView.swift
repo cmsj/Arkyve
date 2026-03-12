@@ -55,7 +55,7 @@ struct StatusbarView: View {
                     Text(viewModel.passphraseToSave)
                     Text(viewModel.diskURL?.absoluteString ?? "NO DISKURL")
                         .padding([.bottom], 5)
-                    Text("UI Disabled: \(viewModel.disableUI)")
+                    Text("UI Disabled: \(viewModel.disableUI ? "YES" : "NO")")
                         .padding([.bottom, .trailing], 5)
                     Text("Format: \(viewModel.format.description)")
                     Text("Filters: \(viewModel.filters.description)")

@@ -13,7 +13,7 @@ Arkyve is a macOS app for creating, editing and extracting compressed archives. 
 
 ## FAQ
 
- 1. Is this project actively maintained?
+ 1. **Is this project actively maintained?**
     Not really, it is an app that I felt needed to exist, since all of the existing options were not what I was looking for. Arkyve has not shown much popularity, so I am not working on it very much at the moment.
  2. How do I build this?
     You'll need to make sure you have checked out the git sub-modules, and from there you should just be able to change the code signing entity in Xcode and build it.

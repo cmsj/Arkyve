@@ -10,6 +10,7 @@ Arkyve is a macOS app for creating, editing and extracting compressed archives. 
  * Wide range of supported archive formats
  * Offers integration with Finder via Quick Actions
  * Offers Shortcuts actions
+ * Offers a QuickLook plugin
 
 ## FAQ
 

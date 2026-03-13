@@ -12,6 +12,10 @@ Arkyve is a macOS app for creating, editing and extracting compressed archives. 
  * Offers Shortcuts actions
  * Offers a QuickLook plugin
 
+## Buy from the Mac App Store
+
+Arkyve is available to purchase [here](https://apps.apple.com/gb/app/arkyve/id6745030924?mt=12)
+
 ## FAQ
 
  1. **Is this project actively maintained?**
@@ -28,4 +32,6 @@ Arkyve is a macOS app for creating, editing and extracting compressed archives. 
     No, these are not covered by any open source license terms. If you are forking, you'll need your own icon.
  7. **Is this a good codebase to learn from?**
     Probably not. I am not a professional macOS developer, but I am very proud of having made Arkyve work and (in my opinion) work really nicely. Convenience trumped elegance in a lot of its internal architecture.
+ 8. **So why did you open source it?**
+    I didn't get anything close to the sales I was hoping for, so at least this way the work I put into it can never die.
 

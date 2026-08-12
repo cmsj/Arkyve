@@ -4,3 +4,4 @@ vendor/logs/*
 .DS_Store
 xcuserdata
 .vscode
+Arkyve.xcodeproj/xcshareddata/xcodecloud/

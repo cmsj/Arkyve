@@ -176,7 +176,11 @@ actor libarchiveWrapper {
                 gid = nil
             }
 
-            type = ArchiveEntryType(rawValue: archive_entry_filetype(entry))
+            if archive_entry_filetype_is_set(entry) != 0 {
+                type = ArchiveEntryType(rawValue: archive_entry_filetype(entry))
+            } else {
+                type = .unknown
+            }
 
             var symlinkTarget: String? = nil
             var rdev: dev_t? = nil
@@ -197,6 +201,7 @@ actor libarchiveWrapper {
                 }
             case .socket, .fifo, .root, .unknown:
                 AKWarning("Discarding header for \(path) because it is not a supported type: \(type.userString)")
+                // FIXME: We say we're discarding it, but then we continue and add it anyway?
             }
 
             let isEncryptedFlag = archive_entry_is_encrypted(entry) == 1 ? true : false

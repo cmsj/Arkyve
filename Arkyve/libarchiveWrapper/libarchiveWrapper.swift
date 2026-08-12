@@ -92,16 +92,15 @@ actor libarchiveWrapper {
     }
 
     private func readHeaders(entryLimit: Int = -1) async throws(ArkyveError) -> [libarchiveHeader] {
-        guard readArchiveFD.archive != nil else {
-            throw .init(.entries, msg: "Internal error: archive does not exist")
-        }
-
         var headers: [libarchiveHeader] = []
 
         var entry: OpaquePointer?
         readLoop: while true {
             if Task.isCancelled {
                 throw .init(.cancelled, msg: "")
+            }
+            guard readArchiveFD.archive != nil else {
+                throw .init(.entries, msg: "Internal error: no archive open")
             }
 
             if entryLimit != -1 && headers.count >= entryLimit {

@@ -100,6 +100,10 @@ actor libarchiveWrapper {
 
         var entry: OpaquePointer?
         readLoop: while true {
+            if Task.isCancelled {
+                throw .init(.cancelled, msg: "")
+            }
+
             if entryLimit != -1 && headers.count >= entryLimit {
                 didTruncateRead = true
                 break readLoop
@@ -205,10 +209,6 @@ actor libarchiveWrapper {
                 source: source, type: type, path: path, name: name,
                 pathComponents: pathComponents, size: size, atime: atime, ctime: ctime,
                 mtime: mtime, btime: btime, uid: uid, gid: gid, perms: perms, symlinkTarget: symlinkTarget, rdev: rdev, isEncrypted: isEncrypted))
-
-            if Task.isCancelled {
-                throw .init(.cancelled, msg: "")
-            }
         }
 
         return headers

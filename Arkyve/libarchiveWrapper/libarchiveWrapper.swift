@@ -111,6 +111,17 @@ actor libarchiveWrapper {
             switch result {
             case ARCHIVE_OK:
                 break
+            case ARCHIVE_WARN:
+                let warning: String
+
+                if let cStr = archive_error_string(readArchiveFD.archive) {
+                    warning = String(cString: cStr)
+                } else {
+                    warning = "Unknown"
+                }
+
+                AKWarning("libarchive: \(warning)")
+                break
             case ARCHIVE_FATAL:
                 throw ArkyveError(.openArchive, msg: String(cString: archive_error_string(readArchiveFD.archive))
                 )
@@ -607,6 +618,17 @@ actor libarchiveWrapper {
             result = archive_read_next_header(readArchiveFD.archive, &readEntry)
             switch (result) {
             case ARCHIVE_OK:
+                break
+            case ARCHIVE_WARN:
+                let warning: String
+
+                if let cStr = archive_error_string(readArchiveFD.archive) {
+                    warning = String(cString: cStr)
+                } else {
+                    warning = "Unknown"
+                }
+
+                AKWarning("libarchive: \(warning)")
                 break
             case ARCHIVE_EOF:
                 break writeLoop
